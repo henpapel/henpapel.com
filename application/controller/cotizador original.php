@@ -1668,13 +1668,9 @@ class Cotizador extends Controller {
         // Empalme
         $x1 = $aCalculos['x1'];         // largo
         $x1 = floatval($x1);
-        $x11 = $aCalculos['x11'];         // largo
-        $x11 = floatval($x11);
 
         $y1 = $aCalculos['y1'];         // ancho
         $y1 = floatval($y1);
-        $y11 = $aCalculos['y11'];         // ancho
-        $y11 = floatval($y11);
 
 
         // Forro Cajon
@@ -1691,22 +1687,6 @@ class Cotizador extends Controller {
 
         $Y1 = $aCalculos['Y1'];         // largo
         $Y1 = floatval($Y1);
-
-
-        // carton cajon
-        $b1 = $aCalculos['b1'];
-        $b1 = round(floatval($b1), 2);
-
-        $h1 = $aCalculos['h1'];
-        $h1 = round(floatval($h1), 2);
-
-
-        // carton cartera
-        $B = $aCalculos['B'];
-        $B = round(floatval($B), 2);
-
-        $H = $aCalculos['H'];
-        $H = round(floatval($H), 2);
 
 
         // Guarda
@@ -1835,8 +1815,11 @@ class Cotizador extends Controller {
         $aJson['tiraje'] = $tiraje;
 
     // corte papel Empalme
-        $secc_ancho = floatval($y11);
-        $secc_largo = floatval($x11);
+        //$secc_ancho = floatval($y1);
+        //$secc_largo = floatval($x1);
+
+        $secc_ancho = floatval($aCalculos['h']);
+        $secc_largo = floatval($aCalculos['b']);
 
         $aPapel_tmp = self::calculaPapel("Empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1874,8 +1857,8 @@ class Cotizador extends Controller {
 
 
     // Corte papel Forro Cartera
-        $secc_ancho = floatval($aCalculos['B1']);
-        $secc_largo = floatval($aCalculos['Y1']);
+        $secc_ancho = floatval($B1);
+        $secc_largo = floatval($Y1);
 
         $aPapel_tmp = self::calculaPapel("FCar", $id_papel_forro_cartera, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1925,20 +1908,8 @@ class Cotizador extends Controller {
         $c_largo = floatval($grosor_caj['largo_papel']);
     */
 
-        $secc_ancho = floatval($x1);
-        $secc_largo = floatval($y1);
-
-        if (!array_key_exists("calculaPapel", $aJson)) {
-
-            $aJson['calculaPapel'] = array();
-        }
-
-        $aJson['calculaPapel']['grosor_cajon'] = array(
-            "grosor_cajon"   => $grosor_cajon
-          , "secc_ancho" => $secc_ancho
-          , "secc_largo" => $secc_largo
-          , "tiraje"     => $tiraje
-        );
+        $secc_ancho = floatval($k);
+        $secc_largo = floatval($f);
 
         $aPapel_tmp = self::calculaPapel("grosor_cajon", $grosor_cajon, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1964,20 +1935,8 @@ class Cotizador extends Controller {
 
         //$grosor_cartera = self::getPapelCarton("grosor_cartera", $grosor_cartera, $options_model);
 
-        $secc_ancho = floatval($B);
-        $secc_largo = floatval($Y);
-
-        if (!array_key_exists("calculaPapel", $aJson)) {
-
-            $aJson['calculaPapel'] = array();
-        }
-
-        $aJson['calculaPapel']['grosor_cartera'] = array(
-            "grosor_cartera"   => $grosor_cartera
-          , "secc_ancho" => $secc_ancho
-          , "secc_largo" => $secc_largo
-          , "tiraje"     => $tiraje
-        );
+        $secc_ancho = floatval($B1);
+        $secc_largo = floatval($Y1);
 
         $aPapel_tmp = self::calculaPapel("grosor_cartera", $grosor_cartera, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 

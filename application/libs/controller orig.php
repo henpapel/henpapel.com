@@ -579,57 +579,86 @@ class Controller {
     // calculo del papel incluyendo cortes
     protected function calculaPapel($seccion, $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model) {
 
-
         $papel_secc = self::getPapelCarton($seccion, $id_papel, $options_model);
+
+        // medidas del papel
+        $p_ancho = floatval($papel_secc['ancho_papel']);
+        $p_largo = floatval($papel_secc['largo_papel']);
+        $c_ancho = floatval($secc_ancho);
+        $c_largo = floatval($secc_largo);
+
+        $b      = max($p_ancho, $p_largo);
+        $h      = min($p_ancho, $p_largo);
+        $cb     = $c_ancho;
+        $ch     = $c_largo;
+        $escala = 250 / $b;
+
+
 
         $costo_unit_papel = floatval($papel_secc['costo_unit_papel']);
 
-        $p_ancho = floatval($papel_secc['ancho_papel']);
-        $p_largo = floatval($papel_secc['largo_papel']);
-        $c_ancho = $secc_ancho;
-        $c_largo = $secc_largo;
-
-        $b  = max($p_ancho, $p_largo);
-        $h  = min($p_ancho, $p_largo);
-        $cb = $c_ancho;
-        $ch = $c_largo;
-
         $cortes = self::Acomoda($b, $h, $c_ancho, $c_largo, "V", "V");
-
+        $cortes['c_ancho'] = $c_ancho;
+        $cortes['c_largo'] = $c_largo;
+        
         $totalCortes = $cortes['cortesT'];
 
         $cortes_H = self::Acomoda($b, $h, $c_ancho, $c_largo, "H", "V");
+        $cortes_H['c_ancho'] = $c_ancho;
+        $cortes_H['c_largo'] = $c_largo;
 
         $totalCortes_H = $cortes_H['cortesT'];
 
-        $corte   = $cortes['cortesT'];
-        $corte_H = $cortes_H['cortesT'];
-
-    /*
         if ($cortes['sobranteB'] >= $ch) {
 
             $sobrante = self::Acomoda($cortes['sobranteB'], $b, $c_ancho, $c_largo, "H", "H");
+
             $totalCortes += $sobrante['cortesT'];
-            $orientacion = "Horizontal";
-        } else if ($cortes['sobranteH'] >= $cb) {
+        } elseif($cortes['sobranteH'] >= $cb) {
 
             $sobrante = self::Acomoda($cortes['sobranteH'], $h, $c_ancho, $c_largo, "H", "H");
+
             $totalCortes += $sobrante['cortesT'];
-            $orientacion = "Horizontal";
+        } else {
+
+           $sobrante = [$cortes['cortesT'] = 0, $cortes['cortesB'] = 0, $cortes['cortesH'] = 0, $cortes['sobranteB'] = 0, $cortes['sobranteH'] = 0, $cortes['areaUtilizada'] = 0]; 
         }
+
 
         if ($cortes_H['sobranteB'] >= $ch) {
 
-            $sobrante_H    = self::Acomoda($cortes_H['sobranteB'], $h,  $c_ancho, $c_largo, "H", "H");
-            $totalCortes_H += $sobrante_H['cortesT'];
-            $orientacion = "Horizontal";
+            $sobranteH = self::Acomoda($cortes_H['sobranteB'], $h, $c_ancho, $c_largo, "H", "H");
+
+            $totalCortes_H += $sobranteH['cortesT'];
         } else if ($cortes_H['sobranteH'] >= $cb) {
 
-            $sobrante_H    = self::Acomoda($cortes_H['sobranteH'], $b,  $c_ancho, $c_largo, "H", "H");
-            $totalCortes_H += $sobrante_H['cortesT'];
-            $orientacion = "Horizontal";
+            $sobranteH = self::Acomoda($cortes_H['sobranteH'], $b, $c_ancho, $c_largo, "H", "H");
+
+            $totalCortes_H += $sobranteH['cortesT'];
+        } else {
+
+           $sobrante = [$cortes['cortesT'] = 0, $cortes['cortesB'] = 0, $cortes['cortesH'] = 0, $cortes['sobranteB'] = 0, $cortes['sobranteH'] = 0, $cortes['areaUtilizada'] = 0]; 
         }
-    */
+
+
+        /*
+        if (intval($cb) < intval($ch)) {
+
+            $cortesV  = $cortes['cortesT'];
+            $cortesV2 = $sobrante['cortesT'];
+            $cortesH  = $cortes_H['cortesT'];
+            $cortesH2 = $sobranteH['cortesT'];
+        } else {
+
+            $cortesH2 = $sobrante['cortesT'];
+            $cortesH  = $cortes['cortesT'];
+            $cortesV2 = $sobranteH['cortesT'];
+            $cortesV  = $cortesH['cortesT'];
+        }
+        */
+
+        $corte   = $cortes['cortesT'];
+        $corte_H = $cortes_H['cortesT'];
 
         $corte_secc = max($corte, $corte_H);
 
@@ -667,11 +696,11 @@ class Controller {
 
         if ($corte > $corte_H) {
 
-            $cortes['orientacion']       = "vertical";
+            $cortes['orientacion'] = "vertical";
             $a_Calculadora_secc['corte'] = $cortes;
         } else {
 
-            $cortes_H['orientacion']     = "horizontal";
+            $cortes_H['orientacion'] = "horizontal";
             $a_Calculadora_secc['corte'] = $cortes_H;
         }
 
@@ -749,10 +778,10 @@ class Controller {
             $corteLargo = 0;
         }
 
-        $b  = $d1;
-        $h  = $d2;
-        $cb = $corteAncho;
-        $ch = $corteLargo;
+        $b  = 1;
+        $h  = 1;
+        $cb = 1;
+        $ch = 1;
 
         $acom_corte  = "";
         $acom_pliego = "";
@@ -770,6 +799,10 @@ class Controller {
             $h = min($d1, $d2);
 
             $acom_pliego = "H";
+        } else {
+
+            $b = $d1;
+            $h = $d2;
         }
 
 
@@ -785,6 +818,10 @@ class Controller {
             $ch = max($corteAncho, $corteLargo);
 
             $acom_corte = "V";
+        } else {
+
+            $cb = $corteAncho;
+            $ch = $corteLargo;
         }
 
 
@@ -796,16 +833,17 @@ class Controller {
         $areaUtilizada = 0;
         $orientacion   = "";
 
-        if ($b > 0 and $h > 0) {
+        //if ($b > 0 and $h > 0) {
 
+            $cortesT       = intval($b / $cb) * intval($h / $ch);
             $cortesB       = intval($b / $cb);
             $cortesH       = intval($h / $ch);
-            $cortesT       = $cortesB * $cortesH;
-            $sobranteB     = round(floatval($b - ($cortesB * $cb)), 2);
-            $sobranteH     = round(floatval($h - ($cortesH * $ch)), 2);
-            $areaUtilizada = floatval( ($cb * $ch) * $cortesT );
+            $sobranteB     = round(Floatval($b - ($cortesB * $cb)), 2);
+            $sobranteH     = round(Floatval($h - ($cortesH * $ch)), 2);
+            //$areaUtilizada = floatval( ($cb * $ch) * intval($cb / $b) * intval($ch / $h) );
+            $areaUtilizada = round(floatval( ($cb * $ch) * intval($b / $cb) * intval($h / $ch) ), 2);
             $orientacion = $acom_corte . $acom_pliego;
-        }
+        //}
 
         $cortes_tmp = array();
 
