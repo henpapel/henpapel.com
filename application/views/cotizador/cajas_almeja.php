@@ -3730,6 +3730,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     return false;
                 }
 
+                var js_respuesta = JSON.parse(response);
                 console.log('(3733) mensaje: ' + js_respuesta.mensaje);
 
                 $('#table_adicionales_tr').empty();
@@ -3827,6 +3828,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                             var js_papel_interior_cajon_cortes_Emp  = js_respuesta[c]['corte'];
                             var js_papel_interior_cajon_pliegos_Emp = js_respuesta[c]['tot_pliegos'];
                             var js_Costo_total_pliegos_emp_Emp      = js_respuesta[c]['tot_costo'];
+                            var costoUnitario = js_respuesta[c]['costo_unit_papel']
 
 
                             if (js_papel_interior_cajon_nombre_emp === undefined || js_corte_largo_Emp === undefined || js_corte_ancho_Emp === undefined || js_papel_interior_cajon_cortes_Emp === undefined || js_papel_interior_cajon_pliegos_Emp === undefined || js_Costo_total_pliegos_emp_Emp === undefined) {
@@ -3835,7 +3837,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                             } else {
 
-                                var trpapelesEmp = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr><td>Material</td><td>'+ js_papel_interior_cajon_nombre_emp +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_Emp +' Ancho: '+ js_corte_ancho_Emp +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_papel_interior_cajon_cortes_Emp +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_papel_interior_cajon_pliegos_Emp +'</td></tr><tr><td>Costo Total</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="prices" value="' + js_Costo_total_pliegos_emp_Emp + '"></td></tr>';
+                                var trpapelesEmp = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr><td>Material</td><td>'+ js_papel_interior_cajon_nombre_emp +'</td></tr><tr><td>Costo Unitario</td><td>$'+ costoUnitario +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_Emp +' Ancho: '+ js_corte_ancho_Emp +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_papel_interior_cajon_cortes_Emp +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_papel_interior_cajon_pliegos_Emp +'</td></tr><tr><td>Costo Total</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="prices" value="' + js_Costo_total_pliegos_emp_Emp + '"></td></tr>';
 
                                 jQuery214('#table_papeles_tr').append(trpapelesEmp); //imprime tr
 
@@ -3879,13 +3881,14 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 // (CARTONES)
 
                     var js_nombre_cajon_CartonCaj      = js_respuesta.CartonCaj['nombre_papel'];
-                    var js_corte_largo_CartonCaj       = js_respuesta.CartonCaj['largo_papel'];
-                    var js_corte_ancho_CartonCaj       = js_respuesta.CartonCaj['ancho_papel'];
+                    var js_corte_largo_CartonCaj       = js_respuesta.CartonCaj['calculadora']['corte_largo'];
+                    var js_corte_ancho_CartonCaj       = js_respuesta.CartonCaj['calculadora']['corte_ancho'];
                     var js_Piezas_por_Pliego_CartonCaj = js_respuesta.CartonCaj['tot_pliegos'];
                     var js_Num_pliegos_CartonCaj       = js_respuesta.CartonCaj['corte'];
                     var js_costo_total_CartonCaj       = js_respuesta.CartonCaj['tot_costo'];
+                    var costoUnitario = js_respuesta.CartonCaj['costo_unit_papel'];
 
-                    var trpapelescartonj = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton del Cajón</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_CartonCaj +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCaj +' Ancho: '+ js_corte_ancho_CartonCaj +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Piezas_por_Pliego_CartonCaj +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Num_pliegos_CartonCaj +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCaj +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCaj +'"></td></tr>';
+                    var trpapelescartonj = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton del Cajón</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_CartonCaj +'</td></tr><tr><td>Costo Unitario</td><td>$'+ costoUnitario +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCaj +' Ancho: '+ js_corte_ancho_CartonCaj +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Num_pliegos_CartonCaj +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Piezas_por_Pliego_CartonCaj +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCaj +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCaj +'"></td></tr>';
 
                     jQuery214('#table_papeles_tr').append(trpapelescartonj);
 
@@ -3894,13 +3897,14 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
 
                     var js_nombre_cajon_cartera_CartonCar = js_respuesta.CartonCar['nombre_papel'];
-                    var js_corte_largo_CartonCar          = js_respuesta.CartonCar['largo_papel'];
-                    var js_corte_ancho_CartonCar          = js_respuesta.CartonCar['ancho_papel'];
+                    var js_corte_largo_CartonCar          = js_respuesta.CartonCar['calculadora']['corte_largo'];
+                    var js_corte_ancho_CartonCar          = js_respuesta.CartonCar['calculadora']['corte_ancho'];
                     var js_Piezas_por_Pliego_CartonCar    = js_respuesta.CartonCar['tot_pliegos'];
                     var js_Num_pliegos_CartonCar          = js_respuesta.CartonCar['corte'];
                     var js_costo_total_CartonCar          = js_respuesta.CartonCar['tot_costo'];
+                    var costoUnitario = js_respuesta.CartonCar['costo_unit_papel'];
 
-                    var trpapelescartoncr = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton Cartera</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCar +' Ancho: '+ js_corte_ancho_CartonCar +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Piezas_por_Pliego_CartonCar +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Num_pliegos_CartonCar +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCar +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCar +'"></td></tr>';
+                    var trpapelescartoncr = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton Cartera</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td></tr><tr><td>Costo Unitario</td><td>$'+ costoUnitario +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCar +' Ancho: '+ js_corte_ancho_CartonCar +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Num_pliegos_CartonCar +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Piezas_por_Pliego_CartonCar +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCar +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCar +'"></td></tr>';
 
                     jQuery214('#table_papeles_tr').append(trpapelescartoncr);
 
