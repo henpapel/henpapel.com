@@ -3780,6 +3780,11 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     var costo_emp = "<tr><td></td><td></td><td></td><td>$" + js_respuesta['empaque'] + "</td></tr>";
                     $('#resumenEmpaque').append(costo_emp);
 
+
+                //Aqui empiezo
+
+                //Aqui termino
+
                 // (PAPELES)
 
                     $('#table_papeles_tr').empty();
@@ -4190,7 +4195,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                         for ( a_a in js_variable_extra1_1 ) {
 
-                            var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas_maq'];
+                            var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas'];
 
 
                             if (js_costo_unitario_laminas_emp <= 0) {
@@ -4199,7 +4204,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                             }
 
 
-                            var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas_maq'];
+                            var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas'];
 
 
                             var js_costo_unitario_arreglo_emp = js_variable_extra1_1[a_a]['arreglo_costo_unitario'];
@@ -4223,7 +4228,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                             }
 
 
-                            var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maquila'];
+                            var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maq'];
 
                             //*** otros datos ****
                             var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad_maq'];
@@ -4233,7 +4238,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                             var js_total_offset_emp = js_costo_tot_laminas_emp + js_costo_tot_arreglo_emp + js_costo_tot_maquila;
 
                             // imprime en la tabla de procesos añadidos Offset
-                            var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Empalme del Cajón</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ js_costo_unitario_laminas_emp +'</td><td>'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_costo_unitario_arreglo_emp +'</td><td>'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>'+ js_costo_unitario_maquila +'</td><td>'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                            var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Empalme del Cajón</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ js_costo_unitario_laminas_emp +'</td><td>$'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_costo_unitario_arreglo_emp +'</td><td>$'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>$'+ js_costo_unitario_maquila +'</td><td>$'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                             //$('#table_proc_offset').empty();
 

@@ -160,7 +160,7 @@ function appndImp( aImp, lblaImp ){
 
     if ( aImp == undefined ) return false;
     if ( aImp['Offset'] !== undefined ) var offset        = aImp['Offset'];
-    if ( aImp['maquila'] !== undefined ) var offsetMaquila = aImp['maquila'];
+    if ( aImp['Maquila'] !== undefined ) var offsetMaquila = aImp['Maquila'];
     if ( aImp['Digital'] !== undefined ) var digital       = aImp['Digital'];
     if ( aImp['Serigrafia'] !== undefined )var serigrafia    = aImp['Serigrafia'];
     
@@ -206,7 +206,7 @@ function appndImp( aImp, lblaImp ){
                 var cTArr     = offsetMaquila[i]['arreglo_costo'];
                 var total     = parseFloat(offsetMaquila[i]['costo_tot_proceso']);
 
-                var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">' + titulo + '</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ cantidad +'</td><td>Tipo: '+ tipo +'</td><td>Tintas: '+ tintas +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ cULam +'</td><td>'+ cTLam +'</td></tr><tr><td>Arreglo</td><td>'+ cUArr +'</td><td>'+ cTArr +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ total +'</td></tr><tr><td colspan="3"></td></tr>';
+                var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">' + titulo + ' - Maquila</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ cantidad +'</td><td>Tipo: '+ tipo +'</td><td>Tintas: '+ tintas +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ cULam +'</td><td>'+ cTLam +'</td></tr><tr><td>Arreglo</td><td>'+ cUArr +'</td><td>'+ cTArr +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ total +'</td></tr><tr><td colspan="3"></td></tr>';
 
                 $('#table_proc_offset').append(tr);
 
