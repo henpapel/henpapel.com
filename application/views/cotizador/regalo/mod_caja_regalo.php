@@ -239,222 +239,6 @@
     </div>
 </div>
 
-<div id="divDerecho-slave" class="grid div-derecho"  style="display: none;">
-
-    <!-- Empalme Cajon -->
-    <div class="divgral">
-        
-        <div class="secciones divContenido">
-            <img src="<?= URL ?>/public/images/regalo/regalo.png" style="width: 40%;">
-            
-            <br>
-            <label class="lblTituloSec">Empalme del Cajón</label>
-        </div>
-
-        <br>
-
-        <!-- Papel -->
-        <div>
-            <select class="chosen forros" name="optEC" id="optEC" tabindex="7">
-
-                <option selected disabled>Elegir tipo de papel</option>
-                <?php
-                foreach ($papers as $paper) {   ?>
-
-                    <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
-                <?php } ?>
-            </select>
-        </div>
-
-        <!-- mismo papel para todos -->
-        <div class="custom-control custom-checkbox mr-sm-2">
-
-            <input type="checkbox" name="btnCheckPaper" id="btnCheckPaper" class="custom-control-input">
-            <label class="custom-control-label" for="btnCheckPaper"style="font-size: 15px; cursor: pointer;" class="btn btn-outline-primary">Mismo Papel P/Todos</label>
-        </div>
-
-        <!-- Añadir Impresiones -->
-        <div>
-
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('EC')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div class="container divimpresiones">
-
-                <table class="table">
-                    <tbody id="listImpEC">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Añadir Acabados -->
-        <div>
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('EC')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div class="container divacabados">
-                <table class="table">
-                    <tbody id="listAcbEC">
-                        <!-- contenido seleccionado -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <br>
-    </div>
-
-    <!-- Forro Cajon -->
-    <div class="divgral">
-
-        <div class="secciones divContenido">
-            <img src="<?=URL ?>/public/images/regalo/regalo.png" style="width: 40%;">
-            <br>
-            <label class="lblTituloSec">Forro del Cajón</label>
-        </div>
-        <br>
-
-        <div>
-            <select class="chosen forros" name="optFC" id="optFC" tabindex="8" required>
-                <option value="nulo" selected disabled>Elegir tipo de papel</option>
-                <?php
-                foreach ($papers as $paper) {   ?>
-                <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>"  data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?>
-                </option> <?php } ?>
-            </select>
-        </div>
-
-        <br>
-
-        <div>
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('FC')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div class="divimpresiones">
-                <table class="table">
-                    <tbody id="listImpFC">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div>
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('FC')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div class="container divacabados">
-                <table class="table" id="acbTableFcajon">
-                    <tbody id="listAcbFC">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Empalme Tapa -->
-    <div class="divgral">
-
-        <div class="secciones divContenido">
-            <img src="<?=URL ?>/public/images/regalo/regalo.png" style="width: 40%;">
-            <br>
-            <label class="lblTituloSec">Empalme de la Tapa</label>
-        </div>
-        <br>
-
-        <div>
-            <select class="chosen forros" name="optET" id="optET" tabindex="9" required>
-
-                <option value="nulo" selected disabled>Elegir tipo de papel</option>
-
-                <?php
-                foreach ($papers as $paper) {   ?>
-
-                <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
-                    <?php
-                }
-                ?>
-            </select>
-        </div>
-
-        <br>
-
-        <div>
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('ET')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div id="ListaImpresiones" class="container divimpresiones">
-                <table class="table">
-                    <tbody id="listImpET">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div>
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('ET')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div id="ListaAcabadosFcartera" class="container divacabados">
-                <table class="table">
-                    <tbody id="listAcbET">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Forro Tapa -->
-    <div class="divgral">
-
-        <div class="secciones divContenido">
-            <img src="<?=URL ?>/public/images/regalo/regalo.png"  style="width: 40%;">
-            <br>
-            <label class="lblTituloSec">Forro de la Tapa</label>
-        </div>
-
-        <br>
-
-        <div>
-            <select class="chosen forros" name="optFT" id="optFT" tabindex="9" required>
-
-                <option selected disabled>Elegir tipo de papel</option>
-
-                <?php
-                foreach ($papers as $paper) {   ?>
-
-                <option value="<?=$paper['id_papel']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
-                    <?php
-                }
-                ?>
-            </select>
-        </div>
-
-        <br>
-
-        <div>
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('FT')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div id="ListaImpresiones" class="container divimpresiones">
-                <table class="table">
-                    <tbody id="listImpFT">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div>
-            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('FT')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-            <div id="ListaAcabadosFcartera" class="container divacabados">
-                <table class="table">
-                    <tbody id="listAcbFT">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="modalSaveAll" tabindex="-1" role="dialog" aria-labelledby="modalSaveAll" aria-hidden="true">
 
@@ -465,12 +249,6 @@
             <div class="modal-header azulWhi">
 
                 <h5 class="modal-title">Cotizacion</h5>
-                <!--
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                -->
             </div>
 
             <div class="modal-body">
@@ -487,7 +265,7 @@
     </div>
 </div>
 
-<div id="groupButton1" class="social" style="float: right; width: 70%;text-align: right;">
+<div id="groupButton1" style="position:fixed; top:90%; right:0; float: right; width: 70%;text-align: right;">
 
     <button id="papeles_submit" type="button" class="btn btn-primary" style="font-size: 10px;">CALCULAR</button>
 
@@ -1758,113 +1536,244 @@
                 </tr>
             </thead>
 
-            <thead id="resumenHead">
-                <!-- -->
-            </thead>
+            <thead id="resumenHead"></thead>
 
-            <tbody id="resumenPapeles">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenPapeles"></tbody>
 
-            <tbody id="resumenEC">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenEC"></tbody>
 
-            <tbody id="resumenFC">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenFC"></tbody>
 
-            <tbody id="resumenET">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenET"></tbody>
 
-            <tbody id="resumenFT">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenFT"></tbody>
 
-            <tbody id="resumenEncuadernacion">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenEncuadernacion"></tbody>
 
-            <tbody id="resumenMensajeria">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenMensajeria"></tbody>
 
-            <tbody id="resumenEmpaque">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenEmpaque"></tbody>
 
-            <tbody id="resumenBancos">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenBancos"></tbody>
 
-            <tbody id="resumenCierres">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenCierres"></tbody>
 
-            <tbody id="resumenAccesorios">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenAccesorios"></tbody>
 
-            <tbody id="resumenOtros">
-                <!-- -->
-            </tbody>
+            <tbody id="resumenOtros"></tbody>
         </table>
         <img border="0" src="<?=URL ;?>public/img/henpp.png" style="width: 7%; margin: 2%"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
     </div>
+
+
+<?php
+    if( $aJson ){?>
+        <script type="text/javascript">
+
+            var idCarton = "<?= $aJson['id_grosor_carton']?>";
+            var idTapa = "<?= $aJson['id_grosor_tapa']?>";
+
+            $("#grosor_carton option[data-id=" + idCarton +"]").attr("selected", true);
+
+            $("#grosor_tapa option[data-id=" + idTapa +"]").attr("selected", true);
+
+            var idEC = parseInt(<?= $aJson['id_papel_EC']?>);
+            var idFC = parseInt(<?= $aJson['id_papel_FC']?>);
+            var idET = parseInt(<?= $aJson['id_papel_ET']?>);
+            var idFT = parseInt(<?= $aJson['id_papel_FT']?>);
+
+            //muestra los papeles elegidos
+
+            $("#optBasCajon option[value='" + idBaseCajon +"']").prop("selected",true);
+            $("#optCirCajon option[value='" + idCCajon +"']").prop("selected",true);
+            $("#optExtCajon option[value='" + idFECajon +"']").prop("selected",true);
+            $("#optPomCajon option[value='" + idPCajon +"']").prop("selected",true);
+        </script>
+<?php    }
+?>
 
 <script type="text/javascript" src="<?= URL ?>public/js/cotizador/regalo.js"></script>
 
 <script type="text/javascript">
 
-    checkDimensions();
+    //checkDimensions();
     var contenidoIzquierdo = $("#divIzquierdo-slave").contents();
     $("#divIzquierdo").empty();
     $("#divIzquierdo").append(contenidoIzquierdo);
 
-    var contenidoDerecho = $("#divDerecho-slave").contents();
-    $("#divDerecho").empty();
-    $("#divDerecho").append(contenidoDerecho);
-
-    //divSecciones("Prueba", "idPrueba" , "PR", "listPrueba", "<?=URL ?>/public/images/regalo/regalo.png");
-
-    $( window ).resize(function() {
-        
-        checkDimensions();
-    });
-
+    divSecciones("Empalme Cajón", "optEC" , "EC", "<?=URL ?>/public/images/regalo/regalo.png");
+    divSecciones("Forro Cajón", "optFC" , "FC", "<?=URL ?>/public/images/regalo/regalo.png");
+    divSecciones("Empalme Tapa", "optET" , "ET", "<?=URL ?>/public/images/regalo/regalo.png");
+    divSecciones("Forro Tapa", "optFT" , "FT", "<?=URL ?>/public/images/regalo/regalo.png");
+    
+    var cliente = getIdClient();
     //eligira a donde se enviara la informacion
     changeData("<?=URL?>regalo/saveCaja");
-
-    var cliente = getIdClient();
     setClient( cliente );
     setURL("<?= URL ?>");
 
-    function checkDimensions(){
+    var AGlobal = <?php echo json_encode($aJson)?>;
 
-        var valor = parseInt($("#groupButton1").css("width"));
+    appndPapeles( AGlobal, "papel_Emp");
+    appndPapeles( AGlobal, "papel_FCaj");
+    appndPapeles( AGlobal, "papel_EmpTap");
+    appndPapeles( AGlobal, "papel_FTap");
 
-        if( valor < 255 ){
+    var aImpEC = <?php echo json_encode($aJson['aImpecaj']) ?>;
+    var aImpFC = <?php echo json_encode($aJson['aImpfcaj']) ?>;
+    var aImpET = <?php echo json_encode($aJson['aImpetap']) ?>;
+    var aImpFT = <?php echo json_encode($aJson['aImpftap']) ?>;
 
-            //$("#groupButton1").hide();
-            // $("#btnMovGroup").show();
-            // $("#divDerecho").css("font-size","11px");
-            // $("#divIzquierdo").css("font-size","11px");
-            // $("span").css("font-size","11px");
-            // $("input").css("font-size","11px");
-            // $(".chkSize").css("font-size","11px");
-        }else{
+    appndImpMod(aImpEC,"EC", aImpBC);
+    appndImpMod( aImpFC, "FC", aImpCC );
+    appndImpMod( aImpET, "ET", aImpFEC );
+    appndImpMod( aImpFT, "FT", aImpPC );
 
-            //$("#groupButton1").show();
-            // $("#btnMovGroup").hide();
-            // $("#divDerecho").css("font-size","15px");
-            // $("span").css("font-size","15px");
-            // $("input").css("font-size","15px");
-            // $(".chkSize").css("font-size","15px");
+    var aAcbEC     = <?php echo json_encode($aJson['aAcbecaj']) ?>;
+    var aAcbFC   = <?php echo json_encode($aJson['aAcbfcaj']) ?>;
+    var aAcbET  = <?php echo json_encode($aJson['aAcbetap']) ?>;
+    var aAcbFT   = <?php echo json_encode($aJson['aAcbftap']) ?>;
+
+    appndAcbMod( aAcbEC,"EC", aAcbBC);
+    appndAcbMod( aAcbFC, "FC", aAcbCC );
+    appndAcbMod( aAcbET, "ET", aAcbFEC );
+    appndAcbMod( aAcbFT, "FT", aAcbPC );
+
+
+    var cierres    = <?php echo json_encode($aJson['Cierres'])?>;
+    var accesorios = <?php echo json_encode($aJson['Accesorios'])?>;
+    var bancos     = <?php echo json_encode($aJson['Bancos'])?>;
+
+    if( cierres !== undefined && cierres !== null ){
+
+        for (var i = 0; i < cierres.length; i++) {
+
+            var tr ="";
+            var opCie = cierres[i]['Tipo_cierre'];
+            switch(opCie){
+
+                case "Iman":
+
+                    var numpares = cierres[i]['numpares'];
+
+                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
+                    aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
+                break;
+                case "Liston":
+
+                    var LarListon = cierres[i]['largo'];
+                    var AnchListon = cierres[i]['ancho'];
+                    var tipoListon = cierres[i]['tipo'];
+                    var colorListon = cierres[i]['color'];
+                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td style="display: none">'+ LarListon +'</td><td style="display: none">'+ AnchListon +'</td><td style="display: none">'+ tipoListon +'</td><td style="display: none">'+ colorListon +'</td><td class="listcierres img_delete"></td></tr>';
+                    aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon});
+
+                break;
+                case "Marialuisa":
+
+                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="listcierres img_delete"></td></tr>';
+                    aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
+
+                break;
+                case "Suaje calado":
+
+                    var LarSuajCal = cierres[i]['largo'];
+                    var AnchSuajCal = cierres[i]['ancho'];
+                    var tipoSuajCal = cierres[i]['tipo'];
+                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td style="display: none">'+ LarSuajCal +'</td><td style="display: none">'+ AnchSuajCal +'</td><td style="display: none">'+ tipoSuajCal +'</td><td class="listcierres img_delete"></td></tr>';
+                    aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null});
+
+                break;
+                case "Velcro":
+
+                    var numpares = cierres[i]['numpares'];
+                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
+                    aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
+
+                break;
+            }
+            $('#listcierres').append(tr);
         }
     }
 
-    //Boton Calcular
+    if( accesorios !== undefined && accesorios !== null ){
+
+        for (var i = 0; i < accesorios.length; i++) {
+
+            var tr ="";
+            var nombreAccesorio = accesorios[i]['Tipo_accesorio'];
+            switch(nombreAccesorio){
+
+                case "Lengueta de Liston":
+
+                    var largo = accesorios[i]['Largo'];
+                    var ancho = accesorios[i]['Ancho'];
+                    var color = accesorios[i]['Color'];
+                    var precio = accesorios[i]['costo_unit_accesorio'];
+
+                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+                break;
+                case "Herraje":
+
+                    var herraje = accesorios[i]['Tipo'];
+                    var precio = accesorios[i]['costo_unit_accesorio'];
+                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + herraje + '</span></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
+
+                break;
+                case "Ojillos":
+
+                    var precio = accesorios[i]['costo_unit_accesorio'];
+                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td style=""></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
+
+                break;
+                case "Resorte":
+
+                    var largo = accesorios[i]['Largo'];
+                    var ancho = accesorios[i]['Ancho'];
+                    var color = accesorios[i]['Color'];
+                    var precio = accesorios[i]['costo_unit_accesorio'];
+                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">' + precio + '</td><td class="listaccesorios img_delete"></td></tr>';
+
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+
+                break;
+            }
+            $('#listaccesorios').append(tr);
+        }
+    }
+
+    if( bancos !== undefined && bancos !== null ){
+
+        for (var i = 0; i < bancos.length; i++) {
+
+            var opBan = bancos[i]['Tipo_banco'];
+            var tr = "";
+            if( opBan === 'Carton' || opBan === 'Eva' || opBan === 'Espuma' || opBan === 'Empalme Banco' ){
+
+                var LargoMBanco = bancos[i]['largo'];
+                var AnchoMBanco = bancos[i]['ancho'];
+                var ProfundidadMBanco = bancos[i]['profundidad'];
+                var LLevaSuajeM = bancos[i]['Suaje'];
+                tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td style="display: none">'+ LLevaSuajeM +'</td><td class="listbancoemp img_delete"></td></tr>';
+                aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM});
+            }else if( opBan === 'Cartulina Suajada' ){
+
+                var LargoMBanco = bancos[i]['largo'];
+                var AnchoMBanco = bancos[i]['ancho'];
+                var ProfundidadMBanco = bancos[i]['profundidad'];
+                tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td class="listbancoemp img_delete"></td></tr>';
+                aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null});
+            }
+            $('#listbancoemp').append(tr);
+        }
+    }
+
+    //Boton Guardar
     $("#subForm2").click( function() {
 
         var precio;
@@ -1964,7 +1873,7 @@
         })
         .done(function(response) {
 
-            console.log("(3033) response: ");
+            console.log("(1876) response: ");
             console.log(response);
 
             try {
@@ -1975,21 +1884,20 @@
 
                     var error = respuesta.error;
                     showModError("");
-                    $("#txtContenido").html("(2277) " + error);
-
+                    $("#txtContenido").html("(1887) " + error);
                 } else {
 
-                    showModCorrecto("Los datos han sido guardados correctamente...");
+                    showModCorrecto("Los datos han sido actualizados correctamente...");
                 }
             } catch( e ) {
 
                 showModError("");
-                $("#txtContenido").html("(3310) Error..." + e);
+                $("#txtContenido").html("(1895) Error..." + e);
             }
         })
         .fail(function(response) {
 
-            console.log('(2307) Hubo un Error inesperado. Por favor llame a sistemas.');
+            console.log('(1900) Hubo un Error inesperado. Por favor llame a sistemas.');
 
             $("#subForm").prop("disabled", true);
         });
@@ -2091,7 +1999,6 @@
             $('#opAcBarUVEmp').hide('normal');
         }
     }
-
 </script>
 
 <!-- boton de impresiones -->

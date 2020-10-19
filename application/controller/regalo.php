@@ -9,18 +9,55 @@ class Regalo extends Controller {
             session_start();
         }
 
+
         $login         = $this->loadController('login');
         $login_model   = $this->loadModel('LoginModel');
         $options_model = $this->loadModel('OptionsModel');
-        $ventas_model  = $this->loadModel('VentasModel');
-
-        $models = $options_model->getBoxModels();
 
         if($login->isLoged()) {
 
+            $procesos      = $options_model->getProcessCatalog();
+            $papers        = $options_model->getPapers();
+            $cartones      = $options_model->getCartones();
+            $cierres       = $options_model->getCostoCierre();
+            $acabados      = $options_model->getCostoAcabados();
+            $accesorios    = $options_model->getCostoAccesorios();
+            $descuentos    = $options_model->getCostoDescuentos();
+            $bancos        = $options_model->getCostoBancos();
+            $impresiones   = $options_model->getImpresiones();
+            $Digital       = $options_model->getProcDigital();
+            $ALaminados    = $options_model->getALaminados();
+            $AHotStamping  = $options_model->getAHotStamping();
+            $Colores       = $options_model->getAHotStampingColor();
+            $AGrabados     = $options_model->getAGrabados();
+            $APEspeciales  = $options_model->getAPEspeciales();
+            $ABarnizUV     = $options_model->getABarnizUV();
+            $ASuaje        = $options_model->getASuaje();
+            $ALaser        = $options_model->getALaser();
+            $TipoImp       = $options_model->getTipoSerigrafia();
+            $modeloscaj    = $options_model->getBoxModels();
+            $TipoListon    = $options_model->getTipoListon();
+            $ColoresListon = $options_model->getColoresListon();
+            $Porcentajes   = $options_model->getPorcentajes();
+            $Herrajes      = $options_model->getHerraje();
+
+            $nombrecliente = utf8_encode($this->getClient($options_model));
+
             require 'application/views/templates/head.php';
             require 'application/views/templates/top_menu.php';
-            require 'application/views/cajas/index.php';
+            require 'application/views/cotizador/regalo/plantilla.php';
+            echo "<script>$('#divDerecho').empty()</script>";
+            echo "<script>$('#divIzquierdo').empty()</script>";
+            echo "<script>$('#divDerecho').hide()</script>";
+            require 'application/views/cotizador/regalo/caja_regalo.php';
+            echo "<script>$('#divDerecho').show('slow')</script>";
+
+            /*
+            // plantilla
+            echo "<script>$('#form_modelo_0').hide();</script>";
+
+            echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
+            */
             require 'application/views/templates/footer.php';
         } else {
 

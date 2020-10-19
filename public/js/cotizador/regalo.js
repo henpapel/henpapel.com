@@ -81,7 +81,7 @@ function emptyTables(){
     $('#resumenAccesorios').empty();
 }
 
-//funciona para decir a que tabla se apendizara, se ocupa en modcajacircular
+//funciona para decir a que tabla se apendizara
 function setTableBtn(texto, impAcb){
 
     switch(texto){
@@ -882,8 +882,8 @@ function appndPapeles(arrPapel, seccion){
         if( arrPapel[seccion] == undefined || arrPapel[seccion] == null ) return false;
 
         var nombreP      = arrPapel[seccion]['nombre_papel'];
-        var ancho        = arrPapel[seccion]['ancho_papel'];
-        var largo        = arrPapel[seccion]['largo_papel'];
+        var ancho        = arrPapel[seccion]['calculadora']['corte_ancho'];
+        var largo        = arrPapel[seccion]['calculadora']['corte_largo'];
         var cortes       = arrPapel[seccion]['corte'];
         var totalPliegos = arrPapel[seccion]['tot_pliegos'];
         var costoTotal   = parseFloat(arrPapel[seccion]['tot_costo']);
@@ -980,8 +980,8 @@ function appndCartones(arrPapel, seccion){
         titulo = "Carton Tapa";
     }
     var nombreP      = carton['nombre_papel'];
-    var largo        = carton['largo_papel'];
-    var ancho        = carton['ancho_papel'];
+    var largo        = carton['calculadora']['corte_largo'];
+    var ancho        = carton['calculadora']['corte_ancho'];
     var costoTotal   = carton['tot_costo'];
     var totalPliegos = carton['tot_pliegos'];
     var cortes       = carton['corte'];

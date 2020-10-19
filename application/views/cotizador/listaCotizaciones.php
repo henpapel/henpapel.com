@@ -330,6 +330,8 @@
             case"Libro":
             break;
             case"Regalo":
+
+                location.href = "<?php echo URL; ?>regalo/modCajaRegalo/?num_odt=" + num_odt + "&caja=" +caja;
             break;
             case"Marco":
             break;
