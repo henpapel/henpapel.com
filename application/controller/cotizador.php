@@ -1668,15 +1668,15 @@ class Cotizador extends Controller {
         // Empalme
         $x1 = $aCalculos['x1'];         // largo
         $x1 = floatval($x1);
+
         $x11 = $aCalculos['x11'];         // largo
         $x11 = floatval($x11);
 
         $y1 = $aCalculos['y1'];         // ancho
         $y1 = floatval($y1);
+
         $y11 = $aCalculos['y11'];         // ancho
         $y11 = floatval($y11);
-
-
         // Forro Cajon
         $f = $aCalculos['f'];           // largo
         $f = floatval($f);
@@ -1705,6 +1705,9 @@ class Cotizador extends Controller {
         $B = $aCalculos['B'];
         $B = round(floatval($B), 2);
 
+        $Y = $aCalculos['Y'];         // largo
+        $Y = floatval($Y);
+        
         $H = $aCalculos['H'];
         $H = round(floatval($H), 2);
 
