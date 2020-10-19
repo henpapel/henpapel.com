@@ -881,8 +881,8 @@ class Regalo extends Controller {
         //$cart_ancho = floatval($id_grosor_carton_db['ancho']);
         //$cart_largo = floatval($id_grosor_carton_db['largo']);
 
-        $cart_ancho = $aJson['Calculadora']['b1'];
-        $cart_largo = $aJson['Calculadora']['b1'];
+        $cart_ancho = $aJson['Calculadora']['x1'];
+        $cart_largo = $aJson['Calculadora']['y1'];
 
         $aPapel_tmp = self::calculaPapel("grosor_carton", $grosor_carton, $cart_ancho, $cart_largo, $tiraje, $options_model, $ventas_model);
 
@@ -916,8 +916,11 @@ class Regalo extends Controller {
         $id_grosor_tapa = $id_grosor_tapa_db['id_papel'];
         $id_grosor_tapa = intval($id_grosor_tapa);
 
-        $cart_ancho = floatval($id_grosor_tapa_db['ancho']);
-        $cart_largo = floatval($id_grosor_tapa_db['largo']);
+        //$cart_ancho = floatval($id_grosor_tapa_db['ancho']);
+        //$cart_largo = floatval($id_grosor_tapa_db['largo']);
+
+        $cart_ancho = $aJson['Calculadora']['X1'];
+        $cart_largo = $aJson['Calculadora']['Y1'];
 
         $aPapel_tmp = self::calculaPapel("grosor_tapa", $grosor_tapa, $cart_ancho, $cart_largo, $tiraje, $options_model, $ventas_model);
 
@@ -952,6 +955,12 @@ class Regalo extends Controller {
         $y1 = $aCalculadora['y1'];         // ancho
         $y1 = floatval($y1);
 
+        $x11 = $aCalculadora['x11'];         // largo
+        $x11 = floatval($x11);
+
+        $y11 = $aCalculadora['y11'];         // ancho
+        $y11 = floatval($y11);
+
 
         // Forro Cajon
         $f = $aCalculadora['f'];           // largo
@@ -968,6 +977,11 @@ class Regalo extends Controller {
         $Y1 = $aCalculadora['Y1'];         // ancho
         $Y1 = floatval($Y1);
 
+        $X11 = $aCalculadora['X11'];         // largo
+        $X11 = round(floatval($X11), 2);
+
+        $Y11 = $aCalculadora['Y11'];         // ancho
+        $Y11 = floatval($Y11);
 
         // Forro de la Tapa
         $F = $aCalculadora['F'];       // largo
@@ -984,8 +998,8 @@ class Regalo extends Controller {
 
 
     // corte Empalme
-        $secc_ancho = floatval($y1);
-        $secc_largo = floatval($x1);
+        $secc_ancho = floatval($y11);
+        $secc_largo = floatval($x11);
 
         $aPapel_tmp = self::calculaPapel("Empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1020,8 +1034,8 @@ class Regalo extends Controller {
 
         $id_papel_empalme = intval($id_papel_empalme);
 
-        $secc_ancho = floatval($y1);
-        $secc_largo = floatval($x1);
+        $secc_ancho = floatval($y11);
+        $secc_largo = floatval($x11);
 
         $aPapel_tmp = self::calculaPapel("empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1096,8 +1110,8 @@ class Regalo extends Controller {
 
         $id_papel = intval($id_papel_empalme_tapa);
 
-        $secc_ancho = floatval($Y1);
-        $secc_largo = floatval($X1);
+        $secc_ancho = floatval($Y11);
+        $secc_largo = floatval($X11);
 
         $aPapel_tmp = self::calculaPapel("FextCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
