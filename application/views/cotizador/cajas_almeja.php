@@ -3410,6 +3410,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
             case "Cartón Cajón":
                 tabla = "Empalme";
+                trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
             break;
             case "Empalme Cajón":
                 tabla = "Empalme";
@@ -3419,6 +3420,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
             break;
             case "Cartón Cartera":
                 tabla = "Fcartera";
+                trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenfcartera" value="' + costoTotal + '"></td><td></td></tr>';
             break;
             case "Forro Cartera":
                 tabla = "Fcartera";

@@ -892,12 +892,13 @@ function appndPapelCarton(arrPrincipal, arrPapel, parte ){
 
     $('#table_papeles_tr').append(tr);
 
-    var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
+    var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
     var tabla = "";
     switch( parte ){
 
         case "Cartón Cajón":
             tabla = "EC";
+            trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
         break;
         case "Empalme Cajón":
             tabla = "EC";
@@ -924,6 +925,7 @@ function appndPapelCarton(arrPrincipal, arrPapel, parte ){
         break;
         case "Carton Tapa":
             tabla = "ET";
+            trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
         break;
         case "Forro Tapa":
             tabla = "FT";
@@ -2257,7 +2259,7 @@ jQuery214(document).on("click", "#papeles_submit", function () {
                         var tr = '<tr style="background: steelblue;color: white;"><td class="text-light">Parte</td><td class="text-light">Material</td><td class="text-light">C. Unitario</td><td class="text-light">Cortes</td><td class="text-light">P. por hoja</td><td class="text-light">H. sin merma</td><td class="text-light">C. Total</td></tr>';
 
                         $('#table_papeles_tr').append(tr);
-                        
+
                         appndPapelCarton( respuesta, respuesta['costo_grosor_carton'], "Cartón Cajón" );
                         appndPapelCarton( respuesta, respuesta['papel_Emp'], "Empalme Cajón" );
                         appndPapelCarton( respuesta, respuesta['papel_FCaj'], "Forro Cajón" );
