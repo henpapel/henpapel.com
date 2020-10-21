@@ -3214,78 +3214,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
 <script type="text/javascript" src="<?= URL ?>public/js/cotizador/almeja.js"></script>
 <script>
 
-    /* variables globales */
-    /*var model;
-    var costo_papel;
-    var costo_carton;
-    var costo_final;
-    var ancho_almeja;
-    var alto_almeja;
-    var grosor_cajon_almeja;
-    var grosor_cartera_almeja;
-    var t_cortes;
-
-
-    var ancho_cartera;
-    var largo_cartera;
-    var a_forro_ext_cartera;
-    var l_forro_ext_cartera;
-    var a_forro_int_cartera;
-    var l_forro_int_cartera;
-    var l_forro_ext_cajon;
-    var a_forro_ext_cajon;
-
-
-    var largo_cajon;
-    var ancho_cajon;
-    var precio_forros;
-    var papel_elegido  = false;
-
-    var costos_papeles = {guarda_cajon:0, forro_cajon:0, forro_cartera:0, guarda:0, cajon:0, cartera:0}
-
-    var ancho_lados;
-    var largo_lados;
-    var ancho_frentes;
-    var largo_frentes;
-    var ancho_tapas;
-    var largo_tapas;
-    var d1;
-    var d2;
-    var d_inicial                    = '';
-    var valida_impresiones           = 0;
-
-
-    var forro_cajon_offset           = true;
-    var forro_cajon_digital          = true;
-    var forro_guarda_cajon_offset    = true;
-    var forro_guarda_cajon_digital   = true;
-    var forro_cartera_offset         = true;
-    var forro_cartera_digital        = true;
-    var forro_guarda_cartera_offset  = true;
-    var forro_guarda_cartera_digital = true;
-
-    var cantidad_minima_offset      = 0;
-    var cantidad_minima_digital     = 0;
-    var cantidad_minima_serigrafia  = 0;
-    var cantidad_minima_hotstamping = 0;
-    var cantidad_minima_laminado    = 0;
-    var cantidad_minima_barniz      = 0;
-    var cantidad_minima_suaje       = 0;
-    var cantidad_minima_forrado     = 0;
-    var cantidad_minima_grabado     = 0;
-
-    var parte_texto         = "";
-    var cantidad_print      = 0;
-    var papel               = "";
-    var costo_final_print   = 0;
-    var p_largo             = 0;
-    var p_ancho             = 0;
-    var corte_largo         = 0;
-    var corte_ancho         = 0;
-    var cortes_final        = 0;
-    var total_Pliegos_print = 0;
-    var total_costo_print   = 0;*/
-
     // variable del boton de impresiones (modal)
     var ImpOffset = "";
 
@@ -3315,49 +3243,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
     // matriz de bancos
     var aBancos = [];
 
-
-    /*var j = 0;
-    var data_offset;
-    var data_digital;
-    var data_laminado;
-    var row_listimpresiones;
-    var row_listimpresionesfcajon;
-    var row_listimpresionesfcartera;
-    var row_listimpresionesguarda;*/
-
-
-    /*
-     * variables globales de merma
-    */
-    /*var cantidad_minima;
-    var c_4colores;
-    var por_cada_x;
-    var adicional_4colores;
-    var qty_adic;
-    var adic;
-    var merma_exc;
-
-    var cantidad;
-    var adicional;
-
-    var merma_offset           = 0;
-    var merma_offset_adic      = 0;
-    var merma_digital          = 0;
-    var merma_digital_adic     = 0;
-    var merma_serigrafia       = 0;
-    var merma_serigrafia_adic  = 0;
-    var merma_HotStamping      = 0;
-    var merma_HotStamping_adic = 0;
-    var merma_Laminado         = 0;
-    var merma_Laminado_adic    = 0;
-    var merma_Barniz           = 0;
-    var merma_Barniz_adic      = 0;
-    var merma_Suaje            = 0;
-    var merma_Suaje_adic       = 0;
-    var merma_Forrado          = 0;
-    var merma_Forrado_adic     = 0;
-    var merma_Grabado          = 0;
-    var merma_Grabado_adic     = 0;*/
 
     jQuery214(".chosen").chosen();
 
@@ -3502,6 +3387,48 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //showModal('d_grabado',true);
         $('#descuentos').modal('show');
     });
+
+    function appndPapelCarton( arrPapel, parte ){
+
+        if (  arrPapel == "" ||  arrPapel == undefined ) return false;
+
+        var nombre        = arrPapel['nombre_papel'];
+        var ancho         = arrPapel['calculadora']['corte_ancho'];
+        var largo         = arrPapel['calculadora']['corte_largo'];
+        var costoUnitario = arrPapel['costo_unit_papel'];
+        var costoTotal    = arrPapel['tot_costo'];
+        var corte         = arrPapel['corte'];
+        var pliegos       = arrPapel['tot_pliegos'];
+
+        var tr = '<tr><td>' + parte + '</td><td>' + nombre + '</td><td>$' + costoUnitario + '</td><td>Largo: ' + largo + ' Ancho: ' + ancho + '</td><td>' + corte + '</td><td>' + pliegos + '</td><td>$' + costoTotal + '<input type="hidden" class="prices" value="' + costoTotal + '"></td></tr>';
+
+        $('#table_papeles_tr').append(tr);
+
+        var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
+        var tabla = "";
+        switch( parte ){
+
+            case "Cartón Cajón":
+                tabla = "Empalme";
+            break;
+            case "Empalme Cajón":
+                tabla = "Empalme";
+            break;
+            case "Forro Cajón":
+                tabla = "Fcajon";
+            break;
+            case "Cartón Cartera":
+                tabla = "Fcartera";
+            break;
+            case "Forro Cartera":
+                tabla = "Fcartera";
+            break;
+            case "Guarda":
+                tabla = "Guarda";
+            break;
+        }
+        $('#resumen' + tabla ).append(trResumen);
+    }
 
     // papel(es) seleccionado(s)
     jQuery214(document).on("click", "#papeles_submit", function () {
@@ -3781,141 +3708,19 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     $('#resumenEmpaque').append(costo_emp);
 
 
-                //Aqui empiezo
-
-                //Aqui termino
-
-                // (PAPELES)
-
+                //Papeles y Cartones
                     $('#table_papeles_tr').empty();
 
-                    var respuestapapeles;
+                    var tr = '<tr style="background: steelblue;color: white;"><td class="text-light">Parte</td><td class="text-light">Material</td><td class="text-light">C. Unitario</td><td class="text-light">Cortes</td><td class="text-light">P. por hoja</td><td class="text-light">H. sin merma</td><td class="text-light">C. Total</td></tr>';
 
-                    var js_parte_nombre;
+                    $('#table_papeles_tr').append(tr);
 
-                    var js_color_parte;
-
-                    var i = -1;
-
-                    for (c in js_respuesta) {
-
-                        i++;
-
-                        //titulos nombre parte
-                        if (c === 'Papel_Empalme') {
-
-                            js_parte_nombre = "Empalme del Cajón";
-                        }
-
-                        if (c === 'Papel_FCaj') {
-
-                            js_parte_nombre = "Forro del Cajón";
-                        }
-
-                        if (c === 'Papel_FCar') {
-
-                            js_parte_nombre = "Forro de la Cartera";
-                        }
-
-
-                        if (c === 'Papel_Guarda') {
-
-                            js_parte_nombre = "Guarda";
-                        }
-
-                        // Papeles todos
-
-                        if (c === 'Papel_Empalme' || c === 'Papel_FCaj' || c === 'Papel_FCar' || c === 'Papel_Guarda') {
-
-                            var js_papel_interior_cajon_nombre_emp  = js_respuesta[c]['nombre_papel'];
-                            var js_corte_largo_Emp                  = js_respuesta[c]['calculadora']['corte_largo'];
-                            var js_corte_ancho_Emp                  = js_respuesta[c]['calculadora']['corte_ancho'];
-                            var js_papel_interior_cajon_cortes_Emp  = js_respuesta[c]['corte'];
-                            var js_papel_interior_cajon_pliegos_Emp = js_respuesta[c]['tot_pliegos'];
-                            var js_Costo_total_pliegos_emp_Emp      = js_respuesta[c]['tot_costo'];
-                            var costoUnitario = js_respuesta[c]['costo_unit_papel']
-
-
-                            if (js_papel_interior_cajon_nombre_emp === undefined || js_corte_largo_Emp === undefined || js_corte_ancho_Emp === undefined || js_papel_interior_cajon_cortes_Emp === undefined || js_papel_interior_cajon_pliegos_Emp === undefined || js_Costo_total_pliegos_emp_Emp === undefined) {
-
-                                //console.log('(5040) Buscando los papeles elegidos en: '+ js_parte_nombre);
-
-                            } else {
-
-                                var trpapelesEmp = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr><td>Material</td><td>'+ js_papel_interior_cajon_nombre_emp +'</td></tr><tr><td>Costo Unitario</td><td>$'+ costoUnitario +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_Emp +' Ancho: '+ js_corte_ancho_Emp +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_papel_interior_cajon_cortes_Emp +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_papel_interior_cajon_pliegos_Emp +'</td></tr><tr><td>Costo Total</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="prices" value="' + js_Costo_total_pliegos_emp_Emp + '"></td></tr>';
-
-                                jQuery214('#table_papeles_tr').append(trpapelesEmp); //imprime tr
-
-                                var parteresumen;
-
-
-                                if (js_parte_nombre == 'Empalme del Cajón') {
-
-                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenempalme" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
-
-                                    jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
-                                }
-
-
-                                if (js_parte_nombre == 'Forro del Cajón') {
-
-                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenfcajon" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
-
-                                    jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
-                                }
-
-
-                                if (js_parte_nombre == 'Forro de la Cartera') {
-
-                                   parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenfcartera" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
-
-                                    jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
-                                }
-
-
-                                if (js_parte_nombre == 'Guarda') {
-
-                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenguarda" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
-
-                                    jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
-                                }
-                            }
-                        }
-                    }
-
-                // (CARTONES)
-
-                    var js_nombre_cajon_CartonCaj      = js_respuesta.CartonCaj['nombre_papel'];
-                    var js_corte_largo_CartonCaj       = js_respuesta.CartonCaj['calculadora']['corte_largo'];
-                    var js_corte_ancho_CartonCaj       = js_respuesta.CartonCaj['calculadora']['corte_ancho'];
-                    var js_Piezas_por_Pliego_CartonCaj = js_respuesta.CartonCaj['tot_pliegos'];
-                    var js_Num_pliegos_CartonCaj       = js_respuesta.CartonCaj['corte'];
-                    var js_costo_total_CartonCaj       = js_respuesta.CartonCaj['tot_costo'];
-                    var costoUnitario = js_respuesta.CartonCaj['costo_unit_papel'];
-
-                    var trpapelescartonj = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton del Cajón</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_CartonCaj +'</td></tr><tr><td>Costo Unitario</td><td>$'+ costoUnitario +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCaj +' Ancho: '+ js_corte_ancho_CartonCaj +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Num_pliegos_CartonCaj +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Piezas_por_Pliego_CartonCaj +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCaj +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCaj +'"></td></tr>';
-
-                    jQuery214('#table_papeles_tr').append(trpapelescartonj);
-
-                    parteresumen = '<tr><td></td><td>'+ js_nombre_cajon_CartonCaj +'</td><td>$'+ js_costo_total_CartonCaj +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_total_CartonCaj +'"></td><td></td></tr>';
-
-                    jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
-
-                    var js_nombre_cajon_cartera_CartonCar = js_respuesta.CartonCar['nombre_papel'];
-                    var js_corte_largo_CartonCar          = js_respuesta.CartonCar['calculadora']['corte_largo'];
-                    var js_corte_ancho_CartonCar          = js_respuesta.CartonCar['calculadora']['corte_ancho'];
-                    var js_Piezas_por_Pliego_CartonCar    = js_respuesta.CartonCar['tot_pliegos'];
-                    var js_Num_pliegos_CartonCar          = js_respuesta.CartonCar['corte'];
-                    var js_costo_total_CartonCar          = js_respuesta.CartonCar['tot_costo'];
-                    var costoUnitario = js_respuesta.CartonCar['costo_unit_papel'];
-
-                    var trpapelescartoncr = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton Cartera</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td></tr><tr><td>Costo Unitario</td><td>$'+ costoUnitario +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCar +' Ancho: '+ js_corte_ancho_CartonCar +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Num_pliegos_CartonCar +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Piezas_por_Pliego_CartonCar +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCar +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCar +'"></td></tr>';
-
-                    jQuery214('#table_papeles_tr').append(trpapelescartoncr);
-
-                    parteresumen = '<tr><td></td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td><td>$'+ js_costo_total_CartonCar +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_total_CartonCar +'"></td><td></td></tr>';
-
-                    jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
+                    appndPapelCarton( js_respuesta['CartonCaj'], "Cartón Cajón" );
+                    appndPapelCarton( js_respuesta['Papel_Empalme'], "Empalme Cajón" );
+                    appndPapelCarton( js_respuesta['Papel_FCaj'], "Forro Cajón" );
+                    appndPapelCarton( js_respuesta['CartonCar'], "Cartón Cartera" );
+                    appndPapelCarton( js_respuesta['Papel_FCar'], "Forro Cartera" );
+                    appndPapelCarton( js_respuesta['Papel_Guarda'], "Guarda" );
 
                 // Elaboración cartera
 

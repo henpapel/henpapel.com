@@ -876,119 +876,67 @@ function appndAcbMod( aAcb, lblaAcb, arrPrincipal ){
     }
 }
 
-function appndPapeles(arrPapel, seccion){
+function appndPapelCarton(arrPrincipal, arrPapel, parte ){
 
+    if (  arrPapel == "" ||  arrPapel == undefined ) return false;
 
-        if( arrPapel[seccion] == undefined || arrPapel[seccion] == null ) return false;
+    var nombre        = arrPapel['nombre_papel'];
+    var ancho         = arrPapel['calculadora']['corte_ancho'];
+    var largo         = arrPapel['calculadora']['corte_largo'];
+    var costoUnitario = arrPapel['costo_unit_papel'];
+    var costoTotal    = arrPapel['tot_costo'];
+    var corte         = arrPapel['corte'];
+    var pliegos       = arrPapel['tot_pliegos'];
 
-        var nombreP      = arrPapel[seccion]['nombre_papel'];
-        var ancho        = arrPapel[seccion]['calculadora']['corte_ancho'];
-        var largo        = arrPapel[seccion]['calculadora']['corte_largo'];
-        var cortes       = arrPapel[seccion]['corte'];
-        var totalPliegos = arrPapel[seccion]['tot_pliegos'];
-        var costoTotal   = parseFloat(arrPapel[seccion]['tot_costo']);
-        var titulo       = "";
-        var tablaAppnd   = "";
-
-        if (nombreP == undefined ) {
-            
-            var nombreP      = arrPapel[seccion]['nombre'];
-            var ancho      = arrPapel[seccion]['ancho'];
-            var largo      = arrPapel[seccion]['largo'];
-            var cortes       = arrPapel[seccion]['cortes'];
-            var totalPliegos = arrPapel[seccion]['pliegos'];
-            var costoTotal   = parseFloat(arrPapel[seccion]['costo_tot_pliegos']);
-        }
-
-        switch(seccion){
-
-            case "papel_Emp":
-
-                titulo = "Empalme Cajón";
-                tablaAppnd = "resumenEC";
-                var nombreCarton = arrPapel['costo_grosor_carton']['nombre_papel'];
-                var precioCarton = arrPapel['costo_grosor_carton']['tot_costo'];
-                var trCarton = "<tr><td></td><td>" + nombreCarton + "</td><td>" + precioCarton + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trCarton);
-
-                var precioEnc = arrPapel['encuadernacion']['costo_tot_proceso'];
-                var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trEnc);
-            break;
-
-            case "papel_FCaj":
-
-                titulo = "Forro Cajón";
-                tablaAppnd = "resumenFC";
-                var precioElab = arrPapel['elab_FCaj']['costo_tot_proceso'];
-                var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trElab);
-
-                var precioRanurado = arrPapel['ranurado']['costo_tot_proceso'];
-                var trRan = "<tr><td></td><td>Ranurado</td><td>$" + precioRanurado + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trRan);
-
-                var precioEnc = arrPapel['encuadernacion']['costo_tot_proceso'];
-                var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trEnc);
-            break;
-
-            case "papel_EmpTap":
-
-                titulo = "Empalme Tapa";
-                tablaAppnd = "resumenET";
-                var nombreCarton = arrPapel['costo_grosor_tapa']['nombre_papel'];
-                var precioCarton = arrPapel['costo_grosor_tapa']['tot_costo'];
-                var trCarton = "<tr><td></td><td>" + nombreCarton + "</td><td>$" + precioCarton + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trCarton);
-            break;
-
-            case "papel_FTap":
-
-                titulo = "Forro Tapa";
-                tablaAppnd = "resumenFT";
-                var precioElab = arrPapel['elab_FTap']['costo_tot_proceso'];
-                var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trElab);
-
-                var precioRanurado = arrPapel['ranurado']['costo_tot_proceso'];
-                var trRan = "<tr><td></td><td>Ranurado</td><td>$" + precioRanurado + "</td><td></td></tr>";
-                $('#'+tablaAppnd).append(trRan);
-            break;
-        }
-
-        var tr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ titulo +'</td></tr><tr><td>Material</td><td>'+ nombreP +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ largo +' Ancho: '+ ancho +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ cortes +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ totalPliegos +'</td></tr><tr><td>Costo Total</td><td>$'+ costoTotal +'<input type="hidden" class="prices" value="' + costoTotal + '"></td></tr>';
-
-        $('#table_papeles_tr').append(tr);
-
-        var trResumen = '<tr><td></td><td>Papel '+ nombreP +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
-
-        $('#'+tablaAppnd).append(trResumen);
-}
-
-function appndCartones(arrPapel, seccion){
-
-    if( arrPapel[seccion] == undefined || arrPapel[seccion] == null ) return false;
-    
-    var carton     = arrPapel[seccion];
-    var titulo = "";
-    if( seccion == "costo_grosor_carton" ){
-
-        titulo = "Carton Cajón";
-    }else{
-
-        titulo = "Carton Tapa";
-    }
-    var nombreP      = carton['nombre_papel'];
-    var largo        = carton['calculadora']['corte_largo'];
-    var ancho        = carton['calculadora']['corte_ancho'];
-    var costoTotal   = carton['tot_costo'];
-    var totalPliegos = carton['tot_pliegos'];
-    var cortes       = carton['corte'];
-
-    var tr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ titulo +'</td></tr><tr><td>Material</td><td>'+ nombreP +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ largo +' Ancho: '+ ancho +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ cortes +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ totalPliegos +'</td></tr><tr><td>Costo Total</td><td>$'+ costoTotal +'<input type="hidden" class="prices" value="' + costoTotal + '"></td></tr>';
+    var tr = '<tr><td>' + parte + '</td><td>' + nombre + '</td><td>$' + costoUnitario + '</td><td>Largo: ' + largo + ' Ancho: ' + ancho + '</td><td>' + corte + '</td><td>' + pliegos + '</td><td>$' + costoTotal + '<input type="hidden" class="prices" value="' + costoTotal + '"></td></tr>';
 
     $('#table_papeles_tr').append(tr);
+
+    var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
+    var tabla = "";
+    switch( parte ){
+
+        case "Cartón Cajón":
+            tabla = "EC";
+        break;
+        case "Empalme Cajón":
+            tabla = "EC";
+            var precioEnc = arrPrincipal['encuadernacion']['costo_tot_proceso'];
+            var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
+            $('#resumen'+tabla).append(trEnc);
+        break;
+        case "Forro Cajón":
+            tabla = "FC";
+            var precioElab = arrPrincipal['elab_FCaj']['costo_tot_proceso'];
+            var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
+            $('#resumen'+tabla).append(trElab);
+            
+            var precioRanurado = arrPrincipal['ranurado']['costo_tot_proceso'];
+            var trRan = "<tr><td></td><td>Ranurado</td><td>$" + precioRanurado + "</td><td></td></tr>";
+            $('#resumen'+tabla).append(trRan);
+
+            var precioEnc = arrPrincipal['encuadernacion']['costo_tot_proceso'];
+            var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
+            $('#resumen'+tabla).append(trEnc);
+        break;
+        case "Empalme Tapa":
+            tabla = "ET";
+        break;
+        case "Carton Tapa":
+            tabla = "ET";
+        break;
+        case "Forro Tapa":
+            tabla = "FT";
+            var precioElab = arrPrincipal['elab_FTap']['costo_tot_proceso'];
+            var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
+            $('#resumen'+tabla).append(trElab);
+
+            var precioRanurado = arrPrincipal['ranurado']['costo_tot_proceso'];
+            var trRan = "<tr><td></td><td>Ranurado</td><td>$" + precioRanurado + "</td><td></td></tr>";
+            $('#resumen'+tabla).append(trRan);
+        break;
+    }
+    $('#resumen' + tabla ).append(trResumen);
 }
 
 function appndPD(aGlobal){
@@ -2302,16 +2250,20 @@ jQuery214(document).on("click", "#papeles_submit", function () {
                         var trEncuadernacion = "<tr><td></td><td></td><td></td><td>$" + respuesta['encuadernacion']['costo_tot_proceso'] + "</td></tr>";
                         $("#resumenEncuadernacion").append(trEncuadernacion);
 
-                    // (PAPELES)
+                    // PAPELES Y CARTONES
 
-                        appndPapeles(respuesta,'papel_Emp');
-                        appndPapeles(respuesta,'papel_FCaj');
-                        appndPapeles(respuesta,'papel_EmpTap');
-                        appndPapeles(respuesta,'papel_FTap');
-                    // (CARTONES)
+                        $('#table_papeles_tr').empty();
 
-                        appndCartones(respuesta,'costo_grosor_carton');
-                        appndCartones(respuesta,'costo_grosor_tapa');
+                        var tr = '<tr style="background: steelblue;color: white;"><td class="text-light">Parte</td><td class="text-light">Material</td><td class="text-light">C. Unitario</td><td class="text-light">Cortes</td><td class="text-light">P. por hoja</td><td class="text-light">H. sin merma</td><td class="text-light">C. Total</td></tr>';
+
+                        $('#table_papeles_tr').append(tr);
+                        
+                        appndPapelCarton( respuesta, respuesta['costo_grosor_carton'], "Cartón Cajón" );
+                        appndPapelCarton( respuesta, respuesta['papel_Emp'], "Empalme Cajón" );
+                        appndPapelCarton( respuesta, respuesta['papel_FCaj'], "Forro Cajón" );
+                        appndPapelCarton( respuesta, respuesta['costo_grosor_tapa'], "Cartón Tapa" );
+                        appndPapelCarton( respuesta, respuesta['papel_EmpTap'], "Empalme Tapa" );
+                        appndPapelCarton( respuesta, respuesta['papel_FTap'], "Forro Tapa" );
 
                     // (PROCESOS DEFAULT)
 
