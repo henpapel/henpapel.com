@@ -31,11 +31,11 @@ class Controller {
     public function loadModel($model_name) {
 
         require_once 'application/models/' . strtolower($model_name) . '.php';
-
-        $temp = "";
+        /*
+        $temp = "";         // esta variable para que se crea, donde se usa en esta clase???
 
         $temp = 'application/models/' . strtolower($model_name) . '.php';
-
+        */
         return new $model_name($this->db);
     }
 
@@ -159,7 +159,7 @@ class Controller {
     }
 
 
-    // carga los modelos necesarios del modelo cajas
+    // carga los modelos necesarios de cajas
     public function cajas() {
 
         if (!isset($_SESSION)) {
@@ -245,7 +245,7 @@ class Controller {
             if ($key == $keySearch) {
 
                 //echo 'Si existe';
-
+                
                 return true;
             } elseif (is_array($item) && $this->findKeyInArray($item, $keySearch)) {
 
@@ -297,18 +297,15 @@ class Controller {
         } elseif($ancho > $largo) {
 
             return false;
-        } else {
-
-            return true;
         }
     }
 
 
-    public function checaCostos($aArray, $seccion) {
+    public function checaCostos($aArray, $proceso) {
 
         $checa_ok = true;
 
-        switch ($seccion) {
+        switch ($proceso) {
             case 'Offset':
 
                 if ($aArray['costo_tot_proceso'] <= 0
@@ -606,6 +603,9 @@ class Controller {
         $corte_H = $cortes_H['cortesT'];
 
     /*
+    ** La matemática básica nos dice que el residuo(en este caso 'sobranteB'), nunca
+    ** será mayor al divisor, por lo tanto estos ifs no son necesarios.
+
         if ($cortes['sobranteB'] >= $ch) {
 
             $sobrante = self::Acomoda($cortes['sobranteB'], $b, $c_ancho, $c_largo, "H", "H");
@@ -759,13 +759,14 @@ class Controller {
 
         if($acomodoPliego === "V") {
 
+            // Acomodo del pliego en vertical para el calculo del máximo
             $b = max($d1, $d2);
             $h = min($d1, $d2);
 
             $acom_pliego = "V";
         } else if ($acomodoPliego === "H") {
 
-            // Acomodo del pliego en horizontal para el calculo del maximo
+            // Acomodo del pliego en horizontal para el calculo del máximo
             $b = max($d1, $d2);
             $h = min($d1, $d2);
 
@@ -798,24 +799,36 @@ class Controller {
 
         if ($b > 0 and $h > 0) {
 
-            $cortesB       = intval($b / $cb);
-            $cortesH       = intval($h / $ch);
-            $cortesT       = $cortesB * $cortesH;
-            $sobranteB     = round(floatval($b - ($cortesB * $cb)), 2);
-            $sobranteH     = round(floatval($h - ($cortesH * $ch)), 2);
-            $areaUtilizada = floatval( ($cb * $ch) * $cortesT );
-            $orientacion = $acom_corte . $acom_pliego;
+            $areaTotal         = round(floatval($b * $h));
+            $cortesB           = intval($b / $cb);
+            $cortesH           = intval($h / $ch);
+            $cortesT           = $cortesB * $cortesH;
+            $sobranteB         = round(floatval($b - ($cortesB * $cb)), 2);
+            $sobranteH         = round(floatval($h - ($cortesH * $ch)), 2);
+            $areaUtilizada     = round(floatval( ($cb * $ch) * $cortesT ), 2);
+            $Utilizacion_pctje = round(floatval(($areaUtilizada * 100) / $areaTotal), 2);
+            $Desperdicio       = round(floatval($areaTotal - $areaUtilizada), 2);
+            $Desperdicio_pctje = round(floatval(($Desperdicio * 100) / $areaTotal), 2);
+            $orientacion       = $acom_corte . $acom_pliego;
         }
 
         $cortes_tmp = array();
 
-        $cortes_tmp['cortesT']       = $cortesT;
-        $cortes_tmp['cortesB']       = $cortesB;
-        $cortes_tmp['cortesH']       = $cortesH;
-        $cortes_tmp['sobranteB']     = $sobranteB;
-        $cortes_tmp['sobranteH']     = $sobranteH;
-        $cortes_tmp['areaUtilizada'] = $areaUtilizada;
-        $cortes_tmp['corte_pliego']  = $orientacion;
+        $cortes_tmp['cortesT']           = $cortesT;
+        $cortes_tmp['cortesB']           = $cortesB;
+        $cortes_tmp['cortesH']           = $cortesH;
+        $cortes_tmp['sobranteB']         = $sobranteB;
+        $cortes_tmp['sobranteH']         = $sobranteH;
+        $cortes_tmp['areaUtilizada']     = $areaUtilizada;
+        $cortes_tmp['desperdicio']       = $Desperdicio;
+        $cortes_tmp['areaTotal']         = $areaTotal;
+        $cortes_tmp['Utilizacion_pctje'] = $Utilizacion_pctje;
+        $cortes_tmp['Desperdicio_pctje'] = $Desperdicio_pctje;
+        $cortes_tmp['b']                 = $b;
+        $cortes_tmp['cb']                = $cb;
+        $cortes_tmp['h']                 = $h;
+        $cortes_tmp['ch']                = $ch;
+        $cortes_tmp['corte_pliego']      = $orientacion;
 
 
         return $cortes_tmp;

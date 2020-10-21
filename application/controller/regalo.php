@@ -9,55 +9,18 @@ class Regalo extends Controller {
             session_start();
         }
 
-
         $login         = $this->loadController('login');
         $login_model   = $this->loadModel('LoginModel');
         $options_model = $this->loadModel('OptionsModel');
+        $ventas_model  = $this->loadModel('VentasModel');
+
+        $models = $options_model->getBoxModels();
 
         if($login->isLoged()) {
 
-            $procesos      = $options_model->getProcessCatalog();
-            $papers        = $options_model->getPapers();
-            $cartones      = $options_model->getCartones();
-            $cierres       = $options_model->getCostoCierre();
-            $acabados      = $options_model->getCostoAcabados();
-            $accesorios    = $options_model->getCostoAccesorios();
-            $descuentos    = $options_model->getCostoDescuentos();
-            $bancos        = $options_model->getCostoBancos();
-            $impresiones   = $options_model->getImpresiones();
-            $Digital       = $options_model->getProcDigital();
-            $ALaminados    = $options_model->getALaminados();
-            $AHotStamping  = $options_model->getAHotStamping();
-            $Colores       = $options_model->getAHotStampingColor();
-            $AGrabados     = $options_model->getAGrabados();
-            $APEspeciales  = $options_model->getAPEspeciales();
-            $ABarnizUV     = $options_model->getABarnizUV();
-            $ASuaje        = $options_model->getASuaje();
-            $ALaser        = $options_model->getALaser();
-            $TipoImp       = $options_model->getTipoSerigrafia();
-            $modeloscaj    = $options_model->getBoxModels();
-            $TipoListon    = $options_model->getTipoListon();
-            $ColoresListon = $options_model->getColoresListon();
-            $Porcentajes   = $options_model->getPorcentajes();
-            $Herrajes      = $options_model->getHerraje();
-
-            $nombrecliente = utf8_encode($this->getClient($options_model));
-
             require 'application/views/templates/head.php';
             require 'application/views/templates/top_menu.php';
-            require 'application/views/cotizador/regalo/plantilla.php';
-            echo "<script>$('#divDerecho').empty()</script>";
-            echo "<script>$('#divIzquierdo').empty()</script>";
-            echo "<script>$('#divDerecho').hide()</script>";
-            require 'application/views/cotizador/regalo/caja_regalo.php';
-            echo "<script>$('#divDerecho').show('slow')</script>";
-
-            /*
-            // plantilla
-            echo "<script>$('#form_modelo_0').hide();</script>";
-
-            echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-            */
+            require 'application/views/cajas/index.php';
             require 'application/views/templates/footer.php';
         } else {
 
@@ -69,7 +32,7 @@ class Regalo extends Controller {
     }
 
     // Calculadora Regalo (id_modelo = 4)
-    function regaloCalc($base, $alto, $profundidad_cajon, $profundidad_tapa, $grosor_carton, $grosor_tapa) {
+    private function regaloCalc($base, $alto, $profundidad_cajon, $profundidad_tapa, $grosor_carton, $grosor_tapa) {
 
         $calculadora = array();
 
@@ -170,8 +133,8 @@ class Regalo extends Controller {
         }
 
 
-        $login         = $this->loadController('login');
         $login_model   = $this->loadModel('LoginModel');
+        $login         = $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
 
         if($login->isLoged()) {
@@ -346,42 +309,31 @@ class Regalo extends Controller {
         $hora  = date("H:i:s", $hora_odt);
 
 
-        $aJson['papel_BCaj']    = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelbcaj");
-        $aJson['papel_CirCaj']  = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelcircaj");
-        $aJson['papel_FextCaj'] = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelfextcaj");
-        $aJson['papel_PomCaj']  = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelpomcaj");
-        $aJson['papel_FintCaj'] = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelfintcaj");
-        $aJson['papel_BasTap']  = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelbastap");
-        $aJson['papel_CirTap']  = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelcirtap");
-        $aJson['papel_ForTap']  = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelfortap");
-        $aJson['papel_FexTap']  = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelfexttap");
-        $aJson['papel_FinTap']  = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelfinttap");
+        $aJson['papel_Emp']    = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelempcaj");
+        $aJson['papel_FCaj']   = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelfcaj");
+        $aJson['papel_EmpTap'] = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelemptap");
+        $aJson['papel_FTap']   = $ventas_model->getPapelTabla($id_odt, "cot_reg_papelftap");
+
+        $id_papel_emp    = intval($aJson['papel_Emp']['id_papel']);
+        $id_papel_fcaj   = intval($aJson['papel_FCaj']['id_papel']);
+        $id_papel_emptap = intval($aJson['papel_EmpTap']['id_papel']);
+        $id_papel_ftap   = intval($aJson['papel_FTap']['id_papel']);
 
         // carton cajon
-        $aJson['carton_cir'] = $ventas_model->getIdCartonTabla($id_odt, "cot_reg_cartoncir");
-        $id_grosor_carton    = intval($aJson['carton_cir']['id_cajon']);
+        $aJson['costo_grosor_carton'] = $ventas_model->getIdCartonTabla($id_odt, "cot_reg_carton");
 
-        $id_papel_bcaj    = intval($aJson['papel_BCaj']['id_papel']);
-        $id_papel_circaj  = intval($aJson['papel_CirCaj']['id_papel']);
-        $id_papel_fextcaj = intval($aJson['papel_FextCaj']['id_papel']);
-        $id_papel_pomcaj  = intval($aJson['papel_PomCaj']['id_papel']);
-        $id_papel_fintcaj = intval($aJson['papel_FintCaj']['id_papel']);
-        $id_papel_bastap  = intval($aJson['papel_BasTap']['id_papel']);
-        $id_papel_cirtap  = intval($aJson['papel_CirTap']['id_papel']);
-        $id_papel_fortap  = intval($aJson['papel_ForTap']['id_papel']);
-        $id_papel_fexttap = intval($aJson['papel_FexTap']['id_papel']);
-        $id_papel_finttap = intval($aJson['papel_FinTap']['id_papel']);
+        $id_cajon        = intval($aJson['costo_grosor_carton']['id_cajon']);
+        $id_grosor_carton = intval($aJson['costo_grosor_carton']['num_cajon']);
+
+
+        // carton tapa
+        $aJson['costo_grosor_tapa'] = $ventas_model->getIdCartonTabla($id_odt, "cot_reg_cartontap");
+
+        $id_cajon_tap         = intval($aJson['costo_grosor_tapa']['id_cajon']);
+        $id_grosor_carton_tap = intval($aJson['costo_grosor_tapa']['num_cajon']);
 
 
         $carton_db = $options_model->getDatos($id_grosor_carton);
-
-        $id_carton     = intval($carton_db['id_papel']);
-        $grosor_carton = intval($carton_db['numcarton']);
-
-        if (is_array($carton_db)) {
-
-            unset($carton_db);
-        }
 
 
         /*
@@ -451,18 +403,13 @@ class Regalo extends Controller {
         $aJson['mensajeria']      = $mensajeria;
         //$aJson['procesos']        = $procesos;
 
-        $aJson['id_grosor_carton'] = $id_grosor_carton;
-        $aJson['id_vendedor']      = $id_vendedor;
-        $aJson['id_papel_bcaj']    = $id_papel_bcaj;
-        $aJson['id_papel_circaj']  = $id_papel_circaj;
-        $aJson['id_papel_fextcaj'] = $id_papel_fextcaj;
-        $aJson['id_papel_pomcaj']  = $id_papel_pomcaj;
-        $aJson['id_papel_fintcaj'] = $id_papel_fintcaj;
-        $aJson['id_papel_bastap']  = $id_papel_bastap;
-        $aJson['id_papel_cirtap']  = $id_papel_cirtap;
-        $aJson['id_papel_fortap']  = $id_papel_fortap;
-        $aJson['id_papel_fexttap'] = $id_papel_fexttap;
-        $aJson['id_papel_finttap'] = $id_papel_finttap;
+        $aJson['id_grosor_carton']     = $id_grosor_carton;
+        $aJson['id_grosor_carton_tap'] = $id_grosor_carton_tap;
+        $aJson['id_vendedor']          = $id_vendedor;
+        $aJson['id_papel_bcaj']        = $id_papel_bcaj;
+        $aJson['id_papel_circaj']      = $id_papel_circaj;
+        $aJson['id_papel_fextcaj']     = $id_papel_fextcaj;
+        $aJson['id_papel_pomcaj']      = $id_papel_pomcaj;
 
 
 
@@ -719,8 +666,7 @@ class Regalo extends Controller {
 
         if ($l_existe) {
 
-            self::mError($aJson, $mensaje, "Ya existe esta ODT; No debe grabar esta ODT;");
-            //$aJson['error'] = "Ya existe esta ODT; No debe grabar esta ODT;";
+            $aJson['error'] = "Ya existe esta ODT; No debe grabar esta ODT;";
 
             return json_encode($aJson);
         }
@@ -738,17 +684,6 @@ class Regalo extends Controller {
 
                 return false;
             }
-        }
-
-
-        if ( (!isset($_SESSION["id_usuario"])) or (session_status() == PHP_SESSION_NONE) or (false == array_key_exists("id_usuario", $_SESSION)) or (false == array_key_exists("id_tienda", $_SESSION) ) ) {
-
-            // "success", "notmodified", "error", "timeout", "abort", or "parsererror";
-
-            self::mError($aJson, $mensaje, "Sesion terminada;");
-            //$aJson['error'] = "Sesion terminada.;";
-
-            return json_encode($aJson);
         }
 
 
@@ -867,10 +802,12 @@ class Regalo extends Controller {
         $aJson['Calculadora'] = $aCalculadora;
 
 
+        $aCortes = [];
+
         $subtotal = 0;
 
 
-    // Grosor Carton
+    // Grosor Carton (Forro cajon)
         $id_grosor_carton = 0;
 
         $id_grosor_carton_db = $options_model->getCartonById($grosor_carton);
@@ -881,13 +818,23 @@ class Regalo extends Controller {
         //$cart_ancho = floatval($id_grosor_carton_db['ancho']);
         //$cart_largo = floatval($id_grosor_carton_db['largo']);
 
-        $cart_ancho = $aJson['Calculadora']['x1'];
-        $cart_largo = $aJson['Calculadora']['y1'];
+        $cart_ancho = $aJson['Calculadora']['h1'];
+        $cart_largo = $aJson['Calculadora']['b1'];
+
 
         $aPapel_tmp = self::calculaPapel("grosor_carton", $grosor_carton, $cart_ancho, $cart_largo, $tiraje, $options_model, $ventas_model);
 
-
         $aJson['costo_grosor_carton'] = $aPapel_tmp;
+
+        $corte_cajon = intval($aPapel_tmp['calculadora']['corte']['cortesT']);
+
+        if ($corte_cajon <= 0) {
+
+            $aJson['mensaje'] = "ERROR";
+            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al carton del cajon;";
+        }
+
+        $aCortes['cajon'] = $corte_cajon;
 
         $subtotal = $subtotal + $aPapel_tmp['tot_costo'];
 
@@ -903,11 +850,6 @@ class Regalo extends Controller {
         }
 
 
-        $aCortes = [];
-
-        $aCortes['cajon'] = $corte_cajon;
-
-
     // Grosor Tapa
         $id_grosor_tapa = 0;
 
@@ -916,11 +858,8 @@ class Regalo extends Controller {
         $id_grosor_tapa = $id_grosor_tapa_db['id_papel'];
         $id_grosor_tapa = intval($id_grosor_tapa);
 
-        //$cart_ancho = floatval($id_grosor_tapa_db['ancho']);
-        //$cart_largo = floatval($id_grosor_tapa_db['largo']);
-
-        $cart_ancho = $aJson['Calculadora']['X1'];
-        $cart_largo = $aJson['Calculadora']['Y1'];
+        $cart_ancho = floatval($aJson['Calculadora']['H11']);
+        $cart_largo = floatval($aJson['Calculadora']['B11']);
 
         $aPapel_tmp = self::calculaPapel("grosor_tapa", $grosor_tapa, $cart_ancho, $cart_largo, $tiraje, $options_model, $ventas_model);
 
@@ -955,12 +894,6 @@ class Regalo extends Controller {
         $y1 = $aCalculadora['y1'];         // ancho
         $y1 = floatval($y1);
 
-        $x11 = $aCalculadora['x11'];         // largo
-        $x11 = floatval($x11);
-
-        $y11 = $aCalculadora['y11'];         // ancho
-        $y11 = floatval($y11);
-
 
         // Forro Cajon
         $f = $aCalculadora['f'];           // largo
@@ -977,11 +910,6 @@ class Regalo extends Controller {
         $Y1 = $aCalculadora['Y1'];         // ancho
         $Y1 = floatval($Y1);
 
-        $X11 = $aCalculadora['X11'];         // largo
-        $X11 = round(floatval($X11), 2);
-
-        $Y11 = $aCalculadora['Y11'];         // ancho
-        $Y11 = floatval($Y11);
 
         // Forro de la Tapa
         $F = $aCalculadora['F'];       // largo
@@ -998,8 +926,8 @@ class Regalo extends Controller {
 
 
     // corte Empalme
-        $secc_ancho = floatval($y11);
-        $secc_largo = floatval($x11);
+        $secc_ancho = floatval($y1);
+        $secc_largo = floatval($x1);
 
         $aPapel_tmp = self::calculaPapel("Empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1034,8 +962,8 @@ class Regalo extends Controller {
 
         $id_papel_empalme = intval($id_papel_empalme);
 
-        $secc_ancho = floatval($y11);
-        $secc_largo = floatval($x11);
+        $secc_ancho = floatval($y1);
+        $secc_largo = floatval($x1);
 
         $aPapel_tmp = self::calculaPapel("empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1110,8 +1038,8 @@ class Regalo extends Controller {
 
         $id_papel = intval($id_papel_empalme_tapa);
 
-        $secc_ancho = floatval($Y11);
-        $secc_largo = floatval($X11);
+        $secc_ancho = floatval($Y1);
+        $secc_largo = floatval($X1);
 
         $aPapel_tmp = self::calculaPapel("FextCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
@@ -1228,6 +1156,33 @@ class Regalo extends Controller {
         $aJson['costo_tot_corte_refine'] = $aJson['costo_corte_refine_emp']['tot_costo_corte'];
 
 
+        // corte papel empalme tapa
+        $cortes_papel_emptap = intval($aJson['papel_EmpTap']['corte']);
+
+        $aJson['costo_papel_corte_emptap']     = self::costo_corte("Corte", $tiraje, $cortes_papel_emptap, $ventas_model);
+        $aJson['costo_tot_corte_papel_emptap'] = $aJson['costo_papel_corte_emptap']['tot_costo_corte'];
+
+
+        // corte refine empalme tapa
+        $aJson['costo_corte_refine_emptap'] = self::costo_corte("Corte", $tiraje, $cortes_papel_emptap, $ventas_model);
+        $aJson['costo_tot_corte_refine'] = $aJson['costo_corte_refine_emptap']['tot_costo_corte'];
+
+
+    // areglo ranurado empalme tapa
+        $aJson['arreglo_ranurado_hor_emptap'] = 0;
+        $aJson['arreglo_ranurado_ver_emptap'] = 0;
+
+        $aJson['arreglo_ranurado_hor_emptap'] = self::calculoRanurado($tiraje, $ventas_model);
+
+        if ($base > $alto or $base < $alto) {
+
+            $aJson['arreglo_ranurado_ver_emptap'] = $aJson['arreglo_ranurado_hor_emptap'];
+        }
+
+
+///// Ojo: Falta calcular el ranurado!
+
+////
 
     /****************** ranurado ********************************/
 
@@ -1366,10 +1321,6 @@ class Regalo extends Controller {
 
 
 
-
-////
-
-
     /************ Forro de la Tapa  ******************/
 
         $aJson['elab_FTap'] = self::calculoForradoCajon($tiraje, $aJson['cortes']['papel_FTap'], $id_papel_FTap, $ventas_model);
@@ -1392,6 +1343,9 @@ class Regalo extends Controller {
 
 /************** Termina Costos fijos *************************/
 
+
+        $aJson['cortes']['carton_fcaj'] = $corte_cajon;
+        $aJson['cortes']['carton_ftap'] = $corte_tapa;
 
 
 /******************* inicia boton de Impresion ******************************/

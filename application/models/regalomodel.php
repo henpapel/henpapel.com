@@ -13,6 +13,7 @@ class RegaloModel {
         }
     }
 
+    /*
 
     public function mError(&$aJson, $mensaje, $error) {
 
@@ -21,6 +22,7 @@ class RegaloModel {
 
         return $aJson;
     }
+    */
 
 
     // Tablas Offset
@@ -574,6 +576,7 @@ class RegaloModel {
 
         /******* Carton de la Tapa *******/
 
+        /******* Carton de la Tapa *******/
             $id_papel     = intval($aJson['costo_grosor_tapa']['id_papel']);
             $cantidad      = $tiraje;
             $nombre        = trim(strval($aJson['costo_grosor_tapa']['nombre_papel']));
@@ -987,6 +990,25 @@ class RegaloModel {
             $l_corte_papel_emp = $query_corte_papel->execute();
 
 
+            // corte papel empalme
+            $l_corte_papel_emp_emptap = true;
+
+            $corte_costo_unitario = floatval($aJson['costo_papel_corte_emptap']['costo_unitario_corte_papel']);
+            $cortes_pliego        = intval($aJson['costo_papel_corte_emptap']['cortes_pliego']);
+            $tot_pliegos          = intval($aJson['costo_papel_corte_emptap']['tot_pliegos']);
+            $millares             = intval($aJson['costo_papel_corte_emptap']['millares']);
+            $costo_corte          = floatval($aJson['costo_papel_corte_emptap']['tot_costo_corte']);
+
+            $sql_corte_papel_emptap = "INSERT INTO cot_reg_corte_papel_emptap
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+            VALUES
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+
+
+            $query_corte_papel_emptap = $this->db->prepare($sql_corte_papel_emptap);
+
+            $l_corte_papel_emp_emptap = $query_corte_papel_emptap->execute();
+
 
             // corte refine empalme
             $l_corte_refine_emp  = true;
@@ -1008,6 +1030,26 @@ class RegaloModel {
             $l_corte_refine_emp = $query_corte_refine->execute();
 
 
+            // corte papel empalme tapacosto_papel_corte_emptap
+            $l_corte_refine_empalmado_emptap = true;
+
+            $corte_costo_unitario = floatval($aJson['costo_papel_corte_emptap']['costo_unitario_corte_papel']);
+            $cortes_pliego        = intval($aJson['costo_papel_corte_emptap']['cortes_pliego']);
+            $tot_pliegos          = intval($aJson['costo_papel_corte_emptap']['tot_pliegos']);
+            $millares             = intval($aJson['costo_papel_corte_emptap']['millares']);
+            $costo_corte          = floatval($aJson['costo_papel_corte_emptap']['tot_costo_corte']);
+
+            $sql_corte_refine_empalmado_emptap = "INSERT INTO cot_reg_corte_refine_emptap
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+            VALUES
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+
+
+            $query_corte_refine_empalmado_emptap = $this->db->prepare($sql_corte_refine_empalmado_emptap);
+
+            $l_corte_refine_empalmado_emptap = $query_corte_refine_empalmado_emptap->execute();
+
+////
 
             $l_corte_papel_fcar = true;
 
@@ -1063,7 +1105,6 @@ class RegaloModel {
             $l_despunte_esquinas = $query_despunte_emp->execute();
 
 
-
             // forro cajon
             $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
@@ -1072,6 +1113,23 @@ class RegaloModel {
             $costo_corte          = floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']);
 
             $sql_corte_fcaj = "INSERT INTO cot_reg_corte_fcaj
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+            VALUES
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+
+
+            $query_corte_fcaj = $this->db->prepare($sql_corte_fcaj);
+
+            $l_corte_fcaj = $query_corte_fcaj->execute();
+
+            // forro cajon
+            $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
+            $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
+            $tot_pliegos          = intval($aJson['costo_corte_papel_fcaj']['tot_pliegos']);
+            $millares             = intval($aJson['costo_corte_papel_fcaj']['millares']);
+            $costo_corte          = floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']);
+
+            $sql_corte_fcaj = "INSERT INTO cot_reg_corte_papel_fcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
             VALUES
                 ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
@@ -1110,7 +1168,48 @@ class RegaloModel {
             $l_Suaje_fcaj_fijo = $query_suaje_fcaj_fijo->execute();
 
 
-////
+
+        // arreglo ranurado horizontal empalme tapa
+
+            $l_arr_ran_hor_emptap = true;
+
+/*
+        $calculo_tmp['arreglo']               = $ranurado_arreglo_costo;
+        $calculo_tmp['costo_unit_por_ranura'] = $ranurado_costo_unit_por_ranura;
+        $calculo_tmp['costo_por_ranura']      = $costo_por_ranura;
+        $calculo_tmp['costo_tot_proceso']     = floatval($ranurado_arreglo_costo + $costo_por_ranura);
+
+*/
+
+            $costo_unit                 = floatval($aJson['arreglo_ranurado_hor_emptap']['arreglo']);
+            $costo_unit_ranura          = floatval($aJson['arreglo_ranurado_hor_emptap']['costo_unit_por_ranura']);
+            $costo_ranurado             = floatval($aJson['arreglo_ranurado_hor_emptap']['costo_por_ranura']);
+            $costo_tot_arreglo_ranurado = floatval($aJson['arreglo_ranurado_hor_emptap']['costo_tot_proceso']);
+
+            $sql_ranurado_arreglo_ran_hor_emptap = "INSERT INTO cot_reg_arreglo_ranurado_hor_emptap
+                (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
+            VALUES
+                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit_ranura, $costo_ranurado, $costo_tot_arreglo_ranurado, '$d_fecha')";
+
+            $query_arreglo_ranurado_hor_emptap = $this->db->prepare($sql_ranurado_arreglo_ran_hor_emptap);
+
+            $l_arr_ran_hor_emptap = $query_arreglo_ranurado_hor_emptap->execute();
+
+
+        // arreglo ranurado vertical empalme tapa
+            $l_arr_ran_vert_emptap = true;
+
+            if ( ($aJson['base'] > $aJson['alto'])  or ($aJson['base'] < $aJson['alto']) ) {
+
+                $sql_ranurado_arreglo_ran_ver_emptap = "INSERT INTO cot_reg_arreglo_ranurado_vert_emptap
+                    (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
+            VALUES
+                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit_ranura, $costo_ranurado, $costo_tot_arreglo_ranurado, '$d_fecha')";
+
+                $query_arreglo_ranurado_vert_emptap = $this->db->prepare($sql_ranurado_arreglo_ran_ver_emptap);
+
+                $l_arr_ran_vert_emptap = $query_arreglo_ranurado_vert_emptap->execute();
+            }
 
         /********* termina costos fijos **********/
 
@@ -4935,6 +5034,8 @@ class RegaloModel {
 
                 and ($l_ranurado and $l_ranurado_tap and $l_encuadernacion)
 
+                and ($l_arr_ran_hor_emptap and $l_arr_ran_vert_emptap)
+
                 and ($l_arr_ran_hor_emp and $l_arr_ran_vert_emp)
 
                 and ($l_Suaje_fcaj_fijo)
@@ -4943,6 +5044,7 @@ class RegaloModel {
 
                 and ($l_corte_carton_empcaj and $l_corte_carton_emptap)
                 and ($l_corte_papel_emp and $l_corte_refine_emp)
+                and ($l_corte_papel_emp_emptap and $l_corte_refine_empalmado_emptap)
 
                 and ($l_offset_empcaj and $l_offset_maq_empcaj)
                 and ($l_digital_empcaj and $l_serigrafia_empcaj)
