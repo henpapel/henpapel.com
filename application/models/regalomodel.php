@@ -574,7 +574,6 @@ class RegaloModel {
 
             $inserted_papel_cartap = true;
 
-        /******* Carton de la Tapa *******/
 
         /******* Carton de la Tapa *******/
             $id_papel     = intval($aJson['costo_grosor_tapa']['id_papel']);
