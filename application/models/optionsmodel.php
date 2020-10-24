@@ -13,7 +13,24 @@ class OptionsModel {
         }
     }
 
+    public function getBoxModelById($idModel) {
 
+        $idModel = intval($idModel);
+        $sql = "SELECT * FROM modelos_cajas where status = 'A'and id_modelo = ".$idModel;
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
+        };
+
+        return $result;
+    }
+    
     // obtiene el tipo de modelo de cajas
     public function getBoxModels() {
 

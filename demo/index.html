@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width">
+
+<title>{eleqtriq} Natural Object Rotation with CSS3 3D</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+		<link rel='stylesheet' type='text/css' href='css/traqball.css'>
+        <script type="text/javascript" src="js/traqball.js"></script>
+
+        <style type="text/css">
+
+			.rectangle {
+				position:  absolute;
+				-webkit-transform-style: preserve-3d;
+				-moz-transform-style: preserve-3d;
+				-ms-transform-style: preserve-3d;
+				-o-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+			}
+
+			.rectangle.e1{
+				-webkit-transform: scale3d(0.8,0.8,0.8);
+				-moz-transform: scale3d(0.8,0.8,0.8);
+				-ms-transform: scale3d(0.8,0.8,0.8);
+				-o-transform: scale3d(0.8,0.8,0.8);
+				transform: scale3d(1,1,1);
+			}
+
+			.rectangle .l1{
+
+				/*-webkit-transform: translate3d(0px, 0px, 80px) rotateX(0rad);
+				-moz-transform: translate3d(0px, 0px, 80px) rotateX(0rad);*/
+				/*background-image: url('img/caraf.png');*/
+				background-repeat:no-repeat;
+  				background-size: cover;
+  				background-color: rgb(0, 45, 98);
+				/*-webkit-transform: translate3d(0px, 0px, 60px) rotateX(0.37rad);
+				-moz-transform: translate3d(0px, 0px, 60px) rotateX(0.37rad);*/
+			}
+
+			.rectangle .l2{
+				/*translate3d(150px,0px,81px)*/
+				-webkit-transform-origin: 0px 160px 0px;
+				-moz-transform-origin: 0px 160px 0px;
+				-webkit-transform:  rotateY(90deg) rotateX(0rad);
+				-moz-transform:  rotateY(90deg) rotateX(0rad);
+				border-bottom-color: blue;
+				background-color: rgb(0, 45, 98);
+				/*background-image: url('img/ladoi.png');*/
+				background-repeat:no-repeat;
+  				background-size: cover;
+  				width: 100%;
+  				height: 100%;
+			}
+
+			.rectangle .l3{
+				/*200,0,60*/
+				-webkit-transform-origin: 0px 160px 0px;
+				/*translate3d(0px,0px,-70px)*/
+				-webkit-transform:  rotateY(-90deg) rotateX(0rad);
+				-moz-transform-origin: 0px 160px 0px;
+				/*translate3d(0px,0px,-70px)*/
+				-moz-transform:  rotateY(-90deg) rotateX(0rad);
+				border-bottom-color: green;
+				background-color: rgb(0, 45, 98);
+				/*background-image: url('img/ladod.png');*/
+				background-repeat:no-repeat;
+  				background-size: cover;
+  				width: 100%;
+  				height: 100%;
+			}
+
+			.rectangle .l4{
+				-webkit-transform-origin: 0px 160px 0px;
+				/*translate3d(150px,0px,-69px)*/
+				-webkit-transform:  rotateY(180deg) rotateX(0rad);
+				-moz-transform-origin: 0px 160px 0px;
+				/*translate3d(150px,0px,-69px)*/
+				-moz-transform:  rotateY(180deg) rotateX(0rad);
+				border-bottom-color: green;
+				background-color: rgb(0, 45, 98);
+				/*background-image: url('img/cara.png');*/
+				background-repeat:no-repeat;
+  				background-size: cover;
+  				width: 100%;
+  				height: 100%;
+			}
+
+			.rectangle .l5{
+				/*-webkit-transform-origin: 0px 160px 0px;*/
+				/*translate3d(0px,-160px,90px)*/
+				/*-webkit-transform:  rotateY(0deg) rotateX(90deg);*/
+				/*-moz-transform-origin: 200px 160px 0px;*/
+				/*translate3d(0px,-160px,90px)*/
+				-moz-transform:  rotateY(0deg) rotateX(90deg);
+				border-bottom-color: green;
+				background-color: rgb(0, 45, 98);
+				/*background-image: url('img/arriba.png');*/
+				background-repeat:no-repeat;
+  				background-size: cover;
+  				width: 100%;
+  				height: 100%;
+				
+			}
+
+			.rectangle .l6{
+				/*-webkit-transform-origin: 0px 160px 0px;*/
+				/*translate3d(0px,40px,-80px)*/
+				/*-webkit-transform:  rotateY(0deg) rotateX(-90deg);*/
+				/*-moz-transform-origin: 0px 160px 0px;*/
+				/*translate3d(0px,40px,-80px)*/
+				-moz-transform:  rotateY(0deg) rotateX(-90deg);
+				border-bottom-color: green;
+				background-color: rgb(0, 45, 98);
+				/*background-image: url('img/abajo.png');*/
+				background-repeat:no-repeat;
+  				background-size: cover;
+  				width: 100%;
+  				height: 100%;
+				
+			}
+
+
+			.rectangle .rect{
+
+				position: absolute;
+				display: block;
+				/*background: #428bca;*/
+				/*border-bottom: 160px solid blue;
+				border-left: 100px solid transparent;
+				border-right: 100px solid transparent;*/
+				/*-webkit-transform-origin: 0px 160px 0px;*/
+				-webkit-backface-visibility: hidden;
+				/*-moz-transform-origin: 0px 160px 0px;*/
+				-moz-backface-visibility: hidden;
+			}
+
+			.rectangle .cuad{
+				position: absolute;
+				
+				display: block;
+				/*background: #428bca;*/
+				/*border-bottom: 160px solid blue;
+				border-left: 100px solid transparent;
+				border-right: 100px solid transparent;*/
+
+				-webkit-transform-origin: 0px 160px 0px;
+				-webkit-backface-visibility: hidden;
+				-moz-transform-origin: 0px 160px 0px;
+				-moz-backface-visibility: hidden;
+			}
+        </style>
+        
+		<script type="text/javascript">
+		
+		window.addEventListener("load", callback, false);
+		
+		function callback(){
+		    var traqball_1 = new Traqball({stage: "stage1", axis: [0.1,0.1,0.1]})
+		}
+				
+		</script>
+	</head>
+
+<body id="body" style="padding: 0px; margin: 0px;">
+
+<article id="stages" style="width: 100%; height: 100%; padding: 0px; margin: 0px;">
+	
+	<div style="position: relative; width: 100%; height: 100%;">
+
+		<table class="table" style="width: 100px;">
+			<tr>
+				<td>
+					<label>Ingrese Largo:</label>
+				</td>
+				<td>
+					
+					<input type="text" name="txtLargo" id="txtLargo" placeholder="Ingrese Largo">
+				</td>
+
+				<td>
+					<label>Ingrese Ancho:</label>
+				</td>
+				<td>
+					<input type="text" name="txtAncho" id="txtAncho" placeholder="Ingrese Ancho">	 
+				</td>
+			</tr>
+			<tr>
+
+				<td>
+					<!-- Tapa-->
+					<label>Ingrese Profundidad:</label>
+				</td>
+				<td>
+					<input type="text" name="txtPT" id="txtPT" placeholder="Ingrese Ancho">
+				</td>
+				
+			</tr>
+
+			<!--<tr>
+				
+				<td>
+					<label>Profundidad Cajón:</label>
+				</td>
+				<td>
+					<input type="text" name="txtPC" id="txtPC" placeholder="Ingrese Ancho">
+				</td>
+			</tr>-->
+
+			<tr>
+
+				<td>
+					<!-- Tapa-->
+					<label>Elija Imagen Cara:</label>
+				</td>
+				<td>
+					<input type="file" name="iptl1" id="iptl1" accept="image/png, .jpeg, .jpg">
+				</td>
+
+				<td>
+					<!-- Tapa-->
+					<label>Elija Imagen Cara Trasera:</label>
+				</td>
+				<td>
+					<input type="file" name="iptl4" id="iptl4" accept="image/png, .jpeg, .jpg">
+				</td>
+			</tr>
+
+
+			<tr>
+
+				<td>
+					<!-- Tapa-->
+					<label>Elija Imagen Lado Derecho:</label>
+				</td>
+				<td>
+					<input type="file" name="ipt2" id="iptl2" placeholder="Ingrese Ancho" accept="image/png, .jpeg, .jpg">
+				</td>
+
+				<td>
+					<!-- Tapa-->
+					<label>Elija Imagen Lado Izquierdo:</label>
+				</td>
+				<td>
+					<input type="file" name="iptl3" id="iptl3" placeholder="Ingrese Ancho" accept="image/png, .jpeg, .jpg">
+				</td>
+			</tr>
+
+
+			<tr>
+
+				<td>
+					<!-- Tapa-->
+					<label>Elija Imagen Tapa:</label>
+				</td>
+				<td>
+					<input type="file" name="iptl5" id="iptl5" placeholder="Ingrese Ancho" accept="image/png, .jpeg, .jpg">
+				</td>
+
+				<td>
+					<!-- Tapa-->
+					<label>Elija Imagen Base:</label>
+				</td>
+				<td>
+					<input type="file" name="iptl6" id="iptl6" placeholder="Ingrese Ancho" accept="image/png, .jpeg, .jpg">
+				</td>
+			</tr>
+
+		</table>
+		<button id="btnDemo" class="btn btn-success" style="margin-left: auto; margin-right: auto; display: block;" >Ver Demo</button>
+	</div>
+
+	<button class="btn btn-success" style=" position: absolute; float: left; z-index: 1; margin: auto;" onclick="ampliar()">Ampliar</button>
+    <button class="btn btn-success" style=" position: absolute; float: left; z-index: 1; margin: auto;left: 100px" onclick="reducir()">Reducir</button>
+
+	<div style="display: block; width: 100%; height: 100%;">
+		
+		<section id="stage1" class="stage" id="stages" style="display: block; position: relative; width: 80%; height: 80%;background-color: #256F81; overflow: auto; left: 9%; top: 9%;">
+		
+			<!-- La clase box es la que hace que se mueva todo el objeto -->
+			<div class="box" style="border: 1px #000 dashed;left: 40%; top: 40%;">
+				<!-- El id sirve para que rote la figura "spike1"-->
+
+				<div class = "spike" id="ssss">
+
+					<!-- e1 Es para rescalar el valor que tiene ya sea alto o largo o profundidad -->
+					<div class = "rectangle e1">
+						<div id="l1" class="rect l1"></div>
+						<div id="l2" class="rect l2"></div>
+						<div id="l3" class="rect l3"></div>
+						<div id="l4" class="rect l4"></div>
+						<div id="l5" class="rect l5"></div>
+						<div id="l6" class="rect l6"></div>
+						
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</article>
+
+<script type="text/javascript">
+	
+	function setMeasure(largo, ancho, profTapa){
+
+		/*
+		l1 es frente
+		l2 es ld
+		l3 es li
+		l4 es frente posterior
+		l5 es tapa
+		l6 es base
+		*/
+
+		$(".l1").css("width",largo);
+		$(".l1").css("height",ancho);
+
+		$(".l4").css("width",largo);
+		$(".l4").css("height",ancho);
+
+		$(".l2").css("width",profTapa);
+		$(".l2").css("height",ancho);
+
+		$(".l3").css("width",profTapa);
+		$(".l3").css("height",ancho);
+
+		$(".l1").css("width",largo);
+		$(".l1").css("height",ancho);
+
+		$(".l5").css("width",largo);
+		$(".l5").css("height",profTapa);
+
+		$(".l6").css("width",largo);
+		$(".l6").css("height",profTapa);
+	}
+
+	$("#btnDemo").click( function(){
+
+
+
+		var largo = parseInt($("#txtLargo").val());
+		var ancho = parseInt($("#txtAncho").val());
+		var profTapa = parseInt($("#txtPT").val());
+
+		largo = largo * 10;
+		ancho = ancho * 10;
+		profTapa = profTapa * 10;
+
+
+
+
+		//para obtener la medida real en pixeles se debe de calcular una vez mas por 10
+
+		if( checkData( largo, "Largo" ) == false ) return false;
+		if ( checkData( ancho, "Ancho" ) == false ) return false;
+		if ( checkData( profTapa, "profTapa" ) == false ) return false;
+
+		//var profCajon = parseInt($("#txtAncho").val() * 10);
+		setMeasure(largo, ancho, profTapa);
+
+		//En esta parte se tratara de calcular con base a su alto, largo y profundidad, la distancia que debe de tener para darle la forma a la caja
+		
+		$(".l2").css('-webkit-transform','translate3d('+(largo)+'px, 0px, 0px) rotateY(90deg) rotateX(0rad)');
+
+		$(".l3").css('-webkit-transform','translate3d(0px,0px,-'+(profTapa)+'px) rotateY(-90deg) rotateX(0rad)');
+
+		$(".l4").css('-webkit-transform','translate3d('+(largo)+'px,0px,-'+(profTapa)+'px) rotateY(180deg) rotateX(0rad)');
+
+		var largoT = parseInt($(".l1").css("width"));
+
+		var valor = ( profTapa / ancho ) * (ancho/2)
+				
+		$(".l5").css('-webkit-transform','translate3d(0px,-'+(valor)+'px,-'+(profTapa/2)+'px) rotateY(0deg) rotateX(90deg)');
+
+		valor = 0 - (profTapa/2) + ancho
+		
+		$(".l6").css('-webkit-transform','translate3d(0px,' + valor + 'px,-'+(profTapa/2)+'px) rotateY(0deg) rotateX(-90deg)');
+	});
+
+	function checkData( valor, seccion ){
+
+		if( valor == 0 || valor == undefined || valor == null ){
+
+			alert("El valor de: " + seccion + " es igual a 0 o no se ha llenado el campo. Favor de corregirlo")
+			return false;
+		}
+	}
+
+	document.getElementById("iptl1").onchange = function(e) {
+
+		changeImage("l1",e);
+	}
+
+	document.getElementById("iptl4").onchange = function(e) {
+
+		changeImage("l4",e);
+	}
+
+	document.getElementById("iptl3").onchange = function(e) {
+
+		changeImage("l3",e);
+	}
+
+	document.getElementById("iptl2").onchange = function(e) {
+
+		changeImage("l2",e);
+	}
+
+	document.getElementById("iptl6").onchange = function(e) {
+
+		changeImage("l6",e);
+	}
+
+	document.getElementById("iptl5").onchange = function(e) {
+
+		changeImage("l5",e);
+	}
+
+	function changeImage(parte,e){
+
+		
+		// Creamos el objeto de la clase FileReader
+		let reader = new FileReader();
+
+	 	// Leemos el archivo subido y se lo pasamos a nuestro fileReader
+		reader.readAsDataURL(e.target.files[0]);
+
+	 	// Le decimos que cuando este listo ejecute el código interno
+	 	reader.onload = function(){
+		    
+		    image = document.createElement('img');
+		    image.src = reader.result;
+
+		    var arrSP = image.src.split("/");
+		    arrSP = arrSP[1].split(";")
+
+		    var formato = String(arrSP[0]);
+
+		    console.log(formato);
+
+		    if ( formato !== "jpeg" && formato !== "jpg" && formato !== "png" ) {
+        	
+	        	alert('El archivo a adjuntar no es una imagen');
+
+	        	$("#ipt"+parte).val("");
+	        	return false;
+    		}
+
+		    $("#"+parte).css("background-image","url(" + image.src + ")");
+
+		    var largo = parseInt($("#txtLargo").val() * 10);
+			var ancho = parseInt($("#txtAncho").val() * 10);
+			var profTapa = parseInt($("#txtPT").val() * 10);
+		    setMeasure(largo,ancho,profTapa);
+	    };
+	}
+	var i = 1;
+	function ampliar(){
+
+		i +=.2;
+		$(".e1").css("transform", "scale3d("+ i +","+ i +","+ i +")");
+		
+	}
+
+	function reducir(){
+
+		i -=.2;
+		$(".e1").css("transform", "scale3d("+ i +","+ i +","+ i +")");
+		
+	}
+</script>
+</body>
+</html>

@@ -1904,19 +1904,6 @@
     setClient( cliente );
     setURL("<?= URL ?>");
 
-    /*function checkDimensions(){
-
-        var valor = parseInt($("#divToggle").css("width"));
-
-        if( valor < 650 ){
-
-            $("#divToggle").find(".btn-slave").addClass("btn-sm");
-        }else{
-
-            $("#divToggle").find(".btn-slave").removeClass("btn-sm");
-        }
-    }*/
-
     //Boton Calcular
     $("#subForm2").click( function() {
 
@@ -2144,7 +2131,6 @@
             $('#opAcBarUVEmp').hide('normal');
         }
     }
-
 </script>
 
 <!-- boton de impresiones -->

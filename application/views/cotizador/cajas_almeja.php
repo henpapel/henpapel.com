@@ -500,7 +500,7 @@
 
                     <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
-                    <a class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</a>
+                    <button type="button" id="btnImprimir" class="btn btn-info" style="font-size: 10px;" disabled="">Imprimir</button>
                     <br>
 
                     <!--<div style="float: left; font-size: 18px; text-align: right; margin-right: 375px;">Cantidad: <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required></div>-->
@@ -5922,6 +5922,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
                     $("#subForm").prop("disabled", false);
+                    $("#btnImprimir").prop("disabled", false);
+                    
             })
             .fail(function(response) {
 
@@ -9445,5 +9447,11 @@ foreach ($Porcentajes as $porcentaje) { ?>
         $("#imgG").find("img").prop("src", "<?=URL?>public/img/banco2.png");
     });
 
-    history.forward();
+    //history.forward();
+
+    $("#btnImprimir").click( function(){
+            
+        var ventana = window.open("<?=URL?>cotizador/imprCaja", "Impresion", "width=600, height=600");
+        return true;
+    });
 </script>

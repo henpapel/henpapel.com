@@ -6806,6 +6806,7 @@ class Cotizador extends Controller {
 
             } else {
 
+                $_SESSION['aJson'] = $aJson;
                 echo json_encode($aJson);
             }
         }
@@ -6813,6 +6814,25 @@ class Cotizador extends Controller {
 
 
 /****************** Termina la funcion saveCaja() **********************/
+
+    public function imprCaja(){
+
+        $options_model = $this->loadModel('OptionsModel');
+        $ventas_model  = $this->loadModel('VentasModel');
+        $almeja_model  = $this->loadModel('AlmejaModel');
+
+        session_start();
+
+        $aJson = $_SESSION['aJson'];
+        $modelo = $options_model->getBoxModelById($_SESSION['aJson']['modelo']);
+        $nombreModelo = $modelo[0]['nombre'];
+        $aJson1 = json_encode($aJson);
+
+        $tienda = $_SESSION['nom_tienda'];
+
+        require 'application/views/cotizador/impresion_caja.php';
+    }
+
 
 
     public function calcMerma() {

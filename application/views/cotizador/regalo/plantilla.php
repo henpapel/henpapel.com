@@ -63,7 +63,6 @@
         $("#divDerecho").append(divSeccion);
         jQuery214(".chosen").chosen();
     }
-
     document.getElementById('box-model').onchange = function(event){
 
         var model = parseInt(document.getElementById('box-model').value);
