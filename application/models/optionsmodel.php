@@ -1926,7 +1926,7 @@ class OptionsModel {
 
     public function UpdateProcOff() {
 
-        $boton        = strval($_POST['tipoProcesoOff']);
+        $proceso        = strval($_POST['tipoProceso']);
         $tirajeMinimo = intval($_POST['txtTirMinOff']);
         $tirajeMaximo = intval($_POST['txtTirMaxOff']);
         $costoLam     = floatval($_POST['txtCosOffLam']);
@@ -1949,9 +1949,10 @@ class OptionsModel {
         $idTir2       = intval($_POST['txtIdTirOffset2']);
         $idTir3       = intval($_POST['txtIdTirOffset3']);
         $idTir4       = intval($_POST['txtIdTirOffset4']);
-        switch ($boton) {
 
-            case 'btnOffNormal':
+        switch ($proceso) {
+
+            case 'N':
 
                 try{
 
@@ -1976,12 +1977,13 @@ class OptionsModel {
                     }
                 }catch(Exception $ex){
 
+                    print_r($ex);
                     $this->db->rollBack();
                     return false;
                 }
             break;
 
-            case 'btnOffPantone':
+            case 'P':
 
                 try{
 
@@ -2007,12 +2009,13 @@ class OptionsModel {
 
                 }catch(Exception $ex){
 
+                    print_r($ex);
                     $this->db->rollBack();
                     return false;
                 }
             break;
 
-            case 'btnOffMaquila':
+            case 'M':
 
                 try{
 
@@ -2048,7 +2051,7 @@ class OptionsModel {
                 }
             break;
 
-            case 'btnOffMaquilaPantone':
+            case 'MP':
 
                 try{
 
@@ -2089,7 +2092,7 @@ class OptionsModel {
 
     public function UpdateProcSer() {
 
-        $boton    = strval($_POST['tipoProcesoSer']);
+        $proceso    = strval($_POST['tipoProceso']);
         $costoArr = floatval($_POST['txtCosSerArr']);
         $rango11  = intval($_POST['txtRangSer11']);
         $rango12  = intval($_POST['txtRangSer12']);
@@ -2110,9 +2113,9 @@ class OptionsModel {
         $idTir2   = intval($_POST['txtIdTirSerigrafia2']);
         $idTir3   = intval($_POST['txtIdTirSerigrafia3']);
         $idTir4   = intval($_POST['txtIdTirSerigrafia4']);
-        switch ($boton) {
+        switch ($proceso) {
 
-            case 'btnSerNormal':
+            case 'N':
 
                 try{
 
@@ -2147,7 +2150,7 @@ class OptionsModel {
                     return false;
                 }
             break;
-            case 'btnSerPantone':
+            case 'P':
 
                 try{
 
@@ -2407,7 +2410,7 @@ class OptionsModel {
 
     public function UpdateProcHotStam() {
 
-        $boton          = strval($_POST['tipoProcesoHot']);
+        $proceso          = strval($_POST['tipoProceso']);
         $precioPelicula = floatval($_POST['txtCosHotPel']);
         $precioPlaca    = floatval($_POST['txtCosHotPlac']);
         $precioArreglo  = floatval($_POST['txtCosHotArr']);
@@ -2430,9 +2433,9 @@ class OptionsModel {
         $idTiro2        = intval($_POST['txtIdTirHS2']);
         $idTiro3        = intval($_POST['txtIdTirHS3']);
 
-        switch ($boton) {
+        switch ($proceso) {
 
-            case 'btnHotH':
+            case 'H':
 
                 try{
 
@@ -2469,7 +2472,7 @@ class OptionsModel {
                     return false;
                 }
                 break;
-            case 'btnHotH1':
+            case 'HG1':
 
                 try{
 
@@ -2506,7 +2509,7 @@ class OptionsModel {
                     return false;
                 }
                 break;
-                case 'btnHotH2':
+            case 'HG2':
 
                 try{
 
@@ -2549,7 +2552,7 @@ class OptionsModel {
 
     public function UpdateProcGra() {
 
-        $boton         = strval($_POST['tipoProcesoGra']);
+        $proceso         = strval($_POST['tipoProceso']);
         $precioPlaca   = floatval($_POST['txtCosGraPlac']);
         $precioArreglo = floatval($_POST['txtCosGraArr']);
         $min1          = intval($_POST['txtMinGra1']);
@@ -2570,9 +2573,9 @@ class OptionsModel {
         $idTiro2       = intval($_POST['txtIdTirG2']);
         $idTiro3       = intval($_POST['txtIdTirG3']);
 
-        switch ($boton) {
+        switch ($proceso) {
 
-            case 'btnGraG1':
+            case 'G1':
 
                 try{
 
@@ -2608,7 +2611,7 @@ class OptionsModel {
                     return false;
                 }
                 break;
-            case 'btnGraG2':
+            case 'G2':
 
                 try{
 
@@ -2890,6 +2893,155 @@ class OptionsModel {
         }
 
         return $result;
+    }
+
+    public function getProcEncuadernacion(){
+
+        $sql = "SELECT * FROM proc_encuadernacion where status = 'A'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            if( isset($row['nombre_tiraje']) ){
+
+                $nombre = strval($row['nombre_tiraje']);
+                $result[$nombre][] = $row;
+            }else{
+
+                $result[] = $row;    
+            }
+        }
+
+        return $result;   
+    }
+
+    public function updateProcEnc(){
+
+
+        $PIR11 = intval($_POST['txtRangEnc11']);
+        $PIR12 = intval($_POST['txtRangEnc12']);
+        $PIR21 = intval($_POST['txtRangEnc21']);
+        $PIR22 = intval($_POST['txtRangEnc22']);
+        $PIC1 = floatval($_POST['txtCosUniEnc1']);
+        $PIC2 = floatval($_POST['txtCosUniEnc2']);
+
+        $PIId1 = floatval($_POST['txtIdEnc1']);
+        $PIId2 = floatval($_POST['txtIdEnc2']);
+
+
+        $ECR11 = intval($_POST['txtRangEC11']);
+        $ECR12 = intval($_POST['txtRangEC12']);
+        $ECR21 = intval($_POST['txtRangEC21']);
+        $ECR22 = intval($_POST['txtRangEC22']);
+        $ECC1 = floatval($_POST['txtCosUniEC1']);
+        $ECC2 = floatval($_POST['txtCosUniEC2']);
+
+        $ECId1 = floatval($_POST['txtIdEC1']);
+        $ECId2 = floatval($_POST['txtIdEC2']);
+
+
+        $FCR11 = intval($_POST['txtRangFC11']);
+        $FCR12 = intval($_POST['txtRangFC12']);
+        $FCR21 = intval($_POST['txtRangFC21']);
+        $FCR22 = intval($_POST['txtRangFC22']);
+        $FCC1 = floatval($_POST['txtCosUniFC1']);
+        $FCC2 = floatval($_POST['txtCosUniFC2']);
+
+        $FCId1 = floatval($_POST['txtIdFC1']);
+        $FCId2 = floatval($_POST['txtIdFC2']);
+
+
+        $PBR11 = intval($_POST['txtRangPB11']);
+        $PBR12 = intval($_POST['txtRangPB12']);
+        $PBR21 = intval($_POST['txtRangPB21']);
+        $PBR22 = intval($_POST['txtRangPB22']);
+        $PBC1 = floatval($_POST['txtCosUniPB1']);
+        $PBC2 = floatval($_POST['txtCosUniPB2']);
+
+        $PBId1 = floatval($_POST['txtIdPB1']);
+        $PBId2 = floatval($_POST['txtIdPB2']);
+
+
+        $DECC = floatval($_POST['txtCosDEC']);
+        $DECId = floatval($_POST['txtIdDEC']);
+
+        $AFCC = floatval($_POST['txtCosAFC']);
+        $AFCId = floatval($_POST['txtIdAFC']);
+
+        $encajC = floatval($_POST['txtCosEn']);
+        $encajId = floatval($_POST['txtIdEn']);
+
+        $domiC = floatval($_POST['txtCosD']);
+        $domiId = floatval($_POST['txtIdDomi']);
+
+        try{
+
+            $this->db->beginTransaction();
+
+            $PI1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PIR11, tiraje_maximo=$PIR12, precio_unitario= $PIC1 WHERE id_encuadernacion =$PIId1";
+            $query1    = $this->db->prepare($PI1);
+            $inserted1 = $query1->execute();
+
+            $PI2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PIR21, tiraje_maximo=$PIR22, precio_unitario= $PIC2 WHERE id_encuadernacion =$PIId2";
+            $query2    = $this->db->prepare($PI2);
+            $inserted2 = $query2->execute();
+
+            $EC1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$ECR11, tiraje_maximo=$ECR12, precio_unitario= $ECC1 WHERE id_encuadernacion =$ECId1";
+            $query3    = $this->db->prepare($EC1);
+            $inserted3 = $query3->execute();
+
+            $EC2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$ECR21, tiraje_maximo=$ECR22, precio_unitario= $ECC2 WHERE id_encuadernacion =$ECId2";
+            $query4    = $this->db->prepare($EC2);
+            $inserted4 = $query4->execute();
+
+            $FC1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$FCR11, tiraje_maximo=$FCR12, precio_unitario= $FCC1 WHERE id_encuadernacion =$FCId1";
+            $query5    = $this->db->prepare($FC1);
+            $inserted5 = $query5->execute();
+
+            $FC2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$FCR21, tiraje_maximo=$FCR22, precio_unitario= $FCC2 WHERE id_encuadernacion =$FCId2";
+            $query6    = $this->db->prepare($FC2);
+            $inserted6 = $query6->execute();
+
+            $PB1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PBR11, tiraje_maximo=$PBR12, precio_unitario= $PBC1 WHERE id_encuadernacion =$PBId1";
+            $query7    = $this->db->prepare($PB1);
+            $inserted7 = $query7->execute();
+
+            $PB2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PBR21, tiraje_maximo=$PBR22, precio_unitario= $PBC2 WHERE id_encuadernacion =$PBId2";
+            $query8    = $this->db->prepare($PB2);
+            $inserted8 = $query8->execute();
+
+
+            $DEC = "UPDATE proc_encuadernacion SET precio_unitario = $DECC WHERE id_encuadernacion=$DECId";
+            $query9    = $this->db->prepare($DEC);
+            $inserted9 = $query9->execute();
+
+            $AFC = "UPDATE proc_encuadernacion SET precio_unitario = $AFCC WHERE id_encuadernacion=$AFCId";
+            $query10    = $this->db->prepare($AFC);
+            $inserted10 = $query10->execute();
+
+            $encaj = "UPDATE proc_encuadernacion SET precio_unitario = $encajC WHERE id_encuadernacion=$encajId";
+            $query11    = $this->db->prepare($encaj);
+            $inserted11 = $query11->execute();
+
+            $domi = "UPDATE proc_encuadernacion SET precio_unitario = $domiC WHERE id_encuadernacion=$domiId";
+            $query12    = $this->db->prepare($domi);
+            $inserted12 = $query12->execute();
+
+
+            if( $inserted1 and $inserted2 and $inserted3 and $inserted4 and $inserted5 and $inserted6 and $inserted7 and $inserted8 and $inserted9 and $inserted10 and $inserted11 and $inserted12 ){
+
+                $this->db->commit();
+                return true;
+            }
+        }catch( Exception $ex ){
+
+            $this->db->rollBack();
+            return false;
+        }
     }
 
 }

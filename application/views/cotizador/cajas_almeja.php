@@ -3140,7 +3140,7 @@
 
 <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalError" aria-hidden="true">
 
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 
         <div class="modal-content">
 
@@ -3155,9 +3155,10 @@
                 -->
             </div>
 
-            <div class="modal-body">
+            <div id="modBody" class="modal-body">
 
                 <p id="txtContenido" style="color: black; font-size: 1.1em"></p>
+                
             </div>
 
             <div class="modal-footer">
@@ -3432,6 +3433,31 @@ foreach ($Porcentajes as $porcentaje) { ?>
         $('#resumen' + tabla ).append(trResumen);
     }
 
+    function appndMsgError(error){
+
+        var divError = $("#modError").html();
+        
+        if( divError !== undefined ){
+
+            $("#modError").remove();
+        }
+        var btnError = `
+
+            <div id="modError">
+                <a class="btn btn-danger" data-toggle="collapse" href="#ModmsgError" role="button" aria-expanded="false" aria-controls="ModmsgError">
+                        Ver mas...
+                </a>
+                <div class="collapse" id="ModmsgError">
+                    <div class="card card-body" id="txtError">
+                        
+                    </div>
+                </div>
+            </div>
+        `;
+        $("#modBody").append(btnError);
+        $("#txtError").html(error);
+    }
+
     // papel(es) seleccionado(s)
     jQuery214(document).on("click", "#papeles_submit", function () {
 
@@ -3608,7 +3634,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 console.log(response);
 
-                if (response) {
+                if ( response ) {
 
                     try {
 
@@ -3626,36 +3652,38 @@ foreach ($Porcentajes as $porcentaje) { ?>
                             return false;
                         } else {
 
-                            document.getElementsByName("subForm").enabled = true;
-
-                            $("#subForm").prop("enabled", true);
-
                             var aJson_stringify = JSON.stringify(js_respuesta, null, 4);
 
                             console.log('(3706) aJson_stringify: ' + aJson_stringify);
-
-                            console.log('(3708) error: ' + error);
                         }
-                    } catch(e) {
+                    } catch {
 
-                        var js_respuesta = JSON.parse(response); // trae toda la matriz
-                        var error        = js_respuesta.error;
+                        try{
 
-                        if (error.length > 0) {
+                            var error = response.split("<br />");
+                            error = error[1].split("<b>").join("");
+                            error = error.split("</b>").join("");
+                            showModError("");
+
+                            $("#txtContenido").html("(3668) Hubo un error al cotizar la caja.");
+                            appndMsgError(error);
+                        }catch {
 
                             showModError("");
-                            //$("#txtContenido").html("");
-                            $("#txtContenido").html("(3719) " + error);
 
-                            return false;
+                            $("#txtContenido").html("(3674) Hubo un error al cotizar la caja.");
+                        } finally{
+
+                            return false;    
                         }
+                        
                     }
                 } else {
 
                     showModError("");
 
-                    $("#txtContenido").html("(3728) Ya existe esta ODT...");
-
+                    $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
+                    appndMsgError("No se regresa ningun valor. Favor de llamar a sistemas");
                     return false;
                 }
 

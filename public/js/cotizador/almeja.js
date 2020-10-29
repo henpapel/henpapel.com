@@ -246,6 +246,12 @@ function vacioModalAcabados() {
 }
 function showModError(proceso) {
 
+    var divError = $("#modError").html();
+        
+    if( divError !== undefined ){
+
+        $("#modError").remove();
+    }   
     $("#txtContenido").html("No existe el costo para el proceso: " + proceso + " con este tiraje.");
 
     // $("#modalError").modal("show");

@@ -38,10 +38,23 @@
         $procesosGrabado     = $optionsmodel->getProcGrabado();
         $procesosSuaje       = $optionsmodel->getProcSuaje();
         $procesosLaser       = $optionsmodel->getProcLaser();
+        $procesosEncuadernacion = $optionsmodel->getProcEncuadernacion();
+
         $i=1;
         $j=1;
         $k=1;
         $l=1;
+
+        foreach ( $procesosEncuadernacion as $enc ) {
+            
+            if( isset($enc['nombre'])  ){
+
+                $nombre=$enc['nombre'];
+                $procesosEncuadernacion["$nombre"]=$enc;
+            }
+        }
+        
+
         foreach ($procesosOffset as $offset) {
             $nombre=$offset['nombre'];
             if(isset($offset['tiraje_minimo'])){
@@ -55,6 +68,8 @@
                 $procesosOffset["$nombre"]=$offset;
             }
         }
+
+
         foreach ($procesosSerigrafia as $serigrafia) {
             $nombre=$serigrafia['nombre'];
             if(isset($serigrafia['tiraje_minimo'])){
@@ -137,17 +152,18 @@
     public function imprProcesos() {
 
         if (!isset($_SESSION)) session_start();
-        $login        = $this->loadController('login');
-        $optionsmodel = $this->loadModel('OptionsModel');
-        $login_model  = $this->loadModel('LoginModel');
-        $procesosOffset      = $optionsmodel->getProcOffset(); 
-        $procesosSerigrafia  = $optionsmodel->getProcSerigrafia();
-        $procesosDigital     = $optionsmodel->getProcDigital();
-        $procesosLaminado    = $optionsmodel->getProcLaminado();
-        $procesosHotStamping = $optionsmodel->getProcHotStamping();
-        $procesosGrabado     = $optionsmodel->getProcGrabado();
-        $procesosSuaje       = $optionsmodel->getProcSuaje();
-        $procesosLaser       = $optionsmodel->getProcLaser();
+        $login                  = $this->loadController('login');
+        $optionsmodel           = $this->loadModel('OptionsModel');
+        $login_model            = $this->loadModel('LoginModel');
+        $procesosOffset         = $optionsmodel->getProcOffset(); 
+        $procesosSerigrafia     = $optionsmodel->getProcSerigrafia();
+        $procesosDigital        = $optionsmodel->getProcDigital();
+        $procesosLaminado       = $optionsmodel->getProcLaminado();
+        $procesosHotStamping    = $optionsmodel->getProcHotStamping();
+        $procesosGrabado        = $optionsmodel->getProcGrabado();
+        $procesosSuaje          = $optionsmodel->getProcSuaje();
+        $procesosLaser          = $optionsmodel->getProcLaser();
+
         $i=1;
         $j=1;
         $k=1;
@@ -382,6 +398,26 @@
 
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->updateProcSua($_POST);
+
+        if ($update) {
+            
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
+        } else {
+
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+        }
+    }
+
+    public function updateProcEnc() {
+
+        $optionsModel = $this->loadModel('OptionsModel');
+        $update       = $optionsModel->updateProcEnc();
 
         if ($update) {
             
