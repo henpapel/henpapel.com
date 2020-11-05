@@ -2919,6 +2919,30 @@ class OptionsModel {
         return $result;   
     }
 
+    public function getProcRanurado(){
+
+        $sql = "SELECT * FROM proc_ranurado where status = 'A'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            if( isset($row['nombre_tiraje']) ){
+
+                $nombre = strval($row['nombre_tiraje']);
+                $result[$nombre][] = $row;
+            }else{
+
+                $result[] = $row;    
+            }
+        }
+
+        return $result;   
+    }
+
     public function updateProcEnc(){
 
 
@@ -3033,6 +3057,69 @@ class OptionsModel {
 
 
             if( $inserted1 and $inserted2 and $inserted3 and $inserted4 and $inserted5 and $inserted6 and $inserted7 and $inserted8 and $inserted9 and $inserted10 and $inserted11 and $inserted12 ){
+
+                $this->db->commit();
+                return true;
+            }
+        }catch( Exception $ex ){
+
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function updateProcRan(){
+
+
+        $r11 = intval($_POST['txtRan11']);
+        $r12 = intval($_POST['txtRan12']);
+        $r21 = intval($_POST['txtRan21']);
+        $r22 = intval($_POST['txtRan22']);
+        $r31 = intval($_POST['txtRan31']);
+        $r32 = intval($_POST['txtRan32']);
+        $r41 = intval($_POST['txtRan41']);
+        $r42 = intval($_POST['txtRan42']);
+
+        $id1 = intval($_POST['txtId1']);
+        $id2 = intval($_POST['txtId2']);
+        $id3 = intval($_POST['txtId3']);
+        $id4 = intval($_POST['txtId4']);
+
+
+        $c1 = floatval($_POST['txtCos1']);
+        $c2 = floatval($_POST['txtCos2']);
+        $c3 = floatval($_POST['txtCos3']);
+        $c4 = floatval($_POST['txtCos4']);
+        
+        $idArr = intval($_POST['txtIdArr']);
+        $cArr = floatval($_POST['txtCosArr']);
+
+        try{
+
+            $this->db->beginTransaction();
+
+            $pr1 = "UPDATE proc_ranurado SET tiraje_minimo=$r11, tiraje_maximo=$r12, precio_unitario= $c1 WHERE id_ranurado = $id1";
+            $query1    = $this->db->prepare($pr1);
+            $inserted1 = $query1->execute();
+
+            $pr2 = "UPDATE proc_ranurado SET tiraje_minimo=$r21, tiraje_maximo=$r22, precio_unitario= $c2 WHERE id_ranurado = $id2";
+            $query2    = $this->db->prepare($pr2);
+            $inserted2 = $query2->execute();
+
+            $pr3 = "UPDATE proc_ranurado SET tiraje_minimo=$r31, tiraje_maximo=$r32, precio_unitario= $c3 WHERE id_ranurado = $id3";
+            $query3    = $this->db->prepare($pr3);
+            $inserted3 = $query3->execute();
+
+            $pr4 = "UPDATE proc_ranurado SET tiraje_minimo=$r41, tiraje_maximo=$r42, precio_unitario= $c4 WHERE id_ranurado = $id4";
+            $query4    = $this->db->prepare($pr4);
+            $inserted4 = $query4->execute();
+
+            $arreglo = "UPDATE proc_ranurado SET precio_unitario = $cArr WHERE id_ranurado = $idArr";
+            $query5    = $this->db->prepare($arreglo);
+            $inserted5 = $query5->execute();
+
+
+            if( $inserted1 and $inserted2 and $inserted3 and $inserted4 and $inserted5 ){
 
                 $this->db->commit();
                 return true;

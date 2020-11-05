@@ -27,18 +27,19 @@
 
         if (!isset($_SESSION)) session_start();
         
-        $login               = $this->loadController('login');
-        $optionsmodel        = $this->loadModel('OptionsModel');
-        $login_model         = $this->loadModel('LoginModel');
-        $procesosOffset      = $optionsmodel->getProcOffset(); 
-        $procesosSerigrafia  = $optionsmodel->getProcSerigrafia();
-        $procesosDigital     = $optionsmodel->getProcDigital();
-        $procesosLaminado    = $optionsmodel->getProcLaminado();
-        $procesosHotStamping = $optionsmodel->getProcHotStamping();
-        $procesosGrabado     = $optionsmodel->getProcGrabado();
-        $procesosSuaje       = $optionsmodel->getProcSuaje();
-        $procesosLaser       = $optionsmodel->getProcLaser();
+        $login                  = $this->loadController('login');
+        $optionsmodel           = $this->loadModel('OptionsModel');
+        $login_model            = $this->loadModel('LoginModel');
+        $procesosOffset         = $optionsmodel->getProcOffset(); 
+        $procesosSerigrafia     = $optionsmodel->getProcSerigrafia();
+        $procesosDigital        = $optionsmodel->getProcDigital();
+        $procesosLaminado       = $optionsmodel->getProcLaminado();
+        $procesosHotStamping    = $optionsmodel->getProcHotStamping();
+        $procesosGrabado        = $optionsmodel->getProcGrabado();
+        $procesosSuaje          = $optionsmodel->getProcSuaje();
+        $procesosLaser          = $optionsmodel->getProcLaser();
         $procesosEncuadernacion = $optionsmodel->getProcEncuadernacion();
+        $procesosRanurado       = $optionsmodel->getProcRanurado();
 
         $i=1;
         $j=1;
@@ -51,6 +52,15 @@
 
                 $nombre=$enc['nombre'];
                 $procesosEncuadernacion["$nombre"]=$enc;
+            }
+        }
+
+        foreach ( $procesosRanurado as $ran ) {
+            
+            if( isset($ran['nombre'])  ){
+
+                $nombre=$ran['nombre'];
+                $procesosEncuadernacion["$nombre"]=$ran;
             }
         }
         
@@ -425,6 +435,25 @@
             echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
             echo '</script>';
             //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
+        } else {
+
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+        }
+    }
+
+    public function updateProcRan() {
+
+        $optionsModel = $this->loadModel('OptionsModel');
+        $update       = $optionsModel->updateProcRan();
+        
+        if ($update) {
+            
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         } else {
 
             echo '<script language="javascript">';

@@ -270,6 +270,7 @@
 		</div>
 		<button id="btnSua" name="btnSua" class="boton" onclick="switchForm('Suaje','formS','S')">Suaje</button>
 		<button id="btnEnc" name="btnEnc" class="boton" onclick="switchForm('Encuadernacion','formEnc','enc')">Encuadernacion</button>
+		<button id="btnRan" name="btnRan" class="boton" onclick="switchForm('Ranurado','formRan','ran')">Ranurado</button>
 	</div>
 
 	<div class="menu-right">
@@ -1533,6 +1534,112 @@
 			</div>
 			<input type="submit" onclick="opacidad();" name="btnAceptarDig" value="Modificar" class="btnModificar">
 		</div>
+
+		<div id="formRan" class="aForms" data-action="<?php echo URL?>modificaprocesos/updateProcRan/">
+			
+			<div class="seccion">
+
+				<table>
+
+					<tr>
+						<th align="center" colspan="3">
+							<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Arreglo</p>
+						</th>
+					</tr>
+					<tr>
+						<td align="center" colspan="2">
+							<h4>Precio Unitario:</h4>
+						</td>
+						<td align="left">
+							<input align="left" style="width: 60px;" onkeyup="asignaNum();" type="text" id="txtCosArr" name="txtCosArr" placeholder="Costo Unitario"><label> MXN</label>
+						</td>
+						<td style="display: none;">
+							<input type="text" id="txtIdArr" name="txtIdArr">
+						</td>
+					</tr>
+					<tr>
+						<th align="center" colspan="3">
+							<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Por Ranura</p>
+						</th>
+					</tr>
+					<tr>
+						<th align="center" colspan="2">
+							<h4 style="text-align: center;">Rango</h4>
+						</th>
+						<th align="center">
+							<h4>Precio</h4>
+						</th>
+					</tr>
+					<tr>
+						<th align="center">
+							<h4 style="text-align: center;">Min</h4>
+						</th>
+						<th align="center">
+							<h4 style="text-align: center;">Max</h4>
+						</th>
+					</tr>
+					<tr>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan11" name="txtRan11" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan12" name="txtRan12" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtCos1" name="txtCos1" placeholder="Costo"><label> MXN</label>
+						</td>
+						<td style="display: none;">
+							<input type="text" id="txtId1" name="txtId1">
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan21" name="txtRan21" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan22" name="txtRan22" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtCos2" name="txtCos2" placeholder="Costo"><label> MXN</label>
+						</td>
+						<td style="display: none;">
+							<input type="text" id="txtId2" name="txtId2">
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan31" name="txtRan31" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan32" name="txtRan32" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtCos3" name="txtCos3" placeholder="Costo"><label> MXN</label>
+						</td>
+						<td style="display: none;">
+							<input type="text" id="txtId3" name="txtId3">
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan41" name="txtRan41" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtRan42" name="txtRan42" placeholder="Rango">
+						</td>
+						<td align="center">
+							<input onkeyup="asignaNum();" style="width: 60px;" type="text" id="txtCos4" name="txtCos4" placeholder="Costo"><label> MXN</label>
+						</td>
+						<td style="display: none;">
+							<input type="text" id="txtId4" name="txtId4">
+						</td>
+					</tr>
+				</table>
+
+				<input type="text" id="usuario" name="usuario" value="<?=$_SESSION['id_usuario']?>" style="display: none">
+			</div>
+			<input type="submit" onclick="opacidad();" name="btnAceptarRan" value="Modificar" class="btnModificar">
+		</div>
 	</div>
 </div>
 
@@ -2100,6 +2207,38 @@
 			//Domi
 			$("#txtIdDomi").val("<?= $procesosEncuadernacion['Domi']['id_encuadernacion']?>");
 			$("#txtCosD").val("<?= $procesosEncuadernacion['Domi']['precio_unitario']?>");
+		}
+	});
+
+	$("#btnRan").click(function(){
+
+		if( a == 0 ){
+
+			//Arreglo
+
+			$("#txtIdArr").val("<?= $procesosRanurado[0]['id_ranurado']?>");
+			$("#txtCosArr").val("<?= $procesosRanurado[0]['precio_unitario']?>");
+
+			//Por Ranura
+			$("#txtRan11").val("<?= $procesosRanurado['Por Ranura'][0]['tiraje_minimo']?>");
+			$("#txtRan12").val("<?= $procesosRanurado['Por Ranura'][0]['tiraje_maximo']?>");
+			$("#txtRan21").val("<?= $procesosRanurado['Por Ranura'][1]['tiraje_minimo']?>");
+			$("#txtRan22").val("<?= $procesosRanurado['Por Ranura'][1]['tiraje_maximo']?>");
+
+			$("#txtRan31").val("<?= $procesosRanurado['Por Ranura'][2]['tiraje_minimo']?>");
+			$("#txtRan32").val("<?= $procesosRanurado['Por Ranura'][2]['tiraje_maximo']?>");
+			$("#txtRan41").val("<?= $procesosRanurado['Por Ranura'][3]['tiraje_minimo']?>");
+			$("#txtRan42").val("<?= $procesosRanurado['Por Ranura'][3]['tiraje_maximo']?>");
+
+			$("#txtCos1").val("<?= $procesosRanurado['Por Ranura'][0]['precio_unitario']?>");
+			$("#txtCos2").val("<?= $procesosRanurado['Por Ranura'][1]['precio_unitario']?>");
+			$("#txtCos3").val("<?= $procesosRanurado['Por Ranura'][2]['precio_unitario']?>");
+			$("#txtCos4").val("<?= $procesosRanurado['Por Ranura'][3]['precio_unitario']?>");
+
+			$("#txtId1").val("<?= $procesosRanurado['Por Ranura'][0]['id_ranurado']?>");
+			$("#txtId2").val("<?= $procesosRanurado['Por Ranura'][1]['id_ranurado']?>");
+			$("#txtId3").val("<?= $procesosRanurado['Por Ranura'][2]['id_ranurado']?>");
+			$("#txtId4").val("<?= $procesosRanurado['Por Ranura'][3]['id_ranurado']?>");
 		}
 	});
 
