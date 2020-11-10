@@ -64,7 +64,7 @@
 
             <div class="cajas-col-input t-right">
 
-                <input class="cajas-input medidas-input" name="odt" id="odt" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus="" required="">
+                <input class="cajas-input medidas-input" name="odt" id="odt" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus="" required="" value="<?= $aJson['num_odt']?>">
             </div>
 
 
@@ -80,7 +80,7 @@
 
             <div class="cajas-col-input t-right">
 
-                <input class="cajas-input medidas-input" name="base" id="base" type="number" placeholder="cm" tabindex="2" min="0.01" step="any" required>
+                <input class="cajas-input medidas-input" name="base" id="base" type="number" placeholder="cm" tabindex="2" min="0.01" step="any" required value="<?= $aJson['base']?>">
             </div>
         </div>
 
@@ -94,7 +94,7 @@
 
             <div class="cajas-col-input t-right">
 
-                <input class="cajas-input medidas-input" name="alto" id="alto" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required>
+                <input class="cajas-input medidas-input" name="alto" id="alto" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required value="<?= $aJson['alto']?>">
             </div>
         </div>
 
@@ -108,7 +108,7 @@
 
             <div class="cajas-col-input t-right">
 
-                <input class="cajas-input medidas-input" name="profundidad_cajon" id="profundidad_cajon" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required>
+                <input class="cajas-input medidas-input" name="profundidad_cajon" id="profundidad_cajon" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_cajon']?>">
             </div>
         </div>
 
@@ -122,7 +122,7 @@
 
             <div class="cajas-col-input t-right">
 
-                <input class="cajas-input medidas-input" name="profundidad_tapa" id="profundidad_tapa" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required>
+                <input class="cajas-input medidas-input" name="profundidad_tapa" id="profundidad_tapa" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_tapa']?>">
             </div>
         </div>
 
@@ -198,7 +198,7 @@
 
             <div class="cajas-col-input t-right">
 
-                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="6" required="">
+                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="6" required="" value="<?= $aJson['tiraje']?>">
             </div>
         </div>
     </div>
@@ -236,6 +236,223 @@
                 </tbody>
             </table>
         </div>    
+    </div>
+</div>
+
+<div id="divDerecho-slave" class="grid div-derecho"  style="display: none;">
+
+    <!-- Empalme Cajon -->
+    <div class="divgral">
+        
+        <div class="secciones divContenido">
+            <img src="<?= URL ?>/public/images/regalo/regalo.png" style="width: 40%;">
+            
+            <br>
+            <label class="lblTituloSec">Empalme del Cajón</label>
+        </div>
+
+        <br>
+
+        <!-- Papel -->
+        <div>
+            <select class="chosen forros" name="optEC" id="optEC" tabindex="7">
+
+                <option selected disabled>Elegir tipo de papel</option>
+                <?php
+                foreach ($papers as $paper) {   ?>
+
+                    <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
+                <?php } ?>
+            </select>
+        </div>
+
+        <!-- mismo papel para todos -->
+        <div class="custom-control custom-checkbox mr-sm-2">
+
+            <input type="checkbox" name="btnCheckPaper" id="btnCheckPaper" class="custom-control-input">
+            <label class="custom-control-label" for="btnCheckPaper"style="font-size: 15px; cursor: pointer;" class="btn btn-outline-primary">Mismo Papel P/Todos</label>
+        </div>
+
+        <!-- Añadir Impresiones -->
+        <div>
+
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('EC')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div class="container divimpresiones">
+
+                <table class="table">
+                    <tbody id="listImpEC">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Añadir Acabados -->
+        <div>
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('EC')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div class="container divacabados">
+                <table class="table">
+                    <tbody id="listAcbEC">
+                        <!-- contenido seleccionado -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <!-- Forro Cajon -->
+    <div class="divgral">
+
+        <div class="secciones divContenido">
+            <img src="<?=URL ?>/public/images/regalo/regalo.png" style="width: 40%;">
+            <br>
+            <label class="lblTituloSec">Forro del Cajón</label>
+        </div>
+        <br>
+
+        <div>
+            <select class="chosen forros" name="optFC" id="optFC" tabindex="8" required>
+                <option value="nulo" selected disabled>Elegir tipo de papel</option>
+                <?php
+                foreach ($papers as $paper) {   ?>
+                <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>"  data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?>
+                </option> <?php } ?>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('FC')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div class="divimpresiones">
+                <table class="table">
+                    <tbody id="listImpFC">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('FC')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div class="container divacabados">
+                <table class="table" id="acbTableFcajon">
+                    <tbody id="listAcbFC">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empalme Tapa -->
+    <div class="divgral">
+
+        <div class="secciones divContenido">
+            <img src="<?=URL ?>/public/images/regalo/regalo.png" style="width: 40%;">
+            <br>
+            <label class="lblTituloSec">Empalme de la Tapa</label>
+        </div>
+        <br>
+
+        <div>
+            <select class="chosen forros" name="optET" id="optET" tabindex="9" required>
+
+                <option value="nulo" selected disabled>Elegir tipo de papel</option>
+
+                <?php
+                foreach ($papers as $paper) {   ?>
+
+                <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('ET')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div id="ListaImpresiones" class="container divimpresiones">
+                <table class="table">
+                    <tbody id="listImpET">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('ET')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div id="ListaAcabadosFcartera" class="container divacabados">
+                <table class="table">
+                    <tbody id="listAcbET">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forro Tapa -->
+    <div class="divgral">
+
+        <div class="secciones divContenido">
+            <img src="<?=URL ?>/public/images/regalo/regalo.png"  style="width: 40%;">
+            <br>
+            <label class="lblTituloSec">Forro de la Tapa</label>
+        </div>
+
+        <br>
+
+        <div>
+            <select class="chosen forros" name="optFT" id="optFT" tabindex="9" required>
+
+                <option selected disabled>Elegir tipo de papel</option>
+
+                <?php
+                foreach ($papers as $paper) {   ?>
+
+                <option value="<?=$paper['id_papel']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('FT')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div id="ListaImpresiones" class="container divimpresiones">
+                <table class="table">
+                    <tbody id="listImpFT">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('FT')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+            <div id="ListaAcabadosFcartera" class="container divacabados">
+                <table class="table">
+                    <tbody id="listAcbFT">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -280,7 +497,7 @@
 
     <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
         <label style="font-size: 25px; margin-right: 100px;">Total: </label>
-        <label id="Totalplus" style="font-size: 25px;">$0.00</label>
+        <label id="Totalplus" style="font-size: 25px;">$<?= $aJson['costo_odt']?></label>
     </button>
 
     <div class="dropdown-menu" style="width: 350px;">
@@ -288,38 +505,38 @@
         <table class="table">
             <tr>
                 <td>Subtotal: </td>
-                <td id="tdSubtotalCaja" class="grand-total">$0.00</td>
+                <td id="tdSubtotalCaja" class="grand-total">$<?= $aJson['costo_subtotal']?></td>
             </tr>
             <tr>
                 <td>Utilidad: </td>
-                <td id="UtilidadDrop">$0.00</td>
+                <td id="UtilidadDrop">$<?= $aJson['Utilidad']?></td>
             </tr>
             <tr>
                 <td>IVA:</td>
-                <td id="IVADrop">$0.00</td>
+                <td id="IVADrop">$<?= $aJson['iva']?></td>
             </tr>
 
             <tr>
                 <td>ISR: </td>
-                <td id="ISRDrop">$0.00</td>
+                <td id="ISRDrop">$<?= $aJson['ISR']?></td>
             </tr>
             <tr>
                 <td>Comisiones: </td>
-                <td id="ComisionesDrop">$0.00</td>
+                <td id="ComisionesDrop">$<?= $aJson['comisiones']?></td>
             </tr>
             <tr>
                 <td>% Indirecto: </td>
-                <td id="IndirectoDrop">$0.00</td>
+                <td id="IndirectoDrop">$<?= $aJson['indirecto']?></td>
             </tr>
             <tr>
                 <td>Ventas: </td>
-                <td id="VentasDrop">$0.00</td>
+                <td id="VentasDrop">$<?= $aJson['ventas']?></td>
             </tr>
             <tr>
                 <td>
-                    <button type="button" id="descuentoModal" style="border: none; background: white;">Descuento: (0%) </button>
+                    <button type="button" id="descuentoModal" style="border: none; background: white;">Descuento: (<?= $aJson['descuento_pctje']?>%) </button>
                 </td>
-                <td id="DescuentoDrop">$0.00</td>
+                <td id="DescuentoDrop">$<?= $aJson['descuento']?></td>
             </tr>
         </table>
     </div>
@@ -1564,47 +1781,49 @@
         </table>
         <img border="0" src="<?=URL ;?>public/img/henpp.png" style="width: 7%; margin: 2%"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
     </div>
+<script type="text/javascript">
 
+    var a = [<?php echo json_encode($aJson) ?>];
 
-<?php
-    if( $aJson ){?>
-        <script type="text/javascript">
+    console.log(a);
+</script>
 
-            var idCarton = "<?= $aJson['id_grosor_carton']?>";
-            var idTapa = "<?= $aJson['id_grosor_tapa']?>";
+<script type="text/javascript">
+    
 
-            $("#grosor_carton option[data-id=" + idCarton +"]").attr("selected", true);
+    var idCarton = parseInt("<?= $aJson['costo_grosor_carton']['id_cajon']?>");
+    var idTapa = parseInt("<?= $aJson['costo_grosor_tapa']['id_cajon']?>");
 
-            $("#grosor_tapa option[data-id=" + idTapa +"]").attr("selected", true);
+    $("#grosor_carton option[data-id=" + idCarton +"]").attr("selected", true);
 
-            var idEC = parseInt(<?= $aJson['id_papel_EC']?>);
-            var idFC = parseInt(<?= $aJson['id_papel_FC']?>);
-            var idET = parseInt(<?= $aJson['id_papel_ET']?>);
-            var idFT = parseInt(<?= $aJson['id_papel_FT']?>);
+    $("#grosor_tapa option[data-id=" + idTapa +"]").attr("selected", true);
 
-            //muestra los papeles elegidos
+    var idEC = parseInt("<?= $aJson['id_papel_emp']?>");
+    var idFC = parseInt("<?= $aJson['id_papel_fcaj']?>");
+    var idET = parseInt("<?= $aJson['id_papel_emptap']?>");
+    var idFT = parseInt("<?= $aJson['id_papel_ftap']?>");
 
-            $("#optBasCajon option[value='" + idBaseCajon +"']").prop("selected",true);
-            $("#optCirCajon option[value='" + idCCajon +"']").prop("selected",true);
-            $("#optExtCajon option[value='" + idFECajon +"']").prop("selected",true);
-            $("#optPomCajon option[value='" + idPCajon +"']").prop("selected",true);
-        </script>
-<?php    }
-?>
+    //muestra los papeles elegidos
+
+    $("#optEC option[value='" + idEC +"']").prop("selected",true);
+    $("#optFC option[value='" + idFC +"']").prop("selected",true);
+    $("#optET option[value='" + idET +"']").prop("selected",true);
+    $("#optFT option[value='" + idFT +"']").prop("selected",true);
+</script>
 
 <script type="text/javascript" src="<?= URL ?>public/js/cotizador/regalo.js"></script>
 
 <script type="text/javascript">
 
+
     //checkDimensions();
     var contenidoIzquierdo = $("#divIzquierdo-slave").contents();
+    var contenidoDerecho = $("#divDerecho-slave").contents();
     $("#divIzquierdo").empty();
     $("#divIzquierdo").append(contenidoIzquierdo);
 
-    divSecciones("Empalme Cajón", "optEC" , "EC", "<?=URL ?>/public/images/regalo/regalo.png");
-    divSecciones("Forro Cajón", "optFC" , "FC", "<?=URL ?>/public/images/regalo/regalo.png");
-    divSecciones("Empalme Tapa", "optET" , "ET", "<?=URL ?>/public/images/regalo/regalo.png");
-    divSecciones("Forro Tapa", "optFT" , "FT", "<?=URL ?>/public/images/regalo/regalo.png");
+    $("#divDerecho").empty();
+    $("#divDerecho").append(contenidoDerecho);
     
     var cliente = getIdClient();
     //eligira a donde se enviara la informacion
@@ -1612,33 +1831,60 @@
     setClient( cliente );
     setURL("<?= URL ?>");
 
+    var trEC   = '<tr><td><b>Empalme Cajón</b></td><td></td><td></td><td></td></tr>';
+    var trFC    = '<tr><td><b>Forro Cajón</b></td><td></td><td></td><td></td></tr>';
+    var trET  = '<tr><td><b>Empalme Tapa</b></td><td></td><td></td><td></td></tr>';
+    var trFT    = '<tr><td><b>Forro Tapa</b></td><td></td><td></td><td></td></tr>';
+
+    var trMensajeria = '<tr><td><b>Costo Mensajería</b></td><td></td><td></td><td></td></tr>';
+    var trEmpaque = '<tr><td><b>Costo Empaque</b></td><td></td><td></td><td></td></tr>';
+    var trEncuadernacion = '<tr><td><b>Encuadernación</b></td><td></td><td></td><td></td></tr>';
+
+    //imprime titulos para resumen
+    $('#resumenEC').append(trEC);
+    $('#resumenFC').append(trFC);
+    $('#resumenET').append(trET);
+    $('#resumenFT').append(trFT);
+
+    $('#resumenMensajeria').append(trMensajeria);
+    $('#resumenEmpaque').append(trEmpaque);
+    $('#resumenEncuadernacion').append(trEncuadernacion);
+
     var AGlobal = <?php echo json_encode($aJson)?>;
+
+    descuento = AGlobal['descuento_pctje'];
 
     appndPapeles( AGlobal, "papel_Emp");
     appndPapeles( AGlobal, "papel_FCaj");
     appndPapeles( AGlobal, "papel_EmpTap");
     appndPapeles( AGlobal, "papel_FTap");
 
-    var aImpEC = <?php echo json_encode($aJson['aImpecaj']) ?>;
-    var aImpFC = <?php echo json_encode($aJson['aImpfcaj']) ?>;
-    var aImpET = <?php echo json_encode($aJson['aImpetap']) ?>;
-    var aImpFT = <?php echo json_encode($aJson['aImpftap']) ?>;
+    /*appndPapelCarton( AGlobal, AGlobal['costo_grosor_carton'], "Cartón Cajón" );
+    appndPapelCarton( AGlobal, AGlobal['papel_Emp'], "Empalme Cajón" );
+    appndPapelCarton( AGlobal, AGlobal['papel_FCaj'], "Forro Cajón" );
+    appndPapelCarton( AGlobal, AGlobal['costo_grosor_tapa'], "Cartón Tapa" );
+    appndPapelCarton( AGlobal, AGlobal['papel_EmpTap'], "Empalme Tapa" );
+    appndPapelCarton( AGlobal, AGlobal['papel_FTap'], "Forro Tapa" );*/
 
-    appndImpMod(aImpEC,"EC", aImpBC);
-    appndImpMod( aImpFC, "FC", aImpCC );
-    appndImpMod( aImpET, "ET", aImpFEC );
-    appndImpMod( aImpFT, "FT", aImpPC );
+    var aImpEC1 = <?php echo json_encode($aJson['aImpempcaj']) ?>;
+    var aImpFC1 = <?php echo json_encode($aJson['aImpfcaj']) ?>;
+    var aImpET1 = <?php echo json_encode($aJson['aImpetap']) ?>;
+    var aImpFT1 = <?php echo json_encode($aJson['aImpftap']) ?>;
 
-    var aAcbEC     = <?php echo json_encode($aJson['aAcbecaj']) ?>;
-    var aAcbFC   = <?php echo json_encode($aJson['aAcbfcaj']) ?>;
-    var aAcbET  = <?php echo json_encode($aJson['aAcbetap']) ?>;
-    var aAcbFT   = <?php echo json_encode($aJson['aAcbftap']) ?>;
+    appndImpMod(aImpEC1,"EC", aImpEC);
+    appndImpMod( aImpFC1, "FC", aImpFC );
+    appndImpMod( aImpET1, "ET", aImpET );
+    appndImpMod( aImpFT1, "FT", aImpFT );
 
-    appndAcbMod( aAcbEC,"EC", aAcbBC);
-    appndAcbMod( aAcbFC, "FC", aAcbCC );
-    appndAcbMod( aAcbET, "ET", aAcbFEC );
-    appndAcbMod( aAcbFT, "FT", aAcbPC );
+    var aAcbEC = <?php echo json_encode($aJson['aAcbecaj']) ?>;
+    var aAcbFC = <?php echo json_encode($aJson['aAcbfcaj']) ?>;
+    var aAcbET = <?php echo json_encode($aJson['aAcbetap']) ?>;
+    var aAcbFT = <?php echo json_encode($aJson['aAcbftap']) ?>;
 
+    appndAcbMod( aAcbEC,"EC", aAcbEC);
+    appndAcbMod( aAcbFC, "FC", aAcbFC );
+    appndAcbMod( aAcbET, "ET", aAcbET );
+    appndAcbMod( aAcbFT, "FT", aAcbFT );
 
     var cierres    = <?php echo json_encode($aJson['Cierres'])?>;
     var accesorios = <?php echo json_encode($aJson['Accesorios'])?>;

@@ -38,6 +38,65 @@ function setURL( url ){
     this.url = url;
 }
 
+function appndPapeles(arrPapel, seccion){
+
+    var sec = "";
+    if( arrPapel[seccion] == undefined || arrPapel[seccion] == null ) return false;
+
+    var nombreP      = arrPapel[seccion]['nombre'];
+    var ancho        = arrPapel[seccion]['corte_ancho'];
+    var largo        = arrPapel[seccion]['corte_largo'];
+    var cortes       = arrPapel[seccion]['cortes'];
+    var totalPliegos = arrPapel[seccion]['costo_tot_pliegos'];
+    var costoTotal   = parseFloat(arrPapel[seccion]['costo_unitario']);
+    var titulo       = "";
+
+    if (nombreP == undefined ) {
+        
+        var nombreP      = arrPapel[seccion]['nombre'];
+        var ancho      = arrPapel[seccion]['ancho'];
+        var largo      = arrPapel[seccion]['largo'];
+        var cortes       = arrPapel[seccion]['cortes'];
+        var totalPliegos = arrPapel[seccion]['pliegos'];
+        var costoTotal   = parseFloat(arrPapel[seccion]['costo_tot_pliegos']);
+    }
+
+    switch(seccion){
+
+        case "papel_Emp":
+
+            titulo = "Empalme cajon";
+            sec = "EC";
+        break;
+
+        case "papel_FCaj":
+
+            titulo = "Forro del cajon";
+            sec = "FC";
+        break;
+
+        case "papel_EmpTap":
+
+            titulo = "Empalme tapa";
+            sec = "ET";
+        break;
+
+        case "papel_FTap":
+
+            titulo = "Forro Tapa";
+            sec = "FT";
+        break;
+    }
+
+    var tr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ titulo +'</td></tr><tr><td>Material</td><td>'+ nombreP +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ largo +' Ancho: '+ ancho +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ cortes +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ totalPliegos +'</td></tr><tr><td>Costo Total</td><td>$'+ costoTotal +'<input type="hidden" class="prices" value="' + costoTotal + '"></td></tr>';
+
+    $('#table_papeles_tr').append(tr);
+
+    var trResumen = '<tr><td></td><td>Papel '+ nombreP +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
+
+    $('#resumen'+sec).append(trResumen);
+}
+
 function emptyTables(){
 
     $('#table_adicionales_tr').empty();
@@ -86,19 +145,19 @@ function setTableBtn(texto, impAcb){
 
     switch(texto){
 
-        case "ECaj":
+        case "EC":
             return 'list'+impAcb+'EC';
         break;
 
-        case "FCaj":
+        case "FC":
             return 'list'+impAcb+'FC';
         break;
 
-        case "ETap":
+        case "ET":
             return 'list'+impAcb+'ET';
         break;
 
-        case "FTap":
+        case "FT":
             return 'list'+impAcb+'FT';
         break;
     }
@@ -290,11 +349,11 @@ function appndImpMod( aImp, lblaImp, arrPrincipal ){
     
     var titulo        = insrtTitulo(lblaImp);
     var tabla         = "";
+    tabla = setTableBtn(lblaImp,'Imp');
 
     if( offset ){
 
         for( var i = 0; i < offset.length; i++ ){
-
 
             var cantidad  = offset[i]['cantidad'];
             var tintas    = offset[i]['num_tintas'];
@@ -312,9 +371,8 @@ function appndImpMod( aImp, lblaImp, arrPrincipal ){
                 tipo  = offset[i]['tipo'];
 
                 id =0;
-                tabla = setTableBtn(lblaImp,'Imp');
             }
-
+            
             var imp  = '<tr><td class="textImp">Offset</td><td style="display: none">'+ id +'<input name="IDopImpSerEmp" style="display:none" type="hidden" value="'+ id +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="tintasImp" style="display: none;">'+ tintas +'<input name="tintasselSerEmp" type="hidden" value="'+ tintas +'"></td><td class="tipoSeri" style="display: none;">'+ tipo +'<input name="tipoSeriEmp" type="hidden" value="'+ id +'"></td><td class="' + tabla +' img_delete"></td></tr>';
 
             arrPrincipal.push({"Tipo_impresion": "Offset", "tintas": tintas, "tipo_offset": tipo, "IDopImp": id, "idtipoOff": id});
@@ -383,8 +441,6 @@ function appndImpMod( aImp, lblaImp, arrPrincipal ){
                 cantidad = digital[i]['tiraje'];
                 tipo     = digital[i]['impresion'];
                 id = 0;
-
-                tabla = setTableBtn(lblaImp,'Imp');
             }
 
             var imp  = '<tr><td class="textImp">Digital</td><td style="display: none"><input  name="IDopImpDiEmp" type="hidden" value="'+ id +'"></td><td class="CellWithComment" >...<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="tipoDig" style="display: none;">'+ tipo +'<input name="tipoDigEmp" type="hidden" value="'+ id +'"></td><td class="' + tabla +' img_delete"></td></tr>';
@@ -432,7 +488,6 @@ function appndImpMod( aImp, lblaImp, arrPrincipal ){
                 cUTir    = serigrafia[i]['costo_unitario_tiro'];
                 cUTir    = serigrafia[i]['costo_unit_tiro'];
                 id       = 0;
-                tabla    = setTableBtn(lblaImp,'Imp');
             }
 
             var imp  = '<tr><td class="textImp">Serigrafia</td><td style="display: none">'+ id +'<input name="IDopImpSerEmp" style="display:none" type="hidden" value="'+ id +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="tintasImp" style="display: none;">'+ tintas +'<input  name="tintasselSerEmp" type="hidden" value="'+ tintas +'"></td><td class="tipoSeri" style="display: none;">'+ tipo +'<input name="tipoSeriEmp" type="hidden" value="'+ id +'"></td><td class="' + tabla +' img_delete"></td></tr>';
