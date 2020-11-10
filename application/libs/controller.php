@@ -31,11 +31,13 @@ class Controller {
     public function loadModel($model_name) {
 
         require_once 'application/models/' . strtolower($model_name) . '.php';
+
         /*
         $temp = "";         // esta variable para que se crea, donde se usa en esta clase???
 
         $temp = 'application/models/' . strtolower($model_name) . '.php';
         */
+
         return new $model_name($this->db);
     }
 
@@ -54,6 +56,101 @@ class Controller {
         $aJson["error"]   = $aJson["error"] . strval($error);
 
         return $aJson;
+    }
+
+
+    public function msgError($text) {
+
+        $aJson['error'] = $text;
+
+        echo json_encode($aJson);
+
+        die();
+    }
+
+
+    public function suma_costo_procesos($aJson_tmp, $nomb_proceso) {
+
+        $costo_proc_tmp = 0;
+
+        if (array_key_exists($nomb_proceso, $aJson_tmp)) {
+
+            $nomb_proceso_tmp = array_values($aJson_tmp[$nomb_proceso]);
+
+            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+
+                $costo_tot_proceso = $nomb_proceso_tmp[$k]['costo_tot_proceso'];
+                $costo_tot_proceso = floatval($costo_tot_proceso);
+
+                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
+            }
+        }
+
+        return $costo_proc_tmp;
+    }
+
+
+    public function suma_costo_cierres($aJson_tmp, $nomb_proceso) {
+
+        $nombre_proceso = trim(strval($nomb_proceso));
+
+        $costo_proc_tmp = 0;
+
+        if (array_key_exists($nombre_proceso, $aJson_tmp)) {
+
+            $nomb_proceso_tmp = array_values($aJson_tmp[$nombre_proceso]);
+
+            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+
+                $costo_tot_proceso = floatval($nomb_proceso_tmp[$k]['costo_cierre']);
+
+                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
+            }
+        }
+
+        return $costo_proc_tmp;
+    }
+
+
+    public function suma_costo_bancos($aJson_tmp, $nomb_proceso) {
+
+        $nombre_proceso = trim(strval($nomb_proceso));
+
+        $costo_proc_tmp = 0;
+        if (array_key_exists($nombre_proceso, $aJson_tmp)) {
+
+            $nomb_proceso_tmp = array_values($aJson_tmp[$nombre_proceso]);
+
+            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+
+                $costo_tot_proceso = floatval($nomb_proceso_tmp[$k]['costo_bancos']);
+
+                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
+            }
+        }
+
+        return $costo_proc_tmp;
+    }
+
+
+    public function suma_costo_accesorios($aJson_tmp, $nomb_proceso) {
+
+        $nombre_proceso = trim(strval($nomb_proceso));
+
+        $costo_proc_tmp = 0;
+        if (array_key_exists($nombre_proceso, $aJson_tmp)) {
+
+            $nomb_proceso_tmp = array_values($aJson_tmp[$nombre_proceso]);
+
+            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+
+                $costo_tot_proceso = floatval($nomb_proceso_tmp[$k]['costo_accesorios']);
+
+                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
+            }
+        }
+
+        return $costo_proc_tmp;
     }
 
 
@@ -245,7 +342,6 @@ class Controller {
             if ($key == $keySearch) {
 
                 //echo 'Si existe';
-                
                 return true;
             } elseif (is_array($item) && $this->findKeyInArray($item, $keySearch)) {
 
@@ -545,11 +641,11 @@ class Controller {
     }
 
 
-    public function costo_corte($corte, $tiraje, $cortes_pliego, $ventas_model) {
+    public function costo_tot_corte($tiraje, $tot_pliegos, $ventas_model) {
 
-        $aJson_corte_tmp = [];
+        $corte_db = $ventas_model->costo_offset("corte");
 
-        $corte_db = $ventas_model->costo_offset($corte);
+        $corte_costo_unitario = 0;
 
         foreach($corte_db as $row) {
 
@@ -557,17 +653,51 @@ class Controller {
             $corte_por_millar     = floatval($row['por_millar']);
         }
 
+
+        $costo_millar = self::Deltax($tot_pliegos, $corte_por_millar);
+        $costo_corte  = floatval($costo_millar * $corte_costo_unitario);
+
+        if ($corte_costo_unitario <= 0) {
+
+            $costo_corte = 0;
+        }
+
+        return $costo_corte;
+
+    }
+
+
+    public function costo_corte($corte, $tiraje, $cortes_pliego, $ventas_model) {
+
+        $aJson_corte_tmp = [];
+
+        $corte_db = $ventas_model->costo_offset($corte);
+
+        $corte_costo_unitario = 0;
+
+        foreach($corte_db as $row) {
+
+            $corte_costo_unitario = floatval($row['costo_unitario']);
+            $corte_por_millar     = floatval($row['por_millar']);
+        }
+
+
         $tot_pliegos_emp = self::Deltax($tiraje, $cortes_pliego);
 
         $costo_millar = self::Deltax($tot_pliegos_emp, $corte_por_millar);
         $costo_corte  = floatval($costo_millar * $corte_costo_unitario);
 
-        $aJson_corte_tmp['tiraje'] = intval($tiraje);
+        $aJson_corte_tmp['tiraje']                     = intval($tiraje);
         $aJson_corte_tmp['costo_unitario_corte_papel'] = floatval($corte_costo_unitario);
         $aJson_corte_tmp['cortes_pliego']              = intval($cortes_pliego);
         $aJson_corte_tmp['tot_pliegos']                = intval($tot_pliegos_emp);
         $aJson_corte_tmp['millares']                   = intval($costo_millar);
         $aJson_corte_tmp['tot_costo_corte']            = $costo_corte;
+
+        if ($corte_costo_unitario <= 0) {
+
+            $aJson_corte_tmp['tot_costo_corte'] = 0;
+        }
 
         return $aJson_corte_tmp;
     }
@@ -603,8 +733,6 @@ class Controller {
         $corte_H = $cortes_H['cortesT'];
 
     /*
-    ** La matemática básica nos dice que el residuo(en este caso 'sobranteB'), nunca
-    ** será mayor al divisor, por lo tanto estos ifs no son necesarios.
 
         if ($cortes['sobranteB'] >= $ch) {
 
@@ -875,6 +1003,7 @@ class Controller {
 
         $aCosto_Offset['maquila'] = "NO";
 
+        $l_ok = true;
 
         // corte
         $db_tmp = $ventas_model->costo_proceso("proc_offset", "Corte");
@@ -896,6 +1025,11 @@ class Controller {
             unset($db_tmp);
         }
 
+
+        if ($corte_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
 
         $delta_costo = self:: Deltax($tiraje, $corte_pliego);
         $delta_corte = self:: Deltax($tiraje, $corte_por_millar);
@@ -927,6 +1061,11 @@ class Controller {
 
                 $costo_unitario_laminas = $row['costo_unitario'];
                 $costo_unitario_laminas = floatval($costo_unitario_laminas);
+            }
+
+            if ($costo_unitario_laminas <= 0) {
+
+                $l_ok = false;
             }
 
 
@@ -973,6 +1112,11 @@ class Controller {
                 unset($db_tmp);
             }
 
+            if ($arreglo_costo_unitario <= 0) {
+
+                $l_ok = false;
+            }
+
 
             $costo_arreglo_offset = floatval($arreglo_costo_unitario * $num_tintas);
 
@@ -1000,6 +1144,12 @@ class Controller {
                 }
             }
 
+            if ($costo_unitario <= 0) {
+
+                $l_ok = false;
+            }
+
+
             $alfa = self:: Deltax($tiraje, $por_millar);
 
             // tiro
@@ -1019,7 +1169,7 @@ class Controller {
             $aCosto_Offset['costo_tiro']          = $costo_tiro_offset;
             $aCosto_Offset['costo_tot_proceso']   = $costo_proceso;
 
-            if ($costo_unitario <= 0) {
+            if (!$l_ok) {
 
                 $aCosto_Offset['costo_tot_proceso'] = 0;
             }
@@ -1027,6 +1177,8 @@ class Controller {
 
 
         if ($nombre_tipo_offset === "Pantone") {
+
+            $l_ok = true;
 
             $db_tmp = $ventas_model->costo_offset("Laminas Pantone");
 
@@ -1042,6 +1194,12 @@ class Controller {
             if (is_array($db_tmp)) {
 
                 unset($db_tmp);
+            }
+
+
+            if ($pantone_costo_unitario_laminas <= 0) {
+
+                $l_ok = false;
             }
 
 
@@ -1072,6 +1230,11 @@ class Controller {
             }
 
 
+            if ($arreglo_pantone_costo_unitario <= 0) {
+
+                $l_ok = false;
+            }
+
             $costo_tot_arreglo_pantone = floatval($arreglo_pantone_costo_unitario * $num_tintas);
 
             $aCosto_Offset["costo_unitario_arreglo"] = $arreglo_pantone_costo_unitario;
@@ -1101,16 +1264,27 @@ class Controller {
                 unset($db_tmp);
             }
 
+            if ($tiro_pantone_costo_unitario <= 0) {
+
+                $l_ok = false;
+            }
+
+
             $alfa = self::Deltax($tiraje, $por_millar);
 
             $costo_tiro_offset = floatval($tiro_pantone_costo_unitario * $alfa);
 
             $aCosto_Offset['costo_unitario_tiro'] = $tiro_pantone_costo_unitario;
-            $aCosto_Offset['costo_tiro']     = $costo_tiro_offset;
+            $aCosto_Offset['costo_tiro']          = $costo_tiro_offset;
 
             $costo_proceso = floatval($costo_corte + $costo_tot_laminas + $costo_tot_arreglo_pantone + $costo_tiro_offset);
 
             $aCosto_Offset['costo_tot_proceso'] = $costo_proceso;
+
+            if (!$l_ok) {
+
+                $aCosto_Offset['costo_tot_proceso'] = 0;
+            }
         }
 
         return $aCosto_Offset;
@@ -1128,6 +1302,7 @@ class Controller {
         $Off_maq_tmp["papel_corte_ancho"] = $papel_corte_ancho;
         $Off_maq_tmp["papel_corte_largo"] = $papel_corte_largo;
 
+        $l_ok = true;
 
         if ($nombre_tipo_offset == "Seleccion") {
 
@@ -1148,6 +1323,10 @@ class Controller {
                 unset($db_tmp);
             }
 
+            if ($arreglo_costo_unitario <= 0) {
+
+                $l_ok = false;
+            }
 
             $costo_arreglo = $arreglo_costo_unitario * $num_tintas;
             $costo_arreglo = round(floatval($costo_arreglo), 2);
@@ -1174,10 +1353,13 @@ class Controller {
                 unset($db_tmp);
             }
 
+            if ($costo_unitario_laminas_maquila <= 0) {
+
+                $l_ok = false;
+            }
 
             $costo_laminas = $costo_unitario_laminas_maquila * $num_tintas;
             $costo_laminas = round(floatval($costo_laminas), 2);
-
 
             $Off_maq_tmp["costo_unitario_laminas"] = $costo_unitario_laminas_maquila;
             $Off_maq_tmp["costo_laminas"]          = $costo_laminas;
@@ -1213,6 +1395,11 @@ class Controller {
             }
 
 
+            if ($maquila_costo_unitario <= 0 or $por_millar_maq <= 0) {
+
+                $l_ok = false;
+            }
+
             $delta_maq = self::Deltax($tiraje, $por_millar_maq);
 
             $costo_maquila = $delta_maq * $maquila_costo_unitario * $num_tintas;
@@ -1225,6 +1412,11 @@ class Controller {
             $Off_maq_tmp["costo_unitario_maq"] = $maquila_costo_unitario;
             $Off_maq_tmp["costo_tot_maq"]      = $costo_maquila;
             $Off_maq_tmp["costo_tot_proceso"]  = $costo_proceso_maq;
+
+            if (!$l_ok) {
+
+                $Off_maq_tmp["costo_tot_proceso"] = 0;
+            }
         }
 
 
@@ -1246,6 +1438,12 @@ class Controller {
 
                 unset($db_tmp);
             }
+
+            if($costo_maq_arreglo_pantone <= 0) {
+
+                $l_ok = false;
+            }
+
 
             $arreglo_costo = floatval($costo_maq_arreglo_pantone * $num_tintas);
 
@@ -1269,6 +1467,11 @@ class Controller {
             if (is_array($db_tmp)) {
 
                 unset($db_tmp);
+            }
+
+            if ($costo_maq_lamina_pantone <= 0) {
+
+                $l_ok = false;
             }
 
             $costo_laminas = floatval($costo_maq_lamina_pantone * $num_tintas);
@@ -1304,6 +1507,11 @@ class Controller {
                 unset($maquila_db_rango);
             }
 
+            if ($maquila_costo_unitario <= 0 or $por_millar_maq <= 0) {
+
+                $l_ok = false;
+            }
+
 
             $delta = self::Deltax($tiraje, $por_millar_maq);
 
@@ -1314,10 +1522,49 @@ class Controller {
             $Off_maq_tmp["costo_unitario_maq"] = $maquila_costo_unitario;
             $Off_maq_tmp["costo_tot_maq"]      = $costo_maquila;
             $Off_maq_tmp["costo_tot_proceso"]  = $costo_proceso_maq;
+
+            if (!$l_ok) {
+
+                $Off_maq_tmp["costo_tot_proceso"] = 0;
+            }
         }
 
-
         return $Off_maq_tmp;
+    }
+
+
+    protected function rec_maquila_digital($corte_ancho, $corte_largo, $impresion) {
+
+        $impresion = trim(strval($impresion));
+
+        // tamaño carta digital
+        $imp_ancho_dig = 20.5;
+        $imp_largo_dig = 27;
+
+        // tamaño doble carta digital
+        $t_2carta_ancho = 32;
+        $t_2carta_largo = 46.5;
+
+
+        $tam2 = 0;
+
+        if ($impresion === "TC") {
+
+            if (($corte_ancho <= $imp_ancho_dig) and ($corte_largo <= $imp_largo_dig)) {
+
+                $tam2 = 1;       // tamaño carta
+            }
+        }
+
+        if  ($impresion === "T2C") {
+
+            if (($corte_ancho <= $t_2carta_ancho) and ($corte_largo <= $t_2carta_largo)) {
+
+                $tam2 = 1;        // tamaño doble carta
+            }
+        }
+
+        return $tam2;
     }
 
 
@@ -1326,9 +1573,9 @@ class Controller {
 
         $aDig_tmp = [];
 
-        $costo_unitario_digital = 0;
-
         $digital_db_rango = $ventas_model->costo_digital_rango($nomb_tam_emp);
+
+        $costo_unitario_digital = 0;
 
         foreach ($digital_db_rango as $row) {
 
@@ -1602,11 +1849,11 @@ class Controller {
 
             $aMerma_DigBCaj = [];
 
-            $aMerma_DigBCaj['merma_min']  = $merma_color;
-            $aMerma_DigBCaj['merma_adic'] = $merma_color_adic;
-            $aMerma_DigBCaj['merma_tot']  = $merma_tot;
+            $aMerma_DigBCaj['merma_min']      = $merma_color;
+            $aMerma_DigBCaj['merma_adic']     = $merma_color_adic;
+            $aMerma_DigBCaj['merma_tot']      = $merma_tot;
             $aMerma_DigBCaj['costo_unitario'] = floatval($costo_unitario_digital);
-            $aMerma_DigBCaj['costo_tot']  = round(floatval($merma_tot * $costo_unitario_digital), 2);
+            $aMerma_DigBCaj['costo_tot']      = round(floatval($merma_tot * $costo_unitario_digital), 2);
 
             $aDig_tmp['mermas'] = $aMerma_DigBCaj;
 
@@ -1633,6 +1880,8 @@ class Controller {
 
         $aSerigrafia_tmp = [];
 
+        $l_ok = true;
+
         $aSerigrafia_tmp['tipo']              = $tipo_offset_serigrafia;
         $aSerigrafia_tmp['cantidad']          = $tiraje;
         $aSerigrafia_tmp['num_tintas']        = $num_tintas;
@@ -1643,18 +1892,23 @@ class Controller {
         $arreglo_db_tmp = $ventas_model->costo_arreglo_serigrafia("Arreglo");
 
         $costo_unitario_arreglo = $arreglo_db_tmp['costo_unitario'];
-        $por_cada = $arreglo_db_tmp['por_cada'];
+        $por_cada               = $arreglo_db_tmp['por_cada'];
 
         $delta = self::Deltax($tiraje, $por_cada);
 
         $costo_arreglo = floatval($costo_unitario_arreglo * $delta * $num_tintas);
 
 
-
         if (is_array($arreglo_db_tmp)) {
 
             unset($arreglo_db_tmp);
         }
+
+        if ($costo_unitario_arreglo <= 0) {
+
+            $l_ok = false;
+        }
+
 
         if ($tipo_offset_serigrafia == "Seleccion") {
 
@@ -1692,11 +1946,15 @@ class Controller {
 
         }
 
+        if ($costo_unitario_tiro <= 0) {
+
+            $l_ok = false;
+        }
+
 
         $delta = self::Deltax($tiraje, $por_cada);
 
         $costo_tiro = round(floatval($costo_unitario_tiro * $delta * $num_tintas), 2);
-
 
         $costo_tot_serigrafia = floatval($costo_tiro + $costo_arreglo);
         $costo_tot_serigrafia = round($costo_tot_serigrafia, 2);
@@ -1706,16 +1964,12 @@ class Controller {
         $aSerigrafia_tmp['costo_arreglo']       = $costo_arreglo;
         $aSerigrafia_tmp['costo_unitario_tiro'] = $costo_unitario_tiro;
         $aSerigrafia_tmp['costo_tiro']          = $costo_tiro;
+        $aSerigrafia_tmp['costo_tot_proceso']   = $costo_tot_serigrafia;
 
-        if ($costo_unitario_tiro <= 0) {
+        if (!$l_ok) {
 
             $aSerigrafia_tmp['costo_tot_proceso'] = 0;
-        } else {
-
-            $aSerigrafia_tmp['costo_tot_proceso'] = $costo_tot_serigrafia;
         }
-
-
 
         return $aSerigrafia_tmp;
     }
@@ -1837,7 +2091,6 @@ class Controller {
 
             unset($sql_tabla_temp_db);
         }
-
 
         return $aMerma_offset_tmp;
     }
@@ -1967,45 +2220,6 @@ class Controller {
     }
 
 
-    protected function rec_maquila_digital($corte_ancho, $corte_largo, $impresion) {
-
-        $impresion = trim(strval($impresion));
-
-        // tamaño carta digital
-        $imp_ancho_dig = 20.5;
-        $imp_largo_dig = 27;
-
-        // tamaño doble carta digital
-        $t_2carta_ancho = 32;
-        $t_2carta_largo = 46.5;
-
-
-        $tam2 = 0;
-
-        if ($impresion === "TC" or
-            $impresion === "Frente Carta" or
-            $impresion === "Vuelta Carta" ) {
-
-            if (($corte_ancho <= $imp_ancho_dig) and ($corte_largo <= $imp_largo_dig)) {
-
-                $tam2 = 1;       // tamaño carta
-            }
-        }
-
-        if  ($impresion === "T2C" or
-            $impresion === "Frente Doble Carta" or
-            $impresion === "Vuelta Doble Carta" ) {
-
-            if (($corte_ancho <= $t_2carta_ancho) and ($corte_largo <= $t_2carta_largo)) {
-
-                $tam2 = 1;        // tamaño doble carta
-            }
-        }
-
-        return $tam2;
-    }
-
-
     public function calculoMermaAcabados($cantidad_minima, $cantidad, $por_cada_x, $adicional) {
 
         $tiraje = intval($_POST['qty']);
@@ -2036,12 +2250,15 @@ class Controller {
         return $merma_acabados;
     }
 
+
 /**** Terminan las funciones de Impresión *******/
 
 
 /**** Inician las funciones de Acabados ****/
 
     protected function calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model) {
+
+        $l_ok = true;
 
         $db_tmp = $ventas_model->costo_BarnizUV($tipoGrabado);
 
@@ -2069,6 +2286,19 @@ class Controller {
             }
         }
 
+
+        if (is_array($db_tmp)) {
+
+            unset($db_tmp);
+        }
+
+
+        if ($costo_unitario_barniz <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $area_barniz = round(floatval($LargoBarniz / 100) * floatval($AnchoBarniz / 100), 4);
 
         $costo_barniz = floatval($area_barniz * $costo_unitario_barniz * intval($tiraje));
@@ -2092,11 +2322,18 @@ class Controller {
         $barniz_temp['costo_unitario']    = $costo_unitario_barniz;
         $barniz_temp['costo_tot_proceso'] = $costo_barniz;
 
+        if (!$l_ok) {
+
+            $barniz_temp['costo_tot_proceso'] = 0;
+        }
+
         return $barniz_temp;
     }
 
 
     protected function calculoLaser($tipoGrabado, $tiraje, $Ancho, $Largo, $ventas_model) {
+
+        $l_ok = true;
 
         $costo_laser_temp = $ventas_model->costo_laser($tipoGrabado);
 
@@ -2116,6 +2353,16 @@ class Controller {
             $merma_min = intval($merma_min);
 
             $merma_tot = round(floatval($costo_unitario_laser * $merma_min), 2);
+        }
+
+        if (is_array($costo_laser_temp)) {
+
+            unset($costo_laser_temp);
+        }
+
+        if ($costo_unitario_laser <= 0) {
+
+            $l_ok = false;
         }
 
         $costo_laser = floatval($costo_unitario_laser * $tiraje);
@@ -2140,6 +2387,7 @@ class Controller {
 
     protected function calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $cortes, $papel_costo_unit, $ventas_model) {
 
+        $l_ok = true;
 
         $aGrab_tmp = [];
 
@@ -2185,6 +2433,10 @@ class Controller {
                 $aGrab_tmp['placa_costo_unitario'] = $placa_costo_unitario;
                 $aGrab_tmp['placa_costo']          = $placa_costo;
 
+                if ($placa_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
 
                 // arreglo
                 $costo_arreglo_tmp = $ventas_model->costo_grabado("G1 Arreglo");
@@ -2203,6 +2455,11 @@ class Controller {
                     unset($costo_arreglo_tmp);
                 }
 
+
+                if ($arreglo_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
 
                 $aGrab_tmp['arreglo_costo_unitario'] = $arreglo_costo_unitario;
                 $aGrab_tmp['arreglo_costo']          = $arreglo_costo_unitario;
@@ -2233,6 +2490,12 @@ class Controller {
                 }
 
 
+                if ($estampado_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $estampado_costo_tiro = floatval($tiraje * $estampado_costo_unitario);
                 $estampado_costo_tiro = round($estampado_costo_tiro, 2);
 
@@ -2241,6 +2504,11 @@ class Controller {
                 $aGrab_tmp['costo_unitario']    = $estampado_costo_unitario;
                 $aGrab_tmp['costo_tiro']        = $estampado_costo_tiro;
                 $aGrab_tmp['costo_tot_proceso'] = $g1_estampado_costo_proceso;
+
+                if (!$l_ok) {
+
+                    $aGrab_tmp['costo_tot_proceso'] = 0;
+                }
 
                 //$aMermaEmp['acbGrab_G1_Estampado'] = intval($_POST['grabadotot']);
 
@@ -2263,6 +2531,11 @@ class Controller {
                 if (is_array($costo_placa_tmp)) {
 
                     unset($costo_placa_tmp);
+                }
+
+                if ($placa_costo_unitario <= 0) {
+
+                    $l_ok = false;
                 }
 
                 if ($placa_area < $placa_tamano_minimo) {
@@ -2300,6 +2573,13 @@ class Controller {
                     unset($costo_arreglo_tmp);
                 }
 
+
+                if ($arreglo_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $arreglo_costo = $arreglo_costo_unitario;
 
                 $aGrab_tmp['arreglo_costo_unitario'] = $arreglo_costo_unitario;
@@ -2332,6 +2612,12 @@ class Controller {
                 }
 
 
+                if ($estampado_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $estampado_costo_tiro       = floatval($tiraje * $estampado_costo_unitario);
                 $estampado_costo_tiro       = round($estampado_costo_tiro, 2);
                 $g2_estampado_costo_proceso = $placa_costo + $arreglo_costo + $estampado_costo_tiro;
@@ -2340,6 +2626,11 @@ class Controller {
                 $aGrab_tmp['costo_unitario']    = $estampado_costo_unitario;
                 $aGrab_tmp['costo_tiro']        = $estampado_costo_tiro;
                 $aGrab_tmp['costo_tot_proceso'] = $g2_estampado_costo_proceso;
+
+                if (!$l_ok) {
+
+                    $aGrab_tmp['costo_tot_proceso'] = 0;
+                }
 
                 //$aMermaEmp['acbGrab_G2_Estampado'] = intval($_POST['grabadotot']);
 
@@ -2404,6 +2695,7 @@ class Controller {
 
         $placa_area = 0;
 
+        $l_ok = true;
 
         // placa
         $placa_LargoHS = $LargoHS;
@@ -2427,6 +2719,12 @@ class Controller {
                 if (is_array($db_tmp)) {
 
                     unset($db_tmp);
+                }
+
+
+                if ($placa_costo_unitario <= 0) {
+
+                    $l_ok = false;
                 }
 
 
@@ -2462,6 +2760,13 @@ class Controller {
 
                     unset($db_tmp);
                 }
+
+
+                if ($pelicula_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
 
                 $pelicula_costo = floatval($pelicula_area * $pelicula_costo_unitario * $tiraje);
                 $pelicula_costo = round($pelicula_costo, 2);
@@ -2500,6 +2805,12 @@ class Controller {
                 }
 
 
+                if ($arreglo_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $arreglo_costo = floatval($arreglo_costo_unitario);
                 $arreglo_costo = round($arreglo_costo, 2);
 
@@ -2534,13 +2845,24 @@ class Controller {
                 }
 
 
+                if ($estampado_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $estampado_costo_tiro    = floatval($tiraje * $estampado_costo_unitario);
                 $estampado_costo_tiro    = round($estampado_costo_tiro, 2);
                 $estampado_costo_proceso = $placa_costo + $pelicula_costo + $arreglo_costo + $estampado_costo_tiro;
 
                 $aAcbHS_tmp['costo_unitario']    = $estampado_costo_unitario;
                 $aAcbHS_tmp['costo_tiro']        = $estampado_costo_tiro;
-                $aAcbHS_tmp['costo_tot_proceso'] = $estampado_costo_proceso;
+                $aAcbHS_tmp['costo_tot_proceso'] = round($estampado_costo_proceso, 2);
+
+                if (!$l_ok) {
+
+                    $aAcbHS_tmp['costo_tot_proceso'] = 0;
+                }
 
 
                 //$aMermaEmp['acbHS_Estampado'] = intval($_POST['hs']);
@@ -2563,6 +2885,13 @@ class Controller {
 
                     unset($db_tmp);
                 }
+
+
+                if ($placa_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
 
                 $placa_costo = floatval($placa_area * $placa_costo_unitario);
                 $placa_costo = round($placa_costo, 2);
@@ -2595,6 +2924,13 @@ class Controller {
 
                     unset($db_tmp);
                 }
+
+
+                if ($pelicula_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
 
                 $pelicula_costo = floatval($pelicula_area * $pelicula_costo_unitario * $tiraje);
                 $pelicula_costo = round($pelicula_costo, 2);
@@ -2632,6 +2968,11 @@ class Controller {
                 }
 
 
+                if ($arreglo_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
                 $arreglo_costo = floatval($arreglo_costo_unitario);
                 $arreglo_costo = round($arreglo_costo, 2);
 
@@ -2666,6 +3007,12 @@ class Controller {
                 }
 
 
+                if ($estampado_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $estampado_costo_tiro = floatval($tiraje * $estampado_costo_unitario);
                 $estampado_costo_tiro = round($estampado_costo_tiro, 2);
 
@@ -2675,6 +3022,12 @@ class Controller {
                 $aAcbHS_tmp['costo_unitario']    = $estampado_costo_unitario;
                 $aAcbHS_tmp['costo_tiro']        = $estampado_costo_tiro;
                 $aAcbHS_tmp['costo_tot_proceso'] = $hg1_estampado_costo_proceso;
+
+
+                if (!$l_ok) {
+
+                    $aAcbHS_tmp['costo_tot_proceso'] = 0;
+                }
 
 
                 //$aMermaEmp['acbHS_HG1_Estampado'] = intval($_POST['hs']);
@@ -2696,6 +3049,13 @@ class Controller {
 
                     unset($db_tmp);
                 }
+
+
+                if ($placa_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
 
                 $placa_costo = round(floatval($placa_area * $placa_costo_unitario), 2);
 
@@ -2728,6 +3088,13 @@ class Controller {
 
                     unset($db_tmp);
                 }
+
+
+                if ($pelicula_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
 
                 $pelicula_costo = round(floatval($pelicula_area * $pelicula_costo_unitario * $tiraje), 2);
 
@@ -2764,6 +3131,12 @@ class Controller {
                 }
 
 
+                if ($arreglo_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $arreglo_costo = round(floatval($arreglo_costo_unitario), 2);
 
 
@@ -2796,6 +3169,12 @@ class Controller {
                 }
 
 
+                if ($estampado_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $estampado_costo_tiro = round(floatval($tiraje * $estampado_costo_unitario), 2);
 
                 $hg2_estampado_costo_proceso = floatval($placa_costo + $pelicula_costo + $arreglo_costo + $estampado_costo_tiro);
@@ -2804,6 +3183,12 @@ class Controller {
                 $aAcbHS_tmp['costo_unitario']    = $estampado_costo_unitario;
                 $aAcbHS_tmp['costo_tiro']        = $estampado_costo_tiro;
                 $aAcbHS_tmp['costo_tot_proceso'] = $hg2_estampado_costo_proceso;
+
+
+                if (!$l_ok) {
+
+                    $aAcbHS_tmp['costo_tot_proceso'] = 0;
+                }
 
 
                 //$aMermaEmp['acbHS_HG2_Estampado'] = intval($_POST['hs']);
@@ -2867,6 +3252,8 @@ class Controller {
 
 
     protected function calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model) {
+
+        $l_ok = true;
 
         $costo_minimo = 0;
 
@@ -2937,6 +3324,12 @@ class Controller {
         }
 
 
+        if ($laminado_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $area_laminado  = round(floatval($LargoLam / 100) * floatval($AnchoLam / 100), 4);
         $costo_laminado = floatval($area_laminado * $laminado_costo_unitario * $tiraje);
         $costo_laminado = round($costo_laminado, 2);
@@ -2956,6 +3349,12 @@ class Controller {
         $Lam_tmp['area']              = $area_laminado;
         $Lam_tmp['costo_unitario']    = $laminado_costo_unitario;
         $Lam_tmp['costo_tot_proceso'] = $costo_laminado;
+
+
+        if (!$l_ok) {
+
+            $Lam_tmp['costo_tot_proceso'] = 0;
+        }
 
 
         $merma_Lam = $ventas_model->merma_acabados("Laminado");
@@ -3014,6 +3413,8 @@ class Controller {
 
     protected function calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model) {
 
+        $l_ok = true;
+
         $aSuaje_tmp = [];
 
         $aSuaje_tmp['tipoGrabado'] = $tipoGrabado;
@@ -3045,6 +3446,12 @@ class Controller {
                 if (is_array($costo_arreglo_tmp)) {
 
                     unset($costo_arreglo_tmp);
+                }
+
+
+                if ($perimetral_costo_unitario <= 0) {
+
+                    $l_ok = false;
                 }
 
 
@@ -3080,6 +3487,12 @@ class Controller {
                 }
 
 
+                if ($arreglo_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $aSuaje_tmp['arreglo_costo_unitario'] = $arreglo_costo_unitario;
                 $aSuaje_tmp['arreglo']                = $arreglo_costo_unitario;
 
@@ -3101,6 +3514,12 @@ class Controller {
                 }
 
 
+                if ($tiro_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $tiro_por_millar = self::Deltax($tiraje, $por_cada);
 
                 $suaje_costo_tiro    = floatval($tiro_por_millar * $tiro_costo_unitario);
@@ -3110,6 +3529,11 @@ class Controller {
                 $aSuaje_tmp['costo_tiro']          = $suaje_costo_tiro;
                 $aSuaje_tmp['costo_tot_proceso']   = $suaje_costo_proceso;
 
+
+                if (!$l_ok) {
+
+                    $aSuaje_tmp['costo_tot_proceso'] = 0;
+                }
 
                 break;
             case 'Figura':
@@ -3133,6 +3557,12 @@ class Controller {
                 if (is_array($costo_arreglo_tmp)) {
 
                     unset($costo_arreglo_tmp);
+                }
+
+
+                if ($perimetral_costo_unitario <= 0) {
+
+                    $l_ok = false;
                 }
 
 
@@ -3168,6 +3598,12 @@ class Controller {
                 }
 
 
+                if ($arreglo_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
+
                 $aSuaje_tmp['arreglo_costo_unitario'] = $arreglo_costo_unitario;
                 $aSuaje_tmp['arreglo']                = $arreglo_costo_unitario;
 
@@ -3188,6 +3624,11 @@ class Controller {
                 }
 
 
+                if ($tiro_costo_unitario <= 0) {
+
+                    $l_ok = false;
+                }
+
                 $tiro_por_millar = self::Deltax($tiraje, $por_cada);
 
                 $suaje_costo_tiro    = floatval($tiro_por_millar * $tiro_costo_unitario);
@@ -3198,6 +3639,11 @@ class Controller {
                 $aSuaje_tmp['tiro_costo_unitario'] = $tiro_costo_unitario;
                 $aSuaje_tmp['costo_tiro']          = $suaje_costo_tiro;
                 $aSuaje_tmp['costo_tot_proceso']   = $suaje_costo_proceso;
+
+                if(!$l_ok) {
+
+                    $aSuaje_tmp['costo_tot_proceso'] = 0;
+                }
 
 
                 break;
@@ -3249,6 +3695,8 @@ class Controller {
         return $aSuaje_tmp;
     }
 
+
+
 /**** Terminan las funciones de Acabados ****/
 
     protected function arregloRanurado($ventas_model) {
@@ -3269,6 +3717,8 @@ class Controller {
 
     protected function calculoRanurado($tiraje, $ventas_model) {
 
+        $l_ok = true;
+
         $calculo_tmp = [];
 
         //$db_tmp = $ventas_model->costo_ranurado("Arreglo");
@@ -3285,6 +3735,12 @@ class Controller {
         if (is_array($db_tmp)) {
 
             unset($db_tmp);
+        }
+
+
+        if ($ranurado_arreglo_costo <= 0) {
+
+            $l_ok = false;
         }
 
         //$db_tmp = $ventas_model->costo_ranurado("Por Ranura");
@@ -3312,6 +3768,12 @@ class Controller {
         }
 
 
+        if ($ranurado_costo_unit_por_ranura <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $costo_por_ranura = round(floatval($ranurado_costo_unit_por_ranura * $tiraje), 2);
 
         /*
@@ -3328,7 +3790,7 @@ class Controller {
         $calculo_tmp['costo_por_ranura']      = $costo_por_ranura;
         $calculo_tmp['costo_tot_proceso']     = floatval($ranurado_arreglo_costo + $costo_por_ranura);
 
-        if ($ranurado_arreglo_costo <= 0 or $ranurado_costo_unit_por_ranura <= 0) {
+        if (!$l_ok) {
 
             $calculo_tmp['costo_tot_proceso'] = 0;
         }
@@ -3339,9 +3801,9 @@ class Controller {
 
     protected function calculoEncuadernacion($tiraje, $id_papel_exterior_cajon, $enc_cortes_fcaj, $ventas_model) {
 
-        $calculo_tmp = [];
+        $l_ok = true;
 
-        $costo_tot_proceso        = 0;
+        $calculo_tmp = [];
 
         $db_tmp = $ventas_model->costo_proceso("proc_encuadernacion", "Perforado para iman y puesta de iman");
 
@@ -3361,6 +3823,18 @@ class Controller {
             }
         }
 
+        if (is_array($db_tmp)) {
+
+            unset($db_tmp);
+        }
+
+
+        if ($perf_iman_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $perf_iman_y_puesta = round(floatval($perf_iman_costo_unitario * $tiraje), 2);
 
 
@@ -3378,6 +3852,13 @@ class Controller {
 
             unset($db_tmp);
         }
+
+
+        if ($enc_costo_unitario_esquinas <= 0) {
+
+            $l_ok = false;
+        }
+
 
         $despunte_de_esquinas_para_cajon = round(floatval($enc_costo_unitario_esquinas * $tiraje), 2);
 
@@ -3397,6 +3878,13 @@ class Controller {
             unset($db_tmp);
         }
 
+
+        if ($enc_encajada_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $enc_costo_encajada = round(floatval($enc_encajada_costo_unitario * $tiraje), 2);
 
         $calculo_tmp['tiraje']                          = $tiraje;
@@ -3408,15 +3896,22 @@ class Controller {
         $calculo_tmp['costo_encajada']                  = $enc_costo_encajada;
         $calculo_tmp['costo_tot_proceso']               = $despunte_de_esquinas_para_cajon + $enc_costo_encajada;
 
+
+        if (!$l_ok) {
+
+            $calculo_tmp['costo_tot_proceso'] = 0;
+        }
+
+
         return $calculo_tmp;
     }
 
 
     protected function calculoEncuadernacion_FCaj($tiraje, $id_papel_exterior_cajon, $enc_cortes_fcaj, $ventas_model) {
 
-        $calculo_tmp = [];
+        $l_ok = true;
 
-        $costo_tot_proceso = 0;
+        $calculo_tmp = [];
 
         $calculo_tmp['tiraje'] = $tiraje;
 
@@ -3436,10 +3931,17 @@ class Controller {
             unset($db_tmp);
         }
 
+
+        if ($enc_costo_unitario_forrado <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $calculo_tmp['costo_unit_forrado_cajon'] = round(floatval($enc_costo_unitario_forrado), 4);
         $calculo_tmp['forrado_de_cajon']         = round( floatval($enc_costo_unitario_forrado * $tiraje), 4);
 
-        $costo_tot_proceso = $costo_tot_proceso + $calculo_tmp['forrado_de_cajon'];
+        $costo_tot_proceso = $calculo_tmp['forrado_de_cajon'];
 
 
         $db_tmp = $ventas_model->costo_proceso("proc_encuadernacion", "Empalme de cajon");
@@ -3457,6 +3959,13 @@ class Controller {
 
             unset($db_tmp);
         }
+
+
+        if ($empalme_cajon_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
 
         $calculo_tmp['empalme_cajon_costo_unitario'] = round( floatval($empalme_cajon_costo_unitario), 4);
         $calculo_tmp['empalme_de_cajon']             = round( floatval($empalme_cajon_costo_unitario * $tiraje), 2);
@@ -3485,16 +3994,24 @@ class Controller {
         }
 
 
+        if ($enc_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $costo_tot_proceso = $costo_tot_proceso + $enc_costo_unitario;
 
         $calculo_tmp['arreglo_de_forrado_de_cajon'] = $enc_costo_unitario;
         $calculo_tmp['costo_tot_proceso']           = $costo_tot_proceso;
 
-        //if ($enc_costo_unitario_forrado <= 0 or $enc_costo_unitario <= 0) {
-        if ($enc_costo_unitario_forrado <= 0) {
+        if (!$l_ok) {
 
             $calculo_tmp['costo_tot_proceso'] = 0;
         }
+
+
+        //if ($enc_costo_unitario_forrado <= 0 or $enc_costo_unitario <= 0) {
 
 
         // Mermas de encuadernacion
@@ -3579,11 +4096,9 @@ class Controller {
     }
 
 
-    // ***** Ojo *****
-    // revisar la tabla proc_cartera
-    // porque no tiene dato suficientes
-    // para calcular los costos de elaboración cartera
     protected function calculoElabCartera($proceso, $seccion, $base_tmp, $alto_tmp, $tiraje, $ventas_model) {
+
+        $l_ok = true;
 
         $db_tmp = $ventas_model->costo_proceso($proceso, $seccion);
 
@@ -3631,6 +4146,12 @@ class Controller {
         }
 
 
+        if ($elab_car_forro_costo_unit <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $elab_forro_car_costo = floatval($elab_car_forro_costo_unit * $tiraje);
 
 
@@ -3640,12 +4161,20 @@ class Controller {
         $calculo_tmp['costo_unit']      = $elab_car_forro_costo_unit;
         $calculo_tmp['forro_costo_tot'] = $elab_forro_car_costo;
 
+        if (!$l_ok) {
+
+            $calculo_tmp['forro_costo_tot'] = 0;
+        }
+
+
         return $calculo_tmp;
 
     }
 
 
     protected function calculoForradoCajon($tiraje, $enc_cortes_fcaj, $id_papel_exterior_cajon, $ventas_model) {
+
+        $l_ok = true;
 
         $calculo_tmp_Fcaj = [];
 
@@ -3664,6 +4193,13 @@ class Controller {
 
             unset($db_tmp);
         }
+
+
+        if ($enc_forrado_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
 
 
         $enc_costo_forrado_cajon = round(floatval($enc_forrado_costo_unitario * $tiraje), 2);
@@ -3689,6 +4225,13 @@ class Controller {
             unset($db_tmp);
         }
 
+
+        if ($enc_arreglo_forrado <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $calculo_tmp_Fcaj['arreglo'] = $enc_arreglo_forrado;
 
 
@@ -3708,16 +4251,50 @@ class Controller {
         }
 
 
+        if ($enc_empalme_cajon_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $enc_costo_empalme_cajon = round(floatval($enc_empalme_cajon_costo_unitario * $tiraje), 2);
 
         $costo_tot_proceso = round(floatval($enc_costo_forrado_cajon + $enc_arreglo_forrado + $enc_costo_empalme_cajon), 2);
 
 
+        $db_tmp = $ventas_model->costo_encuadernacion("Encajada");
+
+        $enc_encajada_costo_unitario = 0;
+
+        foreach ($db_tmp as $row) {
+
+            $enc_encajada_costo_unitario = $row['precio_unitario'];
+            $enc_encajada_costo_unitario = round(floatval($enc_encajada_costo_unitario), 2);
+        }
+
+        if (is_array($db_tmp)) {
+
+            unset($db_tmp);
+        }
+
+
+        if ($enc_encajada_costo_unitario <= 0) {
+
+            $l_ok = false;
+        }
+
+
+        $enc_encajada_costo_tot = round(floatval($enc_encajada_costo_unitario * $tiraje), 2);
+
+        $costo_tot_proceso = round(floatval($enc_costo_forrado_cajon + $enc_arreglo_forrado + $enc_costo_empalme_cajon + $enc_encajada_costo_tot), 2);
+
         $calculo_tmp_Fcaj['empalme_cajon_costo_unitario'] = $enc_empalme_cajon_costo_unitario;
         $calculo_tmp_Fcaj['empalme_de_cajon']             = $enc_costo_empalme_cajon;
+        $calculo_tmp_Fcaj['enc_encajada_costo_unitario']  = $enc_encajada_costo_unitario;
+        $calculo_tmp_Fcaj['enc_encajada_costo_tot']       = $enc_encajada_costo_tot;
         $calculo_tmp_Fcaj['costo_tot_proceso']            = $costo_tot_proceso;
 
-       if ($enc_costo_forrado_cajon <= 0 or $enc_arreglo_forrado <= 0 or $enc_costo_empalme_cajon <= 0) {
+       if (!$l_ok) {
 
             $calculo_tmp_Fcaj['costo_tot_proceso'] = 0;
         }
@@ -3804,6 +4381,8 @@ class Controller {
 
     protected function calculoAccesorios($Tipo_accesorio, $tiraje,  $ventas_model) {
 
+        $l_ok = true;
+
         $costo_accesorios_tmp = $ventas_model->costo_accesorios($Tipo_accesorio);
 
         $costo_unit_accesorio = 0;
@@ -3820,6 +4399,12 @@ class Controller {
         }
 
 
+        if ($costo_unit_accesorio <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $costo_accesorio = floatval($tiraje * $costo_unit_accesorio);
         $costo_accesorio = round($costo_accesorio, 2);
 
@@ -3828,15 +4413,23 @@ class Controller {
         $aCosto_accesorios['accesorio_costo_unitario'] = $costo_unit_accesorio;
         $aCosto_accesorios['costo_tot_proceso']        = $costo_accesorio;
 
+        if (!$l_ok) {
+
+            $aCosto_accesorios['costo_tot_proceso'] = 0;
+        }
+
+
         return $aCosto_accesorios;
     }
 
 
     protected function calculoBancos($Tipo_banco, $tiraje, $ventas_model) {
 
-        $costo_unit_banco = 0;
+        $l_ok = true;
 
         $costo_bancos_tmp = $ventas_model->costo_bancos($Tipo_banco);
+        
+        $costo_unit_banco = 0;
 
         foreach ($costo_bancos_tmp as $row) {
 
@@ -3850,6 +4443,12 @@ class Controller {
         }
 
 
+        if ($costo_unit_banco <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $costo_banco = floatval($tiraje * $costo_unit_banco);
         $costo_banco = round($costo_banco, 2);
 
@@ -3859,14 +4458,21 @@ class Controller {
         $aCosto_Banco['banco_costo_unitario'] = $costo_unit_banco;
         $aCosto_Banco['costo_tot_proceso']    = $costo_banco;
 
+        if(!$l_ok) {
+
+            $aCosto_Banco['costo_tot_proceso'] = 0;
+        }
+
+
         return $aCosto_Banco;
     }
 
 
     protected function calculoCierre($Tipo_cierre, $tiraje, $numpares, $ventas_model) {
 
-        $costo_cierres_tmp = $ventas_model->costo_cierres($Tipo_cierre);
+        $l_ok = true;
 
+        $costo_cierres_tmp = $ventas_model->costo_cierres($Tipo_cierre);
 
         $costo_unit_cierre = 0;
 
@@ -3882,6 +4488,12 @@ class Controller {
         }
 
 
+        if ($costo_unit_cierre <= 0) {
+
+            $l_ok = false;
+        }
+
+
         $aCosto_cierre = [];
 
         $costo_cierre = round(floatval($tiraje * $numpares * $costo_unit_cierre), 2);
@@ -3889,6 +4501,11 @@ class Controller {
 
         $aCosto_cierre['cierre_costo_unitario'] = $costo_unit_cierre;
         $aCosto_cierre['costo_tot_proceso']     = $costo_cierre;
+
+        if (!$l_ok) {
+
+            $aCosto_cierre['costo_tot_proceso'] = 0;
+        }
 
 
         return $aCosto_cierre;
@@ -3988,6 +4605,7 @@ class Controller {
 
             $aNombSeccion = $aJson_tmp[$nombSeccion];
 
+
             if (array_key_exists("Offset", $aNombSeccion)) {
 
                 $aNomb_tmp = $aNombSeccion['Offset'];
@@ -3998,6 +4616,7 @@ class Controller {
                     $sumaSeccion = $sumaSeccion + $aNomb_tmp[$i]['costo_tot_proceso'];
                 }
             }
+
 
             if (array_key_exists("Digital", $aNombSeccion)) {
 
@@ -4036,6 +4655,7 @@ class Controller {
 
             $aNombSeccion = $aJson_tmp[$nombSeccion];
 
+
             if (array_key_exists("Barniz_UV", $aNombSeccion)) {
 
                 $aNomb_tmp = $aNombSeccion['Barniz_UV'];
@@ -4046,6 +4666,7 @@ class Controller {
                     $sumaSeccion = $sumaSeccion + $aNomb_tmp[$i]['costo_tot_proceso'];
                 }
             }
+
 
             if (array_key_exists("Corte_Laser", $aNombSeccion)) {
 
@@ -4104,7 +4725,6 @@ class Controller {
                     $sumaSeccion = $sumaSeccion + $aNomb_tmp[$i]['costo_tot_proceso'];
                 }
             }
-
         }
 
         return $sumaSeccion;
@@ -4119,6 +4739,7 @@ class Controller {
 
             $aNombSeccion = $aJson_tmp[$nombSeccion];
 
+
             if (array_key_exists("Offset", $aNombSeccion)) {
 
                 $aNomb_tmp = $aNombSeccion['Offset'];
@@ -4129,6 +4750,7 @@ class Controller {
                     $sumaSeccion = $sumaSeccion + $aNomb_tmp[$i]['costo_tot_proceso'];
                 }
             }
+
 
             if (array_key_exists("Digital", $aNombSeccion)) {
 
@@ -4152,10 +4774,8 @@ class Controller {
                     $sumaSeccion = $sumaSeccion + $aNomb_tmp[$i]['costo_tot_proceso'];
                 }
             }
-
         }
 
         return $sumaSeccion;
     }
-
 }

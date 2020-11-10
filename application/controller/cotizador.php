@@ -16,189 +16,19 @@ class Cotizador extends Controller {
 
         $models = $options_model->getBoxModels();
 
-        if($login->isLoged()) {
-
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/cajas/index.php';
-            require 'application/views/templates/footer.php';
-        } else {
-
-            echo '<script language="javascript">';
-            echo 'window.location.href="' . URL . 'login/"';
-            echo '</script>';
-            //header("Location:" . URL . 'login/');
-        }
-    }
-
-/*
-    public function admin() {
-
-        if (!isset($_SESSION)) {
-
-            session_start();
-        }
-
-        $options_model = $this->loadModel('OptionsModel');
-
-        require 'application/views/templates/head.php';
-        require 'application/views/templates/top_menu.php';
-        require 'application/views/cajas/admin.php';
-        require 'application/views/templates/footer.php';
-    }
-
-
-    public function getClient($opt) {
-
-        $nombrecliente = '--';
-
-        if (isset($_GET['cliente'])) {
-
-            $nombrecliente = $opt->getClientInfo($_GET['cliente'],'nombre');
-            //$nombrecliente = $opt->getClientInfo($_GET['cliente'],'nombre') . ' ' . $opt->getClientInfo($_GET['cliente'],'apellido');
-        }
-
-        return $nombrecliente;
-    }
-
-
-    public function getCotizacionesByCliente() {
-
-        if (!isset($_SESSION)) {
-
-            session_start();
-        }
-
-        $login         = $this->loadController('login');
-        $options_model = $this->loadModel('OptionsModel');
-        $login_model   = $this->loadModel('LoginModel');
-        $ventas_model  = $this->loadModel('VentasModel');
-
-        if($login->isLoged()) {
-
-            if (isset($_GET['c'])) {
-
-                $rows = $ventas_model->getCotizacionByClient($_GET['c']);
-
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/cotizador/cotizaciones.php';
-                require 'application/views/templates/footer.php';
-            } else {
-
-                echo '<script language="javascript">';
-                echo 'window.location.href="' . URL . 'cotizador/clientes/"';
-                echo '</script>';
-                //header("Location:" . URL . 'cotizador/clientes/');
-            }
-        } else {
-
-            echo '<script language="javascript">';
-            echo 'window.location.href="' . URL . 'login/"';
-            echo '</script>';
-            //header("Location:" . URL . 'login/');
-        }
-    }
-
-
-    public function getCotizaciones() {
-
-        if (!isset($_SESSION)) {
-
-            session_start();
-        }
-
-
-        $login         = $this->loadController('login');
-        $login_model   = $this->loadModel('LoginModel');
-        $options_model = $this->loadModel('OptionsModel');
-        $ventas_model  = $this->loadModel('VentasModel');
-
-        if($login->isLoged()) {
-
-            $cotizaciones = $ventas_model->getCotizaciones();
-            $clientes     = $ventas_model->getClients();
-
-
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/cotizador/listaCotizaciones.php';
-            require 'application/views/templates/footer.php';
-        } else {
-
-            echo '<script language="javascript">';
-            echo 'window.location.href="' . URL . 'login/"';
-            echo '</script>';
-            //header("Location:" . URL . 'login/');
-        }
-    }
-
-
-    // carga los modelos necesarios del modelo cajas
-    public function cajas() {
-
-        if (!isset($_SESSION)) {
-
-            session_start();
-        }
-
-        $login         = $this->loadController('login');
-        $login_model   = $this->loadModel('LoginModel');
-        $options_model = $this->loadModel('OptionsModel');
-
-
         if(!$login->isLoged()) {
 
             echo '<script language="javascript">';
             echo 'window.location.href="' . URL . 'login/"';
             echo '</script>';
-            //header("Location:" . URL . 'login/');
-        }
-
-
-        $procesos   = $options_model->getProcessCatalog();
-        $papers     = $options_model->getPapers();
-        $cartones   = $options_model->getCartones();
-
-        $cierres           = $options_model->getCostoCierre();
-        $acabados          = $options_model->getCostoAcabados();
-        $accesorios        = $options_model->getCostoAccesorios();
-        $descuentos        = $options_model->getCostoDescuentos();
-        $bancos            = $options_model->getCostoBancos();
-        $impresiones       = $options_model->getImpresiones();
-        $Digital           = $options_model->getProcDigital();
-        $ALaminados        = $options_model->getALaminados();
-        $AHotStamping      = $options_model->getAHotStamping();
-        $Colores           = $options_model->getAHotStampingColor();
-        $AGrabados         = $options_model->getAGrabados();
-        $APEspeciales      = $options_model->getAPEspeciales();
-        $ABarnizUV         = $options_model->getABarnizUV();
-        $ASuaje            = $options_model->getASuaje();
-        $ALaser            = $options_model->getALaser();
-        $TipoImp           = $options_model->getTipoSerigrafia();
-        $modeloscaj        = $options_model->getBoxModels();
-        $TipoListon        = $options_model->getTipoListon();
-        $ColoresListon     = $options_model->getColoresListon();
-        $Porcentajes       = $options_model->getPorcentajes();
-        $Herrajes          = $options_model->getHerraje();
-        if (isset($_GET['cliente'])) {
-
-            $nombre_cliente = $options_model->getClientInfo($_GET['cliente'],'nombre');
-            //$apell_cliente  = $options_model->getClientInfo($_GET['cliente'],'apellido');
-            $nombrecliente  = utf8_encode($nombre_cliente);
-            //$nombrecliente  = utf8_encode($nombre_cliente) . " " . utf8_encode($apell_cliente);
-
-        } else {
-
-            $nombrecliente = '--';
         }
 
         require 'application/views/templates/head.php';
         require 'application/views/templates/top_menu.php';
-        require 'application/views/cotizador/cajas.php';
+        require 'application/views/cajas/index.php';
         require 'application/views/templates/footer.php';
     }
-*/
+
 
     private function almejaCalc($base, $alto, $profundidad, $grosor_cajon, $grosor_cartera) {
 
@@ -303,348 +133,53 @@ class Cotizador extends Controller {
         $ventas_model  = $this->loadModel('VentasModel');
         $almeja_model  = $this->loadModel('AlmejaModel');
 
-        if($login->isLoged()) {
-
-            $procesos      = $options_model->getProcessCatalog();
-            $papers        = $options_model->getPapers();
-            $cartones      = $options_model->getCartones();
-            $cierres       = $options_model->getCostoCierre();
-            $acabados      = $options_model->getCostoAcabados();
-            $accesorios    = $options_model->getCostoAccesorios();
-            $descuentos    = $options_model->getCostoDescuentos();
-            $bancos        = $options_model->getCostoBancos();
-            $impresiones   = $options_model->getImpresiones();
-            $Digital       = $options_model->getProcDigital();
-            $ALaminados    = $options_model->getALaminados();
-            $AHotStamping  = $options_model->getAHotStamping();
-            $Colores       = $options_model->getAHotStampingColor();
-            $AGrabados     = $options_model->getAGrabados();
-            $APEspeciales  = $options_model->getAPEspeciales();
-            $ABarnizUV     = $options_model->getABarnizUV();
-            $ASuaje        = $options_model->getASuaje();
-            $ALaser        = $options_model->getALaser();
-            $TipoImp       = $options_model->getTipoSerigrafia();
-            $modeloscaj    = $options_model->getBoxModels();
-            $TipoListon    = $options_model->getTipoListon();
-            $ColoresListon = $options_model->getColoresListon();
-            $Porcentajes   = $options_model->getPorcentajes();
-            $Herrajes      = $options_model->getHerraje();
-
-            $nombrecliente = utf8_encode($this->getClient($options_model));
-
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/cotizador/cajas.php';
-
-            // plantilla
-            echo "<script>$('#form_modelo_0').hide();</script>";
-
-            require 'application/views/cotizador/cajas_almeja.php';
-
-            echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-
-            require 'application/views/templates/footer.php';
-        } else {
+        if(!$login->isLoged()) {
 
             echo '<script language="javascript">';
             echo 'window.location.href="' . URL . 'login/"';
             echo '</script>';
-            //header("Location:" . URL . 'login/');
-        }
-    }
-
-
-    protected function detalle_proc_offset($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']                 = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['Tipo']                   = trim(strval($sql_tabla_temp_db[$j]['tipo']));
-            $aJson_tmp[$j]['tiraje']                 = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['num_tintas']             = intval($sql_tabla_temp_db[$j]['num_tintas']);
-            /*
-            $aJson_tmp[$j]['corte_costo_unitario']   = floatval($sql_tabla_temp_db[$j]['corte_costo_unitario']);
-            $aJson_tmp[$j]['corte_por_millar']       = intval($sql_tabla_temp_db[$j]['corte_por_millar']);
-            */
-            $aJson_tmp[$j]['costo_corte']            = floatval($sql_tabla_temp_db[$j]['costo_corte']);
-            $aJson_tmp[$j]['costo_unitario_laminas'] = floatval($sql_tabla_temp_db[$j]['costo_unitario_laminas']);
-            $aJson_tmp[$j]['costo_tot_laminas']      = floatval($sql_tabla_temp_db[$j]['costo_tot_laminas']);
-            $aJson_tmp[$j]['costo_unitario_arreglo'] = floatval($sql_tabla_temp_db[$j]['costo_unitario_arreglo']);
-            $aJson_tmp[$j]['costo_tot_arreglo']      = floatval($sql_tabla_temp_db[$j]['costo_tot_arreglo']);
-            $aJson_tmp[$j]['costo_unitario_tiro']    = floatval($sql_tabla_temp_db[$j]['costo_unitario_tiro']);
-            $aJson_tmp[$j]['costo_tot_tiro']         = floatval($sql_tabla_temp_db[$j]['costo_tot_tiro']);
-            $aJson_tmp[$j]['costo_tot_proceso']      = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
         }
 
+        $procesos      = $options_model->getProcessCatalog();
+        $papers        = $options_model->getPapers();
+        $cartones      = $options_model->getCartones();
+        $cierres       = $options_model->getCostoCierre();
+        $acabados      = $options_model->getCostoAcabados();
+        $accesorios    = $options_model->getCostoAccesorios();
+        $descuentos    = $options_model->getCostoDescuentos();
+        $bancos        = $options_model->getCostoBancos();
+        $impresiones   = $options_model->getImpresiones();
+        $Digital       = $options_model->getProcDigital();
+        $ALaminados    = $options_model->getALaminados();
+        $AHotStamping  = $options_model->getAHotStamping();
+        $Colores       = $options_model->getAHotStampingColor();
+        $AGrabados     = $options_model->getAGrabados();
+        $APEspeciales  = $options_model->getAPEspeciales();
+        $ABarnizUV     = $options_model->getABarnizUV();
+        $ASuaje        = $options_model->getASuaje();
+        $ALaser        = $options_model->getALaser();
+        $TipoImp       = $options_model->getTipoSerigrafia();
+        $modeloscaj    = $options_model->getBoxModels();
+        $TipoListon    = $options_model->getTipoListon();
+        $ColoresListon = $options_model->getColoresListon();
+        $Porcentajes   = $options_model->getPorcentajes();
+        $Herrajes      = $options_model->getHerraje();
 
-        return $aJson_tmp;
+        $nombrecliente = utf8_encode($this->getClient($options_model));
+
+        require 'application/views/templates/head.php';
+        require 'application/views/templates/top_menu.php';
+        require 'application/views/cotizador/cajas.php';
+
+        // plantilla
+        echo "<script>$('#form_modelo_0').hide();</script>";
+
+        require 'application/views/cotizador/cajas_almeja.php';
+
+        echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
+
+        require 'application/views/templates/footer.php';
     }
-
-
-    protected function detalle_maq_proc_offset($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        //$nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']                 = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['Tipo']                   = trim(strval($sql_tabla_temp_db[$j]['tipo']));
-            $aJson_tmp[$j]['tiraje']                 = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['num_tintas']             = intval($sql_tabla_temp_db[$j]['num_tintas']);
-            $aJson_tmp[$j]['arreglo_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
-            $aJson_tmp[$j]['arreglo_costo']          = intval($sql_tabla_temp_db[$j]['arreglo_costo']);
-            $aJson_tmp[$j]['costo_unitario_laminas'] = floatval($sql_tabla_temp_db[$j]['costo_unitario_laminas']);
-            $aJson_tmp[$j]['costo_laminas']          = floatval($sql_tabla_temp_db[$j]['costo_laminas']);
-            $aJson_tmp[$j]['costo_unitario']         = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
-            $aJson_tmp[$j]['costo_tot']              = floatval($sql_tabla_temp_db[$j]['costo_tot']);
-            $aJson_tmp[$j]['costo_tot_proceso']      = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_digital($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['corte_ancho']       = floatval($sql_tabla_temp_db[$j]['corte_ancho']);
-            $aJson_tmp[$j]['corte_largo']       = floatval($sql_tabla_temp_db[$j]['corte_largo']);
-            $aJson_tmp[$j]['imp_ancho']         = floatval($sql_tabla_temp_db[$j]['imp_ancho']);
-            $aJson_tmp[$j]['imp_largo']         = floatval($sql_tabla_temp_db[$j]['imp_largo']);
-            $aJson_tmp[$j]['impresion']         = utf8_encode($sql_tabla_temp_db[$j]['impresion']);
-            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
-            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_serigrafia($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']              = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tipo']                = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo'])));
-            $aJson_tmp[$j]['tiraje']              = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['num_tintas']          = intval($sql_tabla_temp_db[$j]['num_tintas']);
-            $aJson_tmp[$j]['costo_unit_arreglo']  = floatval($sql_tabla_temp_db[$j]['costo_unit_arreglo']);
-            $aJson_tmp[$j]['costo_arreglo']       = floatval($sql_tabla_temp_db[$j]['costo_arreglo']);
-            $aJson_tmp[$j]['costo_unitario_tiro'] = floatval($sql_tabla_temp_db[$j]['costo_unit_tiro']);
-            $aJson_tmp[$j]['costo_tiro']          = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
-            $aJson_tmp[$j]['cortes_por_pliego']   = intval($sql_tabla_temp_db[$j]['cortes_por_pliego']);
-            $aJson_tmp[$j]['costo_tot_proceso']   = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_Barniz_UV($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tipoGrabado']       = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
-            $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['Largo']             = floatval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']             = floatval($sql_tabla_temp_db[$j]['ancho']);
-            $aJson_tmp[$j]['area']              = floatval($sql_tabla_temp_db[$j]['area']);
-            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
-            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_Laser($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tipo_grabado']      = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
-            $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['Largo']             = floatval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']             = floatval($sql_tabla_temp_db[$j]['ancho']);
-            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
-            $aJson_tmp[$j]['tiempo_requerido']  = floatval($sql_tabla_temp_db[$j]['tiempo_requerido']);
-            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_Grabado($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']                 = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tipoGrabado']            = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
-            $aJson_tmp[$j]['Largo']                  = intval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']                  = intval($sql_tabla_temp_db[$j]['ancho']);
-            $aJson_tmp[$j]['ubicacion']              = trim(strval($sql_tabla_temp_db[$j]['ubicacion']));
-            $aJson_tmp[$j]['placa_area']             = floatval($sql_tabla_temp_db[$j]['placa_area']);
-            $aJson_tmp[$j]['placa_costo_unitario']   = floatval($sql_tabla_temp_db[$j]['placa_costo_unitario']);
-            $aJson_tmp[$j]['placa_costo']            = floatval($sql_tabla_temp_db[$j]['placa_costo']);
-            $aJson_tmp[$j]['arreglo_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
-            $aJson_tmp[$j]['arreglo_costo']          = floatval($sql_tabla_temp_db[$j]['arreglo_costo']);
-            $aJson_tmp[$j]['costo_unitario']         = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
-            $aJson_tmp[$j]['costo_tiro']             = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
-            $aJson_tmp[$j]['costo_tot_proceso']      = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_HotStamping($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']                  = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tipoGrabado']             = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
-            $aJson_tmp[$j]['Largo']                   = intval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']                   = intval($sql_tabla_temp_db[$j]['ancho']);
-            $aJson_tmp[$j]['Color']                   = trim(strval($sql_tabla_temp_db[$j]['color']));
-            $aJson_tmp[$j]['placa_area']              = floatval($sql_tabla_temp_db[$j]['placa_area']);
-            $aJson_tmp[$j]['placa_costo_unitario']    = floatval($sql_tabla_temp_db[$j]['placa_costo_unitario']);
-            $aJson_tmp[$j]['placa_costo']             = floatval($sql_tabla_temp_db[$j]['placa_costo']);
-            $aJson_tmp[$j]['pelicula_Largo']          = intval($sql_tabla_temp_db[$j]['pelicula_largo']);
-            $aJson_tmp[$j]['pelicula_Ancho']          = intval($sql_tabla_temp_db[$j]['pelicula_ancho']);
-            $aJson_tmp[$j]['pelicula_area']           = floatval($sql_tabla_temp_db[$j]['pelicula_area']);
-            $aJson_tmp[$j]['pelicula_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['pelicula_costo_unitario']);
-            $aJson_tmp[$j]['pelicula_costo']          = floatval($sql_tabla_temp_db[$j]['pelicula_costo']);
-            $aJson_tmp[$j]['arreglo_costo_unitario']  = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
-            $aJson_tmp[$j]['arreglo_costo']           = floatval($sql_tabla_temp_db[$j]['arreglo_costo']);
-            $aJson_tmp[$j]['costo_unitario']          = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
-            $aJson_tmp[$j]['costo_tiro']              = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
-            $aJson_tmp[$j]['costo_tot_proceso']       = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_Laminado($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tipoGrabado']       = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
-            $aJson_tmp[$j]['Largo']             = intval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']             = intval($sql_tabla_temp_db[$j]['ancho']);
-            $aJson_tmp[$j]['area']              = floatval($sql_tabla_temp_db[$j]['area']);
-            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
-            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
-
-    protected function detalle_proc_Suaje($id_odt, $nombre_tabla_tmp, $ventas_model) {
-
-        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
-
-        $aJson_tmp = [];
-
-        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
-
-        $cuantos_db = count($sql_tabla_temp_db);
-
-        for ($j = 0; $j < $cuantos_db; $j++) {
-
-            $aJson_tmp[$j]['id_odt']              = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['tiraje']              = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['tipoGrabado']         = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
-            $aJson_tmp[$j]['Largo']               = intval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']               = intval($sql_tabla_temp_db[$j]['ancho']);
-            $aJson_tmp[$j]['perimetro']           = intval($sql_tabla_temp_db[$j]['perimetro']);
-            $aJson_tmp[$j]['tabla_suaje']         = floatval($sql_tabla_temp_db[$j]['tabla_suaje']);
-            $aJson_tmp[$j]['arreglo']             = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
-            $aJson_tmp[$j]['tiro_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['tiro_costo_unitario']);
-            $aJson_tmp[$j]['costo_tiro']          = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
-            $aJson_tmp[$j]['costo_tot_proceso']   = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
-        }
-
-        return $aJson_tmp;
-    }
-
 
 
     // inicia actualizacion de almeja (cambia el estado y graba los nuevos calculos)
@@ -1452,6 +987,7 @@ class Cotizador extends Controller {
         }
     }
 
+    
 
     // calculo del modelo caja almeja
     public function saveCaja() {
@@ -1461,8 +997,8 @@ class Cotizador extends Controller {
             session_start();
         }
 
-        $aJson      = [];
-        $aCortes    = [];
+        $aJson   = [];
+        $aCortes = [];
 
 
         $login         = $this->loadController('login');
@@ -1479,17 +1015,21 @@ class Cotizador extends Controller {
             //header("Location:" . URL . 'login/');
         }
 
+        $mensaje = "ERROR";
+
         $odt = strip_tags(trim($_POST['odt']));
         $odt = strtoupper($odt);
         $odt = strval($odt);
+
 
         //$l_existe = $ventas_model->chkODT();
         $l_existe = self::checaODT($odt);
 
         if ($l_existe) {
 
-            return false;
+            self::msgError("Ya hay una ODT con el mismo nombre");
         }
+
 
         $_POST['odt'] = $odt;
 
@@ -1502,29 +1042,13 @@ class Cotizador extends Controller {
         $num_dec2 = 2;
         $num_dec4 = 4;
 
-        $l_subtotal = true;
-        $l_costo    = true;
-
-        $cantidad        = 0;
-        $costo_total     = 0;
-        $costo_corte     = 0;
+        $cantidad    = 0;
+        $costo_total = 0;
+        $costo_corte = 0;
 
         $cantidad = $_POST["qty"];
         $cantidad = intval($cantidad);
-
-        $tiraje = $_POST['qty'];
-        $tiraje = intval($tiraje);
-
-        if (isset($_POST['submit'])) {
-
-            if ($tiraje <= 0) {
-
-                echo "Oops! Por favor capture todos los datos.";
-
-                return false;
-            }
-        }
-
+        $tiraje   = intval($cantidad);
 
         $id_cliente = $_POST['id_cliente'];
 
@@ -1551,8 +1075,6 @@ class Cotizador extends Controller {
         $alto = $_POST['alto'];
         $alto = floatval($alto);
 
-        // siempre sera mayor la base que el alto en almeja?
-        // es decir, usamos la siguiente función (si/no)?
         if (!self::checaAnchoLargo($alto, $base)) {
 
             $ancho_temp = $alto;
@@ -1562,162 +1084,105 @@ class Cotizador extends Controller {
             $alto = $largo_temp;
         }
 
-        $profundidad     = 0;
-        $profundidad     = $_POST['profundidad'];
-        $profundidad     = floatval($profundidad);
+        $profundidad    = 0;
+        $profundidad    = $_POST['profundidad'];
+        $profundidad    = floatval($profundidad);
 
-        $grosor_cajon    = 0;
-        $grosor_cajon    = $_POST['grosor-cajon'];
-        $grosor_cajon    = floatval($grosor_cajon);
+        $grosor_cajon   = 0;
+        $grosor_cajon   = $_POST['grosor-cajon'];
+        $grosor_cajon   = floatval($grosor_cajon);
 
-        $grosor_cartera  = 0;
-        $grosor_cartera  = $_POST['grosor-cartera'];
-        $grosor_cartera  = floatval($grosor_cartera);
+        $grosor_cartera = 0;
+        $grosor_cartera = $_POST['grosor-cartera'];
+        $grosor_cartera = floatval($grosor_cartera);
 
-        $cajon           = $grosor_cajon;
-        $cartera         = $grosor_cartera;
+        $cajon          = $grosor_cajon;
+        $cartera        = $grosor_cartera;
 
-        $offset1         = $_POST['offset1'];
-        $offset1         = floatval($offset1);
+        $offset1        = $_POST['offset1'];
+        $offset1        = floatval($offset1);
 
-        $offsetadic      = $_POST['offsetadic'];
-        $offsetadic      = floatval($offsetadic);
+        $offsetadic     = $_POST['offsetadic'];
+        $offsetadic     = floatval($offsetadic);
 
-        $offset          = $_POST['offset'];
-        $offset          = floatval($offset);
+        $offset         = $_POST['offset'];
+        $offset         = floatval($offset);
 
-        $digital1        = $_POST['digital1'];
-        $digital1        = floatval($digital1);
+        $digital1       = $_POST['digital1'];
+        $digital1       = floatval($digital1);
 
-        $digitaladic     = $_POST['digitaladic'];
-        $digitaladic     = floatval($digitaladic);
+        $digitaladic    = $_POST['digitaladic'];
+        $digitaladic    = floatval($digitaladic);
 
-        $digital         = $_POST['digital'];
-        $digital         = floatval($digital);
+        $digital        = $_POST['digital'];
+        $digital        = floatval($digital);
 
-        $serigrafia1     = $_POST['serigrafia1'];
-        $serigrafia1     = floatval($serigrafia1);
+        $serigrafia1    = $_POST['serigrafia1'];
+        $serigrafia1    = floatval($serigrafia1);
 
-        $serigrafiaadic  = $_POST['serigrafiaadic'];
-        $serigrafiaadic  = floatval($serigrafiaadic);
+        $serigrafiaadic = $_POST['serigrafiaadic'];
+        $serigrafiaadic = floatval($serigrafiaadic);
 
-        $serigrafia      = $_POST['serigrafia'];
-        $serigrafia      = floatval($serigrafia);
+        $serigrafia     = $_POST['serigrafia'];
+        $serigrafia     = floatval($serigrafia);
 
-        $hs1             = $_POST['hs1'];
-        $hs1             = floatval($hs1);
+        $hs1            = $_POST['hs1'];
+        $hs1            = floatval($hs1);
 
-        $hsadic          = $_POST['hsadic'];
-        $hsadic          = floatval($hsadic);
+        $hsadic         = $_POST['hsadic'];
+        $hsadic         = floatval($hsadic);
 
-        $hs              = $_POST['hs'];
-        $hs              = floatval($hs);
+        $hs             = $_POST['hs'];
+        $hs             = floatval($hs);
 
-        $laminado1       = $_POST['laminado1'];
-        $laminado1       = floatval($laminado1);
+        $laminado1      = $_POST['laminado1'];
+        $laminado1      = floatval($laminado1);
 
-        $laminadoadic    = $_POST['laminadoadic'];
-        $laminadoadic    = floatval($laminadoadic);
+        $laminadoadic   = $_POST['laminadoadic'];
+        $laminadoadic   = floatval($laminadoadic);
 
-        $laminado        = $_POST['laminado'];
-        $laminado        = floatval($laminado);
+        $laminado       = $_POST['laminado'];
+        $laminado       = floatval($laminado);
 
-        $barniz1         = $_POST['barniz1'];
-        $barniz1         = floatval($barniz1);
+        $barniz1        = $_POST['barniz1'];
+        $barniz1        = floatval($barniz1);
 
-        $barnizadic      = $_POST['barnizadic'];
-        $barnizadic      = floatval($barnizadic);
+        $barnizadic     = $_POST['barnizadic'];
+        $barnizadic     = floatval($barnizadic);
 
-        $barniz          = $_POST['barniz'];
-        $barniz          = floatval($barniz);
+        $barniz         = $_POST['barniz'];
+        $barniz         = floatval($barniz);
 
-        $suaje1          = $_POST['suaje1'];
-        $suaje1          = floatval($suaje1);
+        $suaje1         = $_POST['suaje1'];
+        $suaje1         = floatval($suaje1);
 
-        $suajeadic       = $_POST['suajeadic'];
-        $suajeadic       = floatval($suajeadic);
+        $suajeadic      = $_POST['suajeadic'];
+        $suajeadic      = floatval($suajeadic);
 
-        $suaje           = $_POST['suaje'];
-        $suaje           = floatval($suaje);
+        $suaje          = $_POST['suaje'];
+        $suaje          = floatval($suaje);
 
-        $forrado1        = $_POST['forrado1'];
-        $forrado1        = floatval($forrado1);
+        $forrado1       = $_POST['forrado1'];
+        $forrado1       = floatval($forrado1);
 
-        $forradoadic     = $_POST['forradoadic'];
-        $forradoadic     = floatval($forradoadic);
+        $forradoadic    = $_POST['forradoadic'];
+        $forradoadic    = floatval($forradoadic);
 
-        $forrado         = $_POST['forrado'];
-        $forrado         = floatval($forrado);
+        $forrado        = $_POST['forrado'];
+        $forrado        = floatval($forrado);
 
-        $grabadomin      = $_POST['grabadomin'];
-        $grabadomin      = floatval($grabadomin);
+        $grabadomin     = $_POST['grabadomin'];
+        $grabadomin     = floatval($grabadomin);
 
-        $grabadoadic     = $_POST['grabadoadic'];
-        $grabadoadic     = floatval($grabadoadic);
+        $grabadoadic    = $_POST['grabadoadic'];
+        $grabadoadic    = floatval($grabadoadic);
 
-        $grabadotot      = $_POST['grabadotot'];
-        $grabadotot      = floatval($grabadotot);
+        $grabadotot     = $_POST['grabadotot'];
+        $grabadotot     = floatval($grabadotot);
 
 
     // Calculadora
         $aCalculos = self::almejaCalc($base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
-
-        //$aCalculos_temp = $_POST['aCalculos'];
-        //$aCalculos      = json_decode($aCalculos_temp, true);
-
-        // Empalme
-        $x1 = $aCalculos['x1'];         // largo
-        $x1 = floatval($x1);
-
-        $x11 = $aCalculos['x11'];         // largo
-        $x11 = floatval($x11);
-
-        $y1 = $aCalculos['y1'];         // ancho
-        $y1 = floatval($y1);
-
-        $y11 = $aCalculos['y11'];         // ancho
-        $y11 = floatval($y11);
-        // Forro Cajon
-        $f = $aCalculos['f'];           // largo
-        $f = floatval($f);
-
-        $k = $aCalculos['k'];           // ancho
-        $k = floatval($k);
-
-
-        // Forro Cartera
-        $B1 = $aCalculos['B1'];         // ancho
-        $B1 = round(floatval($B1), 2);
-
-        $Y1 = $aCalculos['Y1'];         // largo
-        $Y1 = floatval($Y1);
-
-
-        // carton cajon
-        $b1 = $aCalculos['b1'];
-        $b1 = round(floatval($b1), 2);
-
-        $h1 = $aCalculos['h1'];
-        $h1 = round(floatval($h1), 2);
-
-
-        // carton cartera
-        $B = $aCalculos['B'];
-        $B = round(floatval($B), 2);
-
-        $Y = $aCalculos['Y'];         // largo
-        $Y = floatval($Y);
-        
-        $H = $aCalculos['H'];
-        $H = round(floatval($H), 2);
-
-
-        // Guarda
-        $B11 = $aCalculos['B11'];       // largo
-        $B11 = floatval($B11);
-
-        $Y11 = $aCalculos['Y11'];       // ancho
-        $Y11 = floatval($Y11);
 
 
         $aJson = [];
@@ -1756,7 +1221,6 @@ class Cotizador extends Controller {
         $aJson['costo_tot_corte']            = 0;
         $aJson['costo_tot_corte_papel']      = 0;
         $aJson['costo_tot_corte_carton']     = 0;
-        $aJson['costo_tot_corte_cartera']    = 0;
         $aJson['costo_tot_corte_refine']     = 0;
 
         $aJson['costo_papeles']              = 0;
@@ -1837,16 +1301,22 @@ class Cotizador extends Controller {
 
         $aJson['tiraje'] = $tiraje;
 
+
     // corte papel Empalme
-        $secc_ancho = floatval($y11);
-        $secc_largo = floatval($x11);
+        $x11 = $aCalculos['x11'];         // largo
+        $x11 = floatval($x11);
+
+        $y11 = $aCalculos['y11'];         // ancho
+        $y11 = floatval($y11);
+
+        $secc_ancho = $y11;
+        $secc_largo = $x11;
 
         $aPapel_tmp = self::calculaPapel("Empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
         if (intval($aPapel_tmp['calculadora']['corte']['cortesT']) <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Empalme;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Empalme;");
         }
 
         $aPapelEmp = [];
@@ -1857,15 +1327,20 @@ class Cotizador extends Controller {
 
 
     // Corte papel Forro Cajon
-        $secc_ancho = floatval($k);
-        $secc_largo = floatval($f);
+        $f = $aCalculos['f'];           // largo
+        $f = floatval($f);
+
+        $k = $aCalculos['k'];           // ancho
+        $k = floatval($k);
+
+        $secc_ancho = $k;
+        $secc_largo = $f;
 
         $aPapel_tmp = self::calculaPapel("FCaj", $id_papel_forro_cajon, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
         if (intval($aPapel_tmp['calculadora']['corte']['cortesT']) <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Forro del cajon;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro del cajon;");
         }
 
 
@@ -1877,15 +1352,20 @@ class Cotizador extends Controller {
 
 
     // Corte papel Forro Cartera
-        $secc_ancho = floatval($aCalculos['B1']);
-        $secc_largo = floatval($aCalculos['Y1']);
+        $B1 = $aCalculos['B1'];
+        $B1 = round(floatval($B1), 2);
+
+        $Y1 = $aCalculos['Y1'];
+        $Y1 = round(floatval($Y1), 2);
+
+        $secc_ancho = $B1;
+        $secc_largo = $Y1;
 
         $aPapel_tmp = self::calculaPapel("FCar", $id_papel_forro_cartera, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
         if (intval($aPapel_tmp['calculadora']['corte']['cortesT']) <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Forro de la cartera;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro de la cartera;");
         }
 
 
@@ -1897,15 +1377,20 @@ class Cotizador extends Controller {
 
 
     // Corte papel Guarda
-        $secc_ancho = floatval($Y11);
-        $secc_largo = floatval($B11);
+        $B11 = $aCalculos['B11'];       // largo
+        $B11 = floatval($B11);
+
+        $Y11 = $aCalculos['Y11'];       // ancho
+        $Y11 = floatval($Y11);
+
+        $secc_ancho = $Y11;
+        $secc_largo = $B11;
 
         $aPapel_tmp = self::calculaPapel("Guarda", $id_papel_guarda, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
         if (intval($aPapel_tmp['calculadora']['corte']['cortesT']) <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en la Guarda;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en la Guarda;");
         }
 
 
@@ -1928,8 +1413,15 @@ class Cotizador extends Controller {
         $c_largo = floatval($grosor_caj['largo_papel']);
     */
 
-        $secc_ancho = floatval($x1);
-        $secc_largo = floatval($y1);
+        // Empalme Carton
+        $x1 = $aCalculos['x1'];         // largo
+        $x1 = floatval($x1);
+
+        $y1 = $aCalculos['y1'];         // ancho
+        $y1 = floatval($y1);
+
+        $secc_ancho = $x1;
+        $secc_largo = $y1;
 
         if (!array_key_exists("calculaPapel", $aJson)) {
 
@@ -1954,8 +1446,7 @@ class Cotizador extends Controller {
 
         if ($corte_cajon <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al carton del cajon;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton del cajon;");
         }
 
         $aCortes['cajon'] = $corte_cajon;
@@ -1967,8 +1458,14 @@ class Cotizador extends Controller {
 
         //$grosor_cartera = self::getPapelCarton("grosor_cartera", $grosor_cartera, $options_model);
 
-        $secc_ancho = floatval($B);
-        $secc_largo = floatval($Y);
+        $B = $aCalculos['B'];         // ancho
+        $B = floatval($B);
+
+        $Y = $aCalculos['Y'];         // largo
+        $Y = floatval($Y);
+
+        $secc_ancho = $B;
+        $secc_largo = $Y;
 
         if (!array_key_exists("calculaPapel", $aJson)) {
 
@@ -1993,8 +1490,7 @@ class Cotizador extends Controller {
 
         if ($corte_cajon_cartera <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al carton de la cartera;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton de la cartera;");
         }
 
         $aCortes['cartera'] = $corte_cajon_cartera;
@@ -2003,8 +1499,8 @@ class Cotizador extends Controller {
         $costo_odt     = 0;
         $costo_papeles = 0;
 
-        $aMerma = [];
 
+        $aMerma = [];
 
         // total papel + cartones
         $costo_odt = $aPapelEmp["tot_costo"];
@@ -2015,6 +1511,8 @@ class Cotizador extends Controller {
 
     // corte(guillotina)
 
+        // sumamos todos los pliegos y cartones para calcular el costo del corte
+        // o lo dejamos como esta calculado?
 
         // empalme
         $cortes_pliego_emp = $aCortes['guarda_cajon'];
@@ -2030,12 +1528,17 @@ class Cotizador extends Controller {
         $aJson['costo_tot_corte_papel']  = $aJson['costo_tot_corte_papel'] + $aJson['costo_corte_papel_fcaj']['tot_costo_corte'];
 
 
-////
-
         // forro cartera
         $cortes_pliego_fcar = intval($aCortes['forro_cartera']);
 
         $aJson['costo_corte_papel_fcar'] = self::costo_corte("Corte", $tiraje, $cortes_pliego_fcar, $ventas_model);
+
+        if ($aJson['costo_corte_papel_fcar']['tot_costo_corte'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para corte forro cartera;");
+        }
+
+
         $aJson['costo_tot_corte_papel']  = $aJson['costo_tot_corte_papel'] + $aJson['costo_corte_papel_fcar']['tot_costo_corte'];
 
 
@@ -2043,13 +1546,76 @@ class Cotizador extends Controller {
         $cortes_pliego_guarda = $aCortes['guarda'];
 
         $aJson['costo_corte_papel_guarda'] = self::costo_corte("Corte", $tiraje, $cortes_pliego_guarda, $ventas_model);
-        $aJson['costo_tot_corte_papel']    = $aJson['costo_tot_corte_papel'] + $aJson['costo_corte_papel_guarda']['tot_costo_corte'];
+
+
+        if ($aJson['costo_corte_papel_guarda']['tot_costo_corte'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para corte guarda;");
+        }
+
+
+        $aJson['costo_tot_corte_papel'] = $aJson['costo_tot_corte_papel'] + $aJson['costo_corte_papel_guarda']['tot_costo_corte'];
+
+
+        $tot_pliegos_papel = 0;
+
+        $tot_pliegos_papel = intval($aPapelEmp['tot_pliegos']
+                            + $aPapelFCaj['tot_pliegos']
+                            + $aPapelFCar['tot_pliegos']
+                            + $aPapelG['tot_pliegos']
+                            );
+
+        $costo_corte_tot_papel = self::costo_corte("Corte", $tiraje, $tot_pliegos_papel, $ventas_model);
+
+
+        $tot_pliegos_cartones = 0;
+        
+        $tot_pliegos_cartones = intval($aCartonCajon['tot_pliegos']
+                                + $aCartonCartera['tot_pliegos']
+                                );
+
+        $costo_corte_tot_carton = self::costo_corte("Corte", $tiraje, $tot_pliegos_cartones, $ventas_model);
+
+
+        $tot_costo_corte_papel_carton = 0;
+        
+        $tot_costo_corte_papel_carton = floatval($costo_corte_tot_papel['tot_costo_corte'] 
+                                        + $costo_corte_tot_carton['tot_costo_corte']
+                                        );
+
+        $aJson['corte_tot_pliegos_papel']  = $costo_corte_tot_papel;
+        $aJson['corte_tot_pliegos_carton'] = $costo_corte_tot_carton;
+        $aJson['costo_corte_tot_papel']    = $costo_corte_tot_papel['tot_costo_corte'];
+        $aJson['costo_corte_tot_carton']   = $costo_corte_tot_carton['tot_costo_corte'];
+
+
+
+        $aJson['costo_tot_corte'] = floatval($costo_corte_tot_papel['tot_costo_corte']
+                                    + $costo_corte_tot_carton['tot_costo_corte']
+                                    );
+
+        $aJson['costo_tot_corte_papel'] = floatval($costo_corte_tot_papel['tot_costo_corte']);
+
+
+        $aJson['costo_tot_corte_carton'] = floatval($costo_corte_tot_carton['tot_costo_corte']);
+
+        $aJson['costo_corte_carton'] = floatval($costo_corte_tot_carton['tot_costo_corte']);
+
+        $aJson['costo_corte_tot_carton'] = floatval($costo_corte_tot_carton['tot_costo_corte']);
 
 
         // corte carton carton empalme
         $cortes_carton_cajon = $aCortes['cajon'];
 
         $aJson['costo_corte_carton']     = self::costo_corte("Corte", $tiraje, $cortes_carton_cajon, $ventas_model);
+
+
+        if ($aJson['costo_corte_carton']['tot_costo_corte'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para corte carton empalme;");
+        }
+
+
         $aJson['costo_tot_corte_carton'] = $aJson['costo_corte_carton']['tot_costo_corte'];
 
 
@@ -2057,24 +1623,46 @@ class Cotizador extends Controller {
         $cortes_carton_cartera = $aCortes['cartera'];
 
         $aJson['costo_corte_cartera']     = self::costo_corte("Corte", $tiraje, $cortes_carton_cartera, $ventas_model);
-        $aJson['costo_tot_corte_cartera'] = $aJson['costo_corte_cartera']['tot_costo_corte'];
+
+
+        if ($aJson['costo_corte_cartera']['tot_costo_corte'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para corte carton cartera;");
+        }
+
+
+        //$aJson['costo_tot_corte_cartera'] = $aJson['costo_corte_cartera']['tot_costo_corte'];
 
 
         //suma de corte
-        $aJson['costo_tot_corte'] = floatval($aJson['costo_tot_corte_papel'] + $aJson['costo_tot_corte_carton'] + $aJson['costo_tot_corte_cartera']);
-
+        /*
+        $aJson['costo_tot_corte'] = floatval($aJson['costo_tot_corte_papel'] 
+                                    + $aJson['costo_tot_corte_carton'] 
+                                    + $aJson['costo_tot_corte_cartera']
+                                    );
+        */
 
         // corte refine emp
         $cortes_pliego_emp = $aCortes['guarda_cajon'];
 
-        $aJson['costo_corte_refine']     = self::costo_corte("Corte", $tiraje, $cortes_pliego_emp, $ventas_model);
+        $aJson['costo_corte_refine'] = self::costo_corte("Corte", $tiraje, $cortes_pliego_emp, $ventas_model);
+
+
+        if ($aJson['costo_corte_refine']['tot_costo_corte'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para corte refine empalme;");
+        }
+
+
         $aJson['costo_tot_corte_refine'] = $aJson['costo_corte_refine']['tot_costo_corte'];
 
-        $aJson['costo_tot_corte_cartera'] = $aJson['costo_corte_cartera']['tot_costo_corte'];
+        $aJson['costo_tot_corte'] = floatval($aJson['costo_tot_corte'] + $aJson['costo_tot_corte_refine']);
+
+        //$aJson['costo_tot_corte_cartera'] = $aJson['costo_corte_cartera']['tot_costo_corte'];
 
 
         //suma de corte
-        $aJson['costo_tot_corte'] = floatval($aJson['costo_tot_corte_papel'] + $aJson['costo_tot_corte_carton'] + $aJson['costo_tot_corte_cartera'] + $aJson['costo_tot_corte_refine']);
+        //$aJson['costo_tot_corte'] = floatval($aJson['costo_tot_corte_papel'] + $aJson['costo_tot_corte_carton'] + $aJson['costo_tot_corte_cartera'] + $aJson['costo_tot_corte_refine']);
 
 
     // termina corte
@@ -2084,6 +1672,7 @@ class Cotizador extends Controller {
         $id_papel_forro_cajon   = intval($_POST['papel_exterior_cajon']);
         $id_papel_forro_cartera = intval($_POST['papel_exterior_cartera']);
         $id_papel_guarda        = intval($_POST['papel_interior_cartera']);
+
 
 
 /******************* Inicia Costos fijos *************************/
@@ -2106,6 +1695,12 @@ class Cotizador extends Controller {
         $aElab_Car['forro_car']        = $aElab_Car_tmp["forro_costo_tot"];
 
 
+        if ($aElab_Car_tmp['forro_costo_tot'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para elaboracion forro cartera;");
+        }
+
+
         $aElab_Car_tmp = [];
 
         $aElab_Car_tmp = self::calculoElabCartera("proc_cartera", "Guarda", $base_tmp, $alto_tmp, $tiraje, $ventas_model);
@@ -2118,15 +1713,32 @@ class Cotizador extends Controller {
         $aElab_G['guarda']            = $aElab_Car_tmp['forro_costo_tot'];
 
 
+        if ($aElab_Car_tmp['forro_costo_tot'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para elaboracion forro guarda;");
+        }
+
+
         $aElab_Car_tmp = [];
 
 
 
     // ****************** ranurado ********************************
 
+
+    // areglo ranurado
+        $aJson['arreglo_ranurado_hor_emp'] = [];
+        $aJson['arreglo_ranurado_ver_emp'] = [];
+
         $proc_temp = [];
 
         $proc_temp = self::calculoRanurado($tiraje, $ventas_model);
+
+
+        if ($proc_temp['costo_tot_proceso'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para arreglo ranurado empalme;");
+        }
 
 
         $aRanurado      = [];
@@ -2138,22 +1750,21 @@ class Cotizador extends Controller {
         $aRanurado['costo_por_ranura']      = $proc_temp['costo_por_ranura'];
         $aRanurado['costo_tot_ranurado']    = $proc_temp['costo_tot_proceso'];
 
+        $aJson['arreglo_ranurado_hor_emp'] = $aRanurado;
+
 
         $aRanurado_Fcar['costo_unit_por_ranura'] = $proc_temp['costo_unit_por_ranura'];
         $aRanurado_Fcar['costo_por_ranura']      = $proc_temp['costo_por_ranura'];
 
 
-    // areglo ranurado
-        $aJson['arreglo_ranurado_hor_emp'] = 0;
-        $aJson['arreglo_ranurado_ver_emp'] = 0;
-
-        $arreglo_ranurado                  = self::arregloRanurado($ventas_model);
-        $aJson['arreglo_ranurado_hor_emp'] = $arreglo_ranurado;
-
         if ($base > $alto or $base < $alto) {
 
-            $aJson['arreglo_ranurado_ver_emp'] = $arreglo_ranurado;
+            $aJson['arreglo_ranurado_ver_emp'] = $aRanurado;
+        } else {
+
+            $aJson['arreglo_ranurado_ver_emp']['costo_tot_ranurado'] = 0;
         }
+
 
 
     // ************ encuadernacion ******************************
@@ -2169,6 +1780,13 @@ class Cotizador extends Controller {
 
         $proc_temp = self::calculoEncuadernacion($tiraje, $id_papel_exterior_cajon, $enc_cortes, $ventas_model);
 
+
+        if ($proc_temp['costo_tot_proceso'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para encuadernacion guarda cajon;");
+        }
+
+
         $aEncuadernacion = $proc_temp;
 
 
@@ -2180,16 +1798,15 @@ class Cotizador extends Controller {
 
         if ($proc_temp['costo_unit_forrado_cajon'] <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error'] = $aJson['error'] . "No existe costo para costo unit forrado cajon(encuadernacion_Fcaj);";
+            self::mError($aJson, $mensaje, "No existe costo para costo unitario forrado cajon(encuadernacion_Fcaj;");
         }
 
 
         if ($proc_temp['arreglo_de_forrado_de_cajon'] <= 0 and $tiraje >= 500) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error'] = $aJson['error'] . "No existe costo para arreglo de forrado de cajon(encuadernacion_Fcaj);";
+            self::mError($aJson, $mensaje, "No existe costo para arreglo de forrado de cajon;");
         }
+
 
 
     /************** despunte de esquinas **************/
@@ -2199,6 +1816,13 @@ class Cotizador extends Controller {
 
         $costo_unit_despunte_esquinas = $desp_tmp['despunte_costo_unitario'];
         $costo_tot_despunte_esquinas  = $desp_tmp['despunte_de_esquinas_para_cajon'];
+
+
+        if ($costo_unit_despunte_esquinas <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para despunte esquinas;");
+        }
+
 
         $desp_tmp = [];
 
@@ -2210,6 +1834,7 @@ class Cotizador extends Controller {
         $desp_temp = [];
 
 
+
     /********* arreglo ranurado forro de la cartera **************/
 
 
@@ -2218,7 +1843,15 @@ class Cotizador extends Controller {
         $arreglo_ranurado_fcar = $arreglo_ranurado_fcar_temp['arreglo'];
         $arreglo_ranurado_fcar = floatval($arreglo_ranurado_fcar);
 
+
+        if ($arreglo_ranurado_fcar <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo para arreglo ranurado forro cartera;");
+        }
+
+
         $aJson['cot_alm_arreglo_ranurado_fcar'] = $arreglo_ranurado_fcar;
+
 
 
     /************* pegado guarda ********************/
@@ -2241,6 +1874,13 @@ class Cotizador extends Controller {
         }
     }
 
+
+    if ($precio_unitario <= 0) {
+
+        self::mError($aJson, $mensaje, "No existe costo unitario pegado guarda;");
+    }
+
+
     $costo_tot_pegado_guarda = floatval($precio_unitario * $tiraje);
     $costo_tot_pegado_guarda = round($costo_tot_pegado_guarda, 2);
 
@@ -2262,6 +1902,13 @@ class Cotizador extends Controller {
         $armado_costo_unit = floatval($armado_costo_unit);
     }
 
+
+    if ($armado_costo_unit <= 0) {
+
+        self::mError($aJson, $mensaje, "No existe costo unitario armado final caja;");
+    }
+
+
     $costo_tot_proceso = floatval($tiraje * $armado_costo_unit);
 
     $aJson['armado_caja_final']['costo_unit']        = $armado_costo_unit;
@@ -2271,10 +1918,7 @@ class Cotizador extends Controller {
 /************** Termina Costos fijos *************************/
 
 
-    /******************* proceso Impresion ******************************/
-
-
-// empezar a grabar las tablas nuevas de almeja segun el proceso
+/******************* proceso Impresion ******************************/
 
 
     $mensaje = "ERROR";
@@ -2381,11 +2025,9 @@ class Cotizador extends Controller {
 
                         $offset_tiro_tmp = floatval($offset_tiro['costo_tot_proceso']);
 
-                        if ($offset_tiro_tmp <= 0) {
+                        if ( $offset_tiro_tmp <= 0 ) {
 
                             self::mError($aJson, $mensaje, $error . "Offset(Empalme);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Offset(Empalme);";
                         }
 
                         $aOffEmp[$i] = $offset_tiro;
@@ -2397,11 +2039,9 @@ class Cotizador extends Controller {
 
                         $offset_tiro_tmp = floatval($offset_tiro['costo_tot_proceso']);
 
-                        if ($offset_tiro_tmp <= 0) {
+                        if ( $offset_tiro_tmp <= 0 ) {
 
                             self::mError($aJson, $mensaje, $error . "Offset Maquila(Empalme);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Empalme);";
                         }
 
                         $aOff_maq_Emp[$i] = $offset_tiro;
@@ -2437,21 +2077,13 @@ class Cotizador extends Controller {
                         if ($aDigEmp[$i]['cabe_digital'] === "NO") {
 
                             self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas en Empalme;");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . "Digital. No cabe con las medidas proporcionadas en Empalme;";
                         } elseif ($aDigEmp[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Digital. No existe costo en Digital Empalme;");
-
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Digital. No existe costo en Digital Empalme;";
                         }
                     } else {
 
                         self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas en Digital Empalme;");
-
-                        //$aJson['mensaje'] = $mensaje;
-                        //$aJson['error']   = $aJson['error'] . $error .  "Digital. No cabe con las medidas proporcionadas en Digital Empalme;";
 
                         $aDigEmp[$i]['cabe_digital']      = "NO";
                         $aDigEmp[$i]['cantidad']          = $tiraje;
@@ -2507,9 +2139,7 @@ class Cotizador extends Controller {
 
                     if ($aSerEmp[$i]['costo_tot_proceso'] <= 0) {
 
-                            self::mError($aJson, $mensaje, $error . "Serigrafia(Empalme);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error . "Serigrafia(Empalme);";
+                        self::mError($aJson, $mensaje, $error . "Serigrafia(Empalme);");
                     }
 
 
@@ -2529,12 +2159,12 @@ class Cotizador extends Controller {
         $aJson['Cortes']        = $aCortes;
 
 
-        $aJson['elab_car']              = $aElab_Car;
-        $aJson['elab_guarda']           = $aElab_G;
-        $aJson['ranurado']              = $aRanurado;
-        $aJson['ranurado_Fcar']         = $aRanurado_Fcar;
-        $aJson['encuadernacion']        = $aEncuadernacion;
-        $aJson['encuadernacion_Fcaj']   = $aEncuadernacion_Fcaj;
+        $aJson['elab_car']            = $aElab_Car;
+        $aJson['elab_guarda']         = $aElab_G;
+        $aJson['ranurado']            = $aRanurado;
+        $aJson['ranurado_Fcar']       = $aRanurado_Fcar;
+        $aJson['encuadernacion']      = $aEncuadernacion;
+        $aJson['encuadernacion_Fcaj'] = $aEncuadernacion_Fcaj;
 
 
         if (is_array($aElab_Car)) {
@@ -2734,8 +2364,6 @@ class Cotizador extends Controller {
                         if ($offset_tiro['costo_tot_proceso'] <= 0) {
 
                                 self::mError($aJson, $mensaje, $error . "Offset(Forro del Cajon);");
-                                //$aJson['mensaje'] = $mensaje;
-                                //$aJson['error']   = $aJson['error'] . $error . "Offset(Forro del Cajon);";
                         }
 
                         $aOffFCaj[$i] = $offset_tiro;
@@ -2756,8 +2384,6 @@ class Cotizador extends Controller {
                         if ($offset_tiro_tmp <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Offset Maquila(Forro del Cajon);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Empalme);";
                         }
 
                         $aOff_maq_FCaj[$i] = $offset_tiro;
@@ -2792,22 +2418,13 @@ class Cotizador extends Controller {
                         if ($aDigFCaj[$i]['cabe_digital'] === "NO") {
 
                             self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Digital Forro del cajon;");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . "Digital. No cabe con las medidas proporcionadas en Digital Forro del cajon;";
                         } elseif ($aDigFCaj[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Digital Forro del cajon;");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error . "Digital Forro del cajon;";
                         }
                     } else {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
-
                         self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas (Forro del cajon);");
-                        //$aJson['mensaje'] = $mensaje;
-                        //$aJson['error']   = $aJson['error'] . $error . "Digital. No cabe con las medidas proporcionadas en Digital (Forro del cajon);";
 
                         $aDigFCaj[$i]['cabe_digital']      = "NO";
                         $aDigFCaj[$i]['cantidad']          = $tiraje;
@@ -2865,8 +2482,6 @@ class Cotizador extends Controller {
                     if ($aSerFCaj[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Serigrafia(Forro del Cajon);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error . "Serigrafia(Forro del Cajon);";
                     }
 
                     $aSerFCaj[$i]["mermas"] = $Merma_Ser_tmp;
@@ -2947,7 +2562,7 @@ class Cotizador extends Controller {
 
         // Forro de la Cartera
         $Tipo_proceso_FCar_tmp2 = json_decode($_POST['aImpFCar'], true);
-        $Tipo_proceso_tmp  = array_values($Tipo_proceso_FCar_tmp2);
+        $Tipo_proceso_tmp       = array_values($Tipo_proceso_FCar_tmp2);
 
         $num_rows = 0;
         $num_rows = count($Tipo_proceso_tmp);
@@ -3038,8 +2653,6 @@ class Cotizador extends Controller {
                         if ($offset_tiro_tmp <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Offset(Forro de la Cartera);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Offset(Forro de la Cartera);";
                         }
 
                         $aOffFCar[$i] = $offset_tiro;
@@ -3060,8 +2673,6 @@ class Cotizador extends Controller {
                         if ($offset_tiro_tmp <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Offset Maquila(Forro Cartera);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Empalme);";
                         }
 
                         $aOff_maq_FCar[$i] = $offset_tiro;
@@ -3107,19 +2718,13 @@ class Cotizador extends Controller {
                         if ($aDigFCar[$i]['cabe_digital'] === "NO") {
 
                             self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas (Forro Cartera);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . "Digital. No cabe con las medidas proporcionadas en Forro de la Cartera;";
                         } elseif ($aDigFCar[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Digital. No existe costo en Forro de la Cartera;");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Digital. No existe costo en Forro de la Cartera;";
                         }
                     } else {
 
                         self::mError($aJson, $mensaje, $error .  "Digital. No cabe con las medidas proporcionadas en Forro de la Cartera;");
-                        //$aJson['mensaje'] = $mensaje;
-                        //$aJson['error']   = $aJson['error'] . $error .  "Digital. No cabe con las medidas proporcionadas en Forro de la Cartera;";
 
                         $aDigFCar[$i]['cabe_digital']      = "NO";
                         $aDigFCar[$i]['cantidad']          = $tiraje;
@@ -3170,8 +2775,6 @@ class Cotizador extends Controller {
                     if ($aSerFCar[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Serigrafia(Forro de la Cartera);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error . "Serigrafia(Forro de la Cartera);";
                     }
 
 
@@ -3337,8 +2940,6 @@ class Cotizador extends Controller {
                         if ($offset_tiro_tmp <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Offset(Guarda);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Offset(Base del Cajon);";
                         }
 
                         $aOffG[$i] = $offset_tiro;
@@ -3359,8 +2960,6 @@ class Cotizador extends Controller {
                         if ($offset_tiro_tmp <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Offset Maquila(Guarda);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Empalme);";
                         }
 
                         $aOff_maq_G[$i] = $offset_tiro;
@@ -3395,22 +2994,13 @@ class Cotizador extends Controller {
                         if ($aDigG[$i]['cabe_digital'] === "NO") {
 
                             self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Guarda;");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . "Digital. No cabe con las medidas proporcionadas en Guarda;";
                         } elseif ($aDigG[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Digital(Guarda);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error .  "Digital. No existe costo en Guarda;";
                         }
                     } else {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
-
                         self::mError($aJson, $mensaje, $error .  "Digital. No cabe con las medidas proporcionadas en Guarda;");
-                        //$aJson['mensaje'] = $mensaje;
-                        //$aJson['error']   = $aJson['error'] . $error .  "Digital. No cabe con las medidas proporcionadas en Guarda;";
 
                         $aDigG[$i]['cabe_digital']      = "NO";
                         $aDigG[$i]['cantidad']          = $tiraje;
@@ -3460,8 +3050,6 @@ class Cotizador extends Controller {
                     if ($aSerG[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Serigrafia(Guarda);");
-                            //$aJson['mensaje'] = $mensaje;
-                            //$aJson['error']   = $aJson['error'] . $error . "Serigrafia(Guarda);";
                     }
 
 
@@ -3629,8 +3217,6 @@ class Cotizador extends Controller {
             if ($barniz_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Barniz UV (Empalme);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Barniz UV (Empalme);";
             }
 
             $aAcbBUV[$i] = $barniz_tmp;
@@ -3659,8 +3245,6 @@ class Cotizador extends Controller {
             if ($costo_laser_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Corte Laser (Empalme);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Corte Laser (Empalme);";
             }
 
 
@@ -3689,8 +3273,6 @@ class Cotizador extends Controller {
             if ($grabado_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Grabado (Empalme);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Grabado (Empalme);";
             }
 
             $aAcbGrab[$i] = $grabado_temp;
@@ -3719,8 +3301,6 @@ class Cotizador extends Controller {
             if ($grabado_HS_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "HotStamping (Empalme);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "HotStamping (Empalme);";
             }
 
             $aAcbHS[$i] = $grabado_HS_temp;
@@ -3747,8 +3327,6 @@ class Cotizador extends Controller {
             if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Laminado (Empalme);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Laminado (Empalme);";
             }
 
             $aAcbLam[$i] = $Laminado_tmp;
@@ -3774,8 +3352,6 @@ class Cotizador extends Controller {
             if ($aAcbSuaje_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Suaje (Empalme);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Suaje (Empalme);";
             }
 
             $aAcbSuaje[$i] = $aAcbSuaje_tmp;
@@ -3964,8 +3540,6 @@ class Cotizador extends Controller {
             if ($barniz_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Barniz UV (Forro del Cajon);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Barniz UV (Forro del Cajon);";
             }
 
             $aAcbFcajBUV[$i] = $barniz_tmp;
@@ -3995,8 +3569,6 @@ class Cotizador extends Controller {
             if ($costo_laser_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Corte Laser (Forro del Cajon);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Corte Laser (Forro del Cajon);";
             }
 
 
@@ -4025,8 +3597,6 @@ class Cotizador extends Controller {
             if ($grabado_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Grabado (Forro del Cajon);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Grabado (Forro del Cajon);";
             }
 
             $aAcbFcajGrab[$i] = $grabado_temp;
@@ -4055,8 +3625,6 @@ class Cotizador extends Controller {
             if ($grabado_HS_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "HotStamping (Forro del Cajon);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "HotStamping (Forro del Cajon);";
             }
 
             $aAcbFcajHS[$i] = $grabado_HS_temp;
@@ -4083,8 +3651,6 @@ class Cotizador extends Controller {
             if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Laminado (Forro del Cajon);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Laminado (Forro del Cajon);";
             }
 
             $aAcbFcajLam[$i] = $Laminado_tmp;
@@ -4110,8 +3676,6 @@ class Cotizador extends Controller {
             if ($aAcbSuaje_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Suaje (Forro del Cajon);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Suaje (Forro del Cajon);";
             }
 
             $aAcbFcajSuaje[$i] = $aAcbSuaje_tmp;
@@ -4301,8 +3865,6 @@ class Cotizador extends Controller {
             if ($barniz_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Barniz UV (Forro de la Cartera);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Barniz UV (Forro de la Cartera);";
             }
 
             $aAcbFcarBUV[$i] = $barniz_tmp;
@@ -4332,8 +3894,6 @@ class Cotizador extends Controller {
             if ($costo_laser_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Corte Laser (Forro de la Cartera);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Corte Laser (Forro de la Cartera);";
             }
 
 
@@ -4362,8 +3922,6 @@ class Cotizador extends Controller {
             if ($grabado_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Grabado (Forro de la Cartera);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Grabado (Forro de la Cartera);";
             }
 
             $aAcbFcarGrab[$i] = $grabado_temp;
@@ -4392,8 +3950,6 @@ class Cotizador extends Controller {
             if ($grabado_HS_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "HotStamping (Forro de la Cartera);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "HotStamping (Forro de la Cartera);";
             }
 
             $aAcbFcarHS[$i] = $grabado_HS_temp;
@@ -4420,8 +3976,6 @@ class Cotizador extends Controller {
             if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Laminado (Forro de la Cartera);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Laminado (Forro de la Cartera);";
             }
 
             $aAcbFcarLam[$i] = $Laminado_tmp;
@@ -4447,8 +4001,6 @@ class Cotizador extends Controller {
             if ($aAcbSuaje_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Suaje (Forro de la Cartera);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Suaje (Forro de la Cartera);";
             }
 
             $aAcbFcarSuaje[$i] = $aAcbSuaje_tmp;
@@ -4636,8 +4188,6 @@ class Cotizador extends Controller {
             if ($barniz_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Barniz UV (Guarda);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Barniz UV (Guarda);";
             }
 
             $aAcbGBUV[$i] = $barniz_tmp;
@@ -4667,8 +4217,6 @@ class Cotizador extends Controller {
             if ($costo_laser_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Corte Laser (Guarda);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Corte Laser (Guarda);";
             }
 
 
@@ -4688,7 +4236,7 @@ class Cotizador extends Controller {
             $AnchoGrab     = $aAcbG[$i]['Ancho'];
             $ubicacionGrab = $aAcbG[$i]['ubicacion'];
 
-            $papel_seccion = intval($aJson['Papel_Guarda']['corte']);
+            $papel_seccion        = intval($aJson['Papel_Guarda']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_Guarda']['costo_unit_papel']);
 
 
@@ -4697,8 +4245,6 @@ class Cotizador extends Controller {
             if ($grabado_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Grabado (Guarda);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Grabado (Guarda);";
             }
 
             $aAcbGGrab[$i] = $grabado_temp;
@@ -4717,7 +4263,7 @@ class Cotizador extends Controller {
             $AnchoHS = intval($aAcbG[$i]['AnchoHS']);
             $ColorHS = utf8_encode(trim(strval($aAcbG[$i]['ColorHS'])));
 
-            $papel_seccion = intval($aJson['Papel_Guarda']['corte']);
+            $papel_seccion        = intval($aJson['Papel_Guarda']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_Guarda']['costo_unit_papel']);
 
 
@@ -4727,8 +4273,6 @@ class Cotizador extends Controller {
             if ($grabado_HS_temp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "HotStamping (Guarda);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "HotStamping (Guarda);";
             }
 
             $aAcbGHS[$i] = $grabado_HS_temp;
@@ -4755,8 +4299,6 @@ class Cotizador extends Controller {
             if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Laminado (Guarda);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Laminado (Guarda);";
             }
 
             $aAcbGLam[$i] = $Laminado_tmp;
@@ -4782,8 +4324,6 @@ class Cotizador extends Controller {
             if ($aAcbSuaje_tmp['costo_tot_proceso'] <= 0) {
 
                 self::mError($aJson, $mensaje, $error .  "Suaje (Guarda);");
-                //$aJson['mensaje'] = $mensaje;
-                //$aJson['error']   = $aJson['error'] . $error . "Suaje (Guarda);";
             }
 
             $aAcbGSuaje[$i] = $aAcbSuaje_tmp;
@@ -4957,8 +4497,7 @@ class Cotizador extends Controller {
 
             if ($costo_unit_accesorio <= 0) {
 
-                $l_subtotal = false;
-                $l_costo    = false;
+                self::mError($aJson, $mensaje, "No existe costo unitario (Accesorios);");
             }
 
 
@@ -5048,8 +4587,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_banco <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos carton);");
                     }
 
                     if (is_array($costo_bancos_tmp)) {
@@ -5081,8 +4619,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_banco <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos eva);");
                     }
 
                     if (is_array($costo_bancos_tmp)) {
@@ -5112,8 +4649,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_banco <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos espuma);");
                     }
 
 
@@ -5144,8 +4680,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_banco <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos empalme);");
                     }
 
 
@@ -5176,8 +4711,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_banco <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos cartulina suajada);");
                     }
 
 
@@ -5276,8 +4810,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_cierre <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (cierres iman);");
                     }
 
 
@@ -5311,8 +4844,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_cierre <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (cierres liston);");
                     }
 
 
@@ -5340,8 +4872,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_cierre <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (cierres marialuisa);");
                     }
 
 
@@ -5374,8 +4905,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_cierre <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (cierres suaje calado);");
                     }
 
 
@@ -5403,8 +4933,7 @@ class Cotizador extends Controller {
 
                     if ($costo_unit_cierre <= 0) {
 
-                        $l_subtotal = false;
-                        $l_costo    = false;
+                        self::mError($aJson, $mensaje, "No existe costo unitario (cierres velcro);");
                     }
 
 
@@ -5497,9 +5026,6 @@ class Cotizador extends Controller {
         $costo_cartones = $aCartonCajon['tot_costo'] + $aCartonCartera['tot_costo'];
 
 
-        $costos_fijos = $aJson['elab_car']['forro_car'] + $aJson['elab_guarda']['guarda'] + $aJson['ranurado']['costo_tot_ranurado'] + $aJson['ranurado_Fcar']['costo_por_ranura'] + $aJson['encuadernacion']['costo_tot_proceso'] + $aJson['encuadernacion_Fcaj']['costo_tot_proceso'] + $aJson['arreglo_ranurado_hor_emp'] + $aJson['arreglo_ranurado_ver_emp'] + $aJson['despunte_esquinas']['costo_tot_despunte'] + $aJson['pegado_guarda']['costo_tot_proceso'] + $aJson['armado_caja_final']['costo_tot_proceso'];
-
-
         $costo_off_emp_tmp     = self::suma_costo_procesos($aJson_tmp, 'OffEmp');
         $costo_maq_off_emp_tmp = self::suma_costo_procesos($aJson_tmp, 'Off_maq_Emp');
         $costo_dig_emp_tmp     = self::suma_costo_procesos($aJson_tmp, 'DigEmp');
@@ -5523,15 +5049,22 @@ class Cotizador extends Controller {
         $costo_ser_g_tmp = self::suma_costo_procesos($aJson_tmp, 'SerG');
 
 
-        $costo_impresiones = $costo_off_emp_tmp + $costo_maq_off_emp_tmp
-                        + $costo_dig_emp_tmp + $costo_ser_emp_tmp
-                        + $costo_off_fcaj_tmp + $costo_maq_off_fcaj_tmp
-                        + $costo_dig_fcaj_tmp + $costo_ser_fcaj_tmp
-                        + $costo_off_fcar_tmp + $costo_maq_off_fcar_tmp
-                        + $costo_dig_fcar_tmp + $costo_ser_fcar_tmp
-                        + $costo_off_g_tmp
-                        + $costo_dig_g_tmp
-                        + $costo_ser_g_tmp;
+        $costo_impresiones = floatval($costo_off_emp_tmp
+                            + $costo_maq_off_emp_tmp
+                            + $costo_dig_emp_tmp 
+                            + $costo_ser_emp_tmp
+                            + $costo_off_fcaj_tmp 
+                            + $costo_maq_off_fcaj_tmp
+                            + $costo_dig_fcaj_tmp 
+                            + $costo_ser_fcaj_tmp
+                            + $costo_off_fcar_tmp 
+                            + $costo_maq_off_fcar_tmp
+                            + $costo_dig_fcar_tmp 
+                            + $costo_ser_fcar_tmp
+                            + $costo_off_g_tmp
+                            + $costo_dig_g_tmp
+                            + $costo_ser_g_tmp
+                            );
 
 
         // suma de costos de Acabados Empalme
@@ -5548,7 +5081,7 @@ class Cotizador extends Controller {
         $costo_grab_fcaj_tmp  = self::suma_costo_procesos($aJson_tmp, 'GrabadoFcaj');
         $costo_suaje_fcaj_tmp = self::suma_costo_procesos($aJson_tmp, 'SuajeFcaj');
         $costo_laser_fcaj_tmp = self::suma_costo_procesos($aJson_tmp, 'LaserFcaj');
-        $costo_buv_fcaj_tmp = self::suma_costo_procesos($aJson_tmp, 'BarnizFcaj');
+        $costo_buv_fcaj_tmp   = self::suma_costo_procesos($aJson_tmp, 'BarnizFcaj');
 
 
         $costo_lam_fcar_tmp   = self::suma_costo_procesos($aJson_tmp, 'LaminadoFcar');
@@ -5568,7 +5101,31 @@ class Cotizador extends Controller {
 
 
 
-        $costo_acabados = $costo_lam_emp_tmp + $costo_hs_emp_tmp + $costo_grab_emp_tmp + $costo_suaje_emp_tmp + $costo_lam_fcaj_tmp + $costo_hs_fcaj_tmp + $costo_grab_fcaj_tmp + $costo_suaje_fcaj_tmp + $costo_lam_fcar_tmp + $costo_hs_fcar_tmp + $costo_grab_fcar_tmp + $costo_suaje_fcar_tmp + $costo_lam_g_tmp + $costo_hs_g_tmp + $costo_grab_g_tmp + $costo_suaje_g_tmp + $costo_laser_emp_tmp + $costo_laser_fcaj_tmp + $costo_laser_fcar_tmp + $costo_laser_g_tmp + $costo_BarnizUV_emp_tmp + $costo_buv_fcaj_tmp + $costo_buv_fcar_tmp + $costo_buv_g_tmp;
+        $costo_acabados = floatval($costo_lam_emp_tmp 
+                        + $costo_hs_emp_tmp 
+                        + $costo_grab_emp_tmp 
+                        + $costo_suaje_emp_tmp 
+                        + $costo_lam_fcaj_tmp 
+                        + $costo_hs_fcaj_tmp 
+                        + $costo_grab_fcaj_tmp 
+                        + $costo_suaje_fcaj_tmp 
+                        + $costo_lam_fcar_tmp 
+                        + $costo_hs_fcar_tmp 
+                        + $costo_grab_fcar_tmp 
+                        + $costo_suaje_fcar_tmp 
+                        + $costo_lam_g_tmp 
+                        + $costo_hs_g_tmp 
+                        + $costo_grab_g_tmp 
+                        + $costo_suaje_g_tmp 
+                        + $costo_laser_emp_tmp 
+                        + $costo_laser_fcaj_tmp 
+                        + $costo_laser_fcar_tmp 
+                        + $costo_laser_g_tmp 
+                        + $costo_BarnizUV_emp_tmp 
+                        + $costo_buv_fcaj_tmp 
+                        + $costo_buv_fcar_tmp 
+                        + $costo_buv_g_tmp
+                        );
 
 
 
@@ -5579,20 +5136,34 @@ class Cotizador extends Controller {
         $costo_tot_corte_papel = floatval($aJson['costo_tot_corte']);
         $costo_tot_corte_papel = round($costo_tot_corte_papel, 2);
 
-        if ($l_subtotal) {
 
-            $subtotal = floatval($costo_papeles + $costo_cartones + $costo_tot_corte_papel + $costos_fijos + $costo_impresiones + $costo_acabados + $costo_cierres + $costo_bancos + $costo_accesorios);
+        $costos_fijos = floatval($aJson['elab_car']['forro_car']
+                        + $aJson['elab_guarda']['guarda']
+                        + $aJson['ranurado']['costo_tot_ranurado']
+                        + $aJson['ranurado_Fcar']['costo_por_ranura']
+                        + $aJson['encuadernacion']['costo_tot_proceso']
+                        + $aJson['encuadernacion_Fcaj']['costo_tot_proceso']
+                        + $aJson['arreglo_ranurado_hor_emp']['costo_tot_ranurado']
+                        + $aJson['arreglo_ranurado_ver_emp']['costo_tot_ranurado']
+                        + $aJson['despunte_esquinas']['costo_tot_despunte']
+                        + $aJson['pegado_guarda']['costo_tot_proceso']
+                        + $aJson['armado_caja_final']['costo_tot_proceso']
+                        + $aJson['costo_corte_refine']['tot_costo_corte']
+                        + $aJson['cot_alm_arreglo_ranurado_fcar']
+                        );
 
-            $subtotal = round($subtotal, 2);
-        } else {
+        $subtotal = floatval($costo_papeles 
+                    + $costo_cartones 
+                    + $costo_tot_corte_papel 
+                    + $costos_fijos 
+                    + $costo_impresiones 
+                    + $costo_acabados 
+                    + $costo_cierres 
+                    + $costo_bancos 
+                    + $costo_accesorios
+                    );
 
-            $subtotal = 0;
-
-            self::mError($aJson, $mensaje, "Existe un costo unitario con cero pesos;");
-            //$aJson['mensaje'] = "Error";
-            //$aJson['error']   = $aJson['error'] .  "Existe un costo unitario con cero pesos;";
-        }
-
+        $subtotal = round($subtotal, 2);
 
         $aJson['costo_subtotal'] = $subtotal;
         //$aJson['costo_odt']      = $subtotal;
@@ -5765,32 +5336,18 @@ class Cotizador extends Controller {
         $aJson['mensajeria'] = round(floatval($costo_mensajeria), 2);
 
 
-        $costo_papeles =
-             $aJson['Papel_Empalme']['tot_costo']
-           + $aJson['Papel_FCaj']['tot_costo']
-           + $aJson['Papel_FCar']['tot_costo']
-           + $aJson['Papel_Guarda']['tot_costo'];
-           //+ $aJson['CartonCaj']['tot_costo']
-           //+ $aJson['CartonCar']['tot_costo'];
+        $costo_papeles = floatval($aJson['Papel_Empalme']['tot_costo']
+                       + $aJson['Papel_FCaj']['tot_costo']
+                       + $aJson['Papel_FCar']['tot_costo']
+                       + $aJson['Papel_Guarda']['tot_costo']
+                       //+ $aJson['CartonCaj']['tot_costo']
+                       //+ $aJson['CartonCar']['tot_costo']
+                       );
 
 
-        $costo_cartones = $aJson['CartonCaj']['tot_costo']
-           + $aJson['CartonCar']['tot_costo'];
-
-
-        $costos_fijos =
-              $aJson['elab_car']['forro_car']
-            + $aJson['elab_guarda']['guarda']
-            + $aJson['ranurado']['costo_tot_ranurado']
-            + $aJson['ranurado_Fcar']['costo_por_ranura']
-            + $aJson['encuadernacion']['costo_tot_proceso']
-            + $aJson['encuadernacion_Fcaj']['costo_tot_proceso']
-            + $aJson['arreglo_ranurado_hor_emp']
-            + $aJson['arreglo_ranurado_ver_emp']
-            + $aJson['despunte_esquinas']['costo_tot_despunte']
-            + $aJson['pegado_guarda']['costo_tot_proceso']
-            + $aJson['armado_caja_final']['costo_tot_proceso'];
-
+        $costo_cartones = floatval($aJson['CartonCaj']['tot_costo']
+                        + $aJson['CartonCar']['tot_costo']
+                        );
 
         $aJson['costo_papeles']  = round(floatval($costo_papeles), 2);
         $aJson['costo_cartones'] = round(strval($costo_cartones), 2);
@@ -5810,7 +5367,6 @@ class Cotizador extends Controller {
 
 
     // Empalme
-
         $sum_costo_offset_emp = 0;
 
         if (array_key_exists("OffEmp", $aJson)) {
@@ -5963,9 +5519,10 @@ class Cotizador extends Controller {
         $aJson['costo_serigrafia_fcar'] = $sum_costo_ser_fcar;
 
 
-        $aJson['costo_impresiones_fcar'] = $sum_costo_offset_fcar
-                                         + $sum_costo_dig_fcar
-                                         + $sum_costo_ser_fcar;
+        $aJson['costo_impresiones_fcar'] = floatval($sum_costo_offset_fcar
+                                        + $sum_costo_dig_fcar
+                                        + $sum_costo_ser_fcar
+                                        );
 
     // Guarda
         $sum_costo_offset_g = 0;
@@ -5995,8 +5552,8 @@ class Cotizador extends Controller {
             }
         }
 
-        $aJson['costo_digital_g'] = $sum_costo_dig_g;
 
+        $aJson['costo_digital_g'] = $sum_costo_dig_g;
 
         $sum_costo_ser_g = 0;
 
@@ -6013,15 +5570,17 @@ class Cotizador extends Controller {
         $aJson['costo_serigrafia_g'] = $sum_costo_ser_g;
 
 
-        $aJson['costo_impresiones_g'] = $sum_costo_offset_g
+        $aJson['costo_impresiones_g'] = floatval($sum_costo_offset_g
                                       + $sum_costo_dig_g
-                                      + $sum_costo_ser_g;
+                                      + $sum_costo_ser_g)
+        ;
 
 
-        $aJson['costo_impresiones'] = $aJson['costo_impresiones_emp']
+        $aJson['costo_impresiones'] = floatval($aJson['costo_impresiones_emp']
                                     + $aJson['costo_impresiones_fcaj']
                                     + $aJson['costo_impresiones_fcar']
-                                    + $aJson['costo_impresiones_g'];
+                                    + $aJson['costo_impresiones_g']
+                                    );
 
 
 
@@ -6128,12 +5687,11 @@ class Cotizador extends Controller {
                                     + $sum_costo_hs_emp
                                     + $sum_costo_lam_emp
                                     + $sum_costo_suaje_emp
-                                ), 2);
+                                    ), 2);
 
 
 
         // forro cajon
-
         $sum_costo_buv_fcaj = 0;
 
         if (array_key_exists("BarnizFcaj", $aJson)) {
@@ -6164,7 +5722,6 @@ class Cotizador extends Controller {
         $aJson['costo_Laser_fcaj'] = $sum_costo_laser_fcaj;
 
 
-
         $sum_costo_grab_fcaj = 0;
 
         if (array_key_exists("GrabadoFcaj", $aJson)) {
@@ -6180,7 +5737,6 @@ class Cotizador extends Controller {
         $aJson['costo_Grabado_fcaj'] = $sum_costo_grab_fcaj;
 
 
-
         $sum_costo_hs_fcaj = 0;
 
         if (array_key_exists("HotStampingFcaj", $aJson)) {
@@ -6194,7 +5750,6 @@ class Cotizador extends Controller {
         }
 
         $aJson['costo_HS_fcaj'] = $sum_costo_hs_fcaj;
-
 
 
         $sum_costo_lam_fcaj = 0;
@@ -6234,7 +5789,7 @@ class Cotizador extends Controller {
                                     + $sum_costo_hs_fcaj
                                     + $sum_costo_lam_fcaj
                                     + $sum_costo_suaje_fcaj
-                                ), 2);
+                                    ), 2);
 
 
         // Acabado Forro Cartera
@@ -6284,7 +5839,6 @@ class Cotizador extends Controller {
         $aJson['costo_Grabado_fcar'] = $sum_costo_grab_fcar;
 
 
-
         $sum_costo_hs_fcar = 0;
 
         if (array_key_exists("HotStampingFcar", $aJson)) {
@@ -6298,7 +5852,6 @@ class Cotizador extends Controller {
         }
 
         $aJson['costo_HS_fcar'] = $sum_costo_hs_fcar;
-
 
 
         $sum_costo_lam_fcar = 0;
@@ -6315,7 +5868,6 @@ class Cotizador extends Controller {
         }
 
         $aJson['costo_Lam_fcar'] = $sum_costo_lam_fcar;
-
 
 
         $sum_costo_suaje_fcar = 0;
@@ -6340,8 +5892,7 @@ class Cotizador extends Controller {
                                     + $sum_costo_hs_fcar
                                     + $sum_costo_lam_fcar
                                     + $sum_costo_suaje_fcar
-                                ), 2);
-
+                                    ), 2);
 
 
         // Acabados Guarda
@@ -6425,7 +5976,6 @@ class Cotizador extends Controller {
         $aJson['costo_Lam_g'] = round(floatval($sum_costo_lam_g), 2);
 
 
-
         $sum_costo_suaje_g = 0;
 
 
@@ -6449,7 +5999,7 @@ class Cotizador extends Controller {
                                     + $sum_costo_hs_g
                                     + $sum_costo_lam_g
                                     + $sum_costo_suaje_g
-                                ), 2);
+                                    ), 2);
 
 
 
@@ -6507,25 +6057,24 @@ class Cotizador extends Controller {
 
 
     // sumas por secciones
-
         $aJson['costo_emp']  = $aJson['costo_impresiones_emp'];
         $aJson['costo_fcaj'] = $aJson['costo_impresiones_fcaj'];
         $aJson['costo_fcar'] = $aJson['costo_impresiones_fcar'];
         $aJson['costo_g']    = $aJson['costo_impresiones_g'];
 
 
-        $costo_subtotal = $costo_subtotal
+        $costo_subtotal = floatval($costo_subtotal
                         + $aJson['costo_impresiones']
                         + $aJson['costo_acabados']
                         + $aJson['costo_bancos']
                         + $aJson['costo_cierres']
-                        + $aJson['costo_accesorios'];
+                        + $aJson['costo_accesorios']
+                        );
 
         $subtotal = $costo_subtotal;
 
 
         $aJson['costo_subtotal'] = round($costo_subtotal, 2);
-
 
 
 /************************ subtotal ******************************/
@@ -6662,13 +6211,22 @@ class Cotizador extends Controller {
         if ($descuento >= $subtotal) {
 
             self::mError($aJson, $mensaje, " El descuento no puede ser mayor al subtotal!;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . " El descuento no puede ser mayor al subtotal!;";
         }
 
 
     // costo odt total
-        $costo_odt_total = floatval($costo_odt_total + $subtotal + $utilidad + $iva + $comisiones + $indirecto + $venta - $descuento + $empaque + $isr);
+        $costo_odt_total = floatval($costo_odt_total 
+                        + $subtotal 
+                        + $utilidad 
+                        + $iva 
+                        + $comisiones 
+                        + $indirecto 
+                        + $venta 
+                        - $descuento 
+                        + $empaque 
+                        + $isr
+                        );
+
 
         $costo_odt_total = round($costo_odt_total, 2);
 
@@ -6677,11 +6235,9 @@ class Cotizador extends Controller {
         if ($costo_odt_total <= 0) {
 
             self::mError($aJson, $mensaje, " El costo de la ODT no puede ser negativo!;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . " El costo de la ODT no puede ser negativo!;";
         }
 
-        /*
+    /*
         $aKeys = array_keys($aJson);
 
         $aKeys = str_replace('\"', "", $aKeys);
@@ -6711,7 +6267,8 @@ class Cotizador extends Controller {
         $aProcesos_ok = str_replace('"', "", $aProcesos_ok);
 
         $aJson['keys'] = $aProcesos_ok;
-        */
+    */
+
 
 /******************************************/
 /******************************************/
@@ -6741,6 +6298,7 @@ class Cotizador extends Controller {
         }
 */
 
+
 /******************************************/
 
         $debuger   = false;
@@ -6749,30 +6307,11 @@ class Cotizador extends Controller {
         $respuesta = false;
 
 
-        if ($aJson['elab_car']['forro_costo_unit'] <= 0) {
-
-            self::mError($aJson, $mensaje, " No existe costo unitario del forro en elaboracion cartera;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . " No existe costo unitario del forro en elaboracion cartera;";
-
-            $grabar = false;
-        }
-
-        if ($aJson['elab_guarda']['guarda_costo_unit'] <= 0) {
-
-            self::mError($aJson, $mensaje, " No existe costo unitario en elaboracion guarda;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . " No existe costo unitario en elaboracion guarda;";
-
-            $grabar = false;
-        }
-
         $str_error_len = strlen($aJson['error']);
 
         if (strlen($aJson['error']) > 0) {
 
             self::mError($aJson, $mensaje, " No debe grabar esta ODT...");
-            //$aJson['error'] = $aJson['error'] . " No debe grabar esta ODT...";
 
             $grabar = false;
         }
@@ -6795,18 +6334,17 @@ class Cotizador extends Controller {
 
             if ($post) {
 
-                echo PHP_EOL . PHP_EOL . "(6743) post: ";
+                echo PHP_EOL . PHP_EOL . "(6337) post: ";
                 print_r($_POST);
             }
 
             if ($debuger) {
 
-                echo PHP_EOL . "(6749) aJson: ";
+                echo PHP_EOL . "(6343) aJson: ";
                 print_r($aJson);
 
             } else {
 
-                $_SESSION['aJson'] = $aJson;
                 echo json_encode($aJson);
             }
         }
@@ -6814,25 +6352,6 @@ class Cotizador extends Controller {
 
 
 /****************** Termina la funcion saveCaja() **********************/
-
-    public function imprCaja(){
-
-        $options_model = $this->loadModel('OptionsModel');
-        $ventas_model  = $this->loadModel('VentasModel');
-        $almeja_model  = $this->loadModel('AlmejaModel');
-
-        session_start();
-
-        $aJson = $_SESSION['aJson'];
-        $modelo = $options_model->getBoxModelById($_SESSION['aJson']['modelo']);
-        $nombreModelo = $modelo[0]['nombre'];
-        $aJson1 = json_encode($aJson);
-
-        $tienda = $_SESSION['nom_tienda'];
-
-        require 'application/views/cotizador/impresion_caja.php';
-    }
-
 
 
     public function calcMerma() {
@@ -6913,7 +6432,7 @@ class Cotizador extends Controller {
     }
 
 
-
+/*
     protected function rec_maquila_digital($corte_ancho, $corte_largo, $impresion) {
 
         $impresion = trim(strval($impresion));
@@ -6947,7 +6466,7 @@ class Cotizador extends Controller {
 
         return $tam2;
     }
-
+*/
 
     // Redondea al entero superior siguiente
     protected function deltax($cant, $algo) {
@@ -7011,89 +6530,295 @@ class Cotizador extends Controller {
     }
 
 
-    protected function suma_costo_procesos($aJson_tmp, $nomb_proceso) {
+    protected function detalle_proc_offset($id_odt, $nombre_tabla_tmp, $ventas_model) {
 
-        $costo_proc_tmp = 0;
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
 
-        if (array_key_exists($nomb_proceso, $aJson_tmp)) {
+        $aJson_tmp = [];
 
-            $nomb_proceso_tmp = array_values($aJson_tmp[$nomb_proceso]);
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
 
-            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+        $cuantos_db = count($sql_tabla_temp_db);
 
-                $costo_tot_proceso = $nomb_proceso_tmp[$k]['costo_tot_proceso'];
-                $costo_tot_proceso = floatval($costo_tot_proceso);
+        for ($j = 0; $j < $cuantos_db; $j++) {
 
-                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
-            }
+            $aJson_tmp[$j]['id_odt']                 = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['Tipo']                   = trim(strval($sql_tabla_temp_db[$j]['tipo']));
+            $aJson_tmp[$j]['tiraje']                 = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['num_tintas']             = intval($sql_tabla_temp_db[$j]['num_tintas']);
+            /*
+            $aJson_tmp[$j]['corte_costo_unitario']   = floatval($sql_tabla_temp_db[$j]['corte_costo_unitario']);
+            $aJson_tmp[$j]['corte_por_millar']       = intval($sql_tabla_temp_db[$j]['corte_por_millar']);
+            */
+            $aJson_tmp[$j]['costo_corte']            = floatval($sql_tabla_temp_db[$j]['costo_corte']);
+            $aJson_tmp[$j]['costo_unitario_laminas'] = floatval($sql_tabla_temp_db[$j]['costo_unitario_laminas']);
+            $aJson_tmp[$j]['costo_tot_laminas']      = floatval($sql_tabla_temp_db[$j]['costo_tot_laminas']);
+            $aJson_tmp[$j]['costo_unitario_arreglo'] = floatval($sql_tabla_temp_db[$j]['costo_unitario_arreglo']);
+            $aJson_tmp[$j]['costo_tot_arreglo']      = floatval($sql_tabla_temp_db[$j]['costo_tot_arreglo']);
+            $aJson_tmp[$j]['costo_unitario_tiro']    = floatval($sql_tabla_temp_db[$j]['costo_unitario_tiro']);
+            $aJson_tmp[$j]['costo_tot_tiro']         = floatval($sql_tabla_temp_db[$j]['costo_tot_tiro']);
+            $aJson_tmp[$j]['costo_tot_proceso']      = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
         }
 
-        return $costo_proc_tmp;
+
+        return $aJson_tmp;
     }
 
 
-    protected function suma_costo_cierres($aJson_tmp, $nomb_proceso) {
+    protected function detalle_maq_proc_offset($id_odt, $nombre_tabla_tmp, $ventas_model) {
 
-        $nombre_proceso = trim(strval($nomb_proceso));
+        //$nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
 
-        $costo_proc_tmp = 0;
+        $aJson_tmp = [];
 
-        if (array_key_exists($nombre_proceso, $aJson_tmp)) {
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
 
-            $nomb_proceso_tmp = array_values($aJson_tmp[$nombre_proceso]);
+        $cuantos_db = count($sql_tabla_temp_db);
 
-            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+        for ($j = 0; $j < $cuantos_db; $j++) {
 
-                $costo_tot_proceso = floatval($nomb_proceso_tmp[$k]['costo_cierre']);
-
-                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
-            }
+            $aJson_tmp[$j]['id_odt']                 = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['Tipo']                   = trim(strval($sql_tabla_temp_db[$j]['tipo']));
+            $aJson_tmp[$j]['tiraje']                 = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['num_tintas']             = intval($sql_tabla_temp_db[$j]['num_tintas']);
+            $aJson_tmp[$j]['arreglo_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
+            $aJson_tmp[$j]['arreglo_costo']          = intval($sql_tabla_temp_db[$j]['arreglo_costo']);
+            $aJson_tmp[$j]['costo_unitario_laminas'] = floatval($sql_tabla_temp_db[$j]['costo_unitario_laminas']);
+            $aJson_tmp[$j]['costo_laminas']          = floatval($sql_tabla_temp_db[$j]['costo_laminas']);
+            $aJson_tmp[$j]['costo_unitario']         = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
+            $aJson_tmp[$j]['costo_tot']              = floatval($sql_tabla_temp_db[$j]['costo_tot']);
+            $aJson_tmp[$j]['costo_tot_proceso']      = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
         }
 
-        return $costo_proc_tmp;
+        return $aJson_tmp;
     }
 
 
-    protected function suma_costo_bancos($aJson_tmp, $nomb_proceso) {
+    protected function detalle_proc_digital($id_odt, $nombre_tabla_tmp, $ventas_model) {
 
-        $nombre_proceso = trim(strval($nomb_proceso));
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
 
-        $costo_proc_tmp = 0;
-        if (array_key_exists($nombre_proceso, $aJson_tmp)) {
+        $aJson_tmp = [];
 
-            $nomb_proceso_tmp = array_values($aJson_tmp[$nombre_proceso]);
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
 
-            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+        $cuantos_db = count($sql_tabla_temp_db);
 
-                $costo_tot_proceso = floatval($nomb_proceso_tmp[$k]['costo_bancos']);
+        for ($j = 0; $j < $cuantos_db; $j++) {
 
-                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
-            }
+            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['corte_ancho']       = floatval($sql_tabla_temp_db[$j]['corte_ancho']);
+            $aJson_tmp[$j]['corte_largo']       = floatval($sql_tabla_temp_db[$j]['corte_largo']);
+            $aJson_tmp[$j]['imp_ancho']         = floatval($sql_tabla_temp_db[$j]['imp_ancho']);
+            $aJson_tmp[$j]['imp_largo']         = floatval($sql_tabla_temp_db[$j]['imp_largo']);
+            $aJson_tmp[$j]['impresion']         = utf8_encode($sql_tabla_temp_db[$j]['impresion']);
+            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
+            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
         }
 
-        return $costo_proc_tmp;
+        return $aJson_tmp;
     }
 
 
+    protected function detalle_proc_serigrafia($id_odt, $nombre_tabla_tmp, $ventas_model) {
 
-    protected function suma_costo_accesorios($aJson_tmp, $nomb_proceso) {
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
 
-        $nombre_proceso = trim(strval($nomb_proceso));
+        $aJson_tmp = [];
 
-        $costo_proc_tmp = 0;
-        if (array_key_exists($nombre_proceso, $aJson_tmp)) {
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
 
-            $nomb_proceso_tmp = array_values($aJson_tmp[$nombre_proceso]);
+        $cuantos_db = count($sql_tabla_temp_db);
 
-            for ($k = 0; $k < count($nomb_proceso_tmp); $k++) {
+        for ($j = 0; $j < $cuantos_db; $j++) {
 
-                $costo_tot_proceso = floatval($nomb_proceso_tmp[$k]['costo_accesorios']);
-
-                $costo_proc_tmp = $costo_proc_tmp + $costo_tot_proceso;
-            }
+            $aJson_tmp[$j]['id_odt']              = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tipo']                = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo'])));
+            $aJson_tmp[$j]['tiraje']              = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['num_tintas']          = intval($sql_tabla_temp_db[$j]['num_tintas']);
+            $aJson_tmp[$j]['costo_unit_arreglo']  = floatval($sql_tabla_temp_db[$j]['costo_unit_arreglo']);
+            $aJson_tmp[$j]['costo_arreglo']       = floatval($sql_tabla_temp_db[$j]['costo_arreglo']);
+            $aJson_tmp[$j]['costo_unitario_tiro'] = floatval($sql_tabla_temp_db[$j]['costo_unit_tiro']);
+            $aJson_tmp[$j]['costo_tiro']          = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
+            $aJson_tmp[$j]['cortes_por_pliego']   = intval($sql_tabla_temp_db[$j]['cortes_por_pliego']);
+            $aJson_tmp[$j]['costo_tot_proceso']   = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
         }
 
-        return $costo_proc_tmp;
+        return $aJson_tmp;
+    }
+
+
+    protected function detalle_proc_Barniz_UV($id_odt, $nombre_tabla_tmp, $ventas_model) {
+
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
+
+        $aJson_tmp = [];
+
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
+
+        $cuantos_db = count($sql_tabla_temp_db);
+
+        for ($j = 0; $j < $cuantos_db; $j++) {
+
+            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tipoGrabado']       = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
+            $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['Largo']             = floatval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']             = floatval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['area']              = floatval($sql_tabla_temp_db[$j]['area']);
+            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
+            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
+        }
+
+        return $aJson_tmp;
+    }
+
+
+    protected function detalle_proc_Laser($id_odt, $nombre_tabla_tmp, $ventas_model) {
+
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
+
+        $aJson_tmp = [];
+
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
+
+        $cuantos_db = count($sql_tabla_temp_db);
+
+        for ($j = 0; $j < $cuantos_db; $j++) {
+
+            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tipo_grabado']      = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
+            $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['Largo']             = floatval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']             = floatval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
+            $aJson_tmp[$j]['tiempo_requerido']  = floatval($sql_tabla_temp_db[$j]['tiempo_requerido']);
+            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
+        }
+
+        return $aJson_tmp;
+    }
+
+
+    protected function detalle_proc_Grabado($id_odt, $nombre_tabla_tmp, $ventas_model) {
+
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
+
+        $aJson_tmp = [];
+
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
+
+        $cuantos_db = count($sql_tabla_temp_db);
+
+        for ($j = 0; $j < $cuantos_db; $j++) {
+
+            $aJson_tmp[$j]['id_odt']                 = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tipoGrabado']            = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
+            $aJson_tmp[$j]['Largo']                  = intval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']                  = intval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['ubicacion']              = trim(strval($sql_tabla_temp_db[$j]['ubicacion']));
+            $aJson_tmp[$j]['placa_area']             = floatval($sql_tabla_temp_db[$j]['placa_area']);
+            $aJson_tmp[$j]['placa_costo_unitario']   = floatval($sql_tabla_temp_db[$j]['placa_costo_unitario']);
+            $aJson_tmp[$j]['placa_costo']            = floatval($sql_tabla_temp_db[$j]['placa_costo']);
+            $aJson_tmp[$j]['arreglo_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
+            $aJson_tmp[$j]['arreglo_costo']          = floatval($sql_tabla_temp_db[$j]['arreglo_costo']);
+            $aJson_tmp[$j]['costo_unitario']         = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
+            $aJson_tmp[$j]['costo_tiro']             = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
+            $aJson_tmp[$j]['costo_tot_proceso']      = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
+        }
+
+        return $aJson_tmp;
+    }
+
+
+    protected function detalle_proc_HotStamping($id_odt, $nombre_tabla_tmp, $ventas_model) {
+
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
+
+        $aJson_tmp = [];
+
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
+
+        $cuantos_db = count($sql_tabla_temp_db);
+
+        for ($j = 0; $j < $cuantos_db; $j++) {
+
+            $aJson_tmp[$j]['id_odt']                  = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tipoGrabado']             = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
+            $aJson_tmp[$j]['Largo']                   = intval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']                   = intval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['Color']                   = trim(strval($sql_tabla_temp_db[$j]['color']));
+            $aJson_tmp[$j]['placa_area']              = floatval($sql_tabla_temp_db[$j]['placa_area']);
+            $aJson_tmp[$j]['placa_costo_unitario']    = floatval($sql_tabla_temp_db[$j]['placa_costo_unitario']);
+            $aJson_tmp[$j]['placa_costo']             = floatval($sql_tabla_temp_db[$j]['placa_costo']);
+            $aJson_tmp[$j]['pelicula_Largo']          = intval($sql_tabla_temp_db[$j]['pelicula_largo']);
+            $aJson_tmp[$j]['pelicula_Ancho']          = intval($sql_tabla_temp_db[$j]['pelicula_ancho']);
+            $aJson_tmp[$j]['pelicula_area']           = floatval($sql_tabla_temp_db[$j]['pelicula_area']);
+            $aJson_tmp[$j]['pelicula_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['pelicula_costo_unitario']);
+            $aJson_tmp[$j]['pelicula_costo']          = floatval($sql_tabla_temp_db[$j]['pelicula_costo']);
+            $aJson_tmp[$j]['arreglo_costo_unitario']  = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
+            $aJson_tmp[$j]['arreglo_costo']           = floatval($sql_tabla_temp_db[$j]['arreglo_costo']);
+            $aJson_tmp[$j]['costo_unitario']          = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
+            $aJson_tmp[$j]['costo_tiro']              = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
+            $aJson_tmp[$j]['costo_tot_proceso']       = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
+        }
+
+        return $aJson_tmp;
+    }
+
+
+    protected function detalle_proc_Laminado($id_odt, $nombre_tabla_tmp, $ventas_model) {
+
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
+
+        $aJson_tmp = [];
+
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
+
+        $cuantos_db = count($sql_tabla_temp_db);
+
+        for ($j = 0; $j < $cuantos_db; $j++) {
+
+            $aJson_tmp[$j]['id_odt']            = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tipoGrabado']       = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
+            $aJson_tmp[$j]['Largo']             = intval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']             = intval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['area']              = floatval($sql_tabla_temp_db[$j]['area']);
+            $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
+            $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
+        }
+
+        return $aJson_tmp;
+    }
+
+
+    protected function detalle_proc_Suaje($id_odt, $nombre_tabla_tmp, $ventas_model) {
+
+        $nombre_tabla_tmp = trim(strval($nombre_tabla_tmp));
+
+        $aJson_tmp = [];
+
+        $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
+
+        $cuantos_db = count($sql_tabla_temp_db);
+
+        for ($j = 0; $j < $cuantos_db; $j++) {
+
+            $aJson_tmp[$j]['id_odt']              = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['tiraje']              = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['tipoGrabado']         = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo_grabado'])));
+            $aJson_tmp[$j]['Largo']               = intval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']               = intval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['perimetro']           = intval($sql_tabla_temp_db[$j]['perimetro']);
+            $aJson_tmp[$j]['tabla_suaje']         = floatval($sql_tabla_temp_db[$j]['tabla_suaje']);
+            $aJson_tmp[$j]['arreglo']             = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);
+            $aJson_tmp[$j]['tiro_costo_unitario'] = floatval($sql_tabla_temp_db[$j]['tiro_costo_unitario']);
+            $aJson_tmp[$j]['costo_tiro']          = floatval($sql_tabla_temp_db[$j]['costo_tiro']);
+            $aJson_tmp[$j]['costo_tot_proceso']   = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
+        }
+
+        return $aJson_tmp;
     }
 
 
@@ -7250,6 +6975,7 @@ class Cotizador extends Controller {
         }
     }
 
+
     public function deleteCliente(){
 
         if (!isset($_SESSION)) {
@@ -7390,6 +7116,7 @@ class Cotizador extends Controller {
 
         echo json_encode($response);
     }
+
 
     public function modificar_cliente() {
 
@@ -7884,5 +7611,4 @@ class Cotizador extends Controller {
 
         echo json_encode($result);
     }
-
 }
