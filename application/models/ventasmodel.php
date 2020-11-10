@@ -4768,8 +4768,8 @@ class VentasModel {
             $result['id']                = intval($row['id']);
             $result['id_odt']            = intval($row['id_odt']);
             $result['id_modelo']         = intval($row['id_modelo']);
-            $result['id_cajon']          = utf8_encode(trim(strval($row['id_cajon'])));
-            $result['num_cajon']         = floatval($row['num_cajon']);
+            $result['id_cajon']          = intval($row['id_cajon']);
+            //$result['num_cajon']         = floatval($row['num_cajon']);
             $result['tiraje']            = intval($row['tiraje']);
             $result['nombre']            = utf8_encode(trim(strval($row['nombre'])));
             $result['precio']            = floatval($row['precio']);

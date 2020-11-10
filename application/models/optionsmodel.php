@@ -49,6 +49,22 @@ class OptionsModel {
         return $result;
     }
 
+    public function getCartonIdPapel($id) {
+
+        $id_temp = intval($id);
+
+        $sql = "SELECT numcarton FROM papeles where status = 'A' and id_papel = " . $id_temp . " limit 1";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        $row = floatval($row['numcarton']);
+
+        return $row;
+
+    }
+
 
     // obtiene el nombre del modelo de cajas
     public function getNombModelsById_calculo($id_calculo) {

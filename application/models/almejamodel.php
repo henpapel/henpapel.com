@@ -378,10 +378,6 @@ class AlmejaModel extends Controller {
         $l_insert_cierres    = true;
 
 
-        $inserted_mermas  = false;
-        $inserted_cortes  = false;
-        $inserted_papeles = false;
-
         // Offset Empame
         $l_insert_OffEmp  = true;
         $l_insert_OffFcaj = true;
@@ -433,6 +429,8 @@ class AlmejaModel extends Controller {
         $l_insert_SuaFcar = true;
         $l_insert_SuaG    = true;
 
+        $msg_error = " Error al grabar en ";
+
         // inserta en las tablas
         try {
 
@@ -463,7 +461,9 @@ class AlmejaModel extends Controller {
             $id_caja_odt = $this->db->lastInsertId();
             $id_caja_odt = intval($id_caja_odt);
 
-            if ($id_caja_odt <= 0) {
+            if (!$inserted or $id_caja_odt <= 0) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "ODT;";
 
                 $inserted = false;
             }
@@ -490,6 +490,12 @@ class AlmejaModel extends Controller {
 
             $inserted_calc = $query_calc->execute();
 
+            if (!$inserted_calc) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "calculadora;";
+                $inserted_calc = false;
+            }
+
 
         // papel empalme
             $sql_papel_emp = "INSERT INTO cot_alm_papelemp
@@ -503,6 +509,14 @@ class AlmejaModel extends Controller {
             $inserted_papel_emp = $query_papel_emp->execute();
 
 
+            if (!$inserted_papel_emp) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "papel empalme;";
+
+                $inserted_papel_emp = false;
+            }
+
+            
         // Forro del Cajon
             $sql_papel_fcaj = "INSERT INTO cot_alm_papelfcaj
                 (id_odt, id_modelo, id_papel, nombre, ancho, largo, costo_unitario, tiraje, cortes, pliegos,  costo_tot_pliegos, corte_ancho, corte_largo, fecha)
@@ -513,6 +527,14 @@ class AlmejaModel extends Controller {
             $query_papel_fcaj = $this->db->prepare($sql_papel_fcaj);
 
             $inserted_papel_fcaj = $query_papel_fcaj->execute();
+
+
+            if (!$inserted_papel_fcaj) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "papel forro cajon;";
+
+                $inserted_papel_fcaj = false;
+            }
 
 
         // Forro de la cartera
@@ -527,6 +549,14 @@ class AlmejaModel extends Controller {
             $inserted_papel_fcar = $query_papel_fcar->execute();
 
 
+            if (!$inserted_papel_fcar) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "papel forro cartera;";
+
+                $inserted_papel_fcar = false;
+            }
+
+
         // Guarda
             $sql_papel_g = "INSERT INTO cot_alm_papelguarda
                 (id_odt, id_modelo, id_papel, nombre, ancho, largo, costo_unitario, tiraje, cortes, pliegos,  costo_tot_pliegos, corte_ancho, corte_largo, fecha)
@@ -537,6 +567,14 @@ class AlmejaModel extends Controller {
             $query_papel_g = $this->db->prepare($sql_papel_g);
 
             $inserted_papel_g = $query_papel_g->execute();
+
+
+            if (!$inserted_papel_g) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "papel guarda;";
+
+                $inserted_papel_g = false;
+            }
 
 
         // corte
@@ -559,6 +597,14 @@ class AlmejaModel extends Controller {
             $l_corte_emp = $query_corte_emp->execute();
 
 
+            if (!$l_corte_emp) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "corte empalme;";
+
+                $l_corte_emp = false;
+            }
+
+
             // forro cajon
             $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
@@ -577,10 +623,15 @@ class AlmejaModel extends Controller {
             $l_corte_fcaj = $query_corte_fcaj->execute();
 
 
-////
+            if (!$l_corte_fcaj) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "corte forro cajon;";
+
+                $l_corte_fcaj = false;
+            }
 
 
-            // forro cartera
+            // corte forro cartera
             $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcar']['costo_unitario_corte_papel']);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcar']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_fcar']['tot_pliegos']);
@@ -596,6 +647,14 @@ class AlmejaModel extends Controller {
             $query_corte_fcar = $this->db->prepare($sql_corte_fcar);
 
             $l_corte_fcar = $query_corte_fcar->execute();
+
+
+            if (!$l_corte_fcar) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "corte forro cartera;";
+
+                $l_corte_fcar = false;
+            }
 
 
             // forro guarda
@@ -616,6 +675,14 @@ class AlmejaModel extends Controller {
             $l_corte_guarda = $query_corte_guarda->execute();
 
 
+            if (!$l_corte_guarda) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "corte guarda;";
+
+                $l_corte_guarda = false;
+            }
+
+
             // corte carton
             $corte_costo_unitario = floatval($aJson['costo_corte_carton']['costo_unitario_corte_papel']);
             $cortes_pliego        = intval($aJson['costo_corte_carton']['cortes_pliego']);
@@ -632,6 +699,14 @@ class AlmejaModel extends Controller {
             $query_corte_carton = $this->db->prepare($sql_corte_carton);
 
             $l_corte_carton_emp = $query_corte_carton->execute();
+
+
+            if (!$l_corte_carton_emp) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "corte carton empalme;";
+
+                $l_corte_carton_emp = false;
+            }
 
 
             // corte cartera
@@ -652,7 +727,18 @@ class AlmejaModel extends Controller {
             $l_corte_carton_fcar = $query_corte_carton_fcar->execute();
 
 
+            if (!$l_corte_carton_fcar) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "corte carton forro cartera;";
+
+                $l_corte_carton_fcar = false;
+            }
+
+
         // Carton Cajon
+
+             $id_papel = intval($aJson['CartonCaj']['id_papel']);
+             
             $sql_papel_caj = "INSERT INTO cot_alm_cartoncaj
                 (id_odt, id_modelo, id_cajon, num_cajon, tiraje, papel, nombre, precio, ancho, largo, corte_ancho, corte_largo, piezas_por_pliego, num_pliegos, costo_tot_carton, fecha)
             VALUES
@@ -662,6 +748,14 @@ class AlmejaModel extends Controller {
             $query_papel_caj = $this->db->prepare($sql_papel_caj);
 
             $inserted_papel_caj = $query_papel_caj->execute();
+
+
+            if (!$inserted_papel_caj) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "carton cajon;";
+
+                $inserted_papel_caj = false;
+            }
 
 
         // Carton Cartera
@@ -676,6 +770,14 @@ class AlmejaModel extends Controller {
             $inserted_papel_car = $query_papel_car->execute();
 
 
+            if (!$inserted_papel_car) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "carton cartera;";
+
+                $inserted_papel_car = false;
+            }
+
+
         // Elab_car
             $sql_elab_car = "INSERT INTO cot_alm_elab_car
                 (id_modelo, id_odt, tiraje, forro_costo_unit, forro_car, costo_total, fecha)
@@ -685,6 +787,14 @@ class AlmejaModel extends Controller {
             $query_elab_car = $this->db->prepare($sql_elab_car);
 
             $inserted_elab_car = $query_elab_car->execute();
+
+
+            if (!$inserted_elab_car) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "elaboracion cartera;";
+
+                $inserted_elab_car = false;
+            }
 
 
         // Elab_guarda
@@ -698,6 +808,14 @@ class AlmejaModel extends Controller {
             $inserted_elab_guarda = $query_elab_guarda->execute();
 
 
+            if (!$inserted_elab_guarda) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "elaboracion guarda;";
+
+                $inserted_elab_guarda = false;
+            }
+
+
         // Ranurado
             $sql_ranurado = "INSERT INTO cot_alm_ranurado
                 (id_odt, id_modelo, tiraje, arreglo, costo_unit, costo_por_ranura, costo_tot_ranurado, fecha)
@@ -709,8 +827,15 @@ class AlmejaModel extends Controller {
             $inserted_ranurado = $query_ranurado->execute();
 
 
-        // Ranurado_Fcar
+            if (!$inserted_ranurado) {
 
+                $aJson['error'] = $aJson['error'] . $msg_error . "ranurado;";
+
+                $inserted_ranurado = false;
+            }
+
+
+        // Ranurado_Fcar
             $sql_ranurado_fcar = "INSERT INTO cot_alm_ranurado_fcar
                 (id_odt, id_modelo, tiraje, costo_unit_por_ranura, costo_por_ranura, fecha)
             VALUES
@@ -721,40 +846,65 @@ class AlmejaModel extends Controller {
             $inserted_ranurado_fcar = $query_ranurado_fcar->execute();
 
 
+            if (!$inserted_ranurado_fcar) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "ranurado forro cartera;";
+
+                $inserted_ranurado_fcar = false;
+            }
+
 
         // arreglo ranurado horizontal
-            $costo_unit = floatval($aJson['arreglo_ranurado_hor_emp']);
+            $costo_unit_arreglo = floatval($aJson['arreglo_ranurado_hor_emp']['arreglo']);
+            $costo_unit_ranura  = floatval($aJson['arreglo_ranurado_hor_emp']['costo_unit_por_ranura']);
+            $costo_ranurado     = floatval($aJson['arreglo_ranurado_hor_emp']['costo_por_ranura']);
+            $costo_tot_ranurado  = floatval($aJson['arreglo_ranurado_hor_emp']['costo_tot_ranurado']);
 
             $sql_ranurado_arreglo_ran_hor = "INSERT INTO cot_alm_arreglo_ranurado_hor_emp
-                (id_odt, id_modelo, tiraje, costo_unit, costo_tot_ranurado, fecha)
+                (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit_arreglo, $costo_unit_ranura, $costo_ranurado, $costo_tot_ranurado, '$d_fecha')";
 
             $query_arreglo_ranurado_hor = $this->db->prepare($sql_ranurado_arreglo_ran_hor);
 
             $l_arr_ran_hor_emp = $query_arreglo_ranurado_hor->execute();
 
 
-        // arreglo ranurado vertical
+            if (!$l_arr_ran_hor_emp) {
 
+                $aJson['error'] = $aJson['error'] . $msg_error . "arreglo ranurado horizontal;";
+
+                $l_arr_ran_hor_emp = false;
+            }
+
+
+        // arreglo ranurado vertical
+            $l_arr_ran_vert_emp = true;
+            
             if ( ($aJson['base'] > $aJson['alto'])  or ($aJson['base'] < $aJson['alto']) ) {
 
-                $costo_unit = 0;
-                $costo_unit = floatval($aJson['arreglo_ranurado_ver_emp']);
+                $costo_unit_arreglo = floatval($aJson['arreglo_ranurado_ver_emp']['arreglo']);
+                $costo_unit_ranura  = floatval($aJson['arreglo_ranurado_ver_emp']['costo_unit_por_ranura']);
+                $costo_ranurado     = floatval($aJson['arreglo_ranurado_ver_emp']['costo_por_ranura']);
+                $costo_tot_ranurado  = floatval($aJson['arreglo_ranurado_ver_emp']['costo_tot_ranurado']);
 
-                if ($costo_unit > 0) {
+                if ($costo_tot_ranurado > 0) {
 
                     $sql_ranurado_arreglo_ran_ver = "INSERT INTO cot_alm_arreglo_ranurado_vert_emp
-                        (id_odt, id_modelo, tiraje, costo_unit, costo_tot_ranurado, fecha)
+                        (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, $tiraje, $costo_unit_arreglo, $costo_unit_ranura, $costo_ranurado, $costo_tot_ranurado, '$d_fecha')";
 
                     $query_arreglo_ranurado_vert = $this->db->prepare($sql_ranurado_arreglo_ran_ver);
 
                     $l_arr_ran_vert_emp = $query_arreglo_ranurado_vert->execute();
-                } else {
 
-                    $l_arr_ran_vert_emp = false;
+                    if (!$l_arr_ran_vert_emp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "arreglo ranurado vertical;";
+
+                        $l_arr_ran_vert_emp = false;
+                    }
                 }
             }
 
@@ -773,6 +923,14 @@ class AlmejaModel extends Controller {
             $l_arreglo_ranurado_fcar = $query_arreglo_ranurado_fcar->execute();
 
 
+            if (!$l_arreglo_ranurado_fcar) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "arreglo ranurado forro cartera;";
+
+                $l_arreglo_ranurado_fcar = false;
+            }
+
+
         // Encuadernacion
             $sql_encuadernacion = "INSERT INTO cot_alm_encuadernacion
                 (id_modelo, id_odt, tiraje, costo_unit_iman, perforado_iman_y_puesta, despunte_costo_unit, despunte_esquina_cajon, encajada_costo_unit, encajada_costo_tot, costo_tot_proceso, costo_tot_encuadernacion, fecha)
@@ -782,6 +940,14 @@ class AlmejaModel extends Controller {
             $query_encuadernacion = $this->db->prepare($sql_encuadernacion);
 
             $inserted_encuadernacion = $query_encuadernacion->execute();
+
+
+            if (!$inserted_encuadernacion) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "encuadernacion;";
+
+                $inserted_encuadernacion = false;
+            }
 
 
         // Encuadernacion_Fcaj
@@ -795,6 +961,14 @@ class AlmejaModel extends Controller {
             $inserted_encuadernacion_fcaj = $query_encuadernacion_fcaj->execute();
 
 
+            if (!$inserted_encuadernacion_fcaj) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "encuadernacion forro cajon;";
+
+                $inserted_encuadernacion_fcaj = false;
+            }
+
+
         // despunte de esquinas empalme
             $costo_unit         = floatval($aJson['despunte_esquinas']['costo_unit']);
             $costo_tot_despunte = floatval($aJson['despunte_esquinas']['costo_tot_despunte']);
@@ -806,6 +980,14 @@ class AlmejaModel extends Controller {
             $query_despunte_emp = $this->db->prepare($sql_despunte_emp);
 
             $l_despunte_esquinas = $query_despunte_emp->execute();
+
+
+            if (!$l_despunte_esquinas) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "despunte esquinas empalme;";
+
+                $l_despunte_esquinas = false;
+            }
 
 
         // Pegado guarda
@@ -824,8 +1006,15 @@ class AlmejaModel extends Controller {
             $l_pegado_guarda = $query_pegado_g->execute();
 
 
-        // armado caja final
+            if (!$l_pegado_guarda) {
 
+                $aJson['error'] = $aJson['error'] . $msg_error . "pegado guarda;";
+
+                $l_pegado_guarda = false;
+            }
+
+
+        // armado caja final
             $armado_costo_unit        = floatval($aJson['armado_caja_final']['costo_unit']);
             $armado_costo_tot_proceso = floatval($aJson['armado_caja_final']['costo_tot_proceso']);
 
@@ -837,6 +1026,13 @@ class AlmejaModel extends Controller {
 
             $l_armado_caja_final = $query_armado_final->execute();
 
+
+            if (!$l_armado_caja_final) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "armado caja final;";
+
+                $l_armado_caja_final = false;
+            }
 
 
     /*************** Termina costos fijos **********************/
@@ -861,13 +1057,12 @@ class AlmejaModel extends Controller {
 
                         $Tipo_accesorio = trim(strval($v_Accesorio_R[$k]['Tipo_accesorio']));
 
-                        $Tipo           = trim(strval($v_Accesorio_R[$k]['Tipo']));
+                        $Tipo  = trim(strval($v_Accesorio_R[$k]['Tipo']));
+                        $largo = floatval($v_Accesorio_R[$k]['Largo']);
+                        $ancho = floatval($v_Accesorio_R[$k]['Ancho']);
+                        $color = trim(strval($v_Accesorio_R[$k]['Color']));
 
-                        $largo  = floatval($v_Accesorio_R[$k]['Largo']);
-                        $ancho  = floatval($v_Accesorio_R[$k]['Ancho']);
-                        $color  = trim(strval($v_Accesorio_R[$k]['Color']));
-
-                        $costo_unitario   = floatval($v_Accesorio_R[$k]['costo_unit_accesorio']);
+                        $costo_unitario = floatval($v_Accesorio_R[$k]['costo_unit_accesorio']);
                         $costo_accesorios = floatval($v_Accesorio_R[$k]['costo_accesorios']);
 
 
@@ -879,6 +1074,15 @@ class AlmejaModel extends Controller {
                         $query_Accesorios = $this->db->prepare($sql_Accesorios);
 
                         $l_insert_accesorios = $query_Accesorios->execute();
+
+                        if (!$l_insert_accesorios) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "accesorios;";
+
+                            $l_insert_accesorios = false;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -928,6 +1132,15 @@ class AlmejaModel extends Controller {
                         $query_Bancos = $this->db->prepare($sql_Bancos);
 
                         $l_insert_bancos = $query_Bancos->execute();
+
+                        if (!$l_insert_bancos) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "bancos;";
+
+                            $l_insert_bancos = false;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -980,6 +1193,15 @@ class AlmejaModel extends Controller {
                         $query_Cierres = $this->db->prepare($sql_Cierres);
 
                         $l_insert_cierres = $query_Cierres->execute();
+
+                        if (!$l_insert_cierres) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "cierres;";
+
+                            $l_insert_cierres = false;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -1035,6 +1257,15 @@ class AlmejaModel extends Controller {
                         $query_OffEmp = $this->db->prepare($sql_OffEmp);
 
                         $l_insert_OffEmp = $query_OffEmp->execute();
+
+                        if (!$l_insert_OffEmp) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset empalme;";
+
+                            $l_insert_OffEmp = false;
+
+                            break;
+                        }
                     }
                 }
             } elseif(array_key_exists("Off_maq_Emp", $aJson)) {
@@ -1069,6 +1300,15 @@ class AlmejaModel extends Controller {
                         $query_Off_maq_Emp = $this->db->prepare($sql_Off_maq_Emp);
 
                         $l_insert_Off_maq_Emp = $query_Off_maq_Emp->execute();
+
+                        if (!$l_insert_Off_maq_Emp) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset maquila empalme;";
+
+                            $l_insert_Off_maq_Emp = false;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -1122,6 +1362,15 @@ class AlmejaModel extends Controller {
                         $query_OffFcaj = $this->db->prepare($sql_OffFcaj);
 
                         $l_insert_OffFcaj = $query_OffFcaj->execute();
+
+                        if (!$l_insert_OffFcaj) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset forro cajon;";
+
+                            $l_insert_OffFcaj = false;
+
+                            break;
+                        }
                     }
                 }
             } elseif(array_key_exists("Off_maq_FCaj", $aJson)) {
@@ -1156,6 +1405,15 @@ class AlmejaModel extends Controller {
                         $query_Off_maq_Fcaj = $this->db->prepare($sql_Off_maq_Fcaj);
 
                         $l_insert_Off_maq_Fcaj = $query_Off_maq_Fcaj->execute();
+
+                        if (!$l_insert_Off_maq_Fcaj) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset maquila forro cajon;";
+
+                            $l_insert_Off_maq_Fcaj = false;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -1209,6 +1467,15 @@ class AlmejaModel extends Controller {
                         $query_OffFcar = $this->db->prepare($sql_OffFcar);
 
                         $l_insert_OffFcar = $query_OffFcar->execute();
+
+                        if (!$l_insert_OffFcar) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset forro cartera;";
+
+                            $l_insert_OffFcar = false;
+
+                            break;
+                        }
                     }
                 }
             } elseif(array_key_exists("Off_maq_FCar", $aJson)) {
@@ -1245,6 +1512,15 @@ class AlmejaModel extends Controller {
                         $query_Off_maq_Fcar = $this->db->prepare($sql_Off_maq_Fcar);
 
                         $l_insert_Off_maq_Fcar = $query_Off_maq_Fcar->execute();
+
+                        if (!$l_insert_Off_maq_Fcar) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset maquila forro cartera;";
+
+                            $l_insert_Off_maq_Fcar = false;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -1298,6 +1574,15 @@ class AlmejaModel extends Controller {
                         $query_OffG = $this->db->prepare($sql_OffG);
 
                         $l_insert_OffG = $query_OffG->execute();
+
+                        if (!$l_insert_OffG) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset guarda;";
+
+                            $l_insert_OffG = false;
+
+                            break;
+                        }
                     }
                 }
             } elseif(array_key_exists("Off_maq_G", $aJson)) {
@@ -1335,6 +1620,15 @@ class AlmejaModel extends Controller {
                         $query_Off_maq_G = $this->db->prepare($sql_Off_maq_G);
 
                         $l_insert_Off_maq_G = $query_Off_maq_G->execute();
+
+                        if (!$l_insert_Off_maq_G) {
+
+                            $aJson['error'] = $aJson['error'] . $msg_error . "offset maquila guarda;";
+
+                            $l_insert_Off_maq_G = false;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -1382,6 +1676,15 @@ class AlmejaModel extends Controller {
                     $query_DigEmp = $this->db->prepare($sql_DigEmp);
 
                     $l_insert_DigEmp = $query_DigEmp->execute();
+
+                    if (!$l_insert_DigEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "digital empalme;";
+
+                        $l_insert_DigEmp = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1428,6 +1731,15 @@ class AlmejaModel extends Controller {
                     $query_DigFcaj = $this->db->prepare($sql_DigFcaj);
 
                     $l_insert_DigFCaj = $query_DigFcaj->execute();
+
+                    if (!$l_insert_DigFCaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "digital forro cajon;";
+
+                        $l_insert_DigFCaj = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1475,6 +1787,15 @@ class AlmejaModel extends Controller {
                     $query_DigFcar = $this->db->prepare($sql_DigFcar);
 
                     $l_insert_DigFCar = $query_DigFcar->execute();
+
+                    if (!$l_insert_DigFCar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "digital forro cartera;";
+
+                        $l_insert_DigFCar = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1521,6 +1842,15 @@ class AlmejaModel extends Controller {
                     $query_DigG = $this->db->prepare($sql_DigG);
 
                     $l_insert_DigG = $query_DigG->execute();
+
+                    if (!$l_insert_DigG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "digital guarda;";
+
+                        $l_insert_DigG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1565,6 +1895,15 @@ class AlmejaModel extends Controller {
                     $query_SerEmp = $this->db->prepare($sql_SerEmp);
 
                     $l_insert_SerEmp = $query_SerEmp->execute();
+
+                    if (!$l_insert_SerEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "serigrafia empalme;";
+
+                        $l_insert_SerEmp = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1611,6 +1950,15 @@ class AlmejaModel extends Controller {
                     $query_SerFCaj = $this->db->prepare($sql_SerFCaj);
 
                     $l_insert_SerFCaj = $query_SerFCaj->execute();
+
+                    if (!$l_insert_SerFCaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "serigrafia forro cajon;";
+
+                        $l_insert_SerFCaj = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1656,6 +2004,15 @@ class AlmejaModel extends Controller {
                     $query_SerFCar = $this->db->prepare($sql_SerFCar);
 
                     $l_insert_SerFCar = $query_SerFCar->execute();
+
+                    if (!$l_insert_SerFCar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "serigrafia forro cartera;";
+
+                        $l_insert_SerFCar = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1701,6 +2058,15 @@ class AlmejaModel extends Controller {
                     $query_SerG = $this->db->prepare($sql_SerG);
 
                     $l_insert_SerG = $query_SerG->execute();
+
+                    if (!$l_insert_SerG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "serigrafia guarda;";
+
+                        $l_insert_SerG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1750,11 +2116,20 @@ class AlmejaModel extends Controller {
                     $query_BUVEmp = $this->db->prepare($sql_BUVEmp);
 
                     $l_insert_BUVEmp = $query_BUVEmp->execute();
+
+                    if (!$l_insert_BUVEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "barniz empalme;";
+
+                        $l_insert_BUVEmp = false;
+
+                        break;
+                    }
                 }
             }
 
-            // Inicia Barniz Forro Cajon
 
+            // Inicia Barniz Forro Cajon
             if (array_key_exists("BarnizFcaj", $aJson)) {
 
                 $v_BUVFcaj = $aJson['BarnizFcaj'];
@@ -1791,12 +2166,20 @@ class AlmejaModel extends Controller {
                     $query_BUVFcaj = $this->db->prepare($sql_BUVFcaj);
 
                     $l_insert_BUVFcaj = $query_BUVFcaj->execute();
+
+                    if (!$l_insert_BUVFcaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "barniz forro cajon;";
+
+                        $l_insert_BUVFcaj = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Barniz Forro Cartera
-
             if (array_key_exists("BarnizFcar", $aJson)) {
 
                 $v_BUVFcar = $aJson['BarnizFcar'];
@@ -1832,11 +2215,20 @@ class AlmejaModel extends Controller {
                     $query_BUVFcar = $this->db->prepare($sql_BUVFcar);
 
                     $l_insert_BUVFcar = $query_BUVFcar->execute();
+
+                    if (!$l_insert_BUVFcar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "barniz forro cartera;";
+
+                        $l_insert_BUVFcar = false;
+
+                        break;
+                    }
                 }
             }
 
-            // Inicia Barniz Guarda
 
+            // Inicia Barniz Guarda
             if (array_key_exists("BarnizG", $aJson)) {
 
                 $v_BUVG  = $aJson['BarnizG'];
@@ -1874,6 +2266,15 @@ class AlmejaModel extends Controller {
                     $query_BUVG = $this->db->prepare($sql_BUVG);
 
                     $l_insert_BUVG = $query_BUVG->execute();
+
+                    if (!$l_insert_BUVG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "barniz guarda;";
+
+                        $l_insert_BUVG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -1881,7 +2282,6 @@ class AlmejaModel extends Controller {
         /*************** Corte Laser *********************/
 
             // Inicia Corte Laser Empalme
-
             if (array_key_exists("Laser", $aJson)) {
 
                 $v_LaserEmp = $aJson['Laser'];
@@ -1911,12 +2311,20 @@ class AlmejaModel extends Controller {
                     $query_LaserEmp = $this->db->prepare($sql_LaserEmp);
 
                     $l_insert_LaserEmp = $query_LaserEmp->execute();
+
+                    if (!$l_insert_LaserEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laser empalme;";
+
+                        $l_insert_LaserEmp = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Corte Laser Cajon
-
             if (array_key_exists("LaserFcaj", $aJson)) {
 
                 $v_LaserFcaj = $aJson['LaserFcaj'];
@@ -1947,12 +2355,20 @@ class AlmejaModel extends Controller {
                     $query_LaserFcaj = $this->db->prepare($sql_LaserFcaj);
 
                     $l_insert_LaserFcaj = $query_LaserFcaj->execute();
+
+                    if (!$l_insert_LaserFcaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laser forro cajon;";
+
+                        $l_insert_LaserFcaj = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Corte Laser Cartera
-
             if (array_key_exists("LaserFcar", $aJson)) {
 
                 $v_LaserFcar = $aJson['LaserFcar'];
@@ -1983,12 +2399,20 @@ class AlmejaModel extends Controller {
                     $query_LaserFcar = $this->db->prepare($sql_LaserFcar);
 
                     $l_insert_LaserFcar = $query_LaserFcar->execute();
+
+                    if (!$l_insert_LaserFcar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laser forro cartera;";
+
+                        $l_insert_LaserFcar = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Corte Laser Guarda
-
             if (array_key_exists("LaserG", $aJson)) {
 
                 $v_LaserG = $aJson['LaserG'];
@@ -2018,6 +2442,15 @@ class AlmejaModel extends Controller {
                     $query_LaserG = $this->db->prepare($sql_LaserG);
 
                     $l_insert_LaserG = $query_LaserG->execute();
+
+                    if (!$l_insert_LaserG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laser guarda;";
+
+                        $l_insert_LaserG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -2025,7 +2458,6 @@ class AlmejaModel extends Controller {
         /*************** Grabado ************************/
 
             // Inicia Grabado Empalme
-
             if (array_key_exists("Grabado", $aJson)) {
 
                 $v_GrabEmp = $aJson['Grabado'];
@@ -2069,13 +2501,20 @@ class AlmejaModel extends Controller {
                     $query_GrabEmp = $this->db->prepare($sql_GrabEmp);
 
                     $l_insert_GrabEmp = $query_GrabEmp->execute();
+
+                    if (!$l_insert_GrabEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "grabado empalme;";
+
+                        $l_insert_GrabEmp = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Grabado Forro del Cajon
-
-
             if (array_key_exists("GrabadoFcaj", $aJson)) {
 
                 $v_GrabFcaj = $aJson['GrabadoFcaj'];
@@ -2120,12 +2559,20 @@ class AlmejaModel extends Controller {
                     $query_GrabFcaj = $this->db->prepare($sql_GrabFcaj);
 
                     $l_insert_GrabFcaj = $query_GrabFcaj->execute();
+
+                    if (!$l_insert_GrabFcaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "grabado forro cajon;";
+
+                        $l_insert_GrabFcaj = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia  Grabado Forro de la Cartera
-
             if (array_key_exists("GrabadoFcar", $aJson)) {
 
                 $v_GrabFcar = $aJson['GrabadoFcar'];
@@ -2169,12 +2616,20 @@ class AlmejaModel extends Controller {
                     $query_GrabFcar = $this->db->prepare($sql_GrabFcar);
 
                     $l_insert_GrabFcar = $query_GrabFcar->execute();
+
+                    if (!$l_insert_GrabFcar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "grabado forro cartera;";
+
+                        $l_insert_GrabFcar = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia  Grabado Guarda
-
             if (array_key_exists("GrabadoG", $aJson)) {
 
                 $v_GrabG = $aJson['GrabadoG'];
@@ -2218,6 +2673,15 @@ class AlmejaModel extends Controller {
                     $query_GrabG = $this->db->prepare($sql_GrabG);
 
                     $l_insert_GrabG = $query_GrabG->execute();
+
+                    if (!$l_insert_GrabG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "grabado guarda;";
+
+                        $l_insert_GrabG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -2225,7 +2689,6 @@ class AlmejaModel extends Controller {
         /*************** HotStamping *******************/
 
             // Inicia HotStamping Empalmme
-
             if (array_key_exists("HotStamping", $aJson)) {
 
                 $v_HSEmp = $aJson['HotStamping'];
@@ -2273,12 +2736,20 @@ class AlmejaModel extends Controller {
                     $query_HSEmp = $this->db->prepare($sql_HSEmp);
 
                     $l_insert_HSEmp = $query_HSEmp->execute();
+
+                    if (!$l_insert_HSEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "hotstamping empalme;";
+
+                        $l_insert_HSEmp = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia HotStamping Forro Cajon
-
             if (array_key_exists("HotStampingFcaj", $aJson)) {
 
                 $v_HSFcaj = $aJson['HotStampingFcaj'];
@@ -2327,12 +2798,20 @@ class AlmejaModel extends Controller {
                     $query_HSFcaj = $this->db->prepare($sql_HSFcaj);
 
                     $l_insert_HSFcaj = $query_HSFcaj->execute();
+
+                    if (!$l_insert_HSFcaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "hotstamping forro cajon;";
+
+                        $l_insert_HSFcaj = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia HotStamping Forro Cartera
-
             if (array_key_exists("HotStampingFcar", $aJson)) {
 
                 $v_HSFcar = $aJson['HotStampingFcar'];
@@ -2376,16 +2855,23 @@ class AlmejaModel extends Controller {
                     VALUES
                         ($id_caja_odt, '$tipoGrabado', $tiraje, $largo, $ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_largo, $pelicula_ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario, $costo_tiro, $costo_tot_proceso,   $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-
                     $query_HSFcar = $this->db->prepare($sql_HSFcar);
 
                     $l_insert_HSFcar = $query_HSFcar->execute();
+
+                    if (!$l_insert_HSFcar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "hotstamping forro cartera;";
+
+                        $l_insert_HSFcar = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia HotStamping Guarda
-
             if (array_key_exists("HotStampingG", $aJson)) {
 
                 $v_HSG   = $aJson['HotStampingG'];
@@ -2433,6 +2919,15 @@ class AlmejaModel extends Controller {
                     $query_HSG = $this->db->prepare($sql_HSG);
 
                     $l_insert_HSG = $query_HSG->execute();
+
+                    if (!$l_insert_HSG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "hotstamping guarda;";
+
+                        $l_insert_HSG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -2440,7 +2935,6 @@ class AlmejaModel extends Controller {
         /*************** Laminado **********************/
 
             // Inicia Laminado Empalme
-
             if (array_key_exists("Laminado", $aJson)) {
 
                 $v_LamEmp = $aJson['Laminado'];
@@ -2476,12 +2970,20 @@ class AlmejaModel extends Controller {
                     $query_LamEmp = $this->db->prepare($sql_LamEmp);
 
                     $l_insert_LamEmp = $query_LamEmp->execute();
+
+                    if (!$l_insert_LamEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laminado empalme;";
+
+                        $l_insert_LamEmp = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Laminado Forro del Cajon
-
             if (array_key_exists("LaminadoFcaj", $aJson)) {
 
                 $v_LamFcaj = $aJson['LaminadoFcaj'];
@@ -2520,12 +3022,20 @@ class AlmejaModel extends Controller {
                     $query_LamFcaj = $this->db->prepare($sql_LamFcaj);
 
                     $l_insert_LamFcaj = $query_LamFcaj->execute();
+
+                    if (!$l_insert_LamFcaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laminado forro cajon;";
+
+                        $l_insert_LamFcaj = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Laminado Forro Cartera
-
             if (array_key_exists("LaminadoFcar", $aJson)) {
 
                 $v_LamFcar = $aJson['LaminadoFcar'];
@@ -2562,12 +3072,20 @@ class AlmejaModel extends Controller {
                     $query_LamFcar = $this->db->prepare($sql_LamFcar);
 
                     $l_insert_LamFcar = $query_LamFcar->execute();
+
+                    if (!$l_insert_LamFcar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laminado forro cartera;";
+
+                        $l_insert_LamFcar = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Laminado Guarda
-
             if (array_key_exists("LaminadoG", $aJson)) {
 
                 $v_LamG  = $aJson['LaminadoG'];
@@ -2605,6 +3123,15 @@ class AlmejaModel extends Controller {
                     $query_LamG = $this->db->prepare($sql_LamG);
 
                     $l_insert_LamG = $query_LamG->execute();
+
+                    if (!$l_insert_LamG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "laminado guarda;";
+
+                        $l_insert_LamG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -2612,7 +3139,6 @@ class AlmejaModel extends Controller {
         /****************** Suaje **********************/
 
             // Inicia Suaje Empalme
-
             if (array_key_exists("Suaje", $aJson)) {
 
                 $v_SuaEmp = $aJson['Suaje'];
@@ -2653,12 +3179,20 @@ class AlmejaModel extends Controller {
                     $query_SuaEmp = $this->db->prepare($sql_SuaEmp);
 
                     $l_insert_SuaEmp = $query_SuaEmp->execute();
+
+                    if (!$l_insert_SuaEmp) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "suaje empalme;";
+
+                        $l_insert_SuaEmp = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Suaje Forro Cajon
-
             if (array_key_exists("SuajeFcaj", $aJson)) {
 
                 $v_SuaFcaj = $aJson['SuajeFcaj'];
@@ -2700,12 +3234,20 @@ class AlmejaModel extends Controller {
                     $query_SuaFcaj = $this->db->prepare($sql_SuaFcaj);
 
                     $l_insert_SuaFcaj = $query_SuaFcaj->execute();
+
+                    if (!$l_insert_SuaFcaj) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "suaje forro cajon;";
+
+                        $l_insert_SuaFcaj = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Suaje Forro Cartera
-
             if (array_key_exists("SuajeFcar", $aJson)) {
 
                 $v_SuaFcar = $aJson['SuajeFcar'];
@@ -2745,12 +3287,20 @@ class AlmejaModel extends Controller {
                     $query_SuaFcar = $this->db->prepare($sql_SuaFcar);
 
                     $l_insert_SuaFcar = $query_SuaFcar->execute();
+
+                    if (!$l_insert_SuaFcar) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "suaje forro cartera;";
+
+                        $l_insert_SuaFcar = false;
+
+                        break;
+                    }
                 }
             }
 
 
             // Inicia Suaje Guarda
-
             if (array_key_exists("SuajeG", $aJson)) {
 
                 $v_SuaG  = $aJson['SuajeG'];
@@ -2791,6 +3341,15 @@ class AlmejaModel extends Controller {
                     $query_SuaG = $this->db->prepare($sql_SuaG);
 
                     $l_insert_SuaG = $query_SuaG->execute();
+
+                    if (!$l_insert_SuaG) {
+
+                        $aJson['error'] = $aJson['error'] . $msg_error . "suaje guarda;";
+
+                        $l_insert_SuaG = false;
+
+                        break;
+                    }
                 }
             }
 
@@ -2803,36 +3362,53 @@ class AlmejaModel extends Controller {
             //and ($inserted_cliem and $inserted_clied)
             if (
                 ($inserted and $inserted_mod and $inserted_calc)
-                and ($inserted_papel_emp and $inserted_papel_fcaj)
+
+                and ($inserted_papel_emp and $inserted_papel_fcaj and $inserted_papel_fcar and $inserted_papel_g)
+
                 and ($l_corte_emp and $l_corte_fcaj)
                 and ($l_corte_fcar and $l_corte_guarda)
                 and ($l_corte_carton_emp and $l_corte_carton_fcar)
-                and ($inserted_papel_fcar and $inserted_papel_g)
+
                 and ($inserted_papel_caj and $inserted_papel_car)
                 and ($inserted_elab_car and $inserted_elab_guarda)
+
                 and ($inserted_ranurado and $inserted_ranurado_fcar)
+
                 and ($l_arr_ran_hor_emp and $l_arr_ran_vert_emp and $l_arreglo_ranurado_fcar)
+
                 and ($inserted_encuadernacion and $inserted_encuadernacion_fcaj)
+
                 and ($l_despunte_esquinas and $l_pegado_guarda and $l_armado_caja_final)
+
                 and ($l_insert_cierres and $l_insert_bancos and $l_insert_accesorios)
+                
                 and ($l_insert_OffEmp and $l_insert_OffFcaj)
                 and ($l_insert_OffFcar and $l_insert_OffG)
+                
                 and ($l_insert_Off_maq_Emp and $l_insert_Off_maq_Fcaj)
                 and ($l_insert_Off_maq_Fcar and $l_insert_Off_maq_G)
+                
                 and ($l_insert_DigEmp and $l_insert_DigFCaj)
                 and ($l_insert_DigFCar and $l_insert_DigG)
+                
                 and ($l_insert_SerEmp and $l_insert_SerFCaj)
                 and ($l_insert_SerFCar and $l_insert_SerG)
+                
                 and ($l_insert_LamEmp and $l_insert_LamFcaj)
                 and ($l_insert_LamFcar and $l_insert_LamG)
+                
                 and ($l_insert_HSEmp and $l_insert_HSFcaj)
                 and ($l_insert_HSFcar and $l_insert_HSG)
+                
                 and ($l_insert_GrabEmp and $l_insert_GrabFcaj)
                 and ($l_insert_GrabFcar and $l_insert_GrabG)
+                
                 and ($l_insert_BUVEmp and $l_insert_BUVFcaj)
                 and ($l_insert_BUVFcar and $l_insert_BUVG)
+                
                 and ($l_insert_SuaEmp and $l_insert_SuaFcaj)
                 and ($l_insert_SuaFcar and $l_insert_SuaG)
+                
                 and ($l_insert_LaserEmp and $l_insert_LaserFcaj)
                 and ($l_insert_LaserFcar and $l_insert_LaserG)
                ) {
