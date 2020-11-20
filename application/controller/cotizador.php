@@ -174,7 +174,7 @@ class Cotizador extends Controller {
         // plantilla
         echo "<script>$('#form_modelo_0').hide();</script>";
 
-        require 'application/views/cotizador/cajas_almeja.php';
+        require 'application/views/cotizador/almeja/nueva_cotizacion.php';
 
         echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
 
@@ -961,7 +961,7 @@ class Cotizador extends Controller {
 
         echo "<script>$('#form_modelo_0').hide();</script>";
 
-        require 'application/views/cotizador/mod_cajas_almeja.php';
+        require 'application/views/cotizador/almeja/modificacion.php';
 
         echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
 
@@ -1811,12 +1811,11 @@ class Cotizador extends Controller {
 
     /************** despunte de esquinas **************/
 
-        $desp_tmp = self::calculoEncuadernacion($tiraje, $id_papel_exterior_cajon, $enc_cortes, $ventas_model);
+        $desp_tmp = self::calculoDespunteEsquinasCajon($tiraje, $ventas_model);
 
 
-        $costo_unit_despunte_esquinas = $desp_tmp['despunte_costo_unitario'];
-        $costo_tot_despunte_esquinas  = $desp_tmp['despunte_de_esquinas_para_cajon'];
-
+        $costo_unit_despunte_esquinas = $desp_tmp['costo_unitario_esquinas'];
+        $costo_tot_despunte_esquinas  = $desp_tmp['costo_tot_proceso'];
 
         if ($costo_unit_despunte_esquinas <= 0) {
 
@@ -1831,8 +1830,17 @@ class Cotizador extends Controller {
 
         $aJson['despunte_esquinas'] = $desp_temp;
 
+        $desp_tmp  = [];
         $desp_temp = [];
 
+
+    /********* encajada **************/
+
+        $encajada = [];
+
+        $encajada = self::calculoEncajada($tiraje, $ventas_model);
+
+        $aJson['encajada'] = $encajada;
 
 
     /********* arreglo ranurado forro de la cartera **************/
@@ -1841,7 +1849,7 @@ class Cotizador extends Controller {
         $arreglo_ranurado_fcar_temp = self::calculoRanurado($tiraje, $ventas_model);
 
         $arreglo_ranurado_fcar = $arreglo_ranurado_fcar_temp['arreglo'];
-        $arreglo_ranurado_fcar = floatval($arreglo_ranurado_fcar);
+        $arreglo_ranurado_fcar = round(floatval($arreglo_ranurado_fcar), 2);
 
 
         if ($arreglo_ranurado_fcar <= 0) {
@@ -1856,7 +1864,7 @@ class Cotizador extends Controller {
 
     /************* pegado guarda ********************/
 
-    $aJson['pegado_guarda'] = [];
+    $aPegado_guarda = [];
 
     $precio_unitario = 0;
 
@@ -1870,7 +1878,7 @@ class Cotizador extends Controller {
         if ($tiraje >= $tiraje_minimo and $tiraje <= $tiraje_maximo) {
 
             $precio_unitario = $row['precioUnitario'];
-            $precio_unitario = floatval($precio_unitario);
+            $precio_unitario = round(floatval($precio_unitario), 2);
         }
     }
 
@@ -1884,13 +1892,15 @@ class Cotizador extends Controller {
     $costo_tot_pegado_guarda = floatval($precio_unitario * $tiraje);
     $costo_tot_pegado_guarda = round($costo_tot_pegado_guarda, 2);
 
-    $aJson['pegado_guarda']['costo_unitario']    = $precio_unitario;
-    $aJson['pegado_guarda']['costo_tot_proceso'] = $costo_tot_pegado_guarda;
+    $aPegado_guarda['costo_unitario']    = $precio_unitario;
+    $aPegado_guarda['costo_tot_proceso'] = $costo_tot_pegado_guarda;
+
+    $aJson['pegado_guarda'] = $aPegado_guarda;
 
 
     /*********** armado caja final **************/
 
-    $aJson['armado_caja_final'] = [];
+    $aArmado_caja_final = [];
 
     $armado_caja_final_db = $ventas_model->costo_proc_caja("Armado Final Caja");
 
@@ -1899,7 +1909,7 @@ class Cotizador extends Controller {
     foreach ($armado_caja_final_db as $row) {
 
         $armado_costo_unit = $row['precioUnitario'];
-        $armado_costo_unit = floatval($armado_costo_unit);
+        $armado_costo_unit = round(floatval($armado_costo_unit), 2);
     }
 
 
@@ -1911,8 +1921,10 @@ class Cotizador extends Controller {
 
     $costo_tot_proceso = floatval($tiraje * $armado_costo_unit);
 
-    $aJson['armado_caja_final']['costo_unit']        = $armado_costo_unit;
-    $aJson['armado_caja_final']['costo_tot_proceso'] = $costo_tot_proceso;
+    $aArmado_caja_final['costo_unit']        = $armado_costo_unit;
+    $aArmado_caja_final['costo_tot_proceso'] = $costo_tot_proceso;
+
+    $aJson['armado_caja_final'] = $aArmado_caja_final;
 
 
 /************** Termina Costos fijos *************************/
@@ -6334,13 +6346,13 @@ class Cotizador extends Controller {
 
             if ($post) {
 
-                echo PHP_EOL . PHP_EOL . "(6337) post: ";
+                echo PHP_EOL . PHP_EOL . "(6344) post: ";
                 print_r($_POST);
             }
 
             if ($debuger) {
 
-                echo PHP_EOL . "(6343) aJson: ";
+                echo PHP_EOL . "(6350) aJson: ";
                 print_r($aJson);
 
             } else {

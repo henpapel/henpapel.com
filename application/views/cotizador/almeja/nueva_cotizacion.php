@@ -2,8 +2,43 @@
 
     .seccionP{
     }
-</style>
+    #modLoading{
+        color: #fff;
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+        position: fixed; 
+        z-index: 10; 
+        padding-top: 100px; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7); 
+    }
+    @keyframes rotate {
+        from {transform: rotate(1deg);}
+        to {transform: rotate(360deg);}
+    }
 
+    @-webkit-keyframes rotate {
+        from {-webkit-transform: rotate(1deg);}
+        to {-webkit-transform: rotate(360deg);}
+    }
+    .imgr{
+        -webkit-animation: 1s rotate linear infinite;
+        animation: 1s rotate linear infinite;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+    }
+</style>
+<!-- div loading -->
+<div id="modLoading" style="display: none;">
+    <img id="rotate1" class="imgr" style="width: 80px; height: 80px;" src="<?= URL?>public/img/cargando.png">
+    Cargando...
+</div>
 <!-- ******* Formulario de Almeja modelo (1) -->
     <div id="form_modelo_1">
         <form class="caja-form" name="caja-form" id="caja-form" method = "post" action = "<?php echo URL; ?>cotizador/saveCaja/">
@@ -182,7 +217,7 @@
                     <!-- botón modal cierres y divs -->
                     <div>
 
-                        <button type="button" id="btnabrecierres" class="btn btn-outline-primary" data-toggle="modal" data-target="#cierres">Añadir Cierres <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                        <button type="button" id="btnabrecierres" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#cierres">Añadir Cierres <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                         <div id="ListaCierres" class="container divcierres">
 
@@ -193,17 +228,29 @@
                         </div>
                     </div>
 
-                    <br>
-
                     <!-- botón modal accesorios y divs -->
                     <div>
 
-                        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary" data-toggle="modal" data-target="#accesorios" disabled>Añadir Accesorios <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#accesorios">Añadir Accesorios <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                         <div id="ListaAccesoriosEmp" class="container divaccesorios">
                             <table class="table" id="accesoriosTable">
                                 <tbody id="listaccesorios">
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- botón modal bancos y divs -->
+                    <div>
+
+                        <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#bancoemp">Añadir Banco <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                        <div id="ListaBancoEmp" class="container divbancos">
+                            <table class="table" id="banTable">
+                                <tbody id="listbancoemp">
+                                    <!-- contenido seleccionado -->
                                 </tbody>
                             </table>
                         </div>
@@ -245,7 +292,7 @@
 
                         <!-- Añadir Impresiones -->
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresiones">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresiones">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
 
@@ -260,7 +307,7 @@
 
                         <!-- Añadir Acabados -->
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosEmp" class="container divacabados">
                                 <table class="table" id="acbTable">
@@ -269,21 +316,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <br>
-
-                        <!-- Banco Empalme -->
-                        <div>
-                            <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#bancoemp" disabled>Añadir Banco <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-                            <div id="ListaBancoEmp" class="container divbancos">
-                                <table class="table" id="banTable">
-                                    <tbody id="listbancoemp">
-                                        <!-- contenido seleccionado -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <br>
                         </div>
                     </div>
 
@@ -313,7 +345,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresionesfcajon">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresionesfcajon">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
                                 <table class="table" id="Imptablefcajon">
@@ -326,7 +358,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados_fcajon">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados_fcajon">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosFcajon" class="container divacabados">
                                 <table class="table" id="acbTableFcajon">
@@ -366,7 +398,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresionesfcartera">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresionesfcartera">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
                                 <table class="table" id="Imptablefcartera">
@@ -379,7 +411,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados_fcartera">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados_fcartera">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosFcartera" class="container divacabados">
                                 <table class="table" id="acbTableFcartera">
@@ -419,7 +451,7 @@
 
                         <div>
 
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresionesguarda">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresionesguarda">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
 
@@ -434,7 +466,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados_guarda">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados_guarda">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosGuarda" class="container divacabados">
 
@@ -3147,12 +3179,12 @@
             <div class="modal-header azulWhi" style="background: red">
 
                 <h5 class="modal-title" id="txtTituloModal">Error</h5>
-                <!--
+                
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
                     <span aria-hidden="true">&times;</span>
                 </button>
-                -->
+                
             </div>
 
             <div id="modBody" class="modal-body">
@@ -3163,7 +3195,7 @@
 
             <div class="modal-footer">
 
-                <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
             </div>
         </div>
     </div>
@@ -3433,6 +3465,11 @@ foreach ($Porcentajes as $porcentaje) { ?>
         $('#resumen' + tabla ).append(trResumen);
     }
 
+    function cleanModError(){
+
+        $("#modError").remove();
+    }
+
     function appndMsgError(error){
 
         var divError = $("#modError").html();
@@ -3540,6 +3577,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
             $("#txtContenido").html("Debe de seleccionar un papel para las siguientes secciones: " + cadena + ".");
         } else {
 
+            $("#modLoading").show();
             if (typeof formData !== 'undefined' && formData.length > 0) {
 
                 formData = [];
@@ -3629,7 +3667,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
             })
             .done(function(response) {
 
-
+                $("#modLoading").hide();
                 console.log("(3678) response: ");
 
                 console.log(response);
@@ -3642,8 +3680,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                         var error        = js_respuesta.error;
 
                         if (error.length > 0) {
-
-                            document.getElementsByName("subForm").disabled = true;
 
                             showModError("");
                             //$("#txtContenido").html("");
@@ -5973,6 +6009,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
     // graba en la Base de Datos
     $("#subForm2").click( function() {
 
+        $("#modLoading").show();
         if(formData){
 
             if (formData.length > 0) {
@@ -6064,6 +6101,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
         })
         .done(function( response ) {
 
+            $("#modLoading").hide();
             console.log(response);
 
             try {
@@ -8566,8 +8604,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
         desactivarBtn();
     });
 
-
-
     jQuery214(document).on("click", ".listacabadosfcartera", function () {
 
         $(this).closest('tr').remove();
@@ -8687,8 +8723,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
         desactivarBtn();
     });
-
-
 
     jQuery214(document).on("click", ".listacabadosguarda", function () {
 

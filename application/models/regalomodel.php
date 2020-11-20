@@ -13,17 +13,6 @@ class RegaloModel {
         }
     }
 
-    /*
-
-    public function mError(&$aJson, $mensaje, $error) {
-
-        $aJson["mensaje"] = strval($mensaje);
-        $aJson["error"]   = $aJson["error"] . strval($error);
-
-        return $aJson;
-    }
-    */
-
 
     // Tablas Offset
     public function getOffsetTabla($id, $tabla) {
@@ -394,8 +383,6 @@ class RegaloModel {
         if (!$l_existe) {
 
             self::mError($aJson, $mensaje, "Ya existe esta Orden de Trabajo;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = "Ya existe esta Orden de Trabajo...";
 
             return $aJson;
         }
@@ -446,9 +433,7 @@ class RegaloModel {
 
             if ($id_caja_odt <= 0 or !$l_inserted) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_odt" . $sql . ";");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_odt" . $sql;
+                self::mError($aJson, $mensaje, "Error al grabar en la odt;");
 
                 $l_inserted = false;
             }
@@ -466,14 +451,13 @@ class RegaloModel {
 
                 if (!$mod_odt) {
 
-                    self::mError($aJson, $mensaje, "Error al actualizar en la tabla cot_odt" . $sql_mod . ";");
-                    //$aJson['mensaje'] = "ERROR";
-                    //$aJson['error']   = $aJson['error'] . "; Error al actualizar en la tabla cot_odt " . $sql_mod;
+                    self::mError($aJson, $mensaje, "Error al actualizar en la odt;");
 
                     $l_inserted = false;
                     $mod_odt    = false;
                 }
             }
+
 
         // Calculadora
             $l_calculadora = true;
@@ -525,9 +509,7 @@ class RegaloModel {
 
             if (!$l_calculadora) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_calculadora;" . $sql_calculadora . ";");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_calculadora;" . $sql_calculadora;
+                self::mError($aJson, $mensaje, "Error al grabar en la calculadora;");
 
                 $l_calculadora = false;
             }
@@ -537,7 +519,8 @@ class RegaloModel {
 
             $inserted_papel_car = true;
 
-            $id_papel     = intval($aJson['grosor_carton']['id_papel']);
+            $id_papel      = intval($aJson['costo_grosor_carton']['id_papel']);
+            $num_carton    = intval($aJson['costo_grosor_carton']['num_carton']);
             $cantidad      = $tiraje;
             $nombre        = trim(strval($aJson['costo_grosor_carton']['nombre_papel']));
             $costo_unit    = floatval($aJson['costo_grosor_carton']['costo_unit_papel']);
@@ -553,9 +536,9 @@ class RegaloModel {
 
         // Carton Cajon
             $sql_papel_car = "INSERT INTO cot_reg_carton
-                (id_modelo, id_odt, id_cajon, tiraje, nombre, precio, ancho, largo, corte_ancho, corte_largo, piezas_por_pliego, num_pliegos, costo_tot_carton, fecha)
+                (id_modelo, id_odt, id_cajon, tiraje, num_cajon, nombre, precio, ancho, largo, corte_ancho, corte_largo, piezas_por_pliego, num_pliegos, costo_tot_carton, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $id_papel, $tiraje, '$nombre', $costo_unit, $ancho, $largo, $c_ancho, $c_largo, $corte, $tot_pliegos, $tot_costo, '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $id_papel, $tiraje, $num_carton, '$nombre', $costo_unit, $ancho, $largo, $c_ancho, $c_largo, $corte, $tot_pliegos, $tot_costo, '$d_fecha')";
 
 
             $query_papel_car = $this->db->prepare($sql_papel_car);
@@ -564,9 +547,7 @@ class RegaloModel {
 
             if (!$inserted_papel_car) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_carton;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_carton";
+                self::mError($aJson, $mensaje, "Error al grabar en carton cajon;");
 
                 $inserted_papel_car = false;
             }
@@ -577,6 +558,7 @@ class RegaloModel {
 
         /******* Carton de la Tapa *******/
             $id_papel     = intval($aJson['costo_grosor_tapa']['id_papel']);
+            $num_carton    = intval($aJson['costo_grosor_tapa']['num_carton']);
             $cantidad      = $tiraje;
             $nombre        = trim(strval($aJson['costo_grosor_tapa']['nombre_papel']));
             $costo_unit    = floatval($aJson['costo_grosor_tapa']['costo_unit_papel']);
@@ -591,9 +573,9 @@ class RegaloModel {
 
         // Carton Tapa
             $sql_papel_cartap = "INSERT INTO cot_reg_cartontap
-                (id_modelo, id_odt, id_cajon, tiraje, nombre, precio, ancho, largo, corte_ancho, corte_largo, piezas_por_pliego, num_pliegos, costo_tot_carton, fecha)
+                (id_modelo, id_odt, id_cajon, tiraje, num_cajon, nombre, precio, ancho, largo, corte_ancho, corte_largo, piezas_por_pliego, num_pliegos, costo_tot_carton, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $id_papel, $tiraje, '$nombre', $costo_unit, $ancho, $largo, $c_ancho, $c_largo, $corte, $tot_pliegos, $tot_costo, '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $id_papel, $tiraje, $num_carton, '$nombre', $costo_unit, $ancho, $largo, $c_ancho, $c_largo, $corte, $tot_pliegos, $tot_costo, '$d_fecha')";
 
 
             $query_papel_cartap = $this->db->prepare($sql_papel_cartap);
@@ -602,9 +584,7 @@ class RegaloModel {
 
             if (!$inserted_papel_cartap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_cartontap;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_cartontap";
+                self::mError($aJson, $mensaje, "Error al grabar carton tapa;");
 
                 $inserted_papel_cartap = false;
             }
@@ -641,16 +621,13 @@ class RegaloModel {
 
             if (!$inserted_papel_empcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_papelempcaj;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_papelempcaj";
+                self::mError($aJson, $mensaje, "Error al grabar papel empalme cajon;");
 
                 $inserted_papel_empcaj = false;
             }
 
 
         // papel Forro del Cajon
-
             $inserted_papel_fcaj = true;
 
             $id_papel          = intval($aJson['papel_FCaj']['id_papel']);
@@ -677,9 +654,7 @@ class RegaloModel {
 
             if (!$inserted_papel_fcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_papelfcaj;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_papelfcaj";
+                self::mError($aJson, $mensaje, "Error al grabar papel forro cajon;");
 
                 $inserted_papel_fcaj = false;
             }
@@ -713,9 +688,7 @@ class RegaloModel {
 
             if (!$inserted_papel_emptap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_papelemptap;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_papelemptap";
+                self::mError($aJson, $mensaje, "Error al grabar papel empalme tapa;");
 
                 $inserted_papel_emptap = false;
             }
@@ -747,9 +720,7 @@ class RegaloModel {
 
             if (!$inserted_papel_ftap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_papelftap;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_papelftap";
+                self::mError($aJson, $mensaje, "Error al grabar papel forro tapa;");
 
                 $inserted_papel_ftap = false;
             }
@@ -784,9 +755,7 @@ class RegaloModel {
 
             if (!$l_ranurado) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_ranurado;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_ranurado";
+                self::mError($aJson, $mensaje, "Error al grabar en ranurado;");
 
                 $l_ranurado = false;
             }
@@ -815,24 +784,22 @@ class RegaloModel {
 
             if (!$l_ranurado_tap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_ranurado_tap;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_ranurado_tap";
+                self::mError($aJson, $mensaje, "Error al grabar ranurado tapa;");
 
                 $l_ranurado_tap = false;
             }
 
 
-        // encuadernacion
 
+        // encuadernacion
             $l_encuadernacion = true;
 
             $perf_iman_costo_unitario        = floatval($aJson['encuadernacion']['perf_iman_costo_unitario']);
             $perf_iman_y_puesta              = floatval($aJson['encuadernacion']['perf_iman_y_puesta']);
-            $despunte_costo_unitario         = floatval($aJson['encuadernacion']['despunte_costo_unitario']);
-            $despunte_de_esquinas_para_cajon = floatval($aJson['encuadernacion']['despunte_de_esquinas_para_cajon']);
-            $encajada_costo_unitario         = floatval($aJson['encuadernacion']['encajada_costo_unitario']);
-            $costo_encajada                  = floatval($aJson['encuadernacion']['costo_encajada']);
+            $despunte_costo_unitario         = floatval($aJson['despunte_esquinas_emptap']['costo_unitario_esquinas']);
+            $despunte_de_esquinas_para_cajon = floatval($aJson['despunte_esquinas_emptap']['costo_tot_proceso']);
+            $encajada_costo_unitario         = floatval($aJson['elab_FCaj']['enc_encajada_costo_unitario']);
+            $costo_encajada                  = floatval($aJson['elab_FCaj']['enc_encajada_costo_tot']);
             $costo_tot_proceso               = floatval($aJson['encuadernacion']['costo_tot_proceso']);
             $costo_tot_encuadernacion               = floatval($costo_tot_proceso + $costo_encajada);
 
@@ -849,9 +816,7 @@ class RegaloModel {
 
             if (!$l_encuadernacion) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_encuadernacion;" . $sql_encuadernacion . ";");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_encuadernacion;" . $sql_encuadernacion . ";";
+                self::mError($aJson, $mensaje, "Error al grabar encuadernacion;");
 
                 $l_encuadernacion = false;
             }
@@ -880,9 +845,7 @@ class RegaloModel {
 
             if (!$l_elab_fcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_elab_fcaj;" . $sql_elabfcaj . ";");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_elab_fcaj;" . $sql_elabfcaj . ";";
+                self::mError($aJson, $mensaje, "Error al grabar elaboracion forro cajon;");
 
                 $l_elab_fcaj = false;
             }
@@ -910,9 +873,7 @@ class RegaloModel {
 
             if (!$l_elab_ftap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_elab_ftap;" . $sql_elab_ftap . ";");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_elab_ftap;" . $sql_elab_ftap . ";";
+                self::mError($aJson, $mensaje, "Error al grabar elaboracion forro tapa;");
 
                 $l_elab_ftap = false;
             }
@@ -940,9 +901,7 @@ class RegaloModel {
 
             if (!$l_corte_carton_empcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_corte_carton_empcaj;");
-                //$aJson['mensaje'] = "ERROR";
-                //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_corte_carton_empcaj";
+                self::mError($aJson, $mensaje, "Error al grabar corte carton empalme cajon;");
 
                 $l_corte_carton_empcaj = false;
             }
@@ -967,11 +926,17 @@ class RegaloModel {
 
             $l_corte_carton_emptap = $query_corte_carton_emptap->execute();
 
+            if (!$l_corte_carton_emptap) {
 
-            // corte papel
-            $l_corte_papel_emp  = true;
+                self::mError($aJson, $mensaje, "Error al grabar corte carton empalme tapa;");
+
+                $l_corte_carton_emptap = false;
+            }
+
 
             // corte carton empalme
+            $l_corte_carton_emp  = true;
+
             $corte_costo_unitario = floatval($aJson['costo_papel_corte']['costo_unitario_corte_papel']);
             $cortes_pliego        = intval($aJson['costo_papel_corte']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_papel_corte']['tot_pliegos']);
@@ -986,7 +951,14 @@ class RegaloModel {
 
             $query_corte_papel = $this->db->prepare($sql_corte_papel);
 
-            $l_corte_papel_emp = $query_corte_papel->execute();
+            $l_corte_carton_emp = $query_corte_papel->execute();
+
+            if (!$l_corte_carton_emp) {
+
+                self::mError($aJson, $mensaje, "Error al grabar corte carton empalme cajon;");
+
+                $l_corte_carton_emp = false;
+            }
 
 
             // corte papel empalme
@@ -1009,6 +981,14 @@ class RegaloModel {
             $l_corte_papel_emp_emptap = $query_corte_papel_emptap->execute();
 
 
+            if (!$l_corte_papel_emp_emptap) {
+
+                self::mError($aJson, $mensaje, "Error al grabar corte papel empalme;");
+
+                $l_corte_papel_emp_emptap = false;
+            }
+
+
             // corte refine empalme
             $l_corte_refine_emp  = true;
 
@@ -1029,7 +1009,15 @@ class RegaloModel {
             $l_corte_refine_emp = $query_corte_refine->execute();
 
 
-            // corte papel empalme tapacosto_papel_corte_emptap
+            if (!$l_corte_refine_emp) {
+
+                self::mError($aJson, $mensaje, "Error al grabar corte refine empalme cajon;");
+
+                $l_corte_refine_emp = false;
+            }
+
+
+            // corte refine empalmado tapa 
             $l_corte_refine_empalmado_emptap = true;
 
             $corte_costo_unitario = floatval($aJson['costo_papel_corte_emptap']['costo_unitario_corte_papel']);
@@ -1048,13 +1036,18 @@ class RegaloModel {
 
             $l_corte_refine_empalmado_emptap = $query_corte_refine_empalmado_emptap->execute();
 
-////
 
-            $l_corte_papel_fcar = true;
+            if (!$l_corte_refine_empalmado_emptap) {
 
+                self::mError($aJson, $mensaje, "Error al grabar corte refine empalme tapa;");
+
+                $l_corte_refine_empalmado_emptap = false;
+            }
 
 
         // arreglo ranurado horizontal
+            $l_arr_ran_hor_emp = true;
+
             $costo_unit = floatval($aJson['arreglo_ranurado_hor_emp']);
 
             $sql_ranurado_arreglo_ran_hor = "INSERT INTO cot_reg_arreglo_ranurado_hor_empcaj
@@ -1065,6 +1058,14 @@ class RegaloModel {
             $query_arreglo_ranurado_hor = $this->db->prepare($sql_ranurado_arreglo_ran_hor);
 
             $l_arr_ran_hor_emp = $query_arreglo_ranurado_hor->execute();
+
+
+            if (!$l_arr_ran_hor_emp) {
+
+                self::mError($aJson, $mensaje, "Error al grabar arreglo ranurado horizontal empalme cajon;");
+
+                $l_arr_ran_hor_emp = false;
+            }
 
 
         // arreglo ranurado vertical
@@ -1085,17 +1086,24 @@ class RegaloModel {
                     $query_arreglo_ranurado_vert = $this->db->prepare($sql_ranurado_arreglo_ran_ver);
 
                     $l_arr_ran_vert_emp = $query_arreglo_ranurado_vert->execute();
-                } else {
 
-                    $l_arr_ran_vert_emp = false;
+                    if (!$l_arr_ran_vert_emp) {
+
+                        self::mError($aJson, $mensaje, "Error al grabar en arreglo ranurado vertical empalme cajon;");
+
+                        $l_arr_ran_vert_emp = false;
+                    }
                 }
             }
 
-        // despunte de esquinas empalme cajon
-            $costo_unit         = floatval($aJson['despunte_esquinas_empcaj']['costo_unit']);
-            $costo_tot_despunte = floatval($aJson['despunte_esquinas_empcaj']['costo_tot_despunte']);
 
-            $sql_despunte_emp = "INSERT INTO cot_reg_despunte_esquinas_empcaj(id_modelo, id_odt, tiraje, costo_unit, costo_tot_despunte, fecha)
+        // despunte de esquinas empalme cajon
+            $l_despunte_esquinas = true;
+
+            $costo_unit = floatval($aJson['despunte_esquinas_emptap']['costo_unitario_esquinas']);
+            $costo_tot_despunte = floatval($aJson['despunte_esquinas_emptap']['costo_tot_proceso']);
+
+            $sql_despunte_emp = "INSERT INTO cot_reg_despunte_esquinas_emptap(id_modelo, id_odt, tiraje, costo_unit, costo_tot_despunte, fecha)
             VALUES
                 ($id_modelo, $id_caja_odt, $tiraje, $costo_unit, $costo_tot_despunte, '$d_fecha')";
 
@@ -1104,7 +1112,16 @@ class RegaloModel {
             $l_despunte_esquinas = $query_despunte_emp->execute();
 
 
+            if (!$l_despunte_esquinas) {
+
+                self::mError($aJson, $mensaje, "Error al grabar despunte esquinas empalme tapa;");
+
+                $l_despunte_esquinas = false;
+            }
+
             // forro cajon
+            $l_corte_fcaj = true;
+
             $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_fcaj']['tot_pliegos']);
@@ -1121,26 +1138,44 @@ class RegaloModel {
 
             $l_corte_fcaj = $query_corte_fcaj->execute();
 
-            // forro cajon
+
+            if (!$l_corte_fcaj) {
+
+                self::mError($aJson, $mensaje, "Error al grabar corte forro cajon;");
+
+                $l_corte_fcaj = false;
+            }
+
+
+            // corte papel forro cajon
+            $l_corte_papel_fcaj = true;
+
             $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_fcaj']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_papel_fcaj']['millares']);
             $costo_corte          = floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']);
 
-            $sql_corte_fcaj = "INSERT INTO cot_reg_corte_papel_fcaj
+            $sql_corte_papel_fcaj = "INSERT INTO cot_reg_corte_papel_fcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
             VALUES
                 ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
 
 
-            $query_corte_fcaj = $this->db->prepare($sql_corte_fcaj);
+            $query_corte_papel_fcaj = $this->db->prepare($sql_corte_papel_fcaj);
 
-            $l_corte_fcaj = $query_corte_fcaj->execute();
+            $l_corte_papel_fcaj = $query_corte_papel_fcaj->execute();
+
+
+            if (!$l_corte_papel_fcaj) {
+
+                self::mError($aJson, $mensaje, "Error al grabar corte papel forro cajon;");
+
+                $l_corte_papel_fcaj = false;
+            }
 
 
             // suaje forro cajon(fijo)
-
             $l_Suaje_fcaj_fijo = true;
 
             $tipoGrabado             = trim(strval($aJson['suaje_fcaj_fijo']['tipoGrabado']));
@@ -1167,18 +1202,51 @@ class RegaloModel {
             $l_Suaje_fcaj_fijo = $query_suaje_fcaj_fijo->execute();
 
 
+            if (!$l_Suaje_fcaj_fijo) {
+
+                self::mError($aJson, $mensaje, "Error al grabar suaje forro cajon;");
+
+                $l_Suaje_fcaj_fijo = false;
+            }
+
+
+            // suaje forro tapasuaje_ftap_fijo(fijo)
+            $l_Suaje_ftap_fijo = true;
+
+            $tipoGrabado             = trim(strval($aJson['suaje_ftap_fijo']['tipoGrabado']));
+            $Largo                   = intval($aJson['suaje_ftap_fijo']['Largo']);
+            $Ancho                   = intval($aJson['suaje_ftap_fijo']['Ancho']);
+            $perimetro               = intval($aJson['suaje_ftap_fijo']['perimetro']);
+            $tabla_suaje             = floatval($aJson['suaje_ftap_fijo']['tabla_suaje']);
+            $arreglo                 = floatval($aJson['suaje_ftap_fijo']['arreglo']);
+            $tiro_costo_unitario     = floatval($aJson['suaje_ftap_fijo']['tiro_costo_unitario']);
+            $costo_tiro              = floatval($aJson['suaje_ftap_fijo']['costo_tiro']);
+            $costo_tot_proceso       = floatval($aJson['suaje_ftap_fijo']['costo_tot_proceso']);
+            $merma_min               = intval($aJson['suaje_ftap_fijo']['mermas']['merma_min']);
+            $merma_adic              = intval($aJson['suaje_ftap_fijo']['mermas']['merma_adic']);
+            $merma_tot               = intval($aJson['suaje_ftap_fijo']['mermas']['merma_tot']);
+            $cortes_por_pliego       = intval($aJson['suaje_ftap_fijo']['mermas']['cortes_por_pliego']);
+            $merma_tot_pliegos       = intval($aJson['suaje_ftap_fijo']['mermas']['merma_tot_pliegos']);
+            $costo_unit_merma        = floatval($aJson['suaje_ftap_fijo']['mermas']['costo_unit_merma']);
+            $costo_tot_pliegos_merma = floatval($aJson['suaje_ftap_fijo']['mermas']['costo_tot_pliegos_merma']);
+
+            $sql_suaje_ftap_fijo = "INSERT INTO cot_reg_suajeftap_fijo(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+
+            $query_suaje_ftap_fijo = $this->db->prepare($sql_suaje_ftap_fijo);
+
+            $l_Suaje_ftap_fijo = $query_suaje_ftap_fijo->execute();
+
+
+            if (!$l_Suaje_ftap_fijo) {
+
+                self::mError($aJson, $mensaje, "Error al grabar suaje forro tapa;");
+
+                $l_Suaje_ftap_fijo = false;
+            }
+
 
         // arreglo ranurado horizontal empalme tapa
-
             $l_arr_ran_hor_emptap = true;
-
-/*
-        $calculo_tmp['arreglo']               = $ranurado_arreglo_costo;
-        $calculo_tmp['costo_unit_por_ranura'] = $ranurado_costo_unit_por_ranura;
-        $calculo_tmp['costo_por_ranura']      = $costo_por_ranura;
-        $calculo_tmp['costo_tot_proceso']     = floatval($ranurado_arreglo_costo + $costo_por_ranura);
-
-*/
 
             $costo_unit                 = floatval($aJson['arreglo_ranurado_hor_emptap']['arreglo']);
             $costo_unit_ranura          = floatval($aJson['arreglo_ranurado_hor_emptap']['costo_unit_por_ranura']);
@@ -1195,6 +1263,14 @@ class RegaloModel {
             $l_arr_ran_hor_emptap = $query_arreglo_ranurado_hor_emptap->execute();
 
 
+            if (!$l_arr_ran_hor_emptap) {
+
+                self::mError($aJson, $mensaje, "Error al grabar arreglo ranurado horizontal empalme tapa;");
+
+                $l_arr_ran_hor_emptap = false;
+            }
+
+
         // arreglo ranurado vertical empalme tapa
             $l_arr_ran_vert_emptap = true;
 
@@ -1208,7 +1284,15 @@ class RegaloModel {
                 $query_arreglo_ranurado_vert_emptap = $this->db->prepare($sql_ranurado_arreglo_ran_ver_emptap);
 
                 $l_arr_ran_vert_emptap = $query_arreglo_ranurado_vert_emptap->execute();
+
+                if (!$l_arr_ran_vert_emptap) {
+
+                    self::mError($aJson, $mensaje, "Error al grabar arreglo ranurado vertical empalme tapa;");
+
+                    $l_arr_ran_vert_emptap = false;
+                }
             }
+
 
         /********* termina costos fijos **********/
 
@@ -1261,35 +1345,16 @@ class RegaloModel {
                         $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        /*
-                        $corte_pliego            = intval($row['corte_pliego']);
-                        $total_pliegos           = intval($row['total_pliegos']);
-                        */
+                        $sql_offset_empcaj = "INSERT INTO cot_reg_offsetempcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                        if ($costo_tot_proceso > 0) {
+                        $query_offset_empcaj = $this->db->prepare($sql_offset_empcaj);
 
-                            $sql_offset_empcaj = "INSERT INTO cot_reg_offsetempcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                            $query_offset_empcaj = $this->db->prepare($sql_offset_empcaj);
-
-                            $l_offset_empcaj = $query_offset_empcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset Empalme del cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset en Empalme del cajon";
-
-                            $l_offset_empcaj = false;
-
-                            break;
-                        }
+                        $l_offset_empcaj = $query_offset_empcaj->execute();
 
 
                         if (!$l_offset_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar offset empalme cajon;");
 
                             $l_offset_empcaj = false;
 
@@ -1321,30 +1386,16 @@ class RegaloModel {
                         $costo_tot_maq          = floatval($row['costo_tot_maq']);
                         $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
 
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
+                        $sql_offset_maq_empcaj = "INSERT INTO cot_reg_offset_maq_empcaj(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
-                            $sql_offset_maq_empcaj = "INSERT INTO cot_reg_offset_maq_empcaj(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
+                        $query_offset_maq_empcaj = $this->db->prepare($sql_offset_maq_empcaj);
 
-                            $query_offset_maq_empcaj = $this->db->prepare($sql_offset_maq_empcaj);
-
-                            $l_offset_maq_empcaj = $query_offset_maq_empcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Empalme del cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Empalme del cajon";
-
-                            $l_offset_maq_empcaj = false;
-
-                            break;
-                        }
+                        $l_offset_maq_empcaj = $query_offset_maq_empcaj->execute();
 
 
                         if (!$l_offset_maq_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_empcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_empcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar maquila empalme cajon;");
 
                             $l_offset_maq_empcaj = false;
 
@@ -1380,36 +1431,15 @@ class RegaloModel {
                         $costo_unitario    = floatval($row['mermas']['costo_unitario']);
                         $costo_tot         = floatval($row['mermas']['costo_tot']);
 
-                        if ($cabe_digital == "NO") {
+                        $sql_digital_empcaj = "INSERT INTO cot_reg_digempcaj(id_odt, id_modelo, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos,  $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
 
-                            $l_digital_bcaj = false;
+                        $query_digital_empcaj = $this->db->prepare($sql_digital_empcaj);
 
-                            break;
-                        }
-
-                        if ($costo_tot_proceso > 0 and $cabe_digital == "SI") {
-
-                            $sql_digital_empcaj = "INSERT INTO cot_reg_digempcaj(id_odt, id_modelo, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos,  $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
-
-                            $query_digital_empcaj = $this->db->prepare($sql_digital_empcaj);
-
-                            $l_digital_empcaj = $query_digital_empcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para Digital en Empalme del cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para Digital en Empalme del cajon";
-
-                            $l_digital_empcaj = false;
-
-                            break;
-                        }
+                        $l_digital_empcaj = $query_digital_empcaj->execute();
 
                         if (!$l_digital_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar digital empalme cajon;");
 
                             $l_digital_empcaj = false;
 
@@ -1443,6 +1473,7 @@ class RegaloModel {
                         $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
+
                         $sql_serigrafia_empcaj = "INSERT INTO cot_reg_serempcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_serigrafia_empcaj = $this->db->prepare($sql_serigrafia_empcaj);
@@ -1451,9 +1482,7 @@ class RegaloModel {
 
                         if (!$l_serigrafia_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar serigrafia empalme cajon;");
 
                             $l_serigrafia_empcaj = false;
 
@@ -1462,6 +1491,7 @@ class RegaloModel {
                     }
                 }
             }
+
 
 
         /********* termina impresion empalme del cajon **********/
@@ -1510,11 +1540,6 @@ class RegaloModel {
                         $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        /*
-                        $corte_pliego            = intval($row['corte_pliego']);
-                        $total_pliegos           = intval($row['total_pliegos']);
-                        */
-
                         $sql_offset_fcaj = "INSERT INTO cot_reg_offsetfcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_offset_fcaj = $this->db->prepare($sql_offset_fcaj);
@@ -1523,9 +1548,7 @@ class RegaloModel {
 
                         if (!$l_offset_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetfcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetfcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar offset forro cajon;");
 
                             $l_offset_fcaj = false;
 
@@ -1564,30 +1587,26 @@ class RegaloModel {
                             $query_offset_maq_fcaj = $this->db->prepare($sql_offset_maq_fcaj);
 
                             $l_offset_maq_fcaj = $query_offset_maq_fcaj->execute();
+
+                            if(!$l_offset_maq_fcaj) {
+
+                                self::mError($aJson, $mensaje, "Error al grabar offset maquila forro cajon;");
+
+                                $l_offset_maq_fcaj = false;
+
+                                break;
+                            }
                         } else {
 
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Forro del cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Forro del cajon";
+                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila forro del cajon;");
 
                             $l_offset_maq_fcaj = false;
 
                             break;
                         }
-
-
-                        if (!$l_offset_maq_fcaj) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_fcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_fcaj";
-
-                            $l_offset_maq_circaj = false;
-
-                            break;
-                        }
                     }
                 }
+
 
                 if (array_key_exists("Digital", $aImpFCaj)) {
 
@@ -1617,7 +1636,7 @@ class RegaloModel {
 
                         if ($cabe_digital == "NO") {
 
-                            $l_digital_circaj = false;
+                            $l_digital_fcaj = false;
 
                             break;
                         }
@@ -1630,9 +1649,7 @@ class RegaloModel {
 
                         if (!$l_digital_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digfcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digfcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar offset digital forro cajon;");
 
                             $l_digital_fcaj = false;
 
@@ -1674,9 +1691,7 @@ class RegaloModel {
 
                         if (!$l_serigrafia_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serfcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serfcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar offset serigrafia forro cajon;");
 
                             $l_serigrafia_fcaj = false;
 
@@ -1685,6 +1700,7 @@ class RegaloModel {
                     }
                 }
             }
+
 
         /********* termina impresion forro del cajon **********/
 
@@ -1741,9 +1757,7 @@ class RegaloModel {
 
                         if (!$l_offset_emptap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetemptap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetemptap";
+                            self::mError($aJson, $mensaje, "Error al grabar offset empalme tapa;");
 
                             $l_offset_emptap = false;
 
@@ -1775,30 +1789,15 @@ class RegaloModel {
                         $costo_tot_maq          = floatval($row['costo_tot_maq']);
                         $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
 
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
+                        $sql_offset_maq_emptap = "INSERT INTO cot_reg_offset_maq_emptap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
-                            $sql_offset_maq_emptap = "INSERT INTO cot_reg_offset_maq_emptap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
+                        $query_offset_maq_emptap = $this->db->prepare($sql_offset_maq_emptap);
 
-                            $query_offset_maq_emptap = $this->db->prepare($sql_offset_maq_emptap);
+                        $l_offset_maq_emptap = $query_offset_maq_emptap->execute();
 
-                            $l_offset_maq_emptap = $query_offset_maq_emptap->execute();
-                        } else {
+                        if(!$l_offset_maq_emptap) {
 
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Empalme de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Forro exterior del cajon";
-
-                            $l_offset_maq_emptap = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_emptap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_emptap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_emptap";
+                            self::mError($aJson, $mensaje, "Error al grabar offset maquila empalme tapa;");
 
                             $l_offset_maq_emptap = false;
 
@@ -1833,26 +1832,17 @@ class RegaloModel {
                         $costo_unitario    = floatval($row['mermas']['costo_unitario']);
                         $costo_tot         = floatval($row['mermas']['costo_tot']);
 
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_fextcaj = false;
-
-                            break;
-                        }
-
                         $sql_digital_emptap = "INSERT INTO cot_reg_digemptap(id_odt, id_modelo, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
 
                         $query_digital_emptap = $this->db->prepare($sql_digital_emptap);
 
-                        $l_serigrafia_emptap = $query_digital_emptap->execute();
+                        $l_digital_emptap = $query_digital_emptap->execute();
 
-                        if (!$l_serigrafia_emptap) {
+                        if (!$l_digital_emptap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digemptap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digemptap";
+                            self::mError($aJson, $mensaje, "Error al grabar digital empalme tapa;");
 
-                            $l_serigrafia_emptap = false;
+                            $l_digital_emptap = false;
 
                             break;
                         }
@@ -1892,9 +1882,7 @@ class RegaloModel {
 
                         if (!$l_serigrafia_emptap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_seremptap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_seremptap";
+                            self::mError($aJson, $mensaje, "Error al grabar serigrafia empalme tapa;");
 
                             $l_serigrafia_emptap = false;
 
@@ -1960,9 +1948,7 @@ class RegaloModel {
 
                         if (!$l_offset_ftap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetftap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetftap";
+                            self::mError($aJson, $mensaje, "Error al grabar offset forro tapa;");
 
                             $l_offset_ftap = false;
 
@@ -1994,30 +1980,15 @@ class RegaloModel {
                         $costo_tot_maq          = floatval($row['costo_tot_maq']);
                         $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
 
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
+                        $sql_offset_maq_ftap = "INSERT INTO cot_reg_offset_maq_ftap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
-                            $sql_offset_maq_ftap = "INSERT INTO cot_reg_offset_maq_ftap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
+                        $query_offset_maq_ftap = $this->db->prepare($sql_offset_maq_ftap);
 
-                            $query_offset_maq_ftap = $this->db->prepare($sql_offset_maq_ftap);
+                        $l_offset_maq_ftap = $query_offset_maq_ftap->execute();
 
-                            $l_offset_maq_ftapDigital = $query_offset_maq_ftap->execute();
-                        } else {
+                        if(!$l_offset_maq_ftap) {
 
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Forro de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Pompa del cajon";
-
-                            $l_offset_maq_ftap = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_ftap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_ftap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_ftap";
+                            self::mError($aJson, $mensaje, "Error al grabar offset maquila forro tapa;");
 
                             $l_offset_maq_ftap = false;
 
@@ -2052,26 +2023,17 @@ class RegaloModel {
                         $costo_unitario    = floatval($row['mermas']['costo_unitario']);
                         $costo_tot         = floatval($row['mermas']['costo_tot']);
 
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_pomcaj = false;
-
-                            break;
-                        }
-
                         $sql_digital_ftap = "INSERT INTO cot_reg_digftap(id_odt, id_modelo, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
 
                         $sql_digital_ftap = $this->db->prepare($sql_digital_ftap);
 
-                        $l_digital_ftapSerigrafia = $sql_digital_ftap->execute();
+                        $l_digital_ftap = $sql_digital_ftap->execute();
 
-                        if (!$l_digital_ftapSerigrafia) {
+                        if (!$l_digital_ftap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digftap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digftap";
+                            self::mError($aJson, $mensaje, "Error al grabar digital forro tapa;");
 
-                            $l_digital_ftapSerigrafia = false;
+                            $l_digital_ftap = false;
 
                             break;
                         }
@@ -2111,9 +2073,7 @@ class RegaloModel {
 
                         if (!$l_serigrafia_ftap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serftap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serftap";
+                            self::mError($aJson, $mensaje, "Error al grabar serigrafia forro tapa;");
 
                             $l_serigrafia_ftap = false;
 
@@ -2123,1317 +2083,8 @@ class RegaloModel {
                 }
             }
 
-        /********* termina impresion forro de la tapa **********/
-
-
-        /********* inicia impresion forro interior del cajon **********/
-
-            $l_offset_fintcaj     = true;
-            $l_offset_maq_fintcaj = true;
-            $l_digital_fintcaj    = true;
-            $l_serigrafia_fintcaj = true;
-
-            if (array_key_exists("aImpFintCaj", $aJson)) {
-
-                $aImpFintCaj = [];
-
-                $aImpFintCaj = $aJson['aImpFintCaj'];
-
-
-                if (array_key_exists("Offset", $aImpFintCaj)) {
-
-                    $aOffset = [];
-
-                    $aOffset = $aImpFintCaj['Offset'];
-
-                    foreach($aOffset as $row) {
-
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
-                        $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-
-                        $sql_offset_fintcaj = "INSERT INTO cot_reg_offsetfintcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_offset_fintcaj = $this->db->prepare($sql_offset_fintcaj);
-
-                        $l_offset_fintcaj = $query_offset_fintcaj->execute();
-
-                        if (!$l_offset_fintcaj) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetfintcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetfintcaj";
-
-                            $l_offset_fintcaj = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("maquila", $aImpFintCaj)) {
-
-                    $aOffset_maq = [];
-
-                    $aOffset_maq = $aImpFintCaj['maquila'];
-
-                    foreach($aOffset_maq as $row) {
-
-                        $costo_tot_proceso = 0;
-
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
-                        $tiraje                 = intval($row['cantidad']);
-                        $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
-
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
-
-                            $sql_offset_maq_fintcaj = "INSERT INTO cot_reg_offset_maq_fintcaj(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
-
-                            $query_offset_maq_fintcaj = $this->db->prepare($sql_offset_maq_fintcaj);
-
-                            $l_offset_maq_fintcaj = $query_offset_maq_fintcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Forro interior del cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Pompa del cajon";
-
-                            $l_offset_maq_fintcaj = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_fintcaj) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_fintcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_fintcaj";
-
-                            $l_offset_maq_fintcaj = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Digital", $aImpFintCaj)) {
-
-                    $aDigital = [];
-
-                    $aDigital = $aImpFintCaj['Digital'];
-
-                    foreach($aDigital as $row) {
-
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
-                        $cortes_por_pliego = intval($row['cortes_por_pliego']);
-                        $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
-                        $merma_min         = intval($row['mermas']['merma_min']);
-                        $merma_adic        = intval($row['mermas']['merma_adic']);
-                        $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
-
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_fintcaj = false;
-
-                            break;
-                        }
-
-                        $sql_digital_fintcaj = "INSERT INTO cot_reg_digfintcaj(id_odt, id_modelo, cabe_digital, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$cabe_digital', $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
-
-                        $query_digital_fintcaj = $this->db->prepare($sql_digital_fintcaj);
-
-                        $l_digital_fintcaj = $query_digital_fintcaj->execute();
-
-                        if (!$l_digital_fintcaj) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digfintcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digfintcaj";
-
-                            $l_digital_fintcaj = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Serigrafia", $aImpFintCaj)) {
-
-                    $aSerigrafia = [];
-
-                    $aSerigrafia = $aImpFintCaj['Serigrafia'];
-
-                    foreach($aSerigrafia as $row) {
-
-                        $tipo                    = trim(strval($row['tipo']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-                        $sql_serigrafia_fintcaj = "INSERT INTO cot_reg_serfintcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_serigrafia_fintcaj = $this->db->prepare($sql_serigrafia_fintcaj);
-
-                        $l_serigrafia_fintcaj = $query_serigrafia_fintcaj->execute();
-
-                        if (!$l_serigrafia_fintcaj) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serfintcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serfintcaj";
-
-                            $l_serigrafia_fintcaj = false;
-
-                            break;
-                        }
-                    }
-                }
-            }
-
-
-        /********* termina impresion forro interior del cajon **********/
-
-
-        /********* empieza impresion base de la tapa **********/
-
-
-            $l_offset_bastap     = true;
-            $l_offset_maq_bastap = true;
-            $l_digital_bastap    = true;
-            $l_serigrafia_bastap = true;
-
-            if (array_key_exists("aImpBasTap", $aJson)) {
-
-                $aImpBasTap = [];
-
-                $aImpBasTap = $aJson['aImpBasTap'];
-
-
-                if (array_key_exists("Offset", $aImpBasTap)) {
-
-                    $aOffset = [];
-
-                    $aOffset = $aImpBasTap['Offset'];
-
-                    foreach($aOffset as $row) {
-
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
-                        $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-
-                        $sql_offset_bastap = "INSERT INTO cot_reg_offsetbastap(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_offset_bastap = $this->db->prepare($sql_offset_bastap);
-
-                        $l_offset_bastap = $query_offset_bastap->execute();
-
-                        if (!$l_offset_bastap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetbastap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetbastap";
-
-                            $l_offset_bastap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Maquila", $aImpBasTap)) {
-
-                    $aOffset_maq = [];
-
-                    $aOffset_maq = $aImpBasTap['Maquila'];
-
-                    foreach($aOffset_maq as $row) {
-
-                        $costo_tot_proceso = 0;
-
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
-                        $tiraje                 = intval($row['cantidad']);
-                        $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
-
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
-
-                            $sql_offset_maq_bastap = "INSERT INTO cot_reg_offset_maq_bastap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
-
-                            $query_offset_maq_bastap = $this->db->prepare($sql_offset_maq_bastap);
-
-                            $l_offset_maq_bastap = $query_offset_maq_bastap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Base de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Base de la tapa";
-
-                            $l_offset_maq_bastap = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_bastap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_bastap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_bastap";
-
-                            $l_offset_maq_bastap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Digital", $aImpBasTap)) {
-
-                    $aDigital = [];
-
-                    $aDigital = $aImpBasTap['Digital'];
-
-                    foreach($aDigital as $row) {
-
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
-                        $cortes_por_pliego = intval($row['cortes_por_pliego']);
-                        $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
-                        $merma_min         = intval($row['mermas']['merma_min']);
-                        $merma_adic        = intval($row['mermas']['merma_adic']);
-                        $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
-
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_bastap = false;
-
-                            break;
-                        }
-
-                        $sql_digital_bastap = "INSERT INTO cot_reg_digbastap(id_odt, id_modelo, cabe_digital, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$cabe_digital', $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
-
-                        $query_digital_bastap = $this->db->prepare($sql_digital_bastap);
-
-                        $l_digital_bastap = $query_digital_bastap->execute();
-
-                        if (!$l_digital_bastap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digbastap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digbastap";
-
-                            $l_digital_bastap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Serigrafia", $aImpBasTap)) {
-
-                    $aSerigrafia = [];
-
-                    $aSerigrafia = $aImpBasTap['Serigrafia'];
-
-                    foreach($aSerigrafia as $row) {
-
-                        $tipo                    = trim(strval($row['tipo']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-                        $sql_serigrafia_bastap = "INSERT INTO cot_reg_serbastap(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_serigrafia_bastap = $this->db->prepare($sql_serigrafia_bastap);
-
-                        $l_serigrafia_bastap = $query_serigrafia_bastap->execute();
-
-                        if (!$l_serigrafia_bastap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serbastap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serbastap";
-
-                            $l_serigrafia_bastap = false;
-
-                            break;
-                        }
-                    }
-                }
-            }
-
-        /********* termina impresion base de la tapa **********/
-
-
-        /********* inicia impresion circunferencia de la tapa **********/
-
-
-            $l_offset_cirtap     = true;
-            $l_offset_maq_cirtap = true;
-            $l_digital_cirtap    = true;
-            $l_serigrafia_cirtap = true;
-
-            if (array_key_exists("aImpCirTap", $aJson)) {
-
-                $aImpCirTap = [];
-
-                $aImpCirTap = $aJson['aImpCirTap'];
-
-
-                if (array_key_exists("Offset", $aImpCirTap)) {
-
-                    $aOffset = [];
-
-                    $aOffset = $aImpCirTap['Offset'];
-
-                    foreach($aOffset as $row) {
-
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
-                        $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-
-                        $sql_offset_cirtap = "INSERT INTO cot_reg_offsetcirtap(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_offset_cirtap = $this->db->prepare($sql_offset_cirtap);
-
-                        $l_offset_cirtap = $query_offset_cirtap->execute();
-
-                        if (!$l_offset_cirtap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetcirtap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetcirtap";
-
-                            $l_offset_cirtap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Maquila", $aImpCirTap)) {
-
-                    $aOffset_maq = [];
-
-                    $aOffset_maq = $aImpCirTap['Maquila'];
-
-                    foreach($aOffset_maq as $row) {
-
-                        $costo_tot_proceso = 0;
-
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
-                        $tiraje                 = intval($row['cantidad']);
-                        $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
-
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
-
-                            $sql_offset_maq_cirtap = "INSERT INTO cot_reg_offset_maq_cirtap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
-
-                            $query_offset_maq_cirtap = $this->db->prepare($sql_offset_maq_cirtap);
-
-                            $l_offset_maq_cirtap = $query_offset_maq_cirtap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Circunferencia de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Circunferencia de la tapa";
-
-                            $l_offset_maq_cirtap = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_cirtap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_cirtap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_cirtap";
-
-                            $l_offset_maq_cirtap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Digital", $aImpCirTap)) {
-
-                    $aDigital = [];
-
-                    $aDigital = $aImpCirTap['Digital'];
-
-                    foreach($aDigital as $row) {
-
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
-                        $cortes_por_pliego = intval($row['cortes_por_pliego']);
-                        $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
-                        $merma_min         = intval($row['mermas']['merma_min']);
-                        $merma_adic        = intval($row['mermas']['merma_adic']);
-                        $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
-
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_cirtap = false;
-
-                            break;
-                        }
-
-                        $sql_digital_cirtap = "INSERT INTO cot_reg_digcirtap(id_odt, id_modelo, cabe_digital, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, id_modelo, '$cabe_digital', $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
-
-                        $query_digital_cirtap = $this->db->prepare($sql_digital_cirtap);
-
-                        $l_digital_cirtap = $query_digital_cirtap->execute();
-
-                        if (!$l_digital_cirtap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digcirtap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digcirtap";
-
-                            $l_digital_cirtap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Serigrafia", $aImpCirTap)) {
-
-                    $aSerigrafia = [];
-
-                    $aSerigrafia = $aImpCirTap['Serigrafia'];
-
-                    foreach($aSerigrafia as $row) {
-
-                        $tipo                    = trim(strval($row['tipo']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-                        $sql_serigrafia_cirtap = "INSERT INTO cot_reg_sercirtap(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_serigrafia_cirtap = $this->db->prepare($sql_serigrafia_cirtap);
-
-                        $l_serigrafia_cirtap = $query_serigrafia_cirtap->execute();
-
-                        if (!$l_serigrafia_cirtap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_sercirtap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_sercirtap";
-
-                            $l_serigrafia_cirtap = false;
-
-                            break;
-                        }
-                    }
-                }
-            }
-
-
-        /********* termina impresion circunferencia de la tapa **********/
-
-
-        /********* inicia impresion forro de la tapa **********/
-
-            $l_offset_fortap     = true;
-            $l_offset_maq_fortap = true;
-            $l_digital_fortap    = true;
-            $l_serigrafia_fortap = true;
-
-            if (array_key_exists("aImpFTap", $aJson)) {
-
-                $aImpFTap = [];
-
-                $aImpFTap = $aJson['aImpFTap'];
-
-
-                if (array_key_exists("Offset", $aImpFTap)) {
-
-                    $aOffset = [];
-
-                    $aOffset = $aImpFTap['Offset'];
-
-                    foreach($aOffset as $row) {
-
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
-                        $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-
-                        $sql_offset_fortap = "INSERT INTO cot_reg_offsetfortap(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_offset_fortap = $this->db->prepare($sql_offset_fortap);
-
-                        $l_offset_fortap = $query_offset_fortap->execute();
-
-                        if (!$l_offset_fortap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetfortap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetfortap";
-
-                            $l_offset_fortap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Maquila", $aImpFTap)) {
-
-                    $aOffset_maq = [];
-
-                    $aOffset_maq = $aImpFTap['Maquila'];
-
-                    foreach($aOffset_maq as $row) {
-
-                        $costo_tot_proceso = 0;
-
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
-                        $tiraje                 = intval($row['cantidad']);
-                        $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
-
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
-
-                            $sql_offset_maq_fortap = "INSERT INTO cot_reg_offset_maq_fortap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
-
-                            $query_offset_maq_fortap = $this->db->prepare($sql_offset_maq_fortap);
-
-                            $l_offset_maq_fortap = $query_offset_maq_fortap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Forro de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Forro de la tapa";
-
-                            $l_offset_maq_fortap = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_fortap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_fortap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_fortap";
-
-                            $l_offset_maq_fortap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-                if (array_key_exists("Digital", $aImpFTap)) {
-
-                    $aDigital = [];
-
-                    $aDigital = $aImpFTap['Digital'];
-
-                    foreach($aDigital as $row) {
-
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
-                        $cortes_por_pliego = intval($row['cortes_por_pliego']);
-                        $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
-                        $merma_min         = intval($row['mermas']['merma_min']);
-                        $merma_adic        = intval($row['mermas']['merma_adic']);
-                        $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
-
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_fortap = false;
-
-                            break;
-                        }
-
-                        $sql_digital_fortap = "INSERT INTO cot_reg_digfortap(id_odt, id_modelo, cabe_digital, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$cabe_digital', $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
-
-                        $query_digital_fortap = $this->db->prepare($sql_digital_fortap);
-
-                        $l_digital_fortap = $query_digital_fortap->execute();
-
-                        if (!$l_digital_fortap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digfortap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digfortap";
-
-                            $l_digital_fortap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Serigrafia", $aImpFTap)) {
-
-                    $aSerigrafia = [];
-
-                    $aSerigrafia = $aImpFTap['Serigrafia'];
-
-                    foreach($aSerigrafia as $row) {
-
-                        $tipo                    = trim(strval($row['tipo']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-                        $sql_serigrafia_fortap = "INSERT INTO cot_reg_serfortap(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_serigrafia_fortap = $this->db->prepare($sql_serigrafia_fortap);
-
-                        $l_serigrafia_fortap = $query_serigrafia_fortap->execute();
-
-                        if (!$l_serigrafia_fortap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serfortap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serfortap";
-
-                            $l_serigrafia_fortap = false;
-
-                            break;
-                        }
-                    }
-                }
-            }
 
         /********* termina impresion forro de la tapa **********/
-
-
-        /********* inicia impresion forro exterior de la tapa **********/
-
-            $l_offset_fextap     = true;
-            $l_offset_maq_fextap = true;
-            $l_digital_fextap    = true;
-            $l_serigrafia_fextap = true;
-
-            if (array_key_exists("aImpFexTap", $aJson)) {
-
-                $aImpFexTap = [];
-
-                $aImpFexTap = $aJson['aImpFexTap'];
-
-
-                if (array_key_exists("Offset", $aImpFexTap)) {
-
-                    $aOffset = [];
-
-                    $aOffset = $aImpFexTap['Offset'];
-
-                    foreach($aOffset as $row) {
-
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
-                        $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-
-                        $sql_offset_fextap = "INSERT INTO cot_reg_offsetfexttap(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_offset_fextap = $this->db->prepare($sql_offset_fextap);
-
-                        $l_offset_fextap = $query_offset_fextap->execute();
-
-                        if (!$l_offset_fextap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetfexttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetfexttap";
-
-                            $l_offset_fextap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Maquila", $aImpFexTap)) {
-
-                    $aOffset_maq = [];
-
-                    $aOffset_maq = $aImpFexTap['Maquila'];
-
-                    foreach($aOffset_maq as $row) {
-
-                        $costo_tot_proceso = 0;
-
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
-                        $tiraje                 = intval($row['cantidad']);
-                        $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
-
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
-
-                            $sql_offset_maq_fexttap = "INSERT INTO cot_reg_offset_maq_fexttap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
-
-                            $query_offset_maq_fexttap = $this->db->prepare($sql_offset_maq_fexttap);
-
-                            $l_offset_maq_fextap = $query_offset_maq_fexttap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Forro exterior de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Forro exterior de la tapa";
-
-                            $l_offset_maq_fextap = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_fextap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_fexttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_fexttap";
-
-                            $l_offset_maq_fextap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Digital", $aImpFexTap)) {
-
-                    $aDigital = [];
-
-                    $aDigital = $aImpFexTap['Digital'];
-
-                    foreach($aDigital as $row) {
-
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
-                        $cortes_por_pliego = intval($row['cortes_por_pliego']);
-                        $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
-                        $merma_min         = intval($row['mermas']['merma_min']);
-                        $merma_adic        = intval($row['mermas']['merma_adic']);
-                        $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
-
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_fextap = false;
-
-                            break;
-                        }
-
-                        $sql_digital_fextap = "INSERT INTO cot_reg_digfexttap(id_odt, id_modelo, cabe_digital, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$cabe_digital', $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
-
-                        $query_digital_fextap = $this->db->prepare($sql_digital_fextap);
-
-                        $l_digital_fextap = $query_digital_fextap->execute();
-
-                        if (!$l_digital_fextap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digfexttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digfexttap";
-
-                            $l_digital_fextap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Serigrafia", $aImpFexTap)) {
-
-                    $aSerigrafia = [];
-
-                    $aSerigrafia = $aImpFexTap['Serigrafia'];
-
-                    foreach($aSerigrafia as $row) {
-
-                        $tipo                    = trim(strval($row['tipo']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-                        $sql_serigrafia_fextap = "INSERT INTO cot_reg_serfexttap(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_serigrafia_fextap = $this->db->prepare($sql_serigrafia_fextap);
-
-                        $l_serigrafia_fextap = $query_serigrafia_fextap->execute();
-
-                        if (!$l_serigrafia_fextap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serfexttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serfexttap";
-
-                            $l_serigrafia_fextap = false;
-
-                            break;
-                        }
-                    }
-                }
-            }
-
-        /********* termina impresion forro exterior de la tapa **********/
-
-
-        /********* inicia impresion forro interior de la tapa **********/
-
-            $l_offset_fintap     = true;
-            $l_offset_maq_fintap = true;
-            $l_digital_fintap    = true;
-            $l_serigrafia_fintap = true;
-
-            if (array_key_exists("aImpFinTap", $aJson)) {
-
-                $aImpFinTap = [];
-
-                $aImpFinTap = $aJson['aImpFinTap'];
-
-
-                if (array_key_exists("Offset", $aImpFinTap)) {
-
-                    $aOffset = [];
-
-                    $aOffset = $aImpFinTap['Offset'];
-
-                    foreach($aOffset as $row) {
-
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
-                        $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-
-                        $sql_offset_fintap = "INSERT INTO cot_reg_offsetfinttap(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_offset_fintap = $this->db->prepare($sql_offset_fintap);
-
-                        $l_offset_fintap = $query_offset_fintap->execute();
-
-                        if (!$l_offset_fintap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offsetfinttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offsetfinttap";
-
-                            $l_offset_fintap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Maquila", $aImpFinTap)) {
-
-                    $aOffset_maq = [];
-
-                    $aOffset_maq = $aImpFinTap['Maquila'];
-
-                    foreach($aOffset_maq as $row) {
-
-                        $costo_tot_proceso = 0;
-
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
-                        $tiraje                 = intval($row['cantidad']);
-                        $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
-
-                        if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
-
-                            $sql_offset_maq_finttap = "INSERT INTO cot_reg_offset_maq_finttap(id_odt, $id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
-
-                            $query_offset_maq_finttap = $this->db->prepare($sql_offset_maq_finttap);
-
-                            $l_offset_maq_fintap = $query_offset_maq_finttap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo en Offset maquila en Forro interior de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo en Offset maquila en Forro interior de la tapa";
-
-                            $l_offset_maq_fintap = false;
-
-                            break;
-                        }
-
-
-                        if (!$l_offset_maq_fintap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_offset_maq_finttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_offset_maq_finttap";
-
-                            $l_offset_maq_fintap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-                if (array_key_exists("Digital", $aImpFinTap)) {
-
-                    $aDigital = [];
-
-                    $aDigital = $aImpFinTap['Digital'];
-
-                    foreach($aDigital as $row) {
-
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
-                        $cortes_por_pliego = intval($row['cortes_por_pliego']);
-                        $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
-                        $merma_min         = intval($row['mermas']['merma_min']);
-                        $merma_adic        = intval($row['mermas']['merma_adic']);
-                        $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
-
-                        if ($cabe_digital == "NO") {
-
-                            $l_digital_fintap = false;
-
-                            break;
-                        }
-
-                        $sql_digital_fintap = "INSERT INTO cot_reg_digfinttap(id_odt, id_modelo, cabe_digital, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$cabe_digital', $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
-
-                        $query_digital_fintap = $this->db->prepare($sql_digital_fintap);
-
-                        $l_digital_fintap = $query_digital_fintap->execute();
-
-                        if (!$l_digital_fintap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_digfinttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_digfinttap";
-
-                            $l_digital_fintap = false;
-
-                            break;
-                        }
-                    }
-                }
-
-
-                if (array_key_exists("Serigrafia", $aImpFinTap)) {
-
-                    $aSerigrafia = [];
-
-                    $aSerigrafia = $aImpFinTap['Serigrafia'];
-
-                    foreach($aSerigrafia as $row) {
-
-                        $tipo                    = trim(strval($row['tipo']));
-                        $tiraje                  = intval($row['cantidad']);
-                        $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
-                        $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_min               = intval($row['mermas']['merma_min']);
-                        $merma_adic              = intval($row['mermas']['merma_adic']);
-                        $merma_tot               = intval($row['mermas']['merma_tot']);
-                        $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
-
-                        $sql_serigrafia_fintap = "INSERT INTO cot_reg_serfinttap(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
-                        $query_serigrafia_fintap = $this->db->prepare($sql_serigrafia_fintap);
-
-                        $l_serigrafia_fintap = $query_serigrafia_fintap->execute();
-
-                        if (!$l_serigrafia_fintap) {
-
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_serfinttap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_serfinttap";
-
-                            $l_serigrafia_fintap = false;
-
-                            break;
-                        }
-                    }
-                }
-            }
-
-        /********* termina impresion forro interior de la tapa **********/
 
 
    /********** termina impresion ********************/
@@ -3441,6 +2092,7 @@ class RegaloModel {
 
 
    /******************** inicia acabados  ************************/
+
 
         /********* inicia acabados empalme del cajon ***************/
 
@@ -3482,29 +2134,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($costo_tot_proceso > 0 and $costo_unitario > 0) {
+                        $sql_barnizuv_empcaj = "INSERT INTO cot_reg_barnizuvempcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
-                            $sql_barnizuv_empcaj = "INSERT INTO cot_reg_barnizuvempcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
+                        $query_barnizuv_empcaj = $this->db->prepare($sql_barnizuv_empcaj);
 
-                            $query_barnizuv_empcaj = $this->db->prepare($sql_barnizuv_empcaj);
-
-                            $l_Barniz_UV_empcaj = $query_barnizuv_empcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para Barniz UV en Empalme del cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para Barniz UV en Empalme del cajon";
-
-                            $l_Barniz_UV_empcaj = false;
-
-                            break;
-                        }
+                        $l_Barniz_UV_empcaj = $query_barnizuv_empcaj->execute();
 
                         if (!$l_Barniz_UV_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_barnizuvempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_barnizuvempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar barniz empalme cajon;");
 
                             $l_Barniz_UV_empcaj = false;
 
@@ -3531,30 +2169,15 @@ class RegaloModel {
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
+                        $sql_laser_empcaj = "INSERT INTO cot_reg_laserempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
-                            $sql_laser_empcaj = "INSERT INTO cot_reg_laserempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $query_laser_empcaj = $this->db->prepare($sql_laser_empcaj);
 
-                            $query_laser_empcaj = $this->db->prepare($sql_laser_empcaj);
-
-                            $l_Corte_Laser_empcaj = $query_laser_empcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "NO existe costo para Corte Laser en Empalme del Cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; NO existe costo para Corte Laser en Empalme del Cajon";
-
-                            $l_Corte_Laser_empcaj = false;
-
-                            break;
-                        }
-
+                        $l_Corte_Laser_empcaj = $query_laser_empcaj->execute();
 
                         if (!$l_Corte_Laser_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_laserempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_laserempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar laser empalme cajon;");
 
                             $l_Corte_Laser_empcaj = false;
 
@@ -3592,30 +2215,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $arreglo_costo_unitario > 0 and $costo_unitario_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_grab_empcaj = "INSERT INTO cot_reg_grabempcaj(id_odt, id_modelo, tipo_grabado, largo, tiraje, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $Largo, $tiraje, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_grab_empcaj = "INSERT INTO cot_reg_grabempcaj(id_odt, id_modelo, tipo_grabado, largo, tiraje, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $Largo, $tiraje, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_grab_empcaj = $this->db->prepare($sql_grab_empcaj);
 
-                            $query_grab_empcaj = $this->db->prepare($sql_grab_empcaj);
-
-                            $l_Grabado_empcaj = $query_grab_empcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para Grabado en Empalme del Cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para Grabado en Empalme del Cajon";
-
-                            $l_Grabado_empcaj = false;
-
-                            break;
-                        }
-
+                        $l_Grabado_empcaj = $query_grab_empcaj->execute();
 
                         if (!$l_Grabado_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_grabempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_grabempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar grabado empalme cajon;");
 
                             $l_Grabado_empcaj = false;
 
@@ -3658,29 +2266,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $placa_costo > 0 and $pelicula_costo_unitario > 0 and $pelicula_costo > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_tiro > 0 and $costo_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_hs_empcaj = "INSERT INTO cot_reg_hsempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_hs_empcaj = "INSERT INTO cot_reg_hsempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_hs_empcaj = $this->db->prepare($sql_hs_empcaj);
 
-                            $query_hs_empcaj = $this->db->prepare($sql_hs_empcaj);
-
-                            $l_HotStamping_empcaj = $query_hs_empcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para HotStamping en Empalme del Cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para HotStamping en Empalme del Cajon";
-
-                            $l_HotStamping_empcaj = false;
-
-                            break;
-                        }
+                        $l_HotStamping_empcaj = $query_hs_empcaj->execute();
 
                         if (!$l_HotStamping_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_hsempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_hsempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar Hotstamping empalme cajon;");
 
                             $l_HotStamping_empcaj = false;
 
@@ -3720,9 +2314,7 @@ class RegaloModel {
 
                         if (!$l_Laminado_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_lamempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_lamempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar laminado empalme cajon;");
 
                             $l_Laminado_empcaj = false;
 
@@ -3765,9 +2357,7 @@ class RegaloModel {
 
                         if (!$l_Suaje_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_suajeempcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_suajeempcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar suaje empalme cajon;");
 
                             $l_Suaje_empcaj = false;
 
@@ -3776,6 +2366,7 @@ class RegaloModel {
                     }
                 }
             }
+
 
         /********* termina acabados empalme del cajon ***************/
 
@@ -3820,29 +2411,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($costo_tot_proceso > 0 and $costo_unitario > 0) {
+                        $sql_barnizuv_fcaj = "INSERT INTO cot_reg_barnizuvfcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
-                            $sql_barnizuv_fcaj = "INSERT INTO cot_reg_barnizuvfcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
+                        $query_barnizuv_fcaj = $this->db->prepare($sql_barnizuv_fcaj);
 
-                            $query_barnizuv_fcaj = $this->db->prepare($sql_barnizuv_fcaj);
-
-                            $l_Barniz_UV_fcaj = $query_barnizuv_fcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para Barniz UV en Forro del cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para Barniz UV en Forro del cajon";
-
-                            $l_Barniz_UV_fcaj = false;
-
-                            break;
-                        }
+                        $l_Barniz_UV_fcaj = $query_barnizuv_fcaj->execute();
 
                         if (!$l_Barniz_UV_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_barnizuvfcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_barnizuvfcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar barniz forro cajon;");
 
                             $l_Barniz_UV_fcaj = false;
 
@@ -3869,30 +2446,15 @@ class RegaloModel {
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
+                        $sql_laser_fcaj = "INSERT INTO cot_reg_laserfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
-                            $sql_laser_fcaj = "INSERT INTO cot_reg_laserfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $query_laser_fcaj = $this->db->prepare($sql_laser_fcaj);
 
-                            $query_laser_fcaj = $this->db->prepare($sql_laser_fcaj);
-
-                            $l_Corte_Laser_fcaj = $query_laser_fcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "NO existe costo para Corte Laser en Forro del Cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; NO existe costo para Corte Laser en Forro del Cajon";
-
-                            $l_Corte_Laser_fcaj = false;
-
-                            break;
-                        }
-
+                        $l_Corte_Laser_fcaj = $query_laser_fcaj->execute();
 
                         if (!$l_Corte_Laser_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_laserfcaj " . $sql_laser_fcaj . ";");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_laserfcaj " . $sql_laser_fcaj;
+                            self::mError($aJson, $mensaje, "Error al grabar laser forro cajon;");
 
                             $l_Corte_Laser_fcaj = false;
 
@@ -3930,30 +2492,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $arreglo_costo_unitario > 0 and $costo_unitario_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_grab_fcaj = "INSERT INTO cot_reg_grabfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_grab_fcaj = "INSERT INTO cot_reg_grabfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_grab_fcaj = $this->db->prepare($sql_grab_fcaj);
 
-                            $query_grab_fcaj = $this->db->prepare($sql_grab_fcaj);
-
-                            $l_Grabado_fcaj = $query_grab_fcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para Grabado en Forro del Cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para Grabado en Forro del Cajon";
-
-                            $l_Grabado_fcaj = false;
-
-                            break;
-                        }
-
+                        $l_Grabado_fcaj = $query_grab_fcaj->execute();
 
                         if (!$l_Grabado_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_grabfcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_grabfcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar grabado forro cajon;");
 
                             $l_Grabado_fcaj = false;
 
@@ -3996,29 +2543,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $placa_costo > 0 and $pelicula_costo_unitario > 0 and $pelicula_costo > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_tiro > 0 and $costo_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_hs_fcaj = "INSERT INTO cot_reg_hsfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_hs_fcaj = "INSERT INTO cot_reg_hsfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_hs_fcaj = $this->db->prepare($sql_hs_fcaj);
 
-                            $query_hs_fcaj = $this->db->prepare($sql_hs_fcaj);
-
-                            $l_HotStamping_fcaj = $query_hs_fcaj->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para HotStamping en Forro del Cajon;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para HotStamping en Forro del Cajon";
-
-                            $l_HotStamping_fcaj = false;
-
-                            break;
-                        }
+                        $l_HotStamping_fcaj = $query_hs_fcaj->execute();
 
                         if (!$l_HotStamping_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_hsfcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_hsfcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar Hotstamping forro cajon;");
 
                             $l_HotStamping_fcaj = false;
 
@@ -4058,9 +2591,7 @@ class RegaloModel {
 
                         if (!$l_Laminado_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_lamfcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_lamfcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar laminado forro cajon;");
 
                             $l_Laminado_fcaj = false;
 
@@ -4103,9 +2634,7 @@ class RegaloModel {
 
                         if (!$l_Suaje_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_suajefcaj;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_suajefcaj";
+                            self::mError($aJson, $mensaje, "Error al grabar suaje forro cajon;");
 
                             $l_Suaje_fcaj = false;
 
@@ -4114,6 +2643,7 @@ class RegaloModel {
                     }
                 }
             }
+
 
         /********* termina acabados forro del cajon ***************/
 
@@ -4159,29 +2689,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($costo_tot_proceso > 0 and $costo_unitario > 0) {
+                        $sql_barnizuv_emptap = "INSERT INTO cot_reg_barnizuvemptap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
-                            $sql_barnizuv_emptap = "INSERT INTO cot_reg_barnizuvemptap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
+                        $query_barnizuv_emptap = $this->db->prepare($sql_barnizuv_emptap);
 
-                            $query_barnizuv_emptap = $this->db->prepare($sql_barnizuv_emptap);
-
-                            $l_Barniz_UV_emptap = $query_barnizuv_emptap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para Barniz UV en Empalme de la tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para Barniz UV en Empalme de la tapa";
-
-                            $l_Barniz_UV_emptap = false;
-
-                            break;
-                        }
+                        $l_Barniz_UV_emptap = $query_barnizuv_emptap->execute();
 
                         if (!$l_Barniz_UV_emptap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_barnizuvemptap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_barnizuvemptap";
+                            self::mError($aJson, $mensaje, "Error al grabar barniz empalme tapa;");
 
                             $l_Barniz_UV_emptap = false;
 
@@ -4208,30 +2724,15 @@ class RegaloModel {
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
+                        $sql_laser_emptap = "INSERT INTO cot_reg_laseremptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
-                            $sql_laser_emptap = "INSERT INTO cot_reg_laseremptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $query_laser_emptap = $this->db->prepare($sql_laser_emptap);
 
-                            $query_laser_emptap = $this->db->prepare($sql_laser_emptap);
-
-                            $l_Corte_Laser_emptap = $query_laser_emptap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "NO existe costo para Corte Laser en Empalme de la Tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; NO existe costo para Corte Laser en Empalme de la Tapa";
-
-                            $l_Corte_Laser_emptap = false;
-
-                            break;
-                        }
-
+                        $l_Corte_Laser_emptap = $query_laser_emptap->execute();
 
                         if (!$l_Corte_Laser_emptap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_laseremptap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_laseremptap";
+                            self::mError($aJson, $mensaje, "Error al grabar laser empalme tapa;");
 
                             $l_Corte_Laser_emptap = false;
 
@@ -4269,30 +2770,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $arreglo_costo_unitario > 0 and $costo_unitario_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_grab_emptap = "INSERT INTO cot_reg_grabemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_grab_emptap = "INSERT INTO cot_reg_grabemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_grab_emptap = $this->db->prepare($sql_grab_emptap);
 
-                            $query_grab_emptap = $this->db->prepare($sql_grab_emptap);
-
-                            $l_Grabado_emptap = $query_grab_emptap->execute();
-                        } else {
-
-                            self::mError($aJson, $mensaje, "No existe costo para Grabado en Empalme de la Tapa;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; No existe costo para Grabado en Empalme de la Tapa";
-
-                            $l_Grabado_emptap = false;
-
-                            break;
-                        }
-
+                        $l_Grabado_emptap = $query_grab_emptap->execute();
 
                         if (!$l_Grabado_emptap) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar en la tabla cot_reg_grabemptap;");
-                            //$aJson['mensaje'] = "ERROR";
-                            //$aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_grabemptap";
+                            self::mError($aJson, $mensaje, "Error al grabar grabado empalme tapa;");
 
                             $l_Grabado_emptap = false;
 
@@ -4302,7 +2788,6 @@ class RegaloModel {
                 }
 
 
-////
                 if (array_key_exists("HotStamping", $aAcbEmpTap)) {
 
                     $aHotStamping = [];
@@ -4336,27 +2821,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $placa_costo > 0 and $pelicula_costo_unitario > 0 and $pelicula_costo > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_tiro > 0 and $costo_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_hs_emptap = "INSERT INTO cot_reg_hsemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_hs_emptap = "INSERT INTO cot_reg_hsemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_hs_emtap = $this->db->prepare($sql_hs_emptap);
 
-                            $query_hs_emtap = $this->db->prepare($sql_hs_emptap);
-
-                            $l_HotStamping_emptap = $query_hs_emtap->execute();
-                        } else {
-
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; No existe costo para HotStamping en Empalme de la Tapa";
-
-                            $l_HotStamping_emptap = false;
-
-                            break;
-                        }
+                        $l_HotStamping_emptap = $query_hs_emtap->execute();
 
                         if (!$l_HotStamping_emptap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_hsemptap";
+                             self::mError($aJson, $mensaje, "Error al grabar Hotstamping empalme tapa;");
 
                             $l_HotStamping_emptap = false;
 
@@ -4396,8 +2869,7 @@ class RegaloModel {
 
                         if (!$l_Laminado_emptap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_lamemptap";
+                             self::mError($aJson, $mensaje, "Error al grabar laminado empalme tapa;");
 
                             $l_Laminado_emptap = false;
 
@@ -4440,8 +2912,7 @@ class RegaloModel {
 
                         if (!$l_Suaje_emptap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_suajeemptap";
+                             self::mError($aJson, $mensaje, "Error al grabar suaje empalme tapa;");
 
                             $l_Suaje_emptap = false;
 
@@ -4495,27 +2966,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($costo_tot_proceso > 0 and $costo_unitario > 0) {
+                        $sql_barnizuv_ftap = "INSERT INTO cot_reg_barnizuvftap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
-                            $sql_barnizuv_ftap = "INSERT INTO cot_reg_barnizuvftap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
+                        $query_barnizuv_ftap = $this->db->prepare($sql_barnizuv_ftap);
 
-                            $query_barnizuv_ftap = $this->db->prepare($sql_barnizuv_ftap);
-
-                            $l_Barniz_UV_ftap = $query_barnizuv_ftap->execute();
-                        } else {
-
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; No existe costo para Barniz UV en Forro de la Tapa";
-
-                            $l_Barniz_UV_ftap = false;
-
-                            break;
-                        }
+                        $l_Barniz_UV_ftap = $query_barnizuv_ftap->execute();
 
                         if (!$l_Barniz_UV_ftap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_barnizuvftap";
+                             self::mError($aJson, $mensaje, "Error al grabar barniz forro tapa;");
 
                             $l_Barniz_UV_ftap = false;
 
@@ -4542,28 +3001,15 @@ class RegaloModel {
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
+                        $sql_laser_ftap = "INSERT INTO cot_reg_laserftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
-                            $sql_laser_ftap = "INSERT INTO cot_reg_laserftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $query_laser_ftap = $this->db->prepare($sql_laser_ftap);
 
-                            $query_laser_ftap = $this->db->prepare($sql_laser_ftap);
-
-                            $l_Corte_Laser_ftap = $query_laser_ftap->execute();
-                        } else {
-
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; NO existe costo para Corte Laser en Forro de la Tapa";
-
-                            $l_Corte_Laser_ftap = false;
-
-                            break;
-                        }
-
+                        $l_Corte_Laser_ftap = $query_laser_ftap->execute();
 
                         if (!$l_Corte_Laser_ftap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_laserftap";
+                            self::mError($aJson, $mensaje, "Error al grabar laser forro tapa;");
 
                             $l_Corte_Laser_ftap = false;
 
@@ -4601,28 +3047,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $arreglo_costo_unitario > 0 and $costo_unitario_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_grab_ftap = "INSERT INTO cot_reg_grabftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_grab_ftap = "INSERT INTO cot_reg_grabftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_grab_ftap = $this->db->prepare($sql_grab_ftap);
 
-                            $query_grab_ftap = $this->db->prepare($sql_grab_ftap);
-
-                            $l_Grabado_ftap = $query_grab_ftap->execute();
-                        } else {
-
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; No existe costo para Grabado en Forro de la Tapa";
-
-                            $l_Grabado_ftap = false;
-
-                            break;
-                        }
-
+                        $l_Grabado_ftap = $query_grab_ftap->execute();
 
                         if (!$l_Grabado_ftap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_grabftap";
+                            self::mError($aJson, $mensaje, "Error al grabar grabado forro tapa;");
 
                             $l_Grabado_ftap = false;
 
@@ -4665,27 +3098,15 @@ class RegaloModel {
                         $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
                         $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
 
-                        if ($placa_costo_unitario > 0 and $placa_costo > 0 and $pelicula_costo_unitario > 0 and $pelicula_costo > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_tiro > 0 and $costo_tiro > 0 and $costo_tot_proceso > 0) {
+                        $sql_hs_ftap = "INSERT INTO cot_reg_hsftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
-                            $sql_hs_ftap = "INSERT INTO cot_reg_hsftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $query_hs_ftap = $this->db->prepare($sql_hs_ftap);
 
-                            $query_hs_ftap = $this->db->prepare($sql_hs_ftap);
-
-                            $l_HotStamping_ftap = $query_hs_ftap->execute();
-                        } else {
-
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; No existe costo para HotStamping en Forro de la TapaHotStamping";
-
-                            $l_HotStamping_ftap = false;
-
-                            break;
-                        }
+                        $l_HotStamping_ftap = $query_hs_ftap->execute();
 
                         if (!$l_HotStamping_ftap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_hsftap";
+                            self::mError($aJson, $mensaje, "Error al grabar Hotstamping forro tapa;");
 
                             $l_HotStamping_ftap = false;
 
@@ -4725,8 +3146,7 @@ class RegaloModel {
 
                         if (!$l_Laminado_ftap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_lamftap";
+                            self::mError($aJson, $mensaje, "Error al grabar laminado forro tapa;");
 
                             $l_Laminado_ftap = false;
 
@@ -4769,8 +3189,7 @@ class RegaloModel {
 
                         if (!$l_Suaje_ftap) {
 
-                            $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_reg_suajeftap";
+                            self::mError($aJson, $mensaje, "Error al grabar suaje forro tapa;");
 
                             $l_Suaje_ftap = false;
 
@@ -4785,6 +3204,126 @@ class RegaloModel {
 
 
    /******************** termina acabados  ************************/
+
+
+   /******************** inicia accesorios  ************************/
+
+            $l_Accesorios = true;
+
+            if (array_key_exists("Accesorios", $aJson)) {
+
+                $aAccesorios = [];
+
+                $aAccesorios = $aJson['Accesorios'];
+
+                foreach($aAccesorios as $row) {
+
+                    $costo_tot_proceso = 0;
+
+                    $Tipo_accesorio = trim(strval($row['Tipo_accesorio']));
+                    $tiraje         = intval($row['tiraje']);
+
+                    $costo_unit_accesorio = floatval($row['costo_unit_accesorio']);
+                    $costo_tot_proceso    = floatval($row['costo_tot_proceso']);
+
+
+                    switch ($Tipo_accesorio) {
+                        case 'Herraje':
+
+                            $Tipo = trim(strval($row['Tipo']));
+
+                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo, tipo_accesorio, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo', '$Tipo_accesorio', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
+
+                            break;
+                        case 'Lengueta de Liston':
+
+                            $largo = intval($row['Largo']);
+                            $ancho = intval($row['Ancho']);
+                            $color = trim(strval($row['Color']));
+
+                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, largo, ancho, color, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $largo, $ancho, '$color', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
+
+                            break;
+                        case 'Ojillos':
+
+                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
+
+                            break;
+                        case 'Resorte':
+
+                            $largo = intval($row['Largo']);
+                            $ancho = intval($row['Ancho']);
+                            $color = trim(strval($row['Color']));
+
+                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, largo, ancho, color, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $largo, $ancho, '$color', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
+
+                            break;
+                    }
+
+                    $query_accesorios = $this->db->prepare($sql_accesorios);
+
+                    $l_Accesorios = $query_accesorios->execute();
+
+                    if (!$l_Accesorios) {
+
+                        self::mError($aJson, $mensaje, "Error al grabar accesorios;");
+
+                        $l_Accesorios = false;
+
+                        break;
+                    }
+                }
+            }
+
+
+   /******************** termina accesorios  ************************/
+
+
+   /******************** inicia bancos  ************************/
+
+            $l_Bancos = true;
+
+            if (array_key_exists("Bancos", $aJson)) {
+
+                $aBancos = [];
+
+                $aBancos = $aJson['Bancos'];
+
+                foreach($aBancos as $row) {
+
+                    $costo_tot_proceso = 0;
+
+                    $Tipo_banco = trim(strval($row['Tipo_banco']));
+                    $tiraje         = intval($row['tiraje']);
+
+                    $largo             = intval($row['largo']);
+                    $ancho             = intval($row['ancho']);
+                    $profundidad       = intval($row['profundidad']);
+                    $Suaje             = trim(strval($row['Suaje']));
+                    $costo_unit_banco  = floatval($row['costo_unit_banco']);
+                    $costo_tot_proceso = floatval($row['costo_tot_proceso']);
+
+
+                    $sql_bancos = "INSERT INTO cot_bancos(id_odt, id_modelo, tiraje, tipo, largo, ancho, profundidad, suaje, costo_unit, costo_tot_banco, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_banco', $largo, $ancho, '$profundidad', '$Suaje', $costo_unit_banco, $costo_tot_proceso, '$d_fecha')";
+
+
+                    $query_bancos = $this->db->prepare($sql_bancos);
+
+                    $l_Bancos = $query_bancos->execute();
+
+                    if (!$l_Bancos) {
+
+                        self::mError($aJson, $mensaje, "Error al grabar bancos;");
+
+                        $l_Bancos = false;
+
+                        break;
+                    }
+                }
+            }
+
+
+   /******************** termina bancos  ************************/
 
 
    /******************** inicia cierres  ************************/
@@ -4849,25 +3388,13 @@ class RegaloModel {
                             break;
                     }
 
-                    if ($costo_tot_proceso > 0) {
+                    $query_cierres = $this->db->prepare($sql_cierres);
 
-                        $query_cierres = $this->db->prepare($sql_cierres);
-
-                        $l_Cierres = $query_cierres->execute();
-                    } else {
-
-                        $aJson['mensaje'] = "ERROR";
-                        $aJson['error']   = $aJson['error'] . "; No existe costo para Cierres";
-
-                        $l_Cierres = false;
-
-                        break;
-                    }
+                    $l_Cierres = $query_cierres->execute();
 
                     if (!$l_Cierres) {
 
-                        $aJson['mensaje'] = "ERROR";
-                        $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cierres";
+                        self::mError($aJson, $mensaje, "Error al grabar cierres;");
 
                         $l_Cierres = false;
 
@@ -4879,148 +3406,6 @@ class RegaloModel {
 
    /******************** termina cierres  ************************/
 
-
-   /******************** inicia accesorios  ************************/
-
-            $l_Accesorios = true;
-
-            if (array_key_exists("Accesorios", $aJson)) {
-
-                $aAccesorios = [];
-
-                $aAccesorios = $aJson['Accesorios'];
-
-                foreach($aAccesorios as $row) {
-
-                    $costo_tot_proceso = 0;
-
-                    $Tipo_accesorio = trim(strval($row['Tipo_accesorio']));
-                    $tiraje         = intval($row['tiraje']);
-
-                    $costo_unit_accesorio = floatval($row['costo_unit_accesorio']);
-                    $costo_tot_proceso    = floatval($row['costo_tot_proceso']);
-
-
-                    switch ($Tipo_accesorio) {
-                        case 'Herraje':
-
-                            $Tipo = trim(strval($row['Tipo']));
-
-                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo, tipo_accesorio, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo', '$Tipo_accesorio', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
-
-                            break;
-                        case 'Lengueta de Liston':
-
-                            $largo = intval($row['Largo']);
-                            $ancho = intval($row['Ancho']);
-                            $color = trim(strval($row['Color']));
-
-                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, largo, ancho, color, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $largo, $ancho, '$color', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
-
-                            break;
-                        case 'Ojillos':
-
-                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
-
-                            break;
-                        case 'Resorte':
-
-                            $largo = intval($row['Largo']);
-                            $ancho = intval($row['Ancho']);
-                            $color = trim(strval($row['Color']));
-
-                            $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, largo, ancho, color, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $largo, $ancho, '$color', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
-
-                            break;
-                    }
-
-                    if ($costo_tot_proceso > 0) {
-
-                        $query_accesorios = $this->db->prepare($sql_accesorios);
-
-                        $l_Accesorios = $query_accesorios->execute();
-                    } else {
-
-                        $aJson['mensaje'] = "ERROR";
-                        $aJson['error']   = $aJson['error'] . "; No existe costo para Accesorios";
-
-                        $l_Accesorios = false;
-
-                        break;
-                    }
-
-                    if (!$l_Accesorios) {
-
-                        $aJson['mensaje'] = "ERROR";
-                        $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_accesorios";
-
-                        $l_Accesorios = false;
-
-                        break;
-                    }
-                }
-            }
-
-
-   /******************** termina accesorios  ************************/
-
-
-   /******************** inicia bancos  ************************/
-
-            $l_Bancos = true;
-
-            if (array_key_exists("Bancos", $aJson)) {
-
-                $aBancos = [];
-
-                $aBancos = $aJson['Bancos'];
-
-                foreach($aBancos as $row) {
-
-                    $costo_tot_proceso = 0;
-
-                    $Tipo_banco = trim(strval($row['Tipo_banco']));
-                    $tiraje         = intval($row['tiraje']);
-
-                    $largo             = intval($row['largo']);
-                    $ancho             = intval($row['ancho']);
-                    $profundidad       = intval($row['profundidad']);
-                    $Suaje             = trim(strval($row['Suaje']));
-                    $costo_unit_banco  = floatval($row['costo_unit_banco']);
-                    $costo_tot_proceso = floatval($row['costo_tot_proceso']);
-
-
-                    $sql_bancos = "INSERT INTO cot_bancos(id_odt, id_modelo, tiraje, tipo, largo, ancho, profundidad, suaje, costo_unit, costo_tot_banco, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_banco', $largo, $ancho, '$profundidad', '$Suaje', $costo_unit_banco, $costo_tot_proceso, '$d_fecha')";
-
-
-                    if ($costo_tot_proceso > 0) {
-
-                        $query_bancos = $this->db->prepare($sql_bancos);
-
-                        $l_Bancos = $query_bancos->execute();
-                    } else {
-
-                        $aJson['mensaje'] = "ERROR";
-                        $aJson['error']   = $aJson['error'] . "; No existe costo para Bancos";
-
-                        $l_Bancos = false;
-
-                        break;
-                    }
-
-                    if (!$l_Bancos) {
-
-                        $aJson['mensaje'] = "ERROR";
-                        $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_bancos";
-
-                        $l_Bancos = false;
-
-                        break;
-                    }
-                }
-            }
-
-   /******************** termina bancos  ************************/
 
 
             // variables booleanas
@@ -5037,12 +3422,12 @@ class RegaloModel {
 
                 and ($l_arr_ran_hor_emp and $l_arr_ran_vert_emp)
 
-                and ($l_Suaje_fcaj_fijo)
+                and ($l_Suaje_fcaj_fijo and $l_Suaje_ftap_fijo and $l_despunte_esquinas)
 
                 and ($l_elab_fcaj and $l_elab_ftap)
 
                 and ($l_corte_carton_empcaj and $l_corte_carton_emptap)
-                and ($l_corte_papel_emp and $l_corte_refine_emp)
+                and ($l_corte_carton_emp and $l_corte_refine_emp)
                 and ($l_corte_papel_emp_emptap and $l_corte_refine_empalmado_emptap)
 
                 and ($l_offset_empcaj and $l_offset_maq_empcaj)

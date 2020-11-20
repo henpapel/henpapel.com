@@ -47,15 +47,15 @@ class Regalo extends Controller {
         $Porcentajes   = $options_model->getPorcentajes();
         $Herrajes      = $options_model->getHerraje();
 
-        $nombrecliente = utf8_encode($this->getClient($options_model));
+        $nombrecliente = $this->getClient($options_model);
 
         require 'application/views/templates/head.php';
         require 'application/views/templates/top_menu.php';
-        require 'application/views/cotizador/regalo/plantilla.php';
+        require 'application/views/templates/cotizador/plantilla.php';
         echo "<script>$('#divDerecho').empty()</script>";
         echo "<script>$('#divIzquierdo').empty()</script>";
         echo "<script>$('#divDerecho').hide()</script>";
-        require 'application/views/cotizador/regalo/caja_regalo.php';
+        require 'application/views/cotizador/regalo/nueva_cotizacion.php';
         echo "<script>$('#divDerecho').show('slow')</script>";
         require 'application/views/templates/footer.php';
     }
@@ -155,7 +155,6 @@ class Regalo extends Controller {
     }
 
 
-    // regresa el JSON para renderizar la odt
     public function modCajaRegalo() {
 
         if (!isset($_SESSION)) {
@@ -196,16 +195,6 @@ class Regalo extends Controller {
             return false;
         }
 
-
-        /*
-        $l_existe = $ventas_model->chkODT();
-        $l_existe = self::checaODT($odt);
-
-        if ($l_existe) {
-
-            return;
-        }
-        */
 
         $cierres           = $options_model->getCostoCierre();
         $acabados          = $options_model->getCostoAcabados();
@@ -291,7 +280,7 @@ class Regalo extends Controller {
         $aJson['costo_grosor_carton'] = $ventas_model->getIdCartonTabla($id_odt, "cot_reg_carton");
 
         $id_papel = intval($aJson['costo_grosor_carton']['id_cajon']);
-        
+
         $id_grosor_carton = $options_model->getCartonIdPapel($id_papel);
 
 
@@ -400,8 +389,17 @@ class Regalo extends Controller {
         for ($i = 0; $i < $num_procesos; $i++) {
 
             $nombre_tabla_tmp   = trim(strval($tabla_procesos[$i]));
-            $nombreProcesoTabla = substr($nombre_tabla_tmp, $len_prefijo);
-            $proceso            = substr($nombre_tabla_tmp, $len_prefijo, 3);
+
+            if ($nombre_tabla_tmp == "cot_accesorios" or $nombre_tabla_tmp == "cot_bancos" or $nombre_tabla_tmp == "cot_cierres") {
+
+                $nombreProcesoTabla = $nombre_tabla_tmp;
+                $proceso = substr($nombre_tabla_tmp, 4, 3);
+            } else {
+
+                $nombreProcesoTabla = substr($nombre_tabla_tmp, $len_prefijo);
+                $proceso = substr($nombre_tabla_tmp, $len_prefijo, 3);
+            }
+
 
             $aOffset_tmp     = "";
             $aOffset_tmp_len = 0;
@@ -574,24 +572,21 @@ class Regalo extends Controller {
         }
 
 
-        //self::prettyPrint($aJson, "aJson", 577);
+        //self::prettyPrint($aJson, "aJson", 566);
 
         //die();
 
 
         json_encode($aJson);
 
-
         require 'application/views/templates/head.php';
         require 'application/views/templates/top_menu.php';
-        require 'application/views/cotizador/cajas.php';
-
-        echo "<script>$('#form_modelo_0').hide();</script>";
-
-        require 'application/views/cotizador/regalo/mod_caja_regalo.php';
-
-        echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-
+        require 'application/views/templates/cotizador/plantilla.php';
+        echo "<script>$('#divDerecho').empty()</script>";
+        echo "<script>$('#divIzquierdo').empty()</script>";
+        echo "<script>$('#divDerecho').hide()</script>";
+        require 'application/views/cotizador/regalo/modificacion.php';
+        echo "<script>$('#divDerecho').show('slow')</script>";
         require 'application/views/templates/footer.php';
     }
 
@@ -635,15 +630,12 @@ class Regalo extends Controller {
 
         if ($l_existe) {
 
-            $aJson['error'] = "Ya existe esta ODT; No debe grabar esta ODT;";
-
-            return json_encode($aJson);
+            self::msgError("Ya hay una ODT con el mismo nombre");
         }
 
 
         $tiraje = $_POST['qty'];
         $tiraje = intval($tiraje);
-
 
         $id_usuario = $_SESSION['id_usuario'];
         $id_usuario = intval($id_usuario);
@@ -652,17 +644,11 @@ class Regalo extends Controller {
         $id_tienda = intval($id_tienda);
 
 
-        $num_dec2 = 2;
-        $num_dec4 = 4;
-
         $cantidad        = 0;
         $costo_total     = 0;
         $costo_corte     = 0;
         $cantidad_offset = 0;
 
-
-        $modelo = $_POST['modelo'];
-        $modelo = intval($modelo);
 
         $base = 0;
         $base = $_POST['base'];
@@ -734,13 +720,6 @@ class Regalo extends Controller {
         $aJson['costo_cartones']      = 0;
         $aJson['costos_fijos']        = 0;
 
-        $aJson['ranurado']            = 0;
-        $aJson['ranurado_tapa']       = 0;
-        $aJson['encuadernacion']      = 0;
-        $aJson['elab_FCaj']           = 0;
-        $aJson['elab_FTap']           = 0;
-        $aJson['costo_grosor_carton'] = 0;
-        $aJson['costo_grosor_tapa']   = 0;
         $aJson['costo_bancos']        = 0;
         $aJson['costo_cierres']       = 0;
         $aJson['costo_accesorios']    = 0;
@@ -750,34 +729,223 @@ class Regalo extends Controller {
         $aJson['costo_EmpTap']        = 0;
         $aJson['costo_FTap']          = 0;
 
-        $aJson['costo_tot_corte_carton'] = 0;
-        $aJson['costo_tot_papel_corte']  = 0;
-        $aJson['costo_corte_refine_emp'] = 0;
+        $aJson['costo_tot_corte']        = 0;
         $aJson['costo_tot_corte_papel']  = 0;
+        $aJson['costo_tot_corte_carton'] = 0;
         $aJson['costo_tot_corte_refine'] = 0;
+        $aJson['Calculadora']            = $aCalculadora;
+        $aJson['cortes']                 = [];
+        $aJson['papel_Emp']              = 0;
+        $aJson['papel_FCaj']             = 0;
+        $aJson['papel_EmpTap']           = 0;
+        $aJson['papel_FTap']             = 0;
 
+        $aJson['costo_grosor_carton'] = 0;
+        $aJson['costo_grosor_tapa']   = 0;
 
-        $aJson['Calculadora'] = $aCalculadora;
+        $aJson['ranurado']            = 0;
+        $aJson['ranurado_tapa']       = 0;
+        $aJson['encuadernacion']      = 0;
+        $aJson['elab_FCaj']           = 0;
+        $aJson['elab_FTap']           = 0;
+
 
 
         $aCortes = [];
 
         $subtotal = 0;
+        $mensaje  = "ERROR";
+        $error    = "No existe costo para ";
 
 
-    // Grosor Carton (Forro cajon)
-        $id_grosor_carton = 0;
+/**************** Inicia el calculo de todos los papeles **************/
+
+        $id_papel_empalme      = 0;
+        $id_papel_forro_cajon  = 0;
+        $id_papel_empalme_tapa = 0;
+        $id_papel_forro_tapa   = 0;
+
+        $tot_costo_papeles = 0;
+
+    // papeles
+        $id_papel_empalme      = intval($_POST['optEC']);
+        $id_papel_forro_cajon  = intval($_POST['optFC']);
+        $id_papel_empalme_tapa = intval($_POST['optET']);
+        $id_papel_forro_tapa   = intval($_POST['optFT']);
+
+        $id_papel_EmpTap = $id_papel_empalme_tapa;
+        $id_papel_FCaj   = $id_papel_forro_cajon;
+        $id_papel_FTap   = $id_papel_forro_tapa;
+
+
+    /*********** Empalme del Cajon *************/
+
+        $id_papel_empalme = intval($id_papel_empalme);
+
+        $x11        = $aCalculadora['x11'];
+        $secc_largo = floatval($x11);
+
+        $y11        = $aCalculadora['y11'];
+        $secc_ancho = floatval($y11);
+
+        $aPapel_tmp = self::calculaPapel("empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+
+
+        if ($aPapel_tmp['tot_costo'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error . "el papel (empalme del cajon);");
+        }
+
+        if (intval($aPapel_tmp['corte']) <= 0) {
+
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en empalme del cajon;");
+        }
+
+
+        $aJson['cortes']['papel_Emp'] = $aPapel_tmp['corte'];
+
+        $aJson['papel_Emp'] = $aPapel_tmp;
+
+        $tot_costo_papeles = $tot_costo_papeles + $aPapel_tmp['tot_costo'];
+
+        $subtotal += $aPapel_tmp['tot_costo'];
+
+        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
+
+            unset($aPapel_tmp);
+        }
+
+
+    /*********** Forro del Cajon *************/
+
+        $id_papel = intval($id_papel_forro_cajon);
+
+        $f          = $aCalculadora['f'];           // largo
+        $secc_largo = floatval($f);
+
+        $k          = $aCalculadora['k'];           // ancho
+        $secc_ancho = floatval($k);
+
+        $aPapel_tmp = self::calculaPapel("FCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+
+        if ($aPapel_tmp['tot_costo'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error. "el papel (forro del cajon);");
+        }
+
+        if (intval($aPapel_tmp['corte']) <= 0) {
+
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en forro del cajon;");
+        }
+
+
+        $aJson['cortes']['papel_FCaj'] = $aPapel_tmp['corte'];
+
+        $aJson['papel_FCaj'] = $aPapel_tmp;
+
+        $tot_costo_papeles = $tot_costo_papeles + $aPapel_tmp['tot_costo'];
+
+        $subtotal += $aPapel_tmp['tot_costo'];
+
+
+        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
+
+            unset($aPapel_tmp);
+        }
+
+
+    /*********** Empalme de la Tapa *************/
+
+        $id_papel = intval($id_papel_empalme_tapa);
+
+        $secc_ancho = $aCalculadora['Y11'];
+        $secc_ancho = floatval($secc_ancho);
+
+        $secc_largo = $aCalculadora['X11'];
+        $secc_largo = floatval($secc_largo);
+
+        $aPapel_tmp = self::calculaPapel("FextCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+
+        if ($aPapel_tmp['tot_costo'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error . "el papel (empalme de la tapa);");
+        }
+
+        if (intval($aPapel_tmp['corte']) <= 0) {
+
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego empalme de la Tapa;");
+        }
+
+        $aJson['cortes']['papel_EmpTap'] = $aPapel_tmp['corte'];
+
+        $aJson['papel_EmpTap'] = $aPapel_tmp;
+
+        $subtotal += $aPapel_tmp['tot_costo'];
+
+        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
+
+            unset($aPapel_tmp);
+        }
+
+
+    /*********** Forro de la Tapa *************/
+
+        $id_papel = intval($id_papel_forro_tapa);
+
+        $F          = $aCalculadora['F'];       // largo
+        $secc_largo = floatval($F);
+
+        $K          = $aCalculadora['K'];       // ancho
+        $secc_ancho = floatval($K);
+
+        $aPapel_tmp = self::calculaPapel("PomCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+
+        if ($aPapel_tmp['tot_costo'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error . "el papel (forro de la tapa);");
+        }
+
+        if (intval($aPapel_tmp['corte']) <= 0) {
+
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro de la Tapa;");
+        }
+
+
+        $aJson['cortes']['papel_FTap'] = $aPapel_tmp['corte'];
+
+        $aJson['papel_FTap'] = $aPapel_tmp;
+
+        $tot_costo_papeles = $tot_costo_papeles + $aPapel_tmp['tot_costo'];
+
+        $subtotal += $aPapel_tmp['tot_costo'];
+
+
+        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
+
+            unset($aPapel_tmp);
+        }
+
+
+        $aJson['costo_papeles'] = round($tot_costo_papeles, 2);
+
+
+/**************** Termina el calculo de todos los papeles **************/
+
+
+/*************** Inicia el calculo de los cartones ******************/
+
+    // Grosor Carton (Empalme del cajon)
 
         $id_grosor_carton_db = $options_model->getCartonById($grosor_carton);
+
+
+        $id_grosor_carton = 0;
 
         $id_grosor_carton = $id_grosor_carton_db['id_papel'];
         $id_grosor_carton = intval($id_grosor_carton);
 
-        //$cart_ancho = floatval($id_grosor_carton_db['ancho']);
-        //$cart_largo = floatval($id_grosor_carton_db['largo']);
-
-        $cart_ancho = $aJson['Calculadora']['h1'];
-        $cart_largo = $aJson['Calculadora']['b1'];
+        $cart_ancho = $aJson['Calculadora']['x1'];
+        $cart_largo = $aJson['Calculadora']['y1'];
 
 
         $aPapel_tmp = self::calculaPapel("grosor_carton", $grosor_carton, $cart_ancho, $cart_largo, $tiraje, $options_model, $ventas_model);
@@ -790,27 +958,15 @@ class Regalo extends Controller {
 
         if ($corte_cajon <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al carton del cajon;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton del cajon (empalme del cajon);");
         }
 
         $aCortes['cajon'] = $corte_cajon;
 
-        $subtotal = $subtotal + $aPapel_tmp['tot_costo'];
+        $subtotal += $aPapel_tmp['tot_costo'];
 
 
-    // corte cajon
-        $corte_cajon = intval($aPapel_tmp['calculadora']['corte']['cortesT']);
-
-        if ($corte_cajon <= 0) {
-
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton del cajon;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al carton del cajon;";
-        }
-
-
-    // Grosor Tapa
+    // Grosor Tapa (Empalme de la tapa)
         $id_grosor_tapa = 0;
 
         $id_grosor_tapa_db = $options_model->getCartonById($grosor_tapa);
@@ -818,333 +974,145 @@ class Regalo extends Controller {
         $id_grosor_tapa = $id_grosor_tapa_db['id_papel'];
         $id_grosor_tapa = intval($id_grosor_tapa);
 
-        $cart_ancho = floatval($aJson['Calculadora']['H11']);
-        $cart_largo = floatval($aJson['Calculadora']['B11']);
+        $cart_ancho = floatval($aJson['Calculadora']['X1']);
+        $cart_largo = floatval($aJson['Calculadora']['Y1']);
 
         $aPapel_tmp = self::calculaPapel("grosor_tapa", $grosor_tapa, $cart_ancho, $cart_largo, $tiraje, $options_model, $ventas_model);
 
-        $aPapel_tmp['grosor_tapa'] = $grosor_tapa;
-
-        $aJson['costo_grosor_tapa'] = $aPapel_tmp;
-
-
-        $subtotal = $subtotal + $aPapel_tmp['tot_costo'];
-
-
-        $aJson['costo_cartones'] = $aJson['costo_grosor_carton']['tot_costo'] + $aJson['costo_grosor_tapa']['tot_costo'];
-
-
-    // corte tapa
         $corte_tapa = intval($aPapel_tmp['calculadora']['corte']['cortesT']);
 
         if ($corte_tapa <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton de la tapa;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al carton de la tapa;";
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton (empalme de la tapa);");
         }
 
+        $aCortes['tapa']            = $corte_tapa;
+        $aJson['costo_grosor_tapa'] = $aPapel_tmp;
 
-        $aCortes['tapa'] = $corte_tapa;
+        $subtotal += $aPapel_tmp['tot_costo'];
 
+        $aJson['costo_cartones'] = $aJson['costo_grosor_carton']['tot_costo'] + $aJson['costo_grosor_tapa']['tot_costo'];
 
-        // Empalme del cajon
-        $x1 = $aCalculadora['x1'];         // largo
-        $x1 = floatval($x1);
 
-        $y1 = $aCalculadora['y1'];         // ancho
-        $y1 = floatval($y1);
-
-
-        // Forro Cajon
-        $f = $aCalculadora['f'];           // largo
-        $f = floatval($f);
-
-        $k = $aCalculadora['k'];           // ancho
-        $k = floatval($k);
-
-
-        // Empalme de la Tapa
-        $X1 = $aCalculadora['X1'];         // largo
-        $X1 = round(floatval($X1), 2);
-
-        $Y1 = $aCalculadora['Y1'];         // ancho
-        $Y1 = floatval($Y1);
-
-
-        // Forro de la Tapa
-        $F = $aCalculadora['F'];       // largo
-        $F = floatval($F);
-
-        $K = $aCalculadora['K'];       // ancho
-        $K = floatval($K);
-
-
-        $id_papel_empalme      = intval($_POST['optEC']);
-        $id_papel_forro_cajon  = intval($_POST['optFC']);
-        $id_papel_empalme_tapa = intval($_POST['optET']);
-        $id_papel_forro_tapa   = intval($_POST['optFT']);
-
-
-    // corte Empalme
-        $secc_ancho = floatval($y1);
-        $secc_largo = floatval($x1);
-
-        $aPapel_tmp = self::calculaPapel("Empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
-
-        if (intval($aPapel_tmp['calculadora']['corte']['cortesT']) <= 0) {
-
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Empalme;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Empalme;";
-        }
-
-        //$aPapelEmp = [];
-
-        //$aPapelEmp = $aPapel_tmp;
-
-        $aCortes['empalme']  = intval($aPapel_tmp['calculadora']['corte']['cortesT']);
-
-
-/**************** Inicia el calculo de todos los papeles **************/
-
-    // calcular los papeles
-
-        $id_papel_Emp    = 0;
-        $id_papel_FCaj   = 0;
-        $id_papel_EmpTap = 0;
-        $id_papel_FTap   = 0;
-
-
-        $tot_costo_papeles = 0;
-
-
-    /*********** Empalme del Cajon *************/
-
-        $id_papel_empalme = intval($id_papel_empalme);
-
-        $secc_ancho = floatval($y1);
-        $secc_largo = floatval($x1);
-
-        $aPapel_tmp = self::calculaPapel("empalme", $id_papel_empalme, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
-
-        if (intval($aPapel_tmp['corte']) <= 0) {
-
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Empalme del cajon;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Empalme del cajon;";
-        }
-
-        $aJson['cortes']['papel_Emp'] = $aPapel_tmp['corte'];
-
-        $aJson['papel_Emp'] = $aPapel_tmp;
-
-        $tot_costo_papeles = $tot_costo_papeles + $aPapel_tmp['tot_costo'];
-
-        $subtotal = $subtotal + $aPapel_tmp['tot_costo'];
-
-        if ($aPapel_tmp['tot_costo'] <= 0) {
-
-            self::mError($aJson, $mensaje, "No existe costo para el papel en empalme del cajon;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "No existe costo para el papel en: Empalme del cajon;";
-        }
-
-        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
-
-            unset($aPapel_tmp);
-        }
-
-
-
-    /*********** Forro del Cajon *************/
-
-
-        $id_papel_forro_cajon = intval($id_papel_forro_cajon);
-
-        $secc_ancho = floatval($k);
-        $secc_largo = floatval($f);
-
-        $aPapel_tmp = self::calculaPapel("FCaj", $id_papel_forro_cajon, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
-
-        if (intval($aPapel_tmp['corte']) <= 0) {
-
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro del cajon;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Forro del cajon;";
-        }
-
-        $aJson['cortes']['papel_FCaj'] = $aPapel_tmp['corte'];
-
-        $aJson['papel_FCaj'] = $aPapel_tmp;
-
-        $tot_costo_papeles = $tot_costo_papeles + $aPapel_tmp['tot_costo'];
-
-        $subtotal = $subtotal + $aPapel_tmp['tot_costo'];
-
-        if ($aPapel_tmp['tot_costo'] <= 0) {
-
-            self::mError($aJson, $mensaje, "No existe costo para el papel en: Forro del cajon;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "No existe costo para el papel en: Forro del cajon;";
-        }
-
-        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
-
-            unset($aPapel_tmp);
-        }
-
-
-    /*********** Empalme de la Tapa *************/
-
-        $id_papel = intval($id_papel_empalme_tapa);
-
-        $secc_ancho = floatval($Y1);
-        $secc_largo = floatval($X1);
-
-        $aPapel_tmp = self::calculaPapel("FextCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
-
-        if (intval($aPapel_tmp['corte']) <= 0) {
-
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Empalme de la Tapa;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Empalme de la Tapa;";
-        }
-
-        $aJson['cortes']['papel_EmpTap'] = $aPapel_tmp['corte'];
-
-        $aJson['papel_EmpTap'] = $aPapel_tmp;
-
-        $tot_costo_papeles = $tot_costo_papeles + $aPapel_tmp['tot_costo'];
-
-        $subtotal = $subtotal + $aPapel_tmp['tot_costo'];
-
-        if ($aPapel_tmp['tot_costo'] <= 0) {
-
-            self::mError($aJson, $mensaje, "No existe costo para el papel en empalme de la Tapa;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "No existe costo para el papel en: Empalme de la Tapa;";
-        }
-
-        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
-
-            unset($aPapel_tmp);
-        }
-
-
-
-    /*********** Forro de la Tapa *************/
-
-        $id_papel = intval($id_papel_forro_tapa);
-
-        $secc_ancho = floatval($K);
-        $secc_largo = floatval($F);
-
-        $aPapel_tmp = self::calculaPapel("PomCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
-
-        if (intval($aPapel_tmp['corte']) <= 0) {
-
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro de la Tapa;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "Las medidas del corte son mayores al pliego en Forro de la Tapa;";
-        }
-
-        $aJson['cortes']['papel_FTap'] = $aPapel_tmp['corte'];
-
-        $aJson['papel_FTap'] = $aPapel_tmp;
-
-        $tot_costo_papeles = $tot_costo_papeles + $aPapel_tmp['tot_costo'];
-
-        $subtotal = $subtotal + $aPapel_tmp['tot_costo'];
-
-        if ($aPapel_tmp['tot_costo'] <= 0) {
-
-            self::mError($aJson, $mensaje, "No existe costo para el papel en Forro de la Tapa;");
-            //$aJson['mensaje'] = "ERROR";
-            //$aJson['error']   = $aJson['error'] . "No existe costo para el papel en: Forro de la Tapa;";
-        }
-
-        if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
-
-            unset($aPapel_tmp);
-        }
-
-
-        $aJson['costo_papeles'] = $tot_costo_papeles;
-
-/**************** Termina el calculo de todos los papeles **************/
+/*************** Termina el calculo de los cartones ******************/
 
 
         $aMerma = [];
 
 
-
 /******************* Inicia Costos fijos *************************/
 
-    // corte(guillotina)
 
-        // empalme cajon
+    /****** inicia costos de corte *******/
+
+        // carton empalme cajon
         $aJson['costo_corte_carton_empcaj'] = [];
 
-        $cortes_pliego_emp = $aCortes['empalme'];
+        $cortes_pliego_emp = $corte_cajon;
 
         $aJson['costo_corte_carton_empcaj'] = self::costo_corte("Corte", $tiraje, $cortes_pliego_emp, $ventas_model);
 
         $aJson['costo_tot_corte_carton'] = $aJson['costo_corte_carton_empcaj']['tot_costo_corte'];
 
-
-        // empalme tapa
+        // carton empalme tapa
         $aJson['costo_corte_carton_emptap'] = [];
 
-        $cortes_pliego_emp = $aCortes['empalme'];
+        $cortes_pliego_emp = $corte_tapa;
 
         $aJson['costo_corte_carton_emptap'] = self::costo_corte("Corte", $tiraje, $cortes_pliego_emp, $ventas_model);
 
-        $aJson['costo_tot_corte_carton'] = $aJson['costo_corte_carton_emptap']['tot_costo_corte'];
+        $aJson['costo_tot_corte_carton']    = $aJson['costo_corte_carton_emptap']['tot_costo_corte'];
 
 
-        // corte papel empalme
-        $cortes_papel_cajon = $aCortes['empalme'];
+        // papel empalme
+        $cortes_papel_cajon = $aJson['cortes']['papel_Emp'];
 
         $aJson['costo_papel_corte']     = self::costo_corte("Corte", $tiraje, $cortes_papel_cajon, $ventas_model);
         $aJson['costo_tot_corte_papel'] = $aJson['costo_papel_corte']['tot_costo_corte'];
 
-
-        // corte refine empalme
-        $cortes_papel_refine = $aCortes['empalme'];
+        // refine empalme
+        $cortes_papel_refine = $aJson['cortes']['papel_Emp'];
 
         $aJson['costo_corte_refine_emp'] = self::costo_corte("Corte", $tiraje, $cortes_papel_refine, $ventas_model);
-        $aJson['costo_tot_corte_refine'] = $aJson['costo_corte_refine_emp']['tot_costo_corte'];
+        //$aJson['costo_tot_corte_refine'] = $aJson['costo_corte_refine_emp']['tot_costo_corte'];
 
-
-        // corte papel empalme tapa
-        $cortes_papel_emptap = intval($aJson['papel_EmpTap']['corte']);
+        // papel empalme tapa
+        $cortes_papel_emptap = intval($aJson['cortes']['papel_EmpTap']);
 
         $aJson['costo_papel_corte_emptap']     = self::costo_corte("Corte", $tiraje, $cortes_papel_emptap, $ventas_model);
-        $aJson['costo_tot_corte_papel_emptap'] = $aJson['costo_papel_corte_emptap']['tot_costo_corte'];
+        //$aJson['costo_tot_corte_papel_emptap'] = $aJson['costo_papel_corte_emptap']['tot_costo_corte'];
 
-
-        // corte refine empalme tapa
+        // refine empalme tapa
         $aJson['costo_corte_refine_emptap'] = self::costo_corte("Corte", $tiraje, $cortes_papel_emptap, $ventas_model);
-        $aJson['costo_tot_corte_refine'] = $aJson['costo_corte_refine_emptap']['tot_costo_corte'];
+        //$aJson['costo_tot_corte_refine']    = $aJson['costo_corte_refine_emptap']['tot_costo_corte'];
+
+
+        $corte_cartones_pliegos = $aJson['costo_grosor_carton']['tot_pliegos'] + $aJson['costo_grosor_tapa']['tot_pliegos'];
+
+        //$aJson['costo_tot_corte_carton'] = self::costo_tot_corte($tiraje, $corte_cartones_pliegos, $ventas_model);
+
+
+    /****** termina costos de corte *******/
+
+
+    /********** inicia costo corte(guillotina) ***************/
+
+    $tot_pliegos_corte = intval($aJson['papel_Emp']['tot_pliegos']
+                     + $aJson['papel_FCaj']['tot_pliegos']
+                     + $aJson['papel_EmpTap']['tot_pliegos']
+                     + $aJson['papel_FTap']['tot_pliegos']
+                     + $aJson['costo_grosor_carton']['tot_pliegos']
+                     + $aJson['costo_grosor_tapa']['tot_pliegos']
+                     + $aJson['costo_corte_refine_emp']['tot_pliegos']
+                     + $aJson['costo_corte_refine_emptap']['tot_pliegos']
+                     );
+
+    $tot_pliegos_papel = $aJson['papel_Emp']['tot_pliegos'] + $aJson['papel_FCaj']['tot_pliegos'] + $aJson['papel_EmpTap']['tot_pliegos'] + $aJson['papel_FTap']['tot_pliegos'];
+
+    $aJson['costo_tot_corte_papel'] = self::costo_tot_corte($tiraje, $tot_pliegos_papel, $ventas_model);
+
+    $aJson['costo_tot_corte'] = 0;
+
+    $aJson['costo_tot_corte'] = $aJson['costo_tot_corte_papel'];
+
+
+    $tot_pliegos_carton = $aJson['costo_grosor_carton']['tot_pliegos'] + $aJson['costo_grosor_tapa']['tot_pliegos'];
+
+    $aJson['costo_tot_corte_carton'] = self::costo_tot_corte($tiraje, $tot_pliegos_carton, $ventas_model);
+        $aJson['costo_tot_corte'] += $aJson['costo_tot_corte_carton'];
+
+
+    $tot_pliegos_refine = $aJson['costo_corte_refine_emp']['tot_pliegos'] + $aJson['costo_corte_refine_emptap']['tot_pliegos'];
+
+    $aJson['costo_tot_corte_refine'] = self::costo_tot_corte($tiraje, $tot_pliegos_refine, $ventas_model);
+
+
+    $aJson['costo_tot_corte'] += $aJson['costo_tot_corte_refine'];
+
+    $subtotal += $aJson['costo_tot_corte'];
+
+
+    /********** termina costo corte(guillotina) ***************/
 
 
     // areglo ranurado empalme tapa
-        $aJson['arreglo_ranurado_hor_emptap'] = 0;
-        $aJson['arreglo_ranurado_ver_emptap'] = 0;
+        $aJson['arreglo_ranurado_hor_emptap'] = [];
+        $aJson['arreglo_ranurado_ver_emptap'] = [];
 
         $aJson['arreglo_ranurado_hor_emptap'] = self::calculoRanurado($tiraje, $ventas_model);
+
+        $subtotal += $aJson['arreglo_ranurado_hor_emptap']['costo_tot_proceso'];
 
         if ($base > $alto or $base < $alto) {
 
             $aJson['arreglo_ranurado_ver_emptap'] = $aJson['arreglo_ranurado_hor_emptap'];
+
+            $subtotal += $aJson['arreglo_ranurado_ver_emptap']['costo_tot_proceso'];
         } else {
 
             $aJson['arreglo_ranurado_ver_emptap']['costo_tot_proceso'] = 0;
         }
 
-
-////
 
     /****************** ranurado ********************************/
 
@@ -1155,27 +1123,66 @@ class Regalo extends Controller {
 
         $aJson['ranurado'] = $costo_ranurado;
 
-        $subtotal = $subtotal + $costo_ranurado['costo_tot_proceso'];
+        if ($costo_ranurado['arreglo'] <= 0) {
 
-        $costos_fijos = $costos_fijos + $costo_ranurado['costo_tot_proceso'];
+            self::mError($aJson, $mensaje, "No existe costo arreglo;");
+        }
 
-        if ($costo_ranurado['costo_tot_proceso'] <= 0) {
+        if ($costo_ranurado['costo_unit_por_ranura'] <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "No existe algun costo para ranurado;";
+            self::mError($aJson, $mensaje, "No existe costo unitario por ranura;");
         }
 
 
-    // areglo ranurado
-        $aJson['arreglo_ranurado_hor_emp'] = 0;
-        $aJson['arreglo_ranurado_ver_emp'] = 0;
+        $costos_fijos = $costos_fijos + $costo_ranurado['costo_tot_proceso'];
 
-        $arreglo_ranurado                  = self::arregloRanurado($ventas_model);
-        $aJson['arreglo_ranurado_hor_emp'] = $arreglo_ranurado;
+
+        $subtotal += $costo_ranurado['costo_tot_proceso'];
+
+        if ($costo_ranurado['costo_tot_proceso'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe algun costo para ranurado;");
+        }
+
+
+    // areglo ranurado empalme
+        $aJson['arreglo_ranurado_hor_emp'] = [];
+        $aJson['arreglo_ranurado_ver_emp'] = [];
+
+        $proc_temp = [];
+
+        $proc_temp = self::calculoRanurado($tiraje, $ventas_model);
+
+        $subtotal += $proc_temp['costo_tot_proceso'];
+
+        if ($proc_temp['costo_tot_proceso'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error . "arreglo ranurado empalme;");
+        }
+
+
+        $aRanurado      = [];
+        $aRanurado_Fcar = [];
+
+        $aRanurado['tiraje']                = $proc_temp['tiraje'];
+        $aRanurado['arreglo']               = $proc_temp['arreglo'];
+        $aRanurado['costo_unit_por_ranura'] = $proc_temp['costo_unit_por_ranura'];
+        $aRanurado['costo_por_ranura']      = $proc_temp['costo_por_ranura'];
+        $aRanurado['costo_tot_ranurado']    = $proc_temp['costo_tot_proceso'];
+
+        $aJson['arreglo_ranurado_hor_emp'] = $aRanurado;
+
+
+        $aRanurado_Fcar['costo_unit_por_ranura'] = $proc_temp['costo_unit_por_ranura'];
+        $aRanurado_Fcar['costo_por_ranura']      = $proc_temp['costo_por_ranura'];
+
 
         if ($base > $alto or $base < $alto) {
 
-            $aJson['arreglo_ranurado_ver_emp'] = $arreglo_ranurado;
+            $aJson['arreglo_ranurado_ver_emp'] = $aRanurado;
+        } else {
+
+            $aJson['arreglo_ranurado_ver_emp']['costo_tot_ranurado'] = 0;
         }
 
 
@@ -1184,66 +1191,90 @@ class Regalo extends Controller {
 
         $costos_fijos = 0;
 
-
         $costo_ranurado_tapa = self::calculoRanurado($tiraje, $ventas_model);
 
         $aJson['ranurado_tapa'] = $costo_ranurado_tapa;
 
-        $subtotal = $subtotal + $costo_ranurado_tapa['costo_tot_proceso'];
+        if ($costo_ranurado_tapa['arreglo'] <= 0) {
 
-        $costos_fijos = $costos_fijos + $costo_ranurado_tapa['costo_tot_proceso'];
+            self::mError($aJson, $mensaje, $error . "arreglo (ranurado tapa);");
+        }
 
-        if ($costo_ranurado_tapa['costo_tot_proceso'] <= 0) {
+        if ($costo_ranurado_tapa['costo_unit_por_ranura'] <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "No existe algun costo para ranurado tapa;";
+            self::mError($aJson, $mensaje, "No existe costo unitario por ranura (ranurado tapa);");
         }
 
 
+        $costos_fijos = $costos_fijos + $costo_ranurado_tapa['costo_tot_proceso'];
+
+
+        $subtotal += $costo_ranurado_tapa['costo_tot_proceso'];
+
+
+        if ($costo_ranurado_tapa['costo_tot_proceso'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error . "ranurado tapa;");
+        }
+
+
+
     /********************* encuadernacion ******************************/
+
 
         $enc_cortes_emp = intval($aJson['cortes']['papel_Emp']);
 
         $id_papel_emp = intval($aJson['papel_Emp']['id_papel']);
 
+
         $aJson['encuadernacion'] = self::calculoEncuadernacion($tiraje, $enc_cortes_emp, $id_papel_emp, $ventas_model);
+
 
         $temp = floatval($aJson['encuadernacion']['costo_tot_proceso']);
 
-        $costos_fijos = $costos_fijos + $temp;
-
-        $subtotal = $subtotal + $temp;
-
-
         if ($temp <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "No existe costo para encuadernacion;";
+            self::mError($aJson, $mensaje, $error . "encuadernacion;");
         }
 
+        $costos_fijos = $costos_fijos + $temp;
 
-    /******* despunte de esquinas emnpalme cajon ******/
-
-        $desp_tmp = self::calculoEncuadernacion($tiraje, $id_papel_emp, $enc_cortes_emp, $ventas_model);
+        $subtotal += $temp;
 
 
-        $costo_unit_despunte_esquinas = $desp_tmp['despunte_costo_unitario'];
-        $costo_tot_despunte_esquinas  = $desp_tmp['despunte_de_esquinas_para_cajon'];
+    /******* inicia encajada forro tapa ******/
 
-        //$tiraje = intval($desp_tmp['tiraje']);
+    /*
+        $encajada_ftap = self::calculoEncajada($tiraje, $ventas_model);
 
-        $desp_tmp = [];
+        if ($encajada_ftap['costo_unitario'] <= 0) {
 
-        $desp_temp['tiraje']             = $tiraje;
-        $desp_temp['costo_unit']         = $costo_unit_despunte_esquinas;
-        $desp_temp['costo_tot_despunte'] = $costo_tot_despunte_esquinas;
+            self::mError($aJson, $mensaje, "No existe costo unitario en encajada forro tapa");
+        }
 
-        $aJson['despunte_esquinas_empcaj'] = $desp_temp;
+        $aJson['encajada_ftap'] = $encajada_ftap;
+    */
 
-        $desp_temp = [];
+    /********** termina encajada forro tapa *********/
+
+
+    /******* despunte de esquinas empalme cajon ******/
+
+        $desp_tmp = self::calculoDespunteEsquinasCajon($tiraje, $ventas_model);
+
+        if($desp_tmp['costo_unitario_esquinas'] <= 0) {
+
+            self::mError($aJson, $mensaje, "No existe costo unitario despunte esquinas en empalme cajon");
+        }
+
+        $aJson['despunte_esquinas_emptap'] = $desp_tmp;
+
+        $subtotal += $desp_tmp['costo_tot_proceso'];
+
 
 
     /************ forro exterior del cajon  ******************/
+
 
         $aJson['elab_FCaj'] = self::calculoForradoCajon($tiraje, $aJson['cortes']['papel_FCaj'], $id_papel_FCaj, $ventas_model);
 
@@ -1251,53 +1282,67 @@ class Regalo extends Controller {
 
         $costos_fijos = $costos_fijos + $temp;
 
-        $subtotal = $subtotal + $temp;
+        $subtotal += $temp;
 
         if ($temp <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "No existe costo para forro del cajon;";
+            self::mError($aJson, $mensaje, $error . "forro del cajon;");
         }
 
-        // forro cajon
         $cortes_pliego_fcaj = $aJson['cortes']['papel_FCaj'];
 
         $aJson['costo_corte_papel_fcaj'] = self::costo_corte("Corte", $tiraje, $cortes_pliego_fcaj, $ventas_model);
 
-        $aJson['costo_tot_corte_papel']  = $aJson['costo_tot_corte_papel'] + $aJson['costo_corte_papel_fcaj']['tot_costo_corte'];
+
+        $subtotal += $aJson['costo_corte_papel_fcaj']['tot_costo_corte'];
 
 
         //suaje(fijo)
-
         $tipoGrabado = "Perimetral";
 
-    // falta definir el tamaño del suaje fijo
 
+        // suaje forro cajon
         $Largo            = $aJson['costo_grosor_carton']['calculadora']['corte_largo'];
         $Ancho            = $aJson['costo_grosor_carton']['calculadora']['corte_ancho'];
         $papel_costo_unit = $aJson['costo_grosor_carton']['costo_unit_papel'];
         $cortes           = $aJson['costo_grosor_carton']['corte'];
         $tot_pliegos      = $aJson['costo_grosor_carton']['tot_pliegos'];
 
+
         $aJson['suaje_fcaj_fijo'] = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
+
+
+        $subtotal += $aJson['suaje_fcaj_fijo']['costo_tot_proceso'];
+
+
+        // suaje forro tapa
+        $Largo            = $aJson['costo_grosor_tapa']['calculadora']['corte_largo'];
+        $Ancho            = $aJson['costo_grosor_tapa']['calculadora']['corte_ancho'];
+        $papel_costo_unit = $aJson['costo_grosor_tapa']['costo_unit_papel'];
+        $cortes           = $aJson['costo_grosor_tapa']['corte'];
+        $tot_pliegos      = $aJson['costo_grosor_tapa']['tot_pliegos'];
+
+        $aJson['suaje_ftap_fijo'] = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
+
+        $subtotal += $aJson['suaje_ftap_fijo']['costo_tot_proceso'];
 
 
 
     /************ Forro de la Tapa  ******************/
 
+
         $aJson['elab_FTap'] = self::calculoForradoCajon($tiraje, $aJson['cortes']['papel_FTap'], $id_papel_FTap, $ventas_model);
 
         $temp = floatval($aJson['elab_FTap']['costo_tot_proceso']);
 
-        $costos_fijos = $costos_fijos + $temp;
-
-        $subtotal = $subtotal + $temp;
-
         if ($temp <= 0) {
 
-            $aJson['mensaje'] = "ERROR";
-            $aJson['error']   = $aJson['error'] . "No existe costo para forro de la tapa;";
+            self::mError($aJson, $mensaje, $error . "forro de la tapa;");
         }
+
+        $costos_fijos = $costos_fijos + $temp;
+
+        $subtotal += $temp;
 
 
         $aJson['costos_fijos'] = $costos_fijos;
@@ -1306,19 +1351,16 @@ class Regalo extends Controller {
 /************** Termina Costos fijos *************************/
 
 
-        $aJson['cortes']['carton_fcaj'] = $corte_cajon;
-        $aJson['cortes']['carton_ftap'] = $corte_tapa;
+
+        $aJson['cortes']['carton_fcaj']   = $corte_cajon;
+        $aJson['cortes']['carton_emptap'] = $corte_tapa;
 
 
 /******************* inicia boton de Impresion ******************************/
 
 
-        $mensaje = "ERROR";
-        $error   = "No existe costo para ";
-
-
-
     /****************** Inicia los calculos de Empalme del Cajon *****************/
+
 
         $secc_sufijo = "Emp";
         $nomb_inner  = "papel_" . $secc_sufijo;
@@ -1336,6 +1378,7 @@ class Regalo extends Controller {
         $papel_corte_ancho = $a_tmp_calculadora['corte_ancho'];
         $papel_corte_largo = $a_tmp_calculadora['corte_largo'];
 
+        $id_papel_Emp = intval($aJson['papel_Emp']['id_papel']);
 
         $aOffEmp      = [];
         $aOff_maq_Emp = [];
@@ -1399,7 +1442,9 @@ class Regalo extends Controller {
 
                     $es_maquila = $this->recMaquila($papel_corte_ancho, $papel_corte_largo);
 
+
                     $aMerma = self::calculoMermaOffset($tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_papel, $ventas_model);
+
 
                     $Tipo_impresion = $Tipo_proceso_tmp[$i]['Tipo_impresion'];
                     $tipo_offset    = $Tipo_proceso_tmp[$i]['tipo_offset'];
@@ -1419,15 +1464,14 @@ class Regalo extends Controller {
 
                         if (!self::checaCostos($offset_tiro, "Offset")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error .  "Offset(Empalme del Cajon);";
+                            self::mError($aJson, $mensaje, $error . "Offset(Empalme del Cajon);");
                         }
 
                         $aOffEmp[$i] = $offset_tiro;
 
                         $aOffEmp[$i]["mermas"] = $aMerma;
 
-                        $subtotal = $subtotal + $offset_tiro['costo_tot_proceso'];
+                        $subtotal += $offset_tiro['costo_tot_proceso'];
 
                         if (is_array($aMerma)) {
 
@@ -1437,12 +1481,11 @@ class Regalo extends Controller {
 
                         $aOff_maq_Emp[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aOff_maq_Emp[$i]['costo_tot_proceso'];
+                        $subtotal += $aOff_maq_Emp[$i]['costo_tot_proceso'];
 
                         if (!self::checaCostos($aOff_maq_Emp[$i], "Offset_Maquila")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Empalme del Cajon);";
+                            $self::mError($aJson, $mensaje, $error .  "Offset Maquila(Empalme del Cajon);");
                         }
                     }
                 }
@@ -1456,7 +1499,9 @@ class Regalo extends Controller {
                     $corte_ancho_proceso = $papel_corte_ancho;
                     $corte_largo_proceso = $papel_corte_largo;
 
+
                     $tam0 = self::calcTamDigital($corte_ancho_proceso, $corte_largo_proceso);
+
 
                     $tam          = "";
                     $tam1         = 0;
@@ -1474,23 +1519,22 @@ class Regalo extends Controller {
 
                         //$papel_digital =  calculaPapel("BCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
+
                         $aDigEmp[$i] = self::calculoDigital($tiraje, $nomb_tam_emp, $corte_ancho_proceso, $corte_largo_proceso, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aDigEmp[$i]['costo_tot_proceso'];
+
+                        $subtotal += $aDigEmp[$i]['costo_tot_proceso'];
 
                         if ($aDigEmp[$i]['cabe_digital'] === "NO") {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . "Digital. No cabe con las medidas proporcionadas (Base del cajon);";
+                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas (Base del cajon);");
                         } elseif (!self::checaCostos($aDigEmp[$i], "Digital")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error .  "Digital. No existe costo (Empalme del cajon);";
+                            self::mError($aJson, $mensaje, "Digital. No existe costo (Empalme del cajon);");
                         }
                     } else {
 
-                        $aJson['mensaje'] = $mensaje;
-                        $aJson['error']   = $aJson['error'] . $error .  "Digital. No cabe con las medidas proporcionadas en Empalme del cajon;";
+                        self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Empalme del cajon;");
 
                         $aDigEmp[$i]['cabe_digital']      = "NO";
                         $aDigEmp[$i]['cantidad']          = $tiraje;
@@ -1544,12 +1588,11 @@ class Regalo extends Controller {
 
                     $aSerEmp[$i] = self::calculoSerigrafia($tiraje, $tipo_offset_serigrafia, $num_tintas, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                    $subtotal = $subtotal + $aSerEmp[$i]['costo_tot_proceso'];
+                    $subtotal += $aSerEmp[$i]['costo_tot_proceso'];
 
                     if ( !self::checaCostos($aSerEmp[$i], "Serigrafia") ) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error . "Serigrafia(Base del Cajon);";
+                            self::mError($aJson, $mensaje, $error . "Serigrafia(Base del Cajon);");
                     }
 
 
@@ -1711,7 +1754,9 @@ class Regalo extends Controller {
                     $Tipo_impresion = $Tipo_proceso_tmp[$i]['Tipo_impresion'];
                     $tipo_offset    = $Tipo_proceso_tmp[$i]['tipo_offset'];
 
+
                     $aMerma = self::calculoMermaOffset($tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_papel, $ventas_model);
+
 
                     if (!$es_maquila) {
 
@@ -1728,14 +1773,13 @@ class Regalo extends Controller {
 
                         if (!self::checaCostos($offset_tiro, "Offset")) {
 
-                                $aJson['mensaje'] = $mensaje;
-                                $aJson['error']   = $aJson['error'] . $error . "Offset(Forro del Cajon);";
+                                self::mError($aJson, $mensaje, $error . "Offset(Forro del Cajon);");
                         }
 
                         $aOffFCaj[$i]           = $offset_tiro;
                         $aOffFCaj[$i]["mermas"] = $aMerma;
 
-                        $subtotal = $subtotal + $aOffFCaj[$i]['costo_tot_proceso'];
+                        $subtotal += $aOffFCaj[$i]['costo_tot_proceso'];
 
                         if (is_array($aMerma)) {
 
@@ -1745,12 +1789,11 @@ class Regalo extends Controller {
 
                         $aOff_maq_FCaj[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aOff_maq_FCaj[$i]['costo_tot_proceso'];
+                        $subtotal += $aOff_maq_FCaj[$i]['costo_tot_proceso'];
 
                         if (!self::checaCostos($aOff_maq_FCaj[$i], "Offset_Maquila")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Forro del cajon);";
+                            self::mError($aJson, $mensaje, $error .  "Offset Maquila(Forro del cajon);");
                         }
                     }
                 }
@@ -1761,7 +1804,9 @@ class Regalo extends Controller {
                     $corte_ancho_proceso = $papel_corte_ancho;
                     $corte_largo_proceso = $papel_corte_largo;
 
+
                     $tam0 = self::calcTamDigital($corte_ancho_proceso, $corte_largo_proceso);
+
 
                     $tam          = "";
                     $tam1         = 0;
@@ -1778,21 +1823,18 @@ class Regalo extends Controller {
 
                         $aDigFCaj[$i] = self::calculoDigital($tiraje, $nomb_tam_emp, $corte_ancho_proceso, $corte_largo_proceso, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aDigFCaj[$i]['costo_tot_proceso'];
+                        $subtotal += $aDigFCaj[$i]['costo_tot_proceso'];
 
                         if ($aDigFCaj[$i]['cabe_digital'] === "NO") {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . "No cabe con las medidas proporcionadas (Forro del cajon);";
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Forro del cajon);");
                         } elseif (!self::checaCostos($aDigFCaj[$i], "Digital")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error . "digital (Forro del cajon);";
+                            self::mError($aJson, $mensaje, $error . "digital (Forro del cajon);");
                         }
                     } else {
 
-                        $aJson['mensaje'] = $mensaje;
-                        $aJson['error']   = $aJson['error'] . $error . "Digital (Forro del cajon);";
+                        self::mError($aJson, $mensaje, $error . "Digital (Forro del cajon);");
 
                         $aDigFCaj[$i]['cabe_digital']      = "NO";
                         $aDigFCaj[$i]['cantidad']          = $tiraje;
@@ -1842,12 +1884,11 @@ class Regalo extends Controller {
                     $aSerFCaj[$i] = self::calculoSerigrafia($tiraje, $tipo_offset_serigrafia, $num_tintas, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
 
-                    $subtotal = $subtotal + $aSerFCaj[$i]['costo_tot_proceso'];
+                    $subtotal += $aSerFCaj[$i]['costo_tot_proceso'];
 
                     if ( !self::checaCostos($aSerFCaj[$i], "Serigrafia") ) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error . "Serigrafia(Forro del Cajon);";
+                            self::mError($aJson, $mensaje, $error . "Serigrafia(Forro del Cajon);");
                     }
 
 
@@ -2040,7 +2081,9 @@ class Regalo extends Controller {
 
                     $es_maquila = $this->recMaquila($papel_corte_ancho, $papel_corte_largo);
 
+
                     $aMerma = self::calculoMermaOffset($tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_papel, $ventas_model);
+
 
                     if (!$es_maquila) {
 
@@ -2057,14 +2100,13 @@ class Regalo extends Controller {
 
                         if (!self::checaCostos($offset_tiro, "Offset")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error . "Offset (Empalme de la Tapa);";
+                            self::mError($aJson, $mensaje, $error . "Offset (Empalme de la Tapa);");
                         }
 
                         $aOffEmpTap[$i]           = $offset_tiro;
                         $aOffEmpTap[$i]["mermas"] = $aMerma;
 
-                        $subtotal = $subtotal + $aOffEmpTap[$i]['costo_tot_proceso'];
+                        $subtotal += $aOffEmpTap[$i]['costo_tot_proceso'];
 
                         if (is_array($aMerma)) {
 
@@ -2074,12 +2116,11 @@ class Regalo extends Controller {
 
                         $aOff_maq_EmpTap[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aOff_maq_EmpTap[$i]['costo_tot_proceso'];
+                        $subtotal += $aOff_maq_EmpTap[$i]['costo_tot_proceso'];
 
                         if (!self::checaCostos($aOff_maq_EmpTap[$i], "Offset_Maquila")) {
 
-                                $aJson['mensaje'] = $mensaje;
-                                $aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Empalme de la Tapa);";
+                            self::mError($aJson, $mensaje, $error .  "Offset Maquila(Empalme de la Tapa);");
                         }
                     }
                 }
@@ -2108,21 +2149,18 @@ class Regalo extends Controller {
 
                         $aDigEmpTap[$i] = self::calculoDigital($tiraje, $nomb_tam_emp, $corte_ancho_proceso, $corte_largo_proceso, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aDigEmpTap[$i]['costo_tot_proceso'];
+                        $subtotal += $aDigEmpTap[$i]['costo_tot_proceso'];
 
                         if ($aDigEmpTap[$i]['cabe_digital'] === "NO") {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . "No cabe con las medidas proporcionadas (Empalme de la Tapa);";
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Empalme de la Tapa);");
                         } elseif (!self::checaCostos($aDigEmpTap[$i], "Digital")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error . "digital (Empalme de la Tapa);";
+                            self::mError($aJson, $mensaje, $error . "digital (Empalme de la Tapa);");
                         }
                     } else {
 
-                        $aJson['mensaje'] = $mensaje;
-                        $aJson['error']   = $aJson['error'] . $error . "digital Empalme de la Tapa;";
+                        self::mError($aJson, $mensaje, $error . "digital Empalme de la Tapa;");
 
                         $aDigEmpTap[$i]['cabe_digital']      = "NO";
                         $aDigEmpTap[$i]['cantidad']          = $tiraje;
@@ -2175,18 +2213,16 @@ class Regalo extends Controller {
                     $cortes_pliego    = intval($aJson['cortes'][$nomb_inner]);
                     $costo_unit_papel = floatval($aJson[$nomb_inner]['costo_unit_papel']);
 
-
                     $Merma_Ser_tmp = self:: calculoMermaOffset($tiraje, $num_tintas, $cortes_pliego, $costo_unit_papel, $ventas_model);
 
 
                     $aSerEmpTap[$i] = self::calculoSerigrafia($tiraje, $tipo_offset_serigrafia, $num_tintas, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                    $subtotal = $subtotal + $aSerEmpTap[$i]['costo_tot_proceso'];
+                    $subtotal += $aSerEmpTap[$i]['costo_tot_proceso'];
 
                     if ( !self::checaCostos($aSerEmpTap[$i], "Serigrafia") ) {
 
-                        $aJson['mensaje'] = $mensaje;
-                        $aJson['error']   = $aJson['error'] . $error . "Serigrafia (Empalme de la Tapa);";
+                        self::mError($aJson, $mensaje, $error . "Serigrafia (Empalme de la Tapa);");
                     }
 
                     $aSerEmpTap[$i]["mermas"] = $Merma_Ser_tmp;
@@ -2395,14 +2431,13 @@ class Regalo extends Controller {
 
                         if (!self::checaCostos($offset_tiro, "Offset")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error . "Offset (Forro de la Tapa);";
+                            self::mError($aJson, $mensaje, $error . "Offset (Forro de la Tapa);");
                         }
 
                         $aOffFTap[$i]           = $offset_tiro;
                         $aOffFTap[$i]["mermas"] = $aMerma;
 
-                        $subtotal = $subtotal + $aOffFTap[$i]['costo_tot_proceso'];
+                        $subtotal += $aOffFTap[$i]['costo_tot_proceso'];
 
 
                         if (is_array($aMerma)) {
@@ -2413,12 +2448,11 @@ class Regalo extends Controller {
 
                         $aOff_maq_FTap[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aOff_maq_FTap[$i]['costo_tot_proceso'];
+                        $subtotal += $aOff_maq_FTap[$i]['costo_tot_proceso'];
 
                         if (!self::checaCostos($aOff_maq_FTap[$i], "Offset_Maquila")) {
 
-                                $aJson['mensaje'] = $mensaje;
-                                $aJson['error']   = $aJson['error'] . $error .  "Offset Maquila(Forro de la Tapa);";
+                            self::mError($aJson, $mensaje, $error .  "Offset Maquila(Forro de la Tapa);");
                         }
                     }
                 }
@@ -2448,21 +2482,18 @@ class Regalo extends Controller {
 
                         $aDigFTap[$i] = self::calculoDigital($tiraje, $nomb_tam_emp, $corte_ancho_proceso, $corte_largo_proceso, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                        $subtotal = $subtotal + $aDigFTap[$i]['costo_tot_proceso'];
+                        $subtotal += $aDigFTap[$i]['costo_tot_proceso'];
 
                         if ($aDigFTap[$i]['cabe_digital'] === "NO") {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . "No cabe con las medidas proporcionadas (Forro de la Tapa);";
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Forro de la Tapa);");
                         } elseif (!self::checaCostos($aDigFTap[$i], "Digital")) {
 
-                            $aJson['mensaje'] = $mensaje;
-                            $aJson['error']   = $aJson['error'] . $error . "digital (Forro de la Tapa);";
+                            self::mError($aJson, $mensaje, $error . "digital (Forro de la Tapa);");
                         }
                     } else {
 
-                        $aJson['mensaje'] = $mensaje;
-                        $aJson['error']   = $aJson['error'] . $error . "digital (Forro de la Tapa);";
+                        self::mError($aJson, $mensaje, $error . "digital (Forro de la Tapa);");
 
                         $aDigFTap[$i]['cabe_digital']      = "NO";
                         $aDigFTap[$i]['cantidad']          = $tiraje;
@@ -2516,12 +2547,11 @@ class Regalo extends Controller {
 
                     $aSerFTap[$i] = self::calculoSerigrafia($tiraje, $tipo_offset_serigrafia, $num_tintas, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
-                    $subtotal = $subtotal + $aSerFTap[$i]['costo_tot_proceso'];
+                    $subtotal += $aSerFTap[$i]['costo_tot_proceso'];
 
                     if ( !self::checaCostos($aSerFTap[$i], "Serigrafia") ) {
 
-                        $aJson['mensaje'] = $mensaje;
-                        $aJson['error']   = $aJson['error'] . $error . "Serigrafia (Forro de la Tapa;";
+                        self::mError($aJson, $mensaje, $error . "Serigrafia (Forro de la Tapa;");
                     }
 
                     $aSerFTap[$i]["mermas"] = $Merma_Ser_tmp;
@@ -2542,7 +2572,7 @@ class Regalo extends Controller {
 
             $aJson['aImpFTap']['Offset'] = $aOffFTap_R;
 
-            $NombProcesos = $NombProcesos . "cot_reg_offsetftap";
+            $NombProcesos = $NombProcesos . "cot_reg_offsetftap;";
 
             unset($aOffFTap);
             unset($aOffFTap_R);
@@ -2649,6 +2679,7 @@ class Regalo extends Controller {
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
 
+
             $merma_Acab = $ventas_model->merma_acabados("Barniz UV");
 
             foreach ($merma_Acab as $row) {
@@ -2691,15 +2722,15 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($barniz_tmp,"Barniz") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Barniz UV (Empalme del cajon);";
+                self::mError($aJson, $mensaje, $error . "Barniz UV (Empalme del cajon);");
             }
 
             $aEmpBUV[$i] = $barniz_tmp;
 
-            $subtotal = $subtotal + $aEmpBUV[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpBUV[$i]['costo_tot_proceso'];
 
             $aEmpBUV[$i]['mermas'] = $aMerma_BUV;
+
 
             if (is_array($barniz_tmp)) {
 
@@ -2725,14 +2756,13 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($costo_laser_tmp,"Laser") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Corte Laser (Empalme del cajon);";
+                self::mError($aJson, $mensaje, $error . "Corte Laser (Empalme del cajon);");
             }
 
 
             $aEmpLaser[$i] = $costo_laser_tmp;
 
-            $subtotal = $subtotal + $aEmpLaser[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpLaser[$i]['costo_tot_proceso'];
 
             if (is_array($costo_laser_tmp)) {
 
@@ -2757,13 +2787,12 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($grabado_temp,"Grabado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Grabado (Empalme del cajon);";
+                self::mError($aJson, $mensaje, $error . "Grabado (Empalme del cajon);");
             }
 
             $aEmpGrab[$i] = $grabado_temp;
 
-            $subtotal = $subtotal + $aEmpGrab[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpGrab[$i]['costo_tot_proceso'];
 
             if (is_array($grabado_temp)) {
 
@@ -2787,13 +2816,12 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($grabado_HS_temp,"HotStamping") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "HotStamping (Empalme del cajon);";
+                self::mError($aJson, $mensaje, $error . "HotStamping (Empalme del cajon);");
             }
 
             $aEmpHS[$i] = $grabado_HS_temp;
 
-            $subtotal = $subtotal + $aEmpHS[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpHS[$i]['costo_tot_proceso'];
 
             if (is_array($grabado_HS_temp)) {
 
@@ -2816,13 +2844,12 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($Laminado_tmp,"Laminado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Laminado (Empalme del cajon);";
+                self::mError($aJson, $mensaje, $error . "Laminado (Empalme del cajon);");
             }
 
             $aEmpLam[$i] = $Laminado_tmp;
 
-            $subtotal = $subtotal + $aEmpLam[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpLam[$i]['costo_tot_proceso'];
 
             if (count($Laminado_tmp) > 0) {
 
@@ -2841,13 +2868,12 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($aAcbSuaje_tmp,"Suaje") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Suaje (Empalme del cajon);";
+                self::mError($aJson, $mensaje, $error . "Suaje (Empalme del cajon);");
             }
 
             $aEmpSuaje[$i] = $aAcbSuaje_tmp;
 
-            $subtotal = $subtotal + $aEmpSuaje[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpSuaje[$i]['costo_tot_proceso'];
         }
     }
 
@@ -3020,14 +3046,13 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($barniz_tmp,"Barniz") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Barniz UV (Forro del cajon);";
+                self::mError($aJson, $mensaje, $error . "Barniz UV (Forro del cajon);");
             }
 
             $aFCajBUV[$i]           = $barniz_tmp;
             $aFCajBUV[$i]['mermas'] = $aMerma_BUV;
 
-            $subtotal = $subtotal + $aFCajBUV[$i]['costo_tot_proceso'];
+            $subtotal += $aFCajBUV[$i]['costo_tot_proceso'];
 
             if (is_array($barniz_tmp)) {
 
@@ -3051,10 +3076,11 @@ class Regalo extends Controller {
 
             $aFCajLaser[$i] = self::calculoLaser($tipoGrabado, $tiraje, $Ancho, $Largo, $ventas_model);
 
+            $subtotal += $aFCajLaser[$i]['costo_tot_proceso'];
+
             if ( !self::checaCostos($aFCajLaser[$i],"Laser") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Corte Laser (Forro del cajon);";
+                self::mError($aJson, $mensaje, $error . "Corte Laser (Forro del cajon);");
             }
         }
 
@@ -3069,12 +3095,11 @@ class Regalo extends Controller {
 
             $aFCajGrab[$i] = self::calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $cortes, $papel_costo_unit, $ventas_model);
 
-            $subtotal = $subtotal + $aFCajGrab[$i]['costo_tot_proceso'];
+            $subtotal += $aFCajGrab[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFCajGrab[$i],"Grabado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Grabado (Forro del cajon);";
+                self::mError($aJson, $mensaje, $error . "Grabado (Forro del cajon);");
             }
         }
 
@@ -3089,12 +3114,11 @@ class Regalo extends Controller {
 
             $aFCajHS[$i] = self::calculoHotStamping($tipoGrabado, $tiraje, $AnchoHS, $LargoHS, $ColorHS, $cortes, $papel_costo_unit, $ventas_model);
 
-            $subtotal = $subtotal + $aFCajHS[$i]['costo_tot_proceso'];
+            $subtotal += $aFCajHS[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFCajHS[$i],"HotStamping") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "HotStamping (Forro del cajon);";
+                self::mError($aJson, $mensaje, $error . "HotStamping (Forro del cajon);");
             }
         }
 
@@ -3110,12 +3134,11 @@ class Regalo extends Controller {
 
             $aFCajLam[$i] = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
-            $subtotal = $subtotal + $aFCajLam[$i]['costo_tot_proceso'];
+            $subtotal += $aFCajLam[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFCajLam[$i],"Laminado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Laminado (Forro del cajon);";
+                self::mError($aJson, $mensaje, $error . "Laminado (Forro del cajon);");
             }
         }
 
@@ -3130,12 +3153,11 @@ class Regalo extends Controller {
 
             $aFCajSuaje[$i] = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
 
-            $subtotal = $subtotal + $aFCajSuaje[$i]['costo_tot_proceso'];
+            $subtotal += $aFCajSuaje[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFCajSuaje[$i],"Suaje") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Suaje (Forro del cajon);";
+                self::mError($aJson, $mensaje, $error . "Suaje (Forro del cajon);");
             }
         }
     }
@@ -3308,14 +3330,14 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($barniz_tmp,"Barniz") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Barniz UV (Empalme de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Barniz UV (Empalme de la Tapa);");
             }
 
             $aEmpTapBUV[$i]           = $barniz_tmp;
             $aEmpTapBUV[$i]['mermas'] = $aMerma_BUV;
 
-            $subtotal = $subtotal + $aEmpTapBUV[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpTapBUV[$i]['costo_tot_proceso'];
+
 
             if (is_array($barniz_tmp)) {
 
@@ -3339,12 +3361,11 @@ class Regalo extends Controller {
 
             $aEmpTapLaser[$i] = self::calculoLaser($tipoGrabado, $tiraje, $Ancho, $Largo, $ventas_model);
 
-            $subtotal = $subtotal + $aEmpTapLaser[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpTapLaser[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aEmpTapLaser[$i],"Laser") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Corte Laser (Empalme de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Corte Laser (Empalme de la Tapa);");
             }
         }
 
@@ -3359,12 +3380,11 @@ class Regalo extends Controller {
 
             $aEmpTapGrab[$i] = self::calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $cortes, $papel_costo_unit, $ventas_model);
 
-            $subtotal = $subtotal + $aEmpTapGrab[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpTapGrab[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aEmpTapGrab[$i],"Grabado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Grabado (Empalme de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Grabado (Empalme de la Tapa);");
             }
         }
 
@@ -3379,12 +3399,11 @@ class Regalo extends Controller {
 
             $aEmpTapHS[$i] = self::calculoHotStamping($tipoGrabado, $tiraje, $AnchoHS, $LargoHS, $ColorHS, $cortes, $papel_costo_unit, $ventas_model);
 
-            $subtotal = $subtotal + $aEmpTapHS[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpTapHS[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aEmpTapHS[$i],"HotStamping") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "HotStamping (Empalme de la Tapa;";
+                self::mError($aJson, $mensaje, "HotStamping (Empalme de la Tapa;");
             }
         }
 
@@ -3400,12 +3419,11 @@ class Regalo extends Controller {
 
             $aEmpTapLam[$i] = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
-            $subtotal = $subtotal + $aEmpTapLam[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpTapLam[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aEmpTapLam[$i],"Laminado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Laminado (Empalme de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Laminado (Empalme de la Tapa);");
             }
         }
 
@@ -3420,12 +3438,11 @@ class Regalo extends Controller {
 
             $aEmpTapSuaje[$i] = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
 
-            $subtotal = $subtotal + $aEmpTapSuaje[$i]['costo_tot_proceso'];
+            $subtotal += $aEmpTapSuaje[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aEmpTapSuaje[$i],"Suaje") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Suaje (Empalme de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Suaje (Empalme de la Tapa);");
             }
         }
     }
@@ -3597,14 +3614,14 @@ class Regalo extends Controller {
 
             if ( !self::checaCostos($barniz_tmp,"Barniz") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Barniz UV (Forro de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Barniz UV (Forro de la Tapa);");
             }
 
             $aFTapBUV[$i]           = $barniz_tmp;
             $aFTapBUV[$i]['mermas'] = $aMerma_BUV;
 
-            $subtotal = $subtotal + $aFTapBUV[$i]['costo_tot_proceso'];
+            $subtotal += $aFTapBUV[$i]['costo_tot_proceso'];
+
 
             if (is_array($barniz_tmp)) {
 
@@ -3628,12 +3645,11 @@ class Regalo extends Controller {
 
             $aFTapLaser[$i] = self::calculoLaser($tipoGrabado, $tiraje, $Ancho, $Largo, $ventas_model);
 
-            $subtotal = $subtotal + $aFTapLaser[$i]['costo_tot_proceso'];
+            $subtotal += $aFTapLaser[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFTapLaser[$i],"Laser") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Corte Laser (Forro de la Tap);";
+                self::mError($aJson, $mensaje, $error . "Corte Laser (Forro de la Tap);");
             }
         }
 
@@ -3649,12 +3665,11 @@ class Regalo extends Controller {
 
             $aFTapGrab[$i] = self::calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $cortes, $papel_costo_unit, $ventas_model);
 
-            $subtotal = $subtotal + $aFTapGrab[$i]['costo_tot_proceso'];
+            $subtotal += $aFTapGrab[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFTapGrab[$i],"Grabado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Grabado (Forro de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Grabado (Forro de la Tapa);");
             }
         }
 
@@ -3670,12 +3685,11 @@ class Regalo extends Controller {
 
             $aFTapHS[$i] = self::calculoHotStamping($tipoGrabado, $tiraje, $AnchoHS, $LargoHS, $ColorHS, $cortes, $papel_costo_unit, $ventas_model);
 
-            $subtotal = $subtotal + $aFTapHS[$i]['costo_tot_proceso'];
+            $subtotal += $aFTapHS[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFTapHS[$i],"HotStamping") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "HotStamping (Forro de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "HotStamping (Forro de la Tapa);");
             }
         }
 
@@ -3692,12 +3706,11 @@ class Regalo extends Controller {
 
             $aFTapLam[$i] = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
-            $subtotal = $subtotal + $aFTapLam[$i]['costo_tot_proceso'];
+            $subtotal += $aFTapLam[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFTapLam[$i],"Laminado") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Laminado (Forro de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Laminado (Forro de la Tapa);");
             }
         }
 
@@ -3712,12 +3725,11 @@ class Regalo extends Controller {
 
             $aFTapSuaje[$i] = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
 
-            $subtotal = $subtotal + $aFTapSuaje[$i]['costo_tot_proceso'];
+            $subtotal += $aFTapSuaje[$i]['costo_tot_proceso'];
 
             if ( !self::checaCostos($aFTapSuaje[$i],"Suaje") ) {
 
-                $aJson['mensaje'] = $mensaje;
-                $aJson['error']   = $aJson['error'] . $error . "Suaje (Forro de la Tapa);";
+                self::mError($aJson, $mensaje, $error . "Suaje (Forro de la Tapa);");
             }
         }
     }
@@ -3812,59 +3824,61 @@ class Regalo extends Controller {
 /************************* Inicia Accesorios ***************************/
 
 
-    if (isset($_POST["aAccesorios"]) and !empty($_POST["aAccesorios"])) {
+    $aAccesorios_tmp = json_decode($_POST['aAccesorios'], true);
+    $aAccesorios_R   = array_values($aAccesorios_tmp);
 
-        $aAccesorios_tmp = json_decode($_POST['aAccesorios'], true);
-        $aAccesorios_R   = array_values($aAccesorios_tmp);
-
-        $cuantos_aAccesorios_tmp = count($aAccesorios_tmp);
+    $cuantos_aAccesorios_tmp = count($aAccesorios_tmp);
 
 
-        $aAccesorios = [];
+    $aAccesorios = [];
 
-        for ($i = 0; $i < $cuantos_aAccesorios_tmp; $i++) {
+    for ($i = 0; $i < $cuantos_aAccesorios_tmp; $i++) {
 
-            $Tipo_accesorio = "";
-            $Tipo           = null;
-            $Largo          = null;
-            $Ancho          = null;
-            $Color          = null;
+        $Tipo_accesorio = "";
+        $Tipo           = null;
+        $Largo          = null;
+        $Ancho          = null;
+        $Color          = null;
 
-            $Tipo_accesorio = utf8_encode(trim(strval($aAccesorios_R[$i]['Tipo_accesorio'])));
-            $Tipo           = $aAccesorios_R[$i]['Herraje'];
-            $Largo          = $aAccesorios_R[$i]['Largo'];
-            $Ancho          = $aAccesorios_R[$i]['Ancho'];
-            $Color          = $aAccesorios_R[$i]['Color'];
+        $Tipo_accesorio = utf8_encode(trim(strval($aAccesorios_R[$i]['Tipo_accesorio'])));
+        $Tipo           = $aAccesorios_R[$i]['Herraje'];
+        $Largo          = $aAccesorios_R[$i]['Largo'];
+        $Ancho          = $aAccesorios_R[$i]['Ancho'];
+        $Color          = $aAccesorios_R[$i]['Color'];
 
-            $accesorio_tiraje = $tiraje;
+        $accesorio_tiraje = $tiraje;
 
-            $aCosto_accesorio = self::calculoAccesorios($Tipo_accesorio, $tiraje, $ventas_model);
-
-
-            $aAccesorios[$i]['Tipo_accesorio']       = $Tipo_accesorio;
-            $aAccesorios[$i]['Tipo']                 = $Tipo;
-            $aAccesorios[$i]['tiraje']               = $accesorio_tiraje;
-            $aAccesorios[$i]['Largo']                = $Largo;
-            $aAccesorios[$i]['Ancho']                = $Ancho;
-            $aAccesorios[$i]['Color']                = $Color;
-            $aAccesorios[$i]['costo_unit_accesorio'] = $aCosto_accesorio['accesorio_costo_unitario'];
-            $aAccesorios[$i]['costo_tot_proceso']     = $aCosto_accesorio['costo_tot_proceso'];
+        $aCosto_accesorio = self::calculoAccesorios($Tipo_accesorio, $tiraje, $ventas_model);
 
 
-            $subtotal = $subtotal + $aAccesorios[$i]['costo_tot_proceso'];
+        $aAccesorios[$i]['Tipo_accesorio']       = $Tipo_accesorio;
+        $aAccesorios[$i]['Tipo']                 = $Tipo;
+        $aAccesorios[$i]['tiraje']               = $accesorio_tiraje;
+        $aAccesorios[$i]['Largo']                = $Largo;
+        $aAccesorios[$i]['Ancho']                = $Ancho;
+        $aAccesorios[$i]['Color']                = $Color;
+        $aAccesorios[$i]['costo_unit_accesorio'] = $aCosto_accesorio['accesorio_costo_unitario'];
+        $aAccesorios[$i]['costo_tot_proceso']     = $aCosto_accesorio['costo_tot_proceso'];
+
+
+        $subtotal += $aAccesorios[$i]['costo_tot_proceso'];
+
+        if ($aCosto_accesorio['accesorio_costo_unitario'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error . "accesorio;");
         }
+    }
 
 
-        if (count($aAccesorios) > 0) {
+    if (count($aAccesorios) > 0) {
 
-            $aJson['Accesorios'] = $aAccesorios;
+        $aJson['Accesorios'] = $aAccesorios;
 
-            $NombProcesos = $NombProcesos . "cot_accesorios;";
+        $NombProcesos = $NombProcesos . "cot_accesorios;";
 
-            if (is_array($aAccesorios)) {
+        if (is_array($aAccesorios)) {
 
-                unset($aAccesorios);
-            }
+            unset($aAccesorios);
         }
     }
 
@@ -3876,91 +3890,93 @@ class Regalo extends Controller {
 /************************* Inicia Bancos ********************************/
 
 
-    if (isset($_POST["aBancos"]) and !empty($_POST["aBancos"])) {
+    $aBancos_tmp = json_decode($_POST['aBancos'], true);
 
-        $aBancos_tmp = json_decode($_POST['aBancos'], true);
+    $aBancos_R   = array_values($aBancos_tmp);
 
-        $aBancos_R   = array_values($aBancos_tmp);
-
-        $cuantos_aBancos_tmp = count($aBancos_tmp);
+    $cuantos_aBancos_tmp = count($aBancos_tmp);
 
 
-        $aBancos = [];
+    $aBancos = [];
 
-        for ($i = 0; $i < $cuantos_aBancos_tmp; $i++) {
+    for ($i = 0; $i < $cuantos_aBancos_tmp; $i++) {
 
-            $Tipo_banco = "";
-            $Tipo_banco = utf8_encode(trim(strval($aBancos_R[$i]['Tipo_banco'])));
+        $Tipo_banco = "";
+        $Tipo_banco = utf8_encode(trim(strval($aBancos_R[$i]['Tipo_banco'])));
 
-            $largo       = 0;
-            $ancho       = 0;
-            $profundidad = 0;
-            $suaje       = "";
+        $largo       = 0;
+        $ancho       = 0;
+        $profundidad = 0;
+        $suaje       = "";
 
-            $largo       = $aBancos_R[$i]['largo'];
-            $ancho       = $aBancos_R[$i]['ancho'];
-            $profundidad = $aBancos_R[$i]['Profundidad'];
-
-
-            $aCosto_Banco = self::calculoBancos($Tipo_banco, $tiraje, $ventas_model);
-
-            switch ($Tipo_banco) {
-                case 'Carton':
-
-                    $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
-
-                    break;
-                case 'Eva':
-
-                    $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
-
-                    break;
-                case 'Espuma':
-
-                    $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
-
-                    break;
-                case 'Empalme Banco':
-
-                    $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
-
-                    break;
-                case 'Cartulina Suajada':
-
-                    $suaje = "SI";
-
-                    break;
-            }
+        $largo       = $aBancos_R[$i]['largo'];
+        $ancho       = $aBancos_R[$i]['ancho'];
+        $profundidad = $aBancos_R[$i]['Profundidad'];
 
 
-            $aBancos[$i]['Tipo_banco']       = $Tipo_banco;
-            $aBancos[$i]['tiraje']           = $tiraje;
-            $aBancos[$i]['largo']            = $largo;
-            $aBancos[$i]['ancho']            = $ancho;
-            $aBancos[$i]['profundidad']      = $profundidad;
-            $aBancos[$i]['Suaje']            = $suaje;
-            $aBancos[$i]['costo_unit_banco'] = $aCosto_Banco['banco_costo_unitario'];
-            $aBancos[$i]['costo_tot_proceso']= $aCosto_Banco['costo_tot_proceso'];
+        $aCosto_Banco = self::calculoBancos($Tipo_banco, $tiraje, $ventas_model);
 
-            $subtotal = $subtotal + $aBancos[$i]['costo_tot_proceso'];
+        switch ($Tipo_banco) {
+            case 'Carton':
 
-            if (count($aCosto_Banco) > 0) {
+                $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
 
-                unset($aCosto_accesorio);
-            }
+                break;
+            case 'Eva':
+
+                $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
+
+                break;
+            case 'Espuma':
+
+                $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
+
+                break;
+            case 'Empalme Banco':
+
+                $suaje = utf8_encode(trim(strval($aBancos_R[$i]['Suaje'])));
+
+                break;
+            case 'Cartulina Suajada':
+
+                $suaje = "SI";
+
+                break;
         }
 
 
-        if (count($aBancos) > 0) {
+        $aBancos[$i]['Tipo_banco']       = $Tipo_banco;
+        $aBancos[$i]['tiraje']           = $tiraje;
+        $aBancos[$i]['largo']            = $largo;
+        $aBancos[$i]['ancho']            = $ancho;
+        $aBancos[$i]['profundidad']      = $profundidad;
+        $aBancos[$i]['Suaje']            = $suaje;
+        $aBancos[$i]['costo_unit_banco'] = $aCosto_Banco['banco_costo_unitario'];
+        $aBancos[$i]['costo_tot_proceso']= $aCosto_Banco['costo_tot_proceso'];
 
-            $aJson['Bancos'] = $aBancos;
+        $subtotal += $aBancos[$i]['costo_tot_proceso'];
 
-            $NombProcesos = $NombProcesos . "cot_bancos;";
+        if($aCosto_Banco['banco_costo_unitario'] <= 0) {
 
-            if (is_array($aBancos)) {
+            self::mError($aJson, $mensaje, $error . "banco;");
+        }
 
-                unset($aBancos);
-            }
+        if (count($aCosto_Banco) > 0) {
+
+            unset($aCosto_accesorio);
+        }
+    }
+
+
+    if (count($aBancos) > 0) {
+
+        $aJson['Bancos'] = $aBancos;
+
+        $NombProcesos = $NombProcesos . "cot_bancos;";
+
+        if (is_array($aBancos)) {
+
+            unset($aBancos);
         }
     }
 
@@ -3972,102 +3988,104 @@ class Regalo extends Controller {
 /*************************** Inicia Cierres *****************************/
 
 
-    if (isset($_POST["aCierres"]) and !empty($_POST["aCierres"])) {
+    $aCierres_tmp2 = json_decode($_POST['aCierres'], true);
+    $aCierres_tmp = array_values($aCierres_tmp2);
 
-        $aCierres_tmp2 = json_decode($_POST['aCierres'], true);
-        $aCierres_tmp = array_values($aCierres_tmp2);
+    $cuantos_aCierres = 0;
+    $cuantos_aCierres = count($aCierres_tmp);
 
-        $cuantos_aCierres = 0;
-        $cuantos_aCierres = count($aCierres_tmp);
+    $aCierres = [];
 
-        $aCierres = [];
+    $tiraje = $tiraje;
 
-        $tiraje = $tiraje;
+    for ($i = 0; $i < $cuantos_aCierres; $i++) {
 
-        for ($i = 0; $i < $cuantos_aCierres; $i++) {
-
-            $Tipo_cierre = "";
-            $Tipo_cierre = utf8_encode(trim(strval($aCierres_tmp[$i]['Tipo_cierre'])));
+        $Tipo_cierre = "";
+        $Tipo_cierre = utf8_encode(trim(strval($aCierres_tmp[$i]['Tipo_cierre'])));
 
 
-            $aCierres[$i]['Tipo_cierre'] = $Tipo_cierre;
-            $aCierres[$i]['tiraje']      = $tiraje;
+        $aCierres[$i]['Tipo_cierre'] = $Tipo_cierre;
+        $aCierres[$i]['tiraje']      = $tiraje;
 
-            $numpares = 0;
-            $largo    = null;
-            $ancho    = null;
-            $tipo     = null;
-            $color    = null;
+        $numpares = 0;
+        $largo    = null;
+        $ancho    = null;
+        $tipo     = null;
+        $color    = null;
 
-            $costo_cierre = 0;
+        $costo_cierre = 0;
 
-            $numpares = $aCierres_tmp[$i]['numpares'];
-            $numpares = intval($numpares);
-
-
-            $aCosto_cierres = self::calculoCierre($Tipo_cierre, $tiraje, $numpares, $ventas_model);
-
-            switch ($Tipo_cierre) {
-                case 'Iman':
-
-                    $largo = intval($aCierres_tmp[$i]['largo']);
-                    $ancho = intval($aCierres_tmp[$i]['ancho']);
-
-                    break;
-                case 'Liston':
-
-                    $largo = intval($aCierres_tmp[$i]['largo']);
-                    $ancho = intval($aCierres_tmp[$i]['ancho']);
-                    $tipo  = utf8_encode(trim(strval($aCierres_tmp[$i]['tipo'])));
-                    $color = utf8_encode(trim(strval($aCierres_tmp[$i]['color'])));
-
-                    break;
-                case 'Marialuisa':
-
-                    break;
-                case 'Suaje calado':
-
-                    $largo = intval($aCierres_tmp[$i]['largo']);
-                    $ancho = intval($aCierres_tmp[$i]['ancho']);
-                    $tipo  = utf8_encode(trim(strval($aCierres_tmp[$i]['tipo'])));
-
-                    break;
-                case 'Velcro':
-
-                    break;
-            }
+        $numpares = $aCierres_tmp[$i]['numpares'];
+        $numpares = intval($numpares);
 
 
-            $aCierres[$i]['numpares'] = intval($numpares);
+        $aCosto_cierres = self::calculoCierre($Tipo_cierre, $tiraje, $numpares, $ventas_model);
 
+        switch ($Tipo_cierre) {
+            case 'Iman':
 
-            $aCierres[$i]['largo'] = $largo;
-            $aCierres[$i]['ancho'] = $ancho;
-            $aCierres[$i]['tipo']  = $tipo;
-            $aCierres[$i]['color'] = $color;
+                $largo = intval($aCierres_tmp[$i]['largo']);
+                $ancho = intval($aCierres_tmp[$i]['ancho']);
 
-            $aCierres[$i]['costo_unitario']    = $aCosto_cierres['cierre_costo_unitario'];
-            $aCierres[$i]['costo_tot_proceso'] = $aCosto_cierres['costo_tot_proceso'];
+                break;
+            case 'Liston':
 
-            $subtotal = $subtotal + $aCierres[$i]['costo_tot_proceso'];
+                $largo = intval($aCierres_tmp[$i]['largo']);
+                $ancho = intval($aCierres_tmp[$i]['ancho']);
+                $tipo  = utf8_encode(trim(strval($aCierres_tmp[$i]['tipo'])));
+                $color = utf8_encode(trim(strval($aCierres_tmp[$i]['color'])));
 
-            if (count($aCosto_cierres) > 0) {
+                break;
+            case 'Marialuisa':
 
-                unset($aCosto_cierres);
-            }
+                break;
+            case 'Suaje calado':
+
+                $largo = intval($aCierres_tmp[$i]['largo']);
+                $ancho = intval($aCierres_tmp[$i]['ancho']);
+                $tipo  = utf8_encode(trim(strval($aCierres_tmp[$i]['tipo'])));
+
+                break;
+            case 'Velcro':
+
+                break;
         }
 
 
-        if (count($aCierres) > 0) {
+        $aCierres[$i]['numpares'] = intval($numpares);
 
-            $aJson['Cierres'] = $aCierres;
 
-            $NombProcesos = $NombProcesos . "cot_cierres;";
+        $aCierres[$i]['largo'] = $largo;
+        $aCierres[$i]['ancho'] = $ancho;
+        $aCierres[$i]['tipo']  = $tipo;
+        $aCierres[$i]['color'] = $color;
 
-            if (is_array($aCierres)) {
+        $aCierres[$i]['costo_unitario']    = $aCosto_cierres['cierre_costo_unitario'];
+        $aCierres[$i]['costo_tot_proceso'] = $aCosto_cierres['costo_tot_proceso'];
 
-                unset($aCierres);
-            }
+        $subtotal += $aCierres[$i]['costo_tot_proceso'];
+
+        if($aCosto_cierres['cierre_costo_unitario'] <= 0) {
+
+            self::mError($aJson, $mensaje, $error . "cierres;");
+        }
+
+        if (count($aCosto_cierres) > 0) {
+
+            unset($aCosto_cierres);
+        }
+    }
+
+
+    if (count($aCierres) > 0) {
+
+        $aJson['Cierres'] = $aCierres;
+
+        $NombProcesos = $NombProcesos . "cot_cierres;";
+
+        if (is_array($aCierres)) {
+
+            unset($aCierres);
         }
     }
 
@@ -4213,7 +4231,7 @@ class Regalo extends Controller {
         $costo_caja = floatval($caja * $tarima_temp);
 
         $empaque = $costo_tarima + $costo_playo + $costo_caja;
-        $empaque = round(floatval($empaque), $num_dec2);
+        $empaque = round(floatval($empaque), 2);
 
 
         $aJson['empaque'] = $empaque;
@@ -4468,11 +4486,6 @@ class Regalo extends Controller {
 
 /******************************************/
 
-        /*
-        $aJson['post'] = $_POST;
-
-        die(json_encode($aJson));
-        */
 
 /******************************************/
 
@@ -4505,19 +4518,17 @@ class Regalo extends Controller {
 
             if ($post) {
 
-                self::prettyPrint($_POST, "post", 4592);
+                self::prettyPrint($_POST, "post", 4534);
             }
 
             if ($debuger) {
 
-                self::prettyPrint($aJson, "aJson", 4597);
+                self::prettyPrint($aJson, "aJson", 4539);
             }
 
             echo json_encode($aJson);
         }
     }
-
+}
 
 /****************** Termina la funcion saveCaja() **********************/
-
-}

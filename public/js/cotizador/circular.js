@@ -1035,7 +1035,7 @@ function appndPapeles(arrPapel, seccion){
         var trResumen = '<tr><td></td><td>Papel '+ nombreP +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
 
         $('#resumenEmpalme').append(trResumen);
-    }
+}
 
 function getIdClient() {
 

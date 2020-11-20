@@ -2374,7 +2374,6 @@
                 <!-- -->
             </tbody>
 
-
             <tbody id="resumenEncuadernacion">
                 <!-- -->
             </tbody>

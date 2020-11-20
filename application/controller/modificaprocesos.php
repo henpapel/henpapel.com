@@ -25,6 +25,7 @@
     
  	public function cambioProcesos() {
 
+        session_start();
         if (!isset($_SESSION)) session_start();
         
         $login                  = $this->loadController('login');
@@ -131,6 +132,7 @@
             }
         }
         if($login->isLoged()) {
+            
             require 'application/views/templates/head.php';
             require 'application/views/templates/top_menu.php';
             require 'application/views/costoprocesos/costo_procesos.php';
@@ -254,16 +256,17 @@
 
     public function updateProcOff() {
 
+        session_start();
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->UpdateProcOff($_POST);
 
         if ($update) {
-            echo '<script language="javascript">';
-            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/;"';
-            echo '</script>';
-            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
+            
+            $_SESSION['error'] = false;
+            header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
+            $_SESSION['error'] = true;
             echo '<script language="javascript">';
             echo 'alert("No se pudo procesar modificacion");';
             echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';

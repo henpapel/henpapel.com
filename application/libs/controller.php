@@ -709,6 +709,7 @@ class Controller {
 
         $papel_secc = self::getPapelCarton($seccion, $id_papel, $options_model);
 
+
         $costo_unit_papel = floatval($papel_secc['costo_unit_papel']);
 
         $p_ancho = floatval($papel_secc['ancho_papel']);
@@ -767,8 +768,8 @@ class Controller {
 
         $aPapel_secc = [];
 
-        $aPapel_secc['id_papel'] = $papel_secc['id_papel'];
         $aPapel_secc['tiraje']   = $tiraje;
+        $aPapel_secc['id_papel'] = $papel_secc['id_papel'];
 
         if ($papel_secc['carton'] === true) {
 
@@ -925,7 +926,14 @@ class Controller {
         $areaUtilizada = 0;
         $orientacion   = "";
 
-        if ($b > 0 and $h > 0) {
+        $Desperdicio       = 0;
+        $Desperdicio_pctje = 0;
+        $areaTotal         = 0;
+        $Utilizacion_pctje = 0;
+
+
+
+        if ($b > 0 and $h > 0 and $cb > 0 and $ch > 0) {
 
             $areaTotal         = round(floatval($b * $h));
             $cortesB           = intval($b / $cb);
@@ -3417,6 +3425,7 @@ class Controller {
 
         $aSuaje_tmp = [];
 
+        $aSuaje_tmp['tiraje']      = $tiraje;
         $aSuaje_tmp['tipoGrabado'] = $tipoGrabado;
         $aSuaje_tmp['Largo']       = $Largo;
         $aSuaje_tmp['Ancho']       = $Ancho;
@@ -3834,19 +3843,20 @@ class Controller {
             $l_ok = false;
         }
 
-
         $perf_iman_y_puesta = round(floatval($perf_iman_costo_unitario * $tiraje), 2);
 
 
-        $db_tmp = $ventas_model->costo_proceso("proc_encuadernacion", "Despunte de esquinas para cajon");
 
-        $enc_costo_unitario_esquinas = 0;
+        $db_tmp = $ventas_model->costo_proceso("proc_encuadernacion", "Arreglo de Forrado de cajon");
+
+        $enc_arreglo_forrado_cajon_costo_unitario = 0;
 
         foreach ($db_tmp as $row) {
 
-            $enc_costo_unitario_esquinas = $row['precio_unitario'];
-            $enc_costo_unitario_esquinas = round(floatval($enc_costo_unitario_esquinas), 4);
+            $enc_arreglo_forrado_cajon_costo_unitario = $row['precio_unitario'];
+            $enc_arreglo_forrado_cajon_costo_unitario = round(floatval($enc_arreglo_forrado_cajon_costo_unitario), 2);
         }
+
 
         if (is_array($db_tmp)) {
 
@@ -3854,14 +3864,49 @@ class Controller {
         }
 
 
-        if ($enc_costo_unitario_esquinas <= 0) {
+        $db_tmp = $ventas_model->costo_proceso("proc_encuadernacion", "Forrado de cajon");
 
-            $l_ok = false;
+        $enc_forrado_cajon_costo_unitario = 0;
+
+        foreach ($db_tmp as $row) {
+
+            $enc_forrado_cajon_costo_unitario = $row['precio_unitario'];
+            $enc_forrado_cajon_costo_unitario = round(floatval($enc_forrado_cajon_costo_unitario), 2);
         }
 
 
-        $despunte_de_esquinas_para_cajon = round(floatval($enc_costo_unitario_esquinas * $tiraje), 2);
+        if (is_array($db_tmp)) {
 
+            unset($db_tmp);
+        }
+
+
+        $calculo_tmp['tiraje']                          = $tiraje;
+        $calculo_tmp['perf_iman_costo_unitario']        = $perf_iman_costo_unitario;
+        $calculo_tmp['perf_iman_y_puesta']              = $perf_iman_y_puesta;
+
+        $calculo_tmp['arreglo_forrado_cajon_costo_unitario'] = $enc_arreglo_forrado_cajon_costo_unitario;
+        $calculo_tmp['arreglo_forrado_cajon_costo'] = $enc_arreglo_forrado_cajon_costo_unitario;
+
+        $calculo_tmp['forrado_cajon_costo_unitario'] = $enc_forrado_cajon_costo_unitario;
+        $calculo_tmp['forrado_cajon_costo'] = $enc_forrado_cajon_costo_unitario * $tiraje;
+
+        $calculo_tmp['costo_tot_proceso']       = round(floatval($calculo_tmp['perf_iman_y_puesta'] + $calculo_tmp['arreglo_forrado_cajon_costo'] + $calculo_tmp['forrado_cajon_costo']), 2);
+
+
+        if (!$l_ok) {
+
+            $calculo_tmp['costo_tot_proceso'] = 0;
+        }
+
+
+        return $calculo_tmp;
+    }
+
+
+    protected function calculoEncajada($tiraje, $ventas_model) {
+
+        $calculo_tmp = [];
 
         $db_tmp = $ventas_model->costo_proceso("proc_encuadernacion", "Encajada");
 
@@ -3878,30 +3923,40 @@ class Controller {
             unset($db_tmp);
         }
 
-
-        if ($enc_encajada_costo_unitario <= 0) {
-
-            $l_ok = false;
-        }
-
-
         $enc_costo_encajada = round(floatval($enc_encajada_costo_unitario * $tiraje), 2);
 
-        $calculo_tmp['tiraje']                          = $tiraje;
-        $calculo_tmp['perf_iman_costo_unitario']        = $perf_iman_costo_unitario;
-        $calculo_tmp['perf_iman_y_puesta']              = $perf_iman_y_puesta;
-        $calculo_tmp['despunte_costo_unitario']         = $enc_costo_unitario_esquinas;
-        $calculo_tmp['despunte_de_esquinas_para_cajon'] = $despunte_de_esquinas_para_cajon;
-        $calculo_tmp['encajada_costo_unitario']         = $enc_encajada_costo_unitario;
-        $calculo_tmp['costo_encajada']                  = $enc_costo_encajada;
-        $calculo_tmp['costo_tot_proceso']               = $despunte_de_esquinas_para_cajon + $enc_costo_encajada;
+        $calculo_tmp['tiraje']            = $tiraje;
+        $calculo_tmp['costo_unitario']    = $enc_encajada_costo_unitario;
+        $calculo_tmp['costo_tot_proceso'] = $enc_costo_encajada;
+
+        return $calculo_tmp;
+    }
 
 
-        if (!$l_ok) {
+    protected function calculoDespunteEsquinasCajon($tiraje, $ventas_model) {
 
-            $calculo_tmp['costo_tot_proceso'] = 0;
+        $calculo_tmp = [];
+
+        $db_tmp = $ventas_model->costo_proceso("proc_encuadernacion", "Despunte de esquinas para cajon");
+
+        $costo_unitario_esquinas = 0;
+
+        foreach ($db_tmp as $row) {
+
+            $costo_unitario_esquinas = $row['precio_unitario'];
+            $costo_unitario_esquinas = round(floatval($costo_unitario_esquinas), 2);
         }
 
+        if (is_array($db_tmp)) {
+
+            unset($db_tmp);
+        }
+
+        $costo_tot_proceso = round(floatval($costo_unitario_esquinas * $tiraje), 2);
+
+        $calculo_tmp['tiraje']                  = $tiraje;
+        $calculo_tmp['costo_unitario_esquinas'] = $costo_unitario_esquinas;
+        $calculo_tmp['costo_tot_proceso']       = $costo_tot_proceso;
 
         return $calculo_tmp;
     }
@@ -4261,7 +4316,7 @@ class Controller {
 
         $costo_tot_proceso = round(floatval($enc_costo_forrado_cajon + $enc_arreglo_forrado + $enc_costo_empalme_cajon), 2);
 
-
+    /*
         $db_tmp = $ventas_model->costo_encuadernacion("Encajada");
 
         $enc_encajada_costo_unitario = 0;
@@ -4282,9 +4337,12 @@ class Controller {
 
             $l_ok = false;
         }
+    */
 
+        $encajada_db = self::calculoEncajada($tiraje, $ventas_model);
 
-        $enc_encajada_costo_tot = round(floatval($enc_encajada_costo_unitario * $tiraje), 2);
+        $enc_encajada_costo_unitario = round(floatval($encajada_db['costo_unitario']), 2);
+        $enc_encajada_costo_tot = round(floatval($encajada_db['costo_unitario']), 2);
 
         $costo_tot_proceso = round(floatval($enc_costo_forrado_cajon + $enc_arreglo_forrado + $enc_costo_empalme_cajon + $enc_encajada_costo_tot), 2);
 
@@ -4428,7 +4486,7 @@ class Controller {
         $l_ok = true;
 
         $costo_bancos_tmp = $ventas_model->costo_bancos($Tipo_banco);
-        
+
         $costo_unit_banco = 0;
 
         foreach ($costo_bancos_tmp as $row) {

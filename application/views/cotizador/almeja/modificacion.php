@@ -4,10 +4,48 @@
 
     //esto es para sacar solo el arreglo dentro de la super matriz, no me deja obtener todas las variables por alguna razon ->
     var a = [<?php echo json_encode($aJson) ?>];
-    
+
     console.log(a);
 </script>
+<style type="text/css">
+    
+    #modLoading{
+        color: #fff;
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+        position: fixed; 
+        z-index: 10; 
+        padding-top: 100px; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7); 
+    }
+    @keyframes rotate {
+        from {transform: rotate(1deg);}
+        to {transform: rotate(360deg);}
+    }
 
+    @-webkit-keyframes rotate {
+        from {-webkit-transform: rotate(1deg);}
+        to {-webkit-transform: rotate(360deg);}
+    }
+    .imgr{
+        -webkit-animation: 1s rotate linear infinite;
+        animation: 1s rotate linear infinite;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+    }
+</style>
+<!-- div loading -->
+<div id="modLoading" style="display: none;">
+    <img id="rotate1" class="imgr" style="width: 80px; height: 80px;" src="<?= URL?>public/img/cargando.png">
+    Cargando...
+</div>
 <!-- ******* Formulario de Almeja modelo (1) ***** -->
     <div id="form_modelo_1">
 
@@ -51,8 +89,8 @@
                             </div>
 
                             <div class="cajas-col-input t-right">
-                                
-                                <input class="cajas-input medidas-input" name="odt" id="odt-1" type="text" placeholder="ODT" tabindex="1" min="1" step="1" value="<?= $aJson['num_odt']?>" autofocus>
+
+                                <input class="cajas-input medidas-input" name="odt" id="odt-1" type="text" placeholder="ODT" tabindex="1" min="1" step="1" value="<?= $aJson['num_odt']?>" autofocus style="text-transform: uppercase;">
                             </div>
                         </div>
 
@@ -66,7 +104,7 @@
 
                             <div class="cajas-col-input t-right">
 
-                                <input class="cajas-input medidas-input" name="" id="id_odt_anterior" value="<?= $aJson['id_odt']?>" disabled>
+                                <input class="cajas-input medidas-input" name="id_odt_anterior" id="id_odt_anterior" value="<?= $aJson['id_odt']?>" disabled>
                             </div>
                         </div>
 
@@ -200,28 +238,37 @@
                     <!-- botón modal cierres y divs -->
                     <div>
 
-                        <button type="button" id="btnabrecierres" class="btn btn-outline-primary" data-toggle="modal" data-target="#cierres">Añadir Cierres <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                        <button type="button" id="btnabrecierres" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#cierres">Añadir Cierres <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                         <div id="ListaCierres" class="container divcierres">
-                            
+
                             <table class="table" id="cieTable">
-                                
+
                                 <tbody id="listcierres"></tbody>
                             </table>
                         </div>
                     </div>
 
-                    <br>
-
                     <!-- botón modal accesorios y divs -->
                     <div>
 
-                        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary" data-toggle="modal" data-target="#accesorios">Añadir Accesorios <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#accesorios">Añadir Accesorios <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                         <div id="ListaAccesoriosEmp" class="container divaccesorios">
                             <table class="table" id="accesoriosTable">
                                 <tbody id="listaccesorios">
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary  btn-sm" data-toggle="modal" data-target="#bancoemp">Añadir Banco <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                        <div id="ListaBancoEmp" class="container divbancos">
+                            <table class="table" id="banTable">
+                                <tbody id="listbancoemp">
+                                    <!-- contenido seleccionado -->
                                 </tbody>
                             </table>
                         </div>
@@ -235,7 +282,7 @@
 
                         <div class="panel" id="imgEC">
                             <img src="<?=URL ?>/public/img/banco.png" style="width: 100px;">
-                            
+
                             <br>
                             Empalme del Cajón
                         </div>
@@ -249,7 +296,7 @@
                                 <option value="nulo" selected disabled>Elegir tipo de papel</option>
                                 <?php
                                 foreach ($papers as $paper) {   ?>
-                                    
+
                                     <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
                                 <?php } ?>
                             </select>
@@ -261,7 +308,7 @@
                         </div>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('Empalme')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('Empalme')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
 
@@ -275,7 +322,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('Empalme');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('Empalme');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosEmp" class="container divacabados">
                                 <table class="table" id="acbTable">
@@ -285,20 +332,7 @@
                                 </table>
                             </div>
                         </div>
-                        <br>
-
-                        <div>
-                            <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#bancoemp">Añadir Banco <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
-
-                            <div id="ListaBancoEmp" class="container divbancos">
-                                <table class="table" id="banTable">
-                                    <tbody id="listbancoemp">
-                                        <!-- contenido seleccionado -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <br>
-                        </div>
+                        
                     </div>
 
                     <!-- grid Forro del cajón -->
@@ -306,7 +340,7 @@
 
                         <div class="panel" id="imgFCaj">
                             <img src="<?=URL ?>/public/img/banco2.png" style="width: 100px;">
-                            
+
                             <br>
                             Forro del Cajón
                         </div>
@@ -318,16 +352,16 @@
                                 <option value="nulo" selected disabled>Elegir tipo de papel</option>
                                 <?php
                                 foreach ($papers as $paper) {   ?>
-                                
+
                                     <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre']?>
                                 </option> <?php } ?>
                             </select>
                         </div>
-                        
+
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('forro_cajon')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('forro_cajon')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
                                 <table class="table" id="Imptablefcajon">
@@ -340,7 +374,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('forro_cajon');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('forro_cajon');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosFcajon" class="container divacabados">
                                 <table class="table" id="acbTableFcajon">
@@ -376,11 +410,11 @@
                                 ?>
                             </select>
                         </div>
-                        
+
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('forro_cartera')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('forro_cartera')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
                                 <table class="table" id="Imptablefcartera">
@@ -393,7 +427,7 @@
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('forro_cartera');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('forro_cartera');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosFcartera" class="container divacabados">
                                 <table class="table" id="acbTableFcartera">
@@ -432,28 +466,28 @@
                         <br>
 
                         <div>
-                            
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('guarda')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('guarda')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaImpresiones" class="container divimpresiones">
-                                
+
                                 <table class="table" id="Imptableguarda">
-                                    
+
                                     <tbody id="listimpresionesguarda">
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        
+
                         <br>
 
                         <div>
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('guarda');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('guarda');">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
 
                             <div id="ListaAcabadosGuarda" class="container divacabados">
-                                
+
                                 <table class="table" id="acbTableGuarda">
-                                    
+
                                     <tbody id="listacabadosguarda">
                                     </tbody>
                                 </table>
@@ -473,7 +507,7 @@
                 </div>
 
                 <div class="modal fade" id="modalSaveAll" tabindex="-1" role="dialog" aria-labelledby="modalSaveAll" aria-hidden="true">
-    
+
                     <div class="modal-dialog modal-dialog-centered" role="document">
 
                         <div class="modal-content">
@@ -488,12 +522,12 @@
                                 </button>
                                 -->
                             </div>
-                    
+
                             <div class="modal-body">
 
                                 <p style="color: black; font-size: 1.1em">¿Esta seguro de grabar la cotizacion?</p>
                             </div>
-                    
+
                             <div class="modal-footer">
 
                                 <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" id="subForm2">Si</button>
@@ -505,10 +539,10 @@
 
                 <!-- Botones de CALCULAR, GUARDAR, TABLAS, RESUMEN e IMPRESION -->
                 <div id="social" class="social" style="/*width: 45%;*/ float: right; /*display: none;*/">
-                    
+
                     <button id="papeles_submit" type="button" class="btn btn-primary" style="font-size: 10px;">CALCULAR</button>
 
-                    <button id="subForm" type="button" class="btn btn-success" style="font-size: 10px;" disabled="" data-toggle="modal" data-target="#modalSaveAll">ACTUALIZAR</button>
+                    <button id="subForm" type="button" class="btn btn-success" style="font-size: 10px;" data-toggle="modal" data-target="#modalSaveAll" disabled="">ACTUALIZAR</button>
 
                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
 
@@ -521,14 +555,14 @@
 
                     <!-- Suma de la ODT(Total)  -->
                     <div class="btn-group dropup" style="width: 100%;">
-                        
+
                         <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
                             <label style="font-size: 25px; margin-right: 100px;">Total: </label>
                             <label id="Totalplus" style="font-size: 25px;">$<?= $aJson['costo_odt']?></label>
                         </button>
-                        
+
                         <div class="dropdown-menu">
-                            
+
                             <table class="table">
                                 <tr>
                                     <td>Subtotal: </td>
@@ -542,7 +576,7 @@
                                     <td>IVA:</td>
                                     <td id="IVADrop">$<?= $aJson['iva']?></td>
                                 </tr>
-                                
+
                                 <tr>
                                     <td>ISR: </td>
                                     <td id="ISRDrop">$<?= $aJson['ISR']?></td>
@@ -567,10 +601,10 @@
                                     <td id="DescuentoDrop"></td>
                                     <script type="text/javascript">
 
-                                        $("#DescuentoDrop").html("$"+parseFloat(<?= $aJson['descuento']?>).toFixed(2));
+                                        $("#DescuentoDrop").html("$"+parseFloat(<?= $aJson['descuento']?>));
                                         $("#descuentoModal").html("Descuento: (" + <?= $aJson['descuento_pctje'] ?> + "%)");
                                         descuento = <?= $aJson['descuento']?>;
-                                        
+
                                     </script>
                                 </tr>
                             </table>
@@ -634,7 +668,7 @@
                                         <td><b>Total<b></td>
                                     </tr>
                                 </thead>
-                                
+
                                 <tr>
                                     <td>Offset</td>
                                     <td>
@@ -854,7 +888,7 @@
 
 <!-- ******* Todos los Modales Impresiones ******* -->
     <!-- Modal Impresiones Empalme -->
-    
+
     <div class="modal fade" id="Impresiones" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -891,7 +925,7 @@
                             ?>
                         </select>
                     </div>
-                
+
                     <div id="opImpresionOffset" style="display: none;">
 
                         <table class="table" style="text-align: left;" >
@@ -999,7 +1033,7 @@
                             </tbody>
                         </table>
                     </div>
-                
+
                 </div>
 
                 <div class="modal-footer">
@@ -1010,40 +1044,40 @@
             </div>
         </div>
     </div>
- 
+
 <!-- ******* Todos los Modales Acabados ********** -->
     <!-- Acabados Empalme -->
     <div class="modal fade" id="acabados" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 
         <div class="modal-dialog modal-dialog-centered" role="document">
-            
+
             <div class="modal-content">
-                
+
                 <div class="modal-header azulWhi">
-                    
+
                     <h5 class="modal-title" id="exampleModalLongTitle">Acabados</h5>
-                    
+
                     <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
-                        
+
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 <div class="modal-body">
 
                     <div id="alerterror">
 
                     </div>
-                    
+
                     <div>
-                        
+
                         <select  id="SelectAcEmp" class="SelectTSM">
-                            
+
                             <option selected value="selected" disabled>Elige el tipo de acabado</option>
-                            
+
                             <?php
                             foreach ($acabados as $acabado) {   ?>
-                                
+
                                 <option id="Acb" value="<?=$acabado['nombre']?>" data-precio="<?=$acabado['precio']?>" data-id="<?=$acabado['id_acabados']?>"><?=$acabado['nombre']?></option>
                             <?php
                             }
@@ -1052,10 +1086,10 @@
                     </div>
 
                     <div id="opAcLaminadoEmp" style="display: none;">
-                        
+
                         <br>
                         <table class="table" style="text-align: left;">
-                            
+
                             <tbody>
                                 <tr>
                                     <td>
@@ -1074,7 +1108,7 @@
                     </div>
 
                     <div id="opAcHotStampingEmp" style="display: none;">
-                        
+
                         <br>
                         <table class="table" style="text-align: left;">
                             <tbody>
@@ -1567,43 +1601,43 @@
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="procesosModal">
 
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            
+
             <div class="modal-content">
-                
+
                 <div class="modal-header azulWhi">
-                    
+
                     <h5 class="modal-title" id="exampleModalLongTitle">Tablas de Registros</h5>
-                    
+
                     <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
-                        
+
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 <!-- Tabla de Registros -->
                 <div class="modal-body">
-                    
+
                     <div class="accordion" id="accordionExample">
-                        
+
                         <!-- Cortes de Hojas -->
                         <div class="card">
-                            
+
                             <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onmouseover="this.style.cursor='pointer'">
-                                
+
                                 <h2 class="mb-0">
-                                
+
                                     <button class="btn btn-link" type="button" style="text-decoration: none;">
                                         Cortes de Hojas
                                     </button>
                                 </h2>
                             </div>
-                            
+
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            
+
                                 <div class="card-body">
-                                    
+
                                     <table class="t-resume" style="text-align: center;">
-                                        
+
                                         <tbody id="table_papeles_tr">
                                             <!-- Aquí se registran los datos -->
                                         </tbody>
@@ -1613,24 +1647,24 @@
                         </div>
 
                         <div class="card">
-                        
+
                             <!-- Procesos Default -->
                             <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" onmouseover="this.style.cursor='pointer'">
-                                    
+
                                 <h2 class="mb-0">
-                                        
+
                                     <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
                                         Procesos Default
                                     </button>
                                 </h2>
                             </div>
-                    
+
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                      
+
                                 <div class="card-body">
-                                    
+
                                     <table class="t-resume" style="text-align: center;">
-                                        
+
                                         <tbody id="table_adicionales_tr">
                                             <!-- Aquí se registran los procesos default -->
                                         </tbody>
@@ -1641,26 +1675,26 @@
 
                         <!-- Mermas Integradas -->
                         <div class="card">
-                            
+
                             <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" onmouseover="this.style.cursor='pointer'">
-                                
+
                                 <h2 class="mb-0">
-                                
+
                                     <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
                                         Mermas Integradas
                                     </button>
                                 </h2>
                             </div>
-                            
+
                             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                
+
                                 <div class="card-body">
-                                    
+
                                     <!-- tabla de mermas resumen -->
                                     <table class="t-resume" style="text-align: center;">
-                                        
+
                                         <thead style="background: darkslateblue; color: white;">
-                    
+
                                             <tr>
                                                 <td></td>
                                                 <td style="color: white;">Proceso</td>
@@ -1671,13 +1705,13 @@
                                                 <td style="color: white;">Costo Total</td>
                                             </tr>
                                         </thead>
-                                        
+
                                         <tbody id="table_mermas_tr">
                                             <!-- Aquí se registran los datos -->
                                         </tbody>
-                                        
+
                                         <tfoot>
-                                            
+
                                             <tr>
                                                 <td colspan="7" style="font-size: x-small;">E: Empalme | Fj: Forro del Cajón | Fr: Forro de la Cartera | G: Guarda</td>
                                             </tr>
@@ -1689,27 +1723,27 @@
 
                         <!-- Procesoso deImpresión -->
                         <div class="card">
-                                
+
                             <div class="card-header" id="headingFour" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" onmouseover="this.style.cursor='pointer'">
-                                
+
                                 <h2 class="mb-0">
-                                
+
                                     <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
                                         Procesos de Impresión
                                     </button>
                                 </h2>
                             </div>
-                
+
                             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
-                                
+
                                 <div class="card-body">
-                                    
+
                                     <!-- procesos offset Empalme-->
                                     <div class="container" id="proceso_offset_M1" style="display: none;">
                                         <h5>Offset</h5>
-                                        
+
                                         <table id="tabla_view_offset_emp" class="t-resume" style="text-align: center;">
-                                            
+
                                             <tbody id="table_proc_offset">
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
@@ -1718,11 +1752,11 @@
 
                                     <!-- Serigrafia -->
                                     <div class="container" id="proceso_serigrafia_M1" style="display: none;">
-                                    
+
                                         <h5>Serigrafia</h5>
-                                        
+
                                         <table id="tabla_aj_serigrafia_emp" class="t-resume" style="text-align: center;">
-                                        
+
                                             <tbody id="table_proc_serigrafia">
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
@@ -1731,11 +1765,11 @@
 
                                     <!-- Digital -->
                                     <div class="container" id="proceso_digital_M1" style="display: none;">
-                                        
+
                                         <h5>Digital</h5>
-                                        
+
                                         <table id="tabla_aj_digital_emp" class="t-resume" style="text-align: center;">
-                                            
+
                                             <tbody id="table_proc_digital">
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
@@ -1747,63 +1781,63 @@
 
                         <!-- Procesos de Acabados -->
                         <div class="card">
-                        
+
                             <div class="card-header" id="headingFive" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive" onmouseover="this.style.cursor='pointer'">
-                            
+
                                 <h2 class="mb-0">
-                                    
+
                                     <button class="btn btn-link" type="button" style="text-decoration: none;">
                                         Procesos de Acabados
                                     </button>
                                 </h2>
                             </div>
-                
+
                             <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
-                                
+
                                 <div class="card-body">
                                     <!-- proceso laminado-->
                                     <div class="container" id="proceso_lam_M1" style="display: none;">
-                                    
+
                                         <h5>Laminado</h5>
-                                        
+
                                         <table id="tabla_view_Lam" class="t-resume" style="text-align: center;">
-                                            
+
                                             <tbody id="table_proc_Lam">
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
                                         </table>
                                     </div>
-                                    
+
                                     <!-- proceso hot stamping-->
                                     <div class="container" id="proceso_hs_M1" style="display: none;">
-                                        
+
                                         <h5>HotStamping</h5>
-                                        
+
                                         <table id="tabla_view_HS" class="t-resume" style="text-align: center;">
-                                            
+
                                             <tbody id="table_proc_HS">
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
                                         </table>
                                     </div>
-                    
+
                                     <!-- proceso grabados-->
                                     <div class="container" id="proceso_grab_M1" style="display: none;">
-                                        
+
                                         <h5>Grabados</h5>
-                                        
+
                                         <table id="tabla_view_Grab" class="t-resume" style="text-align: center;">
-                                            
+
                                             <tbody id="table_proc_Grab">
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
                                         </table>
                                     </div>
-                                    
+
                                     <!-- proceso suaje-->
                                     <div class="container" id="proceso_suaje_M1" style="display: none;">
                                         <h5>Suaje</h5>
-                                        
+
                                         <table id="tabla_view_Suaje" class="t-resume" style="text-align: center;">
                                             <tbody id="table_proc_Suaje">
                                                 <!-- Aquí se registran los datos -->
@@ -1814,7 +1848,7 @@
                                     <!-- proceso corte laser-->
                                     <div class="container" id="proceso_laser_M1" style="display: none;">
                                         <h5>Corte Laser</h5>
-                                        
+
                                         <table id="tabla_view_Laser" class="t-resume" style="text-align: center;">
                                             <tbody id="table_proc_Laser">
                                                 <!-- Aquí se registran los datos -->
@@ -1825,7 +1859,7 @@
                                     <!-- proceso barniz uv -->
                                     <div class="container" id="proceso_barnizuv_M1" style="display: none;">
                                         <h5>Barniz UV</h5>
-                                        
+
                                         <table id="tabla_view_BarnizUV" class="t-resume" style="text-align: center;">
                                             <tbody id="table_proc_BarnizUV">
                                                 <!-- Aquí se registran los datos -->
@@ -1840,21 +1874,21 @@
                         <div class="card">
 
                             <div class="card-header" id="headingSix" onmouseover="this.style.cursor='pointer'"  data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
-            
+
                                 <h2 class="mb-0">
-                    
+
                                     <button class="btn btn-link" type="button" style="text-decoration: none;">Bancos
                                     </button>
                                 </h2>
                             </div>
-                            
+
                             <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
-                            
+
                                 <div class="card-body">
-                        
+
                                     <!-- proceso laminado-->
                                     <div class="container" id="bancos" style="display:none;">
-                                        
+
                                         <table id="" class="t-resume" style="text-align: center;">
                                             <thead style="background: steelblue;color: white;">
                                                 <td style="color: white">Tipo</td>
@@ -1862,9 +1896,9 @@
                                                 <td style="color: white">Costo Unitario</td>
                                                 <td style="color: white">Total</td>
                                             </thead>
-                                            
+
                                             <tbody id="tabla_bancos">
-                                                
+
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
                                         </table>
@@ -1877,24 +1911,24 @@
                         <div class="card">
 
                             <div class="card-header" id="headingSeven" onmouseover="this.style.cursor='pointer'"  data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
-            
+
                                 <h2 class="mb-0">
-                    
+
                                     <button class="btn btn-link" type="button" style="text-decoration: none;">Cierres
                                     </button>
                                 </h2>
                             </div>
-                            
+
                             <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
-                            
+
                                 <div class="card-body">
 
                                     <div class="container" id="divCierres" style="display:none;">
-                                        
+
                                         <table id="" class="t-resume" style="text-align: center;">
-                                            
+
                                             <tbody id="tabla_cierres">
-                                                
+
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
                                         </table>
@@ -1907,25 +1941,25 @@
                         <div class="card">
 
                             <div class="card-header" id="headingEight" onmouseover="this.style.cursor='pointer'"  data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
-            
+
                                 <h2 class="mb-0">
-                    
+
                                     <button class="btn btn-link" type="button" style="text-decoration: none;">Accesorios
                                     </button>
                                 </h2>
                             </div>
-                            
+
                             <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample">
-                            
+
                                 <div class="card-body">
-                        
+
                                     <!-- proceso laminado-->
                                     <div class="container" id="divAccesorios" style="display:none;">
-                                        
+
                                         <table id="" class="t-resume" style="text-align: center;">
 
                                             <tbody id="tabla_accesorios">
-                                                
+
                                                 <!-- Aquí se registran los datos -->
                                             </tbody>
                                         </table>
@@ -1935,9 +1969,9 @@
                         </div>
                     </div>
                 </div>
-          
+
                 <div class="modal-footer">
-                        
+
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -1950,15 +1984,15 @@
 
         <button type="button" style="text-align: end; border: none; background: none; width: 100%;" id="btnQuitarResumen"><img border="0" src="<?=URL ;?>public/img/eliminar.png" style="width: 2%;">
         </button>
-        
+
         <table class="table tableresumenn" id="ResumenCostos">
-        
+
             <thead id="resumenHead">
                 <!-- -->
             </thead>
 
             <thead class="thead-dark">
-        
+
                 <tr>
                     <th style="width: 20%"></th>
                     <th>Adiciones</th>
@@ -2017,21 +2051,21 @@
 
     <!-- Descuentos y botones de Guardar y Cancelar del modal "Descuentos" -->
     <div class="modal fade" id="descuentos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          
+
         <div class="modal-dialog modal-dialog-centered" role="document">
-            
+
             <div class="modal-content">
-                
+
                 <div class="modal-header azulWhi">
-                    
+
                     <h5 class="modal-title" id="exampleModalLongTitle">Descuentos</h5>
-                    
+
                     <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
-                        
+
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                
+
                 <div class="modal-body">
 
                     <!-- Descuentos: 3%; 5%; 10%; 15%; 20% -->
@@ -2055,7 +2089,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    
+
                     <button type="button" id="btnSaveDescuento" class="btn btn-guardar-blues">Guardar</button>
 
                     <button type="button" id="btnCancelDescuento" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
@@ -2067,31 +2101,38 @@
     </div>
 
     <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalError" aria-hidden="true">
-        
-        <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 
             <div class="modal-content">
 
                 <div class="modal-header azulWhi" style="background: red">
 
                     <h5 class="modal-title" id="txtTituloModal">Error</h5>
+                    <!--
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    -->
                 </div>
-        
-                <div class="modal-body">
+
+                <div id="modBody" class="modal-body">
 
                     <p id="txtContenido" style="color: black; font-size: 1.1em"></p>
+                    
                 </div>
-        
+
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" onclick="cleanModError()">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="modal fade" id="modalCorrecto" tabindex="-1" role="dialog" aria-labelledby="modalCorrecto" aria-hidden="true">
-        
+
         <div class="modal-dialog modal-dialog-centered" role="document">
 
             <div class="modal-content">
@@ -2101,12 +2142,12 @@
                     <h5 class="modal-title" id="txtTitModCorrecto">Registro Exitoso</h5>
 
                 </div>
-        
+
                 <div class="modal-body">
 
                     <p id="txtContCorrecto" style="color: black; font-size: 1.1em"></p>
                 </div>
-        
+
                 <div class="modal-footer">
 
                     <button id="btnModCorrecto" type="button" class="btn btn-primary azulWhi" data-dismiss="modal">Cerrar</button>
@@ -2154,7 +2195,7 @@ if ($aJson) { ?>
 
 <!-- para generar la tabla resumen y tablas -->
 <script type="text/javascript">
-    
+
     var rm_empalme   = '<tr><td><b>Empalme del Cajón</b></td><td></td><td></td><td></td></tr>';
     var rm_fcajon    = '<tr><td><b>Forro del Cajón</b></td><td></td><td></td><td></td></tr>';
     var rm_fcartera  = '<tr><td><b>Forro de la Cartera</b></td><td></td><td></td><td></td></tr>';
@@ -2175,8 +2216,8 @@ if ($aJson) { ?>
     $('#resumenEmpaque').append(rm_emp);
     $('#resumenEncuadernacion').append(rm_enc);
 
-    var mensajeria = parseFloat(<?=$aJson['mensajeria']?>).toFixed(2);
-    var empaque = parseFloat(<?=$aJson['empaque']?>).toFixed(2);
+    var mensajeria = parseFloat(<?=$aJson['mensajeria']?>);
+    var empaque = parseFloat(<?=$aJson['empaque']?>);
     var costo_msj = "<tr><td></td><td></td><td></td><td>$" + mensajeria + "</td></tr>";
     $('#resumenMensajeria').append(costo_msj);
 
@@ -2204,7 +2245,7 @@ if ($aJson) { ?>
     $('#resumenFcajon').append(parteresumen);
 
     // pendiente
-    //var parteresumen = '<tr><td></td><td>Ranurado</td><td>$'+ js_ranurado_costo_por_ranura2.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="' + js_ranurado_costo_por_ranura2.toFixed(2) + '"></td><td></td></tr>';
+    //var parteresumen = '<tr><td></td><td>Ranurado</td><td>$'+ js_ranurado_costo_por_ranura2 +'<input type="hidden" class="pricesresumenfcartera" value="' + js_ranurado_costo_por_ranura2 + '"></td><td></td></tr>';
     //$('#resumenFcartera').append(parteresumen);
 
     //resumen - encuadernacion
@@ -2212,7 +2253,7 @@ if ($aJson) { ?>
     $('#resumenEmpalme').append("<tr><td></td><td>Encuadernación</td><td>$<?=$aJson['encuadernacion']['costo_tot_proceso']?> <input type='hidden' class='pricesresumenempalme' value=<?=$aJson['encuadernacion']['costo_tot_proceso']?></td><td></td></tr>");
 
     //resumen - ultima tabla
-    parteresumen = '<tr><td></td><td></td><td><b>Subtotal:</b></td><td class="grand-total"><b>$<?=$aJson['costo_subtotal']?></b></td></tr><tr><td></td><td></td><td>Utilidad: </td><td id="UtilidadResumen">$<?=$aJson['Utilidad']?></td></tr><tr><td></td><td></td><td>IVA:</td><td id="IVAResumen">$<?=$aJson['iva']?></td></tr><tr><td></td><td></td><td>ISR: </td><td id="ISResumen">$<?=$aJson['ISR']?></td></tr><tr><td></td><td></td><td>Comisiones: </td><td id="ComisionesResumen">$ <?=$aJson['comisiones']?></td></tr><tr><td></td><td></td><td>% Indirecto: </td><td id="IndirectoResumen">$<?=$aJson['indirecto']?></td></tr><tr><td></td><td></td><td>Ventas: </td><td id="ventaResumen">$<?=$aJson['ventas']?></td></tr><tr><td></td><td></td><td>Descuento: </td><td id="descuentoResumen">$<?=$aJson['descuento']?></td></tr><tr><tr><td></td><td></td><td><b>Total: </b></td><td id="TotalResumen"><b>$<?=$aJson['costo_odt']?></b></td></tr>';
+    parteresumen = '<tr><td></td><td></td><td><b>Subtotal:</b></td><td class="grand-total"><b>$<?=$aJson['costo_subtotal']?></b></td></tr><tr><td></td><td></td><td>Utilidad: </td><td id="UtilidadResumen">$<?=$aJson['Utilidad']?></td></tr><tr><td></td><td></td><td>IVA:</td><td id="IVAResumen">$<?=$aJson['iva']?></td></tr><tr><td></td><td></td><td>ISR: </td><td id="ISResumen">$<?=$aJson['ISR']?></td></tr><tr><td></td><td></td><td>Comisiones: </td><td id="ComisionesResumen">$ <?=$aJson['comisiones']?></td></tr><tr><td></td><td></td><td>% Indirecto: </td><td id="IndirectoResumen">$<?=$aJson['indirecto']?></td></tr><tr><td></td><td></td><td>Ventas: </td><td id="ventaResumen">$<?=$aJson['ventas']?></td></tr><tr><td></td><td></td><td>Descuento: </td><td id="descuentoResumen">$<?=$aJson['descuento']?></td></tr><tr><td></td><td></td><td><b>Total: </b></td><td id="TotalResumen"><b>$<?=$aJson['costo_odt']?></b></td></tr>';
     $('#resumenOtros').append(parteresumen);
 
     var parteresumen = '<tr><td></td><td></td><td></td><td>$<?=$aJson['encuadernacion']['costo_tot_encuadernacion']?></td></tr>';
@@ -2224,6 +2265,36 @@ if ($aJson) { ?>
 
 <!-- para generar los procesos y acabados-->
 <script type="text/javascript">
+
+    function cleanModError(){
+
+        $("#modError").remove();
+    }
+
+    function appndMsgError(error){
+
+        var divError = $("#modError").html();
+        
+        if( divError !== undefined ){
+
+            $("#modError").remove();
+        }
+        var btnError = `
+
+            <div id="modError">
+                <a class="btn btn-danger" data-toggle="collapse" href="#ModmsgError" role="button" aria-expanded="false" aria-controls="ModmsgError">
+                        Ver mas...
+                </a>
+                <div class="collapse" id="ModmsgError">
+                    <div class="card card-body" id="txtError">
+                        
+                    </div>
+                </div>
+            </div>
+        `;
+        $("#modBody").append(btnError);
+        $("#txtError").html(error);
+    }
 
     // matriz de Impresiones
     var aImp     = [];
@@ -2244,16 +2315,24 @@ if ($aJson) { ?>
     // matriz de bancos
     var aBancos = [];
 
+    var descuento = "<?=$aJson['descuento_pctje']?>";
+    $(".d-check[data-discount=" + descuento + "]").prop("checked", true);
+
     var impOff     = <?php echo json_encode($aJson['OffEmp']) ?>;
     var impOffFCaj = <?php echo json_encode($aJson['OffFCaj']) ?>;
     var impOffFCar = <?php echo json_encode($aJson['OffFCar']) ?>;
     var impOffG    = <?php echo json_encode($aJson['OffG']) ?>;
-    
+
+    var impOff_maq     = <?php echo json_encode($aJson['Off_maq_Emp']) ?>;
+    var impOffFCaj_maq = <?php echo json_encode($aJson['Off_maq_FCaj']) ?>;
+    var impOffFCar_maq = <?php echo json_encode($aJson['Off_maq_FCar']) ?>;
+    var impOffG_maq    = <?php echo json_encode($aJson['Off_maq_G']) ?>;
+
     var impDig     = <?php echo json_encode($aJson['DigEmp']) ?>;
     var impDigFCaj = <?php echo json_encode($aJson['DigFCaj']) ?>;
     var impDigFCar = <?php echo json_encode($aJson['DigFCar']) ?>;
     var impDigG    = <?php echo json_encode($aJson['DigG']) ?>;
-    
+
     var impSer     = <?php echo json_encode($aJson['SerEmp']) ?>;
     var impSerFCaj = <?php echo json_encode($aJson['SerFCaj']) ?>;
     var impSerFCar = <?php echo json_encode($aJson['SerFCar']) ?>;
@@ -2265,6 +2344,11 @@ if ($aJson) { ?>
     appndImp("Offset", impOffFCaj,aImpFCaj,"listimpresionesfcajon","Impresionesfcajon","resumenFcajon", "Forro del Cajón");
     appndImp("Offset", impOffFCar,aImpFCar,"listimpresionesfcartera","Impresionesfcartera","resumenFcartera", "Forro de la Cartera");
     appndImp("Offset", impOffG,aImpG,"listimpresionesguarda","listimpresionesguarda","resumenGuarda", "Guarda");
+
+    appndImp("Offset", impOff_maq,aImp,"listimpresiones","Impresiones","resumenEmpalme", "Empalme del Cajón");
+    appndImp("Offset", impOffFCaj_maq,aImpFCaj,"listimpresionesfcajon","Impresionesfcajon","resumenFcajon", "Forro del Cajón");
+    appndImp("Offset", impOffFCar_maq,aImpFCar,"listimpresionesfcartera","Impresionesfcartera","resumenFcartera", "Forro de la Cartera");
+    appndImp("Offset", impOffG_maq,aImpG,"listimpresionesguarda","listimpresionesguarda","resumenGuarda", "Guarda");
 
     appndImp("Digital", impDig, aImp, "listimpresiones", "Impresiones","resumenEmpalme", "Empalme del Cajón");
     appndImp("Digital", impDigFCaj, aImpFCaj, "listimpresionesfcajon","Impresionesfcajon","resumenFcajon", "Forro del Cajón");
@@ -2314,7 +2398,7 @@ if ($aJson) { ?>
     appndAcb("HotStamping", acbHS, aAcb, "listacabadosemp","acabados","resumenEmpalme", "Empalme del Cajón");
     appndAcb("Laminado", acbLaminado, aAcb, "listacabadosemp","acabados","resumenEmpalme", "Empalme del Cajón");
     appndAcb("Suaje", acbSuaje, aAcb, "listacabadosemp","acabados","resumenEmpalme", "Empalme del Cajón");
-    
+
     appndAcb("Barniz UV", acbBarnizUVFCaj, aAcbFCaj, "listacabadosfcajon","acabados_fcajon","resumenFcajon", "Forro del Cajón");
     appndAcb("Corte Laser", acbCorteLaserFCaj, aAcbFCaj, "listacabadosfcajon","acabados_fcajon","resumenFcajon", "Forro del Cajón");
     appndAcb("Grabado", acbGrabadoFCaj, aAcbFCaj, "listacabadosfcajon","acabados_fcajon","resumenFcajon", "Forro del Cajón");
@@ -2352,15 +2436,15 @@ if ($aJson) { ?>
 
                         if( arrImp[i]['Tipo'] ) {
 
-                            var tipoOffset = arrImp[i]['Tipo'];    
+                            var tipoOffset = arrImp[i]['Tipo'];
                         } else {
 
                             var tipoOffset = arrImp[i]['tipo'];
                         }
-                        
+
                         var tintassel = arrImp[i]['num_tintas'];
-                        var costo = parseFloat(arrImp[i]['costo_tot_proceso']).toFixed(2);
-                        var IDopImp = 1;
+                        var costo     = parseFloat(arrImp[i]['costo_tot_proceso']);
+                        var IDopImp   = 1;
                         var idtipoOff = 1;
                         var cTLaminas = parseFloat(arrImp[i]['costo_tot_laminas']);
                         var cTArreglo = parseFloat(arrImp[i]['costo_tot_arreglo']);
@@ -2368,7 +2452,7 @@ if ($aJson) { ?>
                         var cULaminas = parseFloat(arrImp[i]['costo_unitario_laminas']);
                         var cUArreglo = parseFloat(arrImp[i]['costo_unitario_arreglo']);
                         var cUTiro    = parseFloat(arrImp[i]['costo_unitario_tiro']);
-                        var cTotal    = cTLaminas + cTArreglo + cTTiro; 
+                        var cTotal    = cTLaminas + cTArreglo + cTTiro;
 
                         var imp  = '<tr id="ImpOfEmp"><td class="textImp">' + opImp + '</td><td style="display: none">'+ IDopImp +'<input type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment" >...<span class="CellComment">Numero de Tintas: '+ tintassel +', Tipo: '+ tipoOffset +'</span></td><td class="tintasImp" style="display: none;">'+ tintassel +'<input type="hidden" value="'+ tintassel +'"></td><td class="tipoOffset" style="display: none;">'+ tipoOffset +'<input type="hidden" value="'+ idtipoOff +'"></td><td class="' + tabla +' img_delete"></td></tr>';
 
@@ -2386,19 +2470,19 @@ if ($aJson) { ?>
                         $('#table_proc_offset').append(processoffset);
                     }
                     $('#proceso_offset_M1').show();
-                    
+
                     break;
 
                 case "Digital":
 
                     for( var i=0; i<arrImp.length; i++ ) {
 
-                        var tipoDig = arrImp[i]['impresion'];    
-                        var tintassel = arrImp[i]['num_tintas'];
-                        var cosUnitario = parseFloat(arrImp[i]['costo_unitario']).toFixed(2);
-                        var costo = parseFloat(arrImp[i]['costo_tot_proceso']).toFixed(2);
-                        var IDopImp = 1;
-                        var idtipoDig = 1;
+                        var tipoDig     = arrImp[i]['impresion'];
+                        var tintassel   = arrImp[i]['num_tintas'];
+                        var cosUnitario = parseFloat(arrImp[i]['costo_unitario']);
+                        var costo       = parseFloat(arrImp[i]['costo_tot_proceso']);
+                        var IDopImp     = 1;
+                        var idtipoDig   = 1;
                         var imp  = '<tr id="ImpOfEmp"><td class="textImp">' + opImp + '</td><td style="display: none"><input  type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment" >...<span class="CellComment">Tipo: ' + tipoDig + '</span></td><td class="tipoDig" style="display: none;">'+ tipoDig +'<input type="hidden" value="'+ idtipoDig +'"></td><td class="' + tabla +' img_delete"></td></tr>';
 
                         arrImpO.push({"Tipo_impresion": opImp, "tipo_digital": tipoDig, "idtipoDig": idtipoDig});
@@ -2415,7 +2499,7 @@ if ($aJson) { ?>
                         $('#table_proc_digital').append(processdigital);
                     }
                     $('#proceso_digital_M1').show();
-                
+
                     break;
 
                 case "Serigrafia":
@@ -2424,22 +2508,22 @@ if ($aJson) { ?>
 
                         if( arrImp[i]['Tipo'] ) {
 
-                            var tipoSeri = arrImp[i]['Tipo'];    
+                            var tipoSeri = arrImp[i]['Tipo'];
                         } else {
 
                             var tipoSeri = arrImp[i]['tipo'];
                         }
-                        
+
                         var tintassel2 = arrImp[i]['num_tintas'];
-                        var costo      = parseFloat(arrImp[i]['costo_tot_proceso']).toFixed(2);
+                        var costo      = parseFloat(arrImp[i]['costo_tot_proceso']);
                         var IDopImp    = 1;
                         var idtipoSeri = 1;
                         var cUArreglo  = parseFloat(arrImp[i]['costo_unit_arreglo']);
                         var cTArreglo  = parseFloat(arrImp[i]['costo_arreglo']);
                         var cUTiro     = parseFloat(arrImp[i]['costo_unit_tiro']);
                         var cTTiro     = parseFloat(arrImp[i]['costo_tiro']);
-                        
-                        var cTotal     = cTArreglo + cTTiro; 
+
+                        var cTotal     = cTArreglo + cTTiro;
 
                         var imp  = '<tr id="ImpSerEmp"><td class="textImp">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input style="display:none" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel2 +', Tipo: '+ tipoSeri +'</span></td><td class="tintasImp" style="display: none;">'+ tintassel2 +'<input type="hidden" value="'+ tintassel2 +'"></td><td class="tipoSeri" style="display: none;">'+ tipoSeri +'<input type="hidden" value="'+ idtipoSeri +'"></td><td class="' + tabla +' img_delete"></td></tr>';
 
@@ -2457,9 +2541,9 @@ if ($aJson) { ?>
                             $('#table_proc_serigrafia').append(processserigrafia);
                     }
                     $('#proceso_serigrafia_M1').show();
-                
+
                     break;
-            } 
+            }
         }
     }
 
@@ -2471,15 +2555,15 @@ if ($aJson) { ?>
             switch(opAcb){
 
                 case "Barniz UV":
-                    
+
                     for( var i = 0; i < arrAcb.length; i++ ) {
 
                         var tipoBarnizUV   = arrAcb[i]['tipoGrabado'];
                         var idtipoBarnizUV = 1;
                         var LargoBarnizUV  = arrAcb[i]['Largo'];
                         var AnchoBarnizUV  = arrAcb[i]['Ancho'];
-                        var costo          = parseFloat(arrAcb[i]['costo_unitario']).toFixed(2);
-                        var costoT          = parseFloat(arrAcb[i]['costo_tot_proceso']).toFixed(2);
+                        var costo          = parseFloat(arrAcb[i]['costo_unitario']);
+                        var costoT         = parseFloat(arrAcb[i]['costo_tot_proceso']);
 
                         if(tipoBarnizUV == "Registro Mate" || tipoBarnizUV == "Registro Brillante") {
 
@@ -2503,13 +2587,13 @@ if ($aJson) { ?>
                             $('#table_proc_BarnizUV').append(acabadoTr);
 
                             $('#proceso_barnizuv_M1').show();
-                        }                    
+                        }
                         $('#' + tablaO).modal('hide');
                         $('#' + tabla).append(acb);
                         parteresumen = '<tr><td></td><td>Acabado Barniz UV</td><td>$'+ costo +'<input type="hidden" class="pricesresumenempalme" value="'+ costo +'"></td><td></td></tr>';
                         $('#' + tablaR).append(parteresumen);
                     }
-                
+
                     break;
 
                 case "Corte Laser":
@@ -2522,8 +2606,8 @@ if ($aJson) { ?>
                         var LargoLaser   = parseInt(LargoLaser_s, 10);
                         var AnchoLaser   = parseInt(AnchoLaser_s, 10);
                         var idtipoLaser  = 1;
-                        var costo        = parseFloat(arrAcb[i]['costo_unitario']).toFixed(2);
-                        var costoT       = parseFloat(arrAcb[i]['costo_tot_proceso']).toFixed(2);
+                        var costo        = parseFloat(arrAcb[i]['costo_unitario']);
+                        var costoT       = parseFloat(arrAcb[i]['costo_tot_proceso']);
                         var acb = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'<input type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + ', Medidas: ' + LargoLaser + 'x' +  AnchoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input type="hidden" value="' + idtipoLaser + '"></td><td class="LargoLaser" style="display: none;">' + LargoLaser + '<input type="hidden" value="' + LargoLaser + '"></td><td class="AnchoLaser" style="display: none;">' + AnchoLaser + '<input type="hidden" value="' + AnchoLaser + '"></td><td class="' + tabla + ' img_delete"></td></tr>';
 
                         arrAcbO.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
@@ -2538,7 +2622,7 @@ if ($aJson) { ?>
 
                             $('#proceso_laser_M1').show();
                     }
-                    
+
                     break;
 
                 case "Grabado":
@@ -2550,8 +2634,8 @@ if ($aJson) { ?>
                         var AnchoGrab     = arrAcb[i]['Ancho'];
                         var ubicacionGrab = arrAcb[i]['ubicacion'];
                         var idtipoGrabado = 1;
-                        var costo         = parseFloat(arrAcb[i]['costo_unitario']).toFixed(2);
-                        
+                        var costo         = parseFloat(arrAcb[i]['costo_unitario']);
+
                         var cUPlaca       = arrAcb[i]['placa_costo_unitario'];
                         var cTPlaca       = arrAcb[i]['placa_costo'];
                         var cUArreglo     = arrAcb[i]['arreglo_costo_unitario'];
@@ -2574,7 +2658,7 @@ if ($aJson) { ?>
 
                         $('#proceso_grab_M1').show();
                     }
-                
+
                     break;
 
                 case "HotStamping":
@@ -2587,7 +2671,8 @@ if ($aJson) { ?>
                         var AnchoHS_ver   = arrAcb[i]['Ancho'];
                         var idtipoHS      = 1;
                         var idcolorHS     = 1;
-                        var costo         = parseFloat(arrAcb[i]['costo_unitario']).toFixed(2);
+                        //var costo         = parseFloat(arrAcb[i]['costo_unitario']);
+                        var costo         = parseFloat(arrAcb[i]['costo_unitario']);
                         var cUPlaca       = arrAcb[i]['placa_costo_unitario'];
                         var cTPlaca       = arrAcb[i]['placa_costo'];
                         var cUPelicula    = arrAcb[i]['pelicula_costo_unitario'];
@@ -2615,7 +2700,7 @@ if ($aJson) { ?>
 
                         $('#proceso_hs_M1').show();
                     }
-                    
+
                     break;
 
                 case "Laminado":
@@ -2627,7 +2712,7 @@ if ($aJson) { ?>
                         var Ancho   = arrAcb[i]['Ancho'];
                         var IDopAcb        = 1;
                         var idtipoLaminado = 1;
-                        var costo          = parseFloat(arrAcb[i]['costo_unitario']).toFixed(2);
+                        var costo          = parseFloat(arrAcb[i]['costo_unitario']);
                         var total   = parseFloat(arrAcb[i]['costo_tot_proceso']);
                         var acb  = '<tr id="AcLamEmp"><td style="text-align: left;" class="textAcbEmp">' + opAcb +'<input type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoLaminado +'</span></td><td class="tipoLamEmp" style="display: none">'+ tipoLaminado +'<input type="hidden" value="'+ idtipoLaminado +'"></td><td class="' + tabla + ' img_delete"></td></tr>';
 
@@ -2643,23 +2728,23 @@ if ($aJson) { ?>
                             $('#table_proc_Lam').append(acabadoTr);
                             $('#proceso_lam_M1').show();
                     }
-                    
+
                     break;
 
                 case "Suaje":
 
                     for( var i = 0; i < arrAcb.length; i++ ) {
-                        
+
                         var tipoSuaje  = arrAcb[i]['tipoGrabado'];
                         var LargoSuaje = arrAcb[i]['Largo'];
                         var AnchoSuaje = arrAcb[i]['Ancho'];
-                        var costo      = parseFloat(arrAcb[i]['costo_tiro']).toFixed(2);
+                        var costo      = parseFloat(arrAcb[i]['costo_tiro']);
                         var cTArreglo  = arrAcb[i]['arreglo_costo_unitario'];
                         if( !cTArreglo ){
 
                             cTArreglo  = arrAcb[i]['arreglo'];
                         }
-                        
+
                         var cTTiro     = arrAcb[i]['costo_tiro'];
                         var costoT     = arrAcb[i]['costo_tot_proceso'];
                         var acb  = '<tr id="AcSuajeEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoSuaje +', Medidas: '+ LargoSuaje +'x'+ AnchoSuaje +'</span></td><td class="tipoSuaje" style="display: none;">'+ tipoSuaje +'</td><td class="LargoSuaje" style="display: none;">'+ LargoSuaje +'</td><td class="AnchoSuaje" style="display: none;">'+ AnchoSuaje +'</td><td class="' + tabla + ' img_delete"></td></tr>';
@@ -2678,7 +2763,7 @@ if ($aJson) { ?>
 
                             $('#proceso_suaje_M1').show();
                     }
-                
+
                     break;
             }
         }
@@ -2688,7 +2773,7 @@ if ($aJson) { ?>
 
 <!-- bancos, accesorios y cierres -->
 <script type="text/javascript">
-    
+
     var bancos     = <?php echo json_encode($aJson['Bancos']) ?>;
     var cierres    = <?php echo json_encode($aJson['Cierres']) ?>;
     var accesorios = <?php echo json_encode($aJson['Accesorios']) ?>;
@@ -2717,7 +2802,7 @@ if ($aJson) { ?>
     if( cierres !== null ) {
 
         for (var i = 0; i < cierres.length ; i++) {
-            
+
             var tipoCierre = cierres[i]['Tipo_cierre'];
             var cie        = "";
 
@@ -2730,19 +2815,19 @@ if ($aJson) { ?>
 
 
                     aCierres.push({"Tipo_cierre": tipoCierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-                    
+
                     break;
 
                 case "Marialuisa":
-                    
+
                     cie = '<tr><td style="text-align: left;">' + tipoCierre +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="listcierres img_delete"></td></tr>';
 
                     aCierres.push({"Tipo_cierre": tipoCierre, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-                
+
                     break;
 
                 case "Liston":
-                    
+
                     var largo = cierres[i]['largo'];
                     var ancho = cierres[i]['ancho'];
                     var liston = cierres[i]['tipo'];
@@ -2752,11 +2837,11 @@ if ($aJson) { ?>
 
 
                     aCierres.push({"Tipo_cierre": tipoCierre, "numpares": 1, "largo": largo, "ancho": ancho, "tipo": liston, "color": color});
-                    
+
                     break;
 
                 case "Suaje calado":
-                    
+
                     var largo = cierres[i]['largo'];
                     var ancho = cierres[i]['ancho'];
                     var suaje = cierres[i]['tipo'];
@@ -2765,7 +2850,7 @@ if ($aJson) { ?>
 
 
                     aCierres.push({"Tipo_cierre": tipoCierre, "numpares": 1, "largo": largo, "ancho": ancho, "tipo": suaje, "color": null});
-                    
+
                     break;
 
                 case "Velcro":
@@ -2775,7 +2860,7 @@ if ($aJson) { ?>
 
 
                     aCierres.push({"Tipo_cierre": tipoCierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-                    
+
                     break;
             }
 
@@ -2786,7 +2871,7 @@ if ($aJson) { ?>
     if( accesorios !== null ) {
 
         for (var i = 0; i < accesorios.length ; i++) {
-            
+
             var tipoAccesorio = accesorios[i]['Tipo_accesorio'];
             var accesorio = "";
 
@@ -2801,7 +2886,7 @@ if ($aJson) { ?>
                     accesorio = '<tr><td style="text-align: left;">' + tipoAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + tipo + '</span></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+tipo+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
 
                     aAccesorios.push({"Tipo_accesorio": tipoAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": tipo, "Precio": precio});
-                    
+
                     break;
 
                 case "Ojillos":
@@ -2811,7 +2896,7 @@ if ($aJson) { ?>
                     accesorio = '<tr><td style="text-align: left;">' + tipoAccesorio + '</td><td style=""></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
 
                     aAccesorios.push({"Tipo_accesorio": tipoAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-                
+
                     break;
 
                 case "Resorte":
@@ -2824,7 +2909,7 @@ if ($aJson) { ?>
                     accesorio = '<tr><td style="text-align: left;">' + tipoAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none"></td><td style="display:none">' + precio + '</td><td class="listaccesorios img_delete"></td></tr>';
 
                     aAccesorios.push({"Tipo_accesorio": tipoAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                
+
                     break;
 
                 case "Lengueta de Liston":
@@ -2837,7 +2922,7 @@ if ($aJson) { ?>
                     accesorio = '<tr><td style="text-align: left;">' + tipoAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
 
                     aAccesorios.push({"Tipo_accesorio": tipoAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                
+
                     break;
             }
 
@@ -2875,7 +2960,7 @@ if ($aJson) { ?>
     var largo_cajon;
     var ancho_cajon;
     var precio_forros;
-    
+
 
     var costos_papeles = {guarda_cajon:0, forro_cajon:0, forro_cartera:0, guarda:0, cajon:0, cartera:0}
 
@@ -2926,11 +3011,11 @@ if ($aJson) { ?>
     // variable del boton de impresiones (modal)
     var ImpOffset = "";
 
-    /*var aCalculos = {};
+    var aCalculos = {};
     var aCortes   = {};
     var aTr3      = [];
 
-    var j = 0;
+    /*var j = 0;
     var data_offset;
     var data_digital;
     var data_laminado;
@@ -3126,7 +3211,7 @@ if ($aJson) { ?>
 
 
     jQuery214(document).on("click", "#btnSaveDescuento", function () {
-        
+
         $("#descuentoModal").html("Descuento: (" + descuento + "%)");
 
         $("#descuentos").modal("hide");
@@ -3134,13 +3219,13 @@ if ($aJson) { ?>
 
 
     jQuery214(document).on("click", "#btnCancelDescuento", function () {
-        
+
         jQuery214('#DescuentoDrop').html("$0.00");
 
         $('#descuentos').find("input:checked").prop("checked", false);
 
         $("#descuentoModal").html("Descuento: (0%)");
-        
+
         descuento = 0;
     });
 
@@ -3181,17 +3266,19 @@ if ($aJson) { ?>
         }
     });
 
+
+
     jQuery214(document).on("click", "#papeles_submit", function () {
 
         var grabar = "NO";
 
-        var empalme       = $("#interior_cajon").val();           // empalme
-        var forro_cajon   = $("#exterior_cajon").val();       // forro cajon
+        var empalme       = $("#interior_cajon").val();     // empalme
+        var forro_cajon   = $("#exterior_cajon").val();     // forro cajon
         var forro_cartera = $("#exterior_cartera").val();   // forro cartera
-        var guarda        = $("#interior_cartera").val();          // guarda
+        var guarda        = $("#interior_cartera").val();   // guarda
 
         if( empalme == null || forro_cajon == null || forro_cartera == null || guarda == null ){
-            
+
             var cadena = "";
             if( empalme == null ) cadena += "empalme <br>";
             if( forro_cajon == null ) cadena += "forro cajon <br>";
@@ -3209,9 +3296,8 @@ if ($aJson) { ?>
 
                 formData = [];
             }
-
+            $("#modLoading").show();
             var formData      = $("#caja-form").serializeArray();
-
             // impresion
             var aImp_tmp     = JSON.stringify(aImp, null, 4);
             var aImpFCaj_tmp = JSON.stringify(aImpFCaj, null, 4);
@@ -3248,7 +3334,7 @@ if ($aJson) { ?>
             var cliente        = parseInt(<?= $aJson['id_cliente']?>);
             var id_cliente_tmp = JSON.stringify(cliente, null, 4);
 
-            formData.push({name: 'id_cliente', value: id_cliente_tmp});          // mermas
+            formData.push({name: 'id_cliente', value: id_cliente_tmp});
 
             formData.push({name: 'aImp', value: aImp_tmp});
             formData.push({name: 'aImpFCaj', value: aImpFCaj_tmp});
@@ -3272,7 +3358,7 @@ if ($aJson) { ?>
             formData.push({name: 'modificar', value: modificar_odt});
             formData.push({name: 'grabar', value: grabar});
 
-            $.ajax({
+            $.ajax({                                // CALCULAR
                 type:"POST",
                 //dataType: "json",
                 url: $('#caja-form').attr('action'),
@@ -3280,34 +3366,64 @@ if ($aJson) { ?>
             })
             .done(function(response) {
 
-                console.log("(3655) response: ");
+                $("#modLoading").hide();
+                console.log("(3298) response: ");
 
                 console.log(response);
-                
-                if ( response !== " " ) {
+
+                if ( response ) {
 
                     try {
 
                         var js_respuesta =  JSON.parse(response); // trae toda la matriz
+                        var error        = js_respuesta.error;
 
-                        var aJson_stringify = JSON.stringify(js_respuesta, null, 4);
+                        if (error.length > 0 || js_respuesta.mensaje === "ERROR") {
 
-                        console.log('(3295) aJson_stringify: ' + aJson_stringify);
-                    } catch(e) {
-                        
-                        console.log("(3298) error: " + e);
-                        showModError("");
-                        $("#txtContenido").text("Hubo un error al calcular la caja");
-                        return false;
+                            document.getElementById("subForm").disabled = true;
+
+                            showModError("");
+                            //$("#txtContenido").html("");
+                            $("#txtContenido").html(error);
+
+                            return false;
+                        } else {
+
+                            var aJson_stringify = JSON.stringify(js_respuesta, null, 4);
+
+                            console.log('(3330) aJson_stringify: ' + aJson_stringify);
+                        }
+                    } catch {
+
+                        try{
+
+                            var error = response.split("<br />");
+                            error = error[1].split("<b>").join("");
+                            error = error.split("</b>").join("");
+                            showModError("");
+
+                            $("#txtContenido").html("(3668) Hubo un error al cotizar la caja.");
+                            appndMsgError(error);
+                        }catch {
+
+                            showModError("");
+
+                            $("#txtContenido").html("(3674) Hubo un error al cotizar la caja.");
+                        } finally{
+
+                            return false;    
+                        }
                     }
-                }else{
+                } else {
 
                     showModError("");
-                    $("#txtContenido").text("Hubo un error al calcular la caja");
+
+                    $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
+                    appndMsgError("No se regresa ningun valor. Favor de llamar a sistemas");
                     return false;
                 }
 
-                console.log('(3674) mensaje: ' + js_respuesta.mensaje);
+                console.log('(3358) mensaje: ' + js_respuesta.mensaje);
 
                 console.log('==============');
 
@@ -3315,7 +3431,7 @@ if ($aJson) { ?>
                 $('#table_adicionales_tr').empty();
 
                 // (RESUMEN)
-                    
+
                     $('#resumenEmpalme').empty();
                     $('#resumenFcajon').empty();
                     $('#resumenFcartera').empty();
@@ -3350,12 +3466,12 @@ if ($aJson) { ?>
 
                 // (MENSAJERIA)
 
-                    var costo_msj= "<tr><td></td><td></td><td></td><td>$" + js_respuesta['mensajeria'].toFixed(2) + "</td></tr>";
+                    var costo_msj= "<tr><td></td><td></td><td></td><td>$" + js_respuesta['mensajeria'] + "</td></tr>";
                     $('#resumenMensajeria').append(costo_msj);
 
                 // (EMPAQUE)
 
-                    var costo_emp= "<tr><td></td><td></td><td></td><td>$" + js_respuesta['empaque'].toFixed(2) + "</td></tr>";
+                    var costo_emp= "<tr><td></td><td></td><td></td><td>$" + js_respuesta['empaque'] + "</td></tr>";
                     $('#resumenEmpaque').append(costo_emp);
 
                 // (PAPELES)
@@ -3403,7 +3519,7 @@ if ($aJson) { ?>
                             //js_color_parte  = '<td style="background: #a5e8a5;"></td>';
                         }
 
-                    
+
                         //comparaciones y asignación
 
                         // Papeles todos
@@ -3422,7 +3538,7 @@ if ($aJson) { ?>
 
                             } else {
 
-                                var trpapelesEmp = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr><td>Material</td><td>'+ js_papel_interior_cajon_nombre_emp +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_Emp +' Ancho: '+ js_corte_ancho_Emp +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_papel_interior_cajon_cortes_Emp +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_papel_interior_cajon_pliegos_Emp +'</td></tr><tr><td>Costo Total</td><td>$'+ js_Costo_total_pliegos_emp_Emp.toFixed(2) +'<input type="hidden" class="prices" value="' + js_Costo_total_pliegos_emp_Emp.toFixed(2) + '"></td></tr>';
+                                var trpapelesEmp = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr><td>Material</td><td>'+ js_papel_interior_cajon_nombre_emp +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_Emp +' Ancho: '+ js_corte_ancho_Emp +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_papel_interior_cajon_cortes_Emp +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_papel_interior_cajon_pliegos_Emp +'</td></tr><tr><td>Costo Total</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="prices" value="' + js_Costo_total_pliegos_emp_Emp + '"></td></tr>';
 
                                 jQuery214('#table_papeles_tr').append(trpapelesEmp); //imprime tr
 
@@ -3430,28 +3546,28 @@ if ($aJson) { ?>
 
                                 if (js_parte_nombre == 'Empalme del Cajón') {
 
-                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="' + js_Costo_total_pliegos_emp_Emp.toFixed(2) + '"></td><td></td></tr>';
+                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenempalme" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
 
                                     jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                 }
 
                                 if (js_parte_nombre == 'Forro del Cajón') {
 
-                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="' + js_Costo_total_pliegos_emp_Emp.toFixed(2) + '"></td><td></td></tr>';
+                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenfcajon" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
 
                                     jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                 }
 
                                 if (js_parte_nombre == 'Forro de la Cartera') {
 
-                                   parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="' + js_Costo_total_pliegos_emp_Emp.toFixed(2) + '"></td><td></td></tr>';
+                                   parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenfcartera" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
 
                                     jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                 }
 
                                 if (js_parte_nombre == 'Guarda') {
 
-                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="' + js_Costo_total_pliegos_emp_Emp.toFixed(2) + '"></td><td></td></tr>';
+                                    parteresumen = '<tr><td></td><td>Papel '+ js_papel_interior_cajon_nombre_emp +'</td><td>$'+ js_Costo_total_pliegos_emp_Emp +'<input type="hidden" class="pricesresumenguarda" value="' + js_Costo_total_pliegos_emp_Emp + '"></td><td></td></tr>';
 
                                     jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                 }
@@ -3468,11 +3584,11 @@ if ($aJson) { ?>
                     var js_Num_pliegos_CartonCaj       = js_respuesta.CartonCaj['num_pliegos'];
                     var js_costo_total_CartonCaj       = js_respuesta.CartonCaj['costo_tot_carton'];
 
-                    var trpapelescartonj = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton del Cajón</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_CartonCaj +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCaj +' Ancho: '+ js_corte_ancho_CartonCaj +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Piezas_por_Pliego_CartonCaj +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Num_pliegos_CartonCaj +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCaj.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCaj.toFixed(2) +'"></td></tr>';
+                    var trpapelescartonj = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton del Cajón</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_CartonCaj +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCaj +' Ancho: '+ js_corte_ancho_CartonCaj +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Piezas_por_Pliego_CartonCaj +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Num_pliegos_CartonCaj +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCaj +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCaj +'"></td></tr>';
 
                     jQuery214('#table_papeles_tr').append(trpapelescartonj);
 
-                    parteresumen = '<tr><td></td><td>'+ js_nombre_cajon_CartonCaj +'</td><td>$'+ js_costo_total_CartonCaj.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_total_CartonCaj.toFixed(2) +'"></td><td></td></tr>';
+                    parteresumen = '<tr><td></td><td>'+ js_nombre_cajon_CartonCaj +'</td><td>$'+ js_costo_total_CartonCaj +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_total_CartonCaj +'"></td><td></td></tr>';
 
                     jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
 
@@ -3483,11 +3599,11 @@ if ($aJson) { ?>
                     var js_Num_pliegos_CartonCar          = js_respuesta.CartonCar['num_pliegos'];
                     var js_costo_total_CartonCar          = js_respuesta.CartonCar['costo_tot_carton'];
 
-                    var trpapelescartoncr = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton Cartera</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCar +' Ancho: '+ js_corte_ancho_CartonCar +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Piezas_por_Pliego_CartonCar +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Num_pliegos_CartonCar +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCar.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCar.toFixed(2) +'"></td></tr>';
+                    var trpapelescartoncr = '<tr><td colspan="2" style="background: steelblue;color: white;">Carton Cartera</td></tr><tr><td>Material</td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td></tr><tr><td>Cortes Aplicados</td><td>Largo: '+ js_corte_largo_CartonCar +' Ancho: '+ js_corte_ancho_CartonCar +'</td></tr><tr><td>Piezas por Hoja</td><td>'+ js_Piezas_por_Pliego_CartonCar +'</td></tr><tr><td>Hojas necesarias (sin merma)</td><td>'+ js_Num_pliegos_CartonCar +'</td></tr><tr><td>Costo Total</td><td>$'+ js_costo_total_CartonCar +'<input type="hidden" class="prices" value="'+ js_costo_total_CartonCar +'"></td></tr>';
 
                     jQuery214('#table_papeles_tr').append(trpapelescartoncr);
 
-                    parteresumen = '<tr><td></td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td><td>$'+ js_costo_total_CartonCar.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_total_CartonCar.toFixed(2) +'"></td><td></td></tr>';
+                    parteresumen = '<tr><td></td><td>'+ js_nombre_cajon_cartera_CartonCar +'</td><td>$'+ js_costo_total_CartonCar +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_total_CartonCar +'"></td><td></td></tr>';
 
                     jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
 
@@ -3519,15 +3635,15 @@ if ($aJson) { ?>
                     var js_elab_costo_tot_elab_car = js_elab_car_forro_car + js_elab_car_guarda;
 
 
-                    var elab_car_tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Elaboración</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ js_elab_car_tiraje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Totales</td></tr><tr><td>Forro</td><td>'+ js_elab_car_forro_costo_unit +'</td><td>'+ js_elab_car_forro_car +'</td></tr><tr><td>Guarda</td><td>'+ js_elab_car_guarda_costo_unit +'</td><td>'+ js_elab_car_guarda +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_elab_costo_tot_elab_car.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_elab_costo_tot_elab_car.toFixed(2) +'"></td></tr><tr><td colspan="3"></td></tr>';
+                    var elab_car_tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Elaboración</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ js_elab_car_tiraje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Totales</td></tr><tr><td>Forro</td><td>'+ js_elab_car_forro_costo_unit +'</td><td>'+ js_elab_car_forro_car +'</td></tr><tr><td>Guarda</td><td>'+ js_elab_car_guarda_costo_unit +'</td><td>'+ js_elab_car_guarda +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_elab_costo_tot_elab_car +'<input type="hidden" class="prices" value="'+ js_elab_costo_tot_elab_car +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                     jQuery214('#table_adicionales_tr').append(elab_car_tr);
 
-                    var parteresumen = '<tr><td></td><td>Elaboración</td><td>$'+ js_elab_car_forro_car.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="' + js_elab_car_forro_car.toFixed(2) + '"></td><td></td></tr>';
+                    var parteresumen = '<tr><td></td><td>Elaboración</td><td>$'+ js_elab_car_forro_car +'<input type="hidden" class="pricesresumenfcartera" value="' + js_elab_car_forro_car + '"></td><td></td></tr>';
 
                     jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
 
-                    var parteresumen = '<tr><td></td><td>Elaboración</td><td>$'+ js_elab_car_guarda.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="' + js_elab_car_guarda.toFixed(2) + '"></td><td></td></tr>';
+                    var parteresumen = '<tr><td></td><td>Elaboración</td><td>$'+ js_elab_car_guarda +'<input type="hidden" class="pricesresumenguarda" value="' + js_elab_car_guarda + '"></td><td></td></tr>';
 
                     jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
 
@@ -3563,15 +3679,15 @@ if ($aJson) { ?>
 
                     var js_ranurado_costo_tot_todo_ranura  = js_ranurado_costo_tot_ranurado + js_ranurado_costo_por_ranura2;
 
-                    var ranurado_tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Ranurado</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ js_ranurado_tiraje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Arreglo</td><td>'+ js_ranurado_arreglo +'</td><td>'+ js_ranurado_arreglo +'</td></tr><tr><td>Ranurado Cajón</td><td>'+ js_ranurado_costo_unit_por_ranura +'</td><td>'+ js_ranurado_costo_por_ranura +'</td></tr><tr><td>Ranurado Cartera</td><td>'+ js_ranurado_costo_unit_por_ranura2 +'</td><td>'+ js_ranurado_costo_por_ranura2 +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_ranurado_costo_tot_todo_ranura.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_ranurado_costo_tot_todo_ranura.toFixed(2) +'"></td></tr><tr><td colspan="3"></td></tr>';
+                    var ranurado_tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Ranurado</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ js_ranurado_tiraje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Arreglo</td><td>'+ js_ranurado_arreglo +'</td><td>'+ js_ranurado_arreglo +'</td></tr><tr><td>Ranurado Cajón</td><td>'+ js_ranurado_costo_unit_por_ranura +'</td><td>'+ js_ranurado_costo_por_ranura +'</td></tr><tr><td>Ranurado Cartera</td><td>'+ js_ranurado_costo_unit_por_ranura2 +'</td><td>'+ js_ranurado_costo_por_ranura2 +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_ranurado_costo_tot_todo_ranura +'<input type="hidden" class="prices" value="'+ js_ranurado_costo_tot_todo_ranura +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                     jQuery214('#table_adicionales_tr').append(ranurado_tr);
 
-                    var parteresumen = '<tr><td></td><td>Ranurado</td><td>$'+ js_ranurado_costo_tot_ranurado.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="' + js_ranurado_costo_tot_ranurado.toFixed(2) + '"></td><td></td></tr>';
+                    var parteresumen = '<tr><td></td><td>Ranurado</td><td>$'+ js_ranurado_costo_tot_ranurado +'<input type="hidden" class="pricesresumenfcajon" value="' + js_ranurado_costo_tot_ranurado + '"></td><td></td></tr>';
 
                     jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
 
-                    var parteresumen = '<tr><td></td><td>Ranurado</td><td>$'+ js_ranurado_costo_por_ranura2.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="' + js_ranurado_costo_por_ranura2.toFixed(2) + '"></td><td></td></tr>';
+                    var parteresumen = '<tr><td></td><td>Ranurado</td><td>$'+ js_ranurado_costo_por_ranura2 +'<input type="hidden" class="pricesresumenfcartera" value="' + js_ranurado_costo_por_ranura2 + '"></td><td></td></tr>';
 
                     jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
 
@@ -3583,7 +3699,7 @@ if ($aJson) { ?>
 
                     var js_encuadernacion_despunte_costo_unitario = js_respuesta.encuadernacion['despunte_costo_unitario'];
 
-                    
+
                     if (js_encuadernacion_despunte_costo_unitario <= 0) {
 
                         showModError("Encuadernacion (costo unitario despunte)");
@@ -3604,7 +3720,7 @@ if ($aJson) { ?>
 
 
                     var js_encuadernacion_Encajada = js_respuesta.encuadernacion['encajada'];
-                    
+
                     var js_encuadernacion_costo_tot_proceso = js_respuesta.encuadernacion['costo_tot_proceso'];
 
 
@@ -3619,7 +3735,7 @@ if ($aJson) { ?>
 
                     var js_encuadernacion_Puesta_de_banco = js_respuesta.encuadernacion['puesta_de_banco'];
 
-                    var js_encuadernacion_costo_tot_proceso = js_respuesta.encuadernacion['costo_tot_encuadernacion'];
+                    var js_encuadernacion_costo_tot_proceso = js_respuesta.encuadernacion['costo_tot_proceso'];
 
                     var js_encuadernacion_costo_unitario_iman = js_respuesta.encuadernacion['costo_unitario_iman'];
 
@@ -3671,9 +3787,9 @@ if ($aJson) { ?>
                     var js_encuadernacion_Empalme_de_cajon = js_respuesta.encuadernacion_Fcaj['empalme_de_cajon'];
 
 
-                    var ranurado_tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Encuadernación</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ js_encuadernacionranurado_tiraje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Despunte</td><td>'+ js_encuadernacion_despunte_costo_unitario +'</td><td>'+ js_encuadernacion_Despunte_de_esquinas_para_cajon +'</td></tr><tr><td>Forrado</td><td>'+ js_encuadernacion_costo_unitario_Forrado_de_cajon +'</td><td>'+ js_encuadernacion_Forrado_de_cajon +'</td></tr><tr><td>Arreglo Forrado</td><td>'+ js_encuadernacion_Arreglo_de_Forrado_de_cajon +'</td><td>'+ js_encuadernacion_Arreglo_de_Forrado_de_cajon +'</td></tr><tr><td>Encajada</td><td>'+ js_encuadernacion_encajada_costo_unitario +'</td><td>'+ js_encuadernacion_Encajada +'</td></tr><tr><td>Empalme</td><td>'+ js_encuadernacion_empalme_cajon_costo_unitario +'</td><td>'+ js_encuadernacion_Empalme_de_cajon +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_encuadernacion_costo_tot_proceso.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_encuadernacion_costo_tot_proceso.toFixed(2) +'"></td></tr><tr><td colspan="3"></td></tr>';
+                    var ranurado_tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Encuadernación</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ js_encuadernacionranurado_tiraje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Despunte</td><td>'+ js_encuadernacion_despunte_costo_unitario +'</td><td>'+ js_encuadernacion_Despunte_de_esquinas_para_cajon +'</td></tr><tr><td>Forrado</td><td>'+ js_encuadernacion_costo_unitario_Forrado_de_cajon +'</td><td>'+ js_encuadernacion_Forrado_de_cajon +'</td></tr><tr><td>Arreglo Forrado</td><td>'+ js_encuadernacion_Arreglo_de_Forrado_de_cajon +'</td><td>'+ js_encuadernacion_Arreglo_de_Forrado_de_cajon +'</td></tr><tr><td>Encajada</td><td>'+ js_encuadernacion_encajada_costo_unitario +'</td><td>'+ js_encuadernacion_Encajada +'</td></tr><tr><td>Empalme</td><td>'+ js_encuadernacion_empalme_cajon_costo_unitario +'</td><td>'+ js_encuadernacion_Empalme_de_cajon +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_encuadernacion_costo_tot_proceso +'<input type="hidden" class="prices" value="'+ js_encuadernacion_costo_tot_proceso +'"></td></tr><tr><td colspan="3"></td></tr>';
 
-                    var parteresumen = '<tr><td></td><td></td><td></td><td>$'+ js_respuesta['encuadernacion']['costo_tot_encuadernacion'].toFixed(2) +'</td></tr>';
+                    var parteresumen = '<tr><td></td><td></td><td></td><td>$'+ js_respuesta['encuadernacion']['costo_tot_encuadernacion'] +'</td></tr>';
 
                     $('#resumenEncuadernacion').append(parteresumen); //imprime para el resumen
                     $('#resumenFcajon').append("<tr><td></td><td>Encuadernación</td><td>$" + js_respuesta['encuadernacion_Fcaj']['costo_tot_proceso'] + " <input type='hidden' class='pricesresumenfcajon' value=" + js_respuesta['encuadernacion_Fcaj']['costo_tot_proceso'] + "></td><td></td></tr>");
@@ -3755,7 +3871,7 @@ if ($aJson) { ?>
 
                             $('#proceso_offset_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenempalme" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                         }
@@ -3816,7 +3932,7 @@ if ($aJson) { ?>
 
                             $('#proceso_offset_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenempalme" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                         }
@@ -3872,7 +3988,7 @@ if ($aJson) { ?>
 
                             $('#proceso_serigrafia_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_tot_serigrafia_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp +'<input type="hidden" class="pricesresumenempalme" value="'+ js_tot_serigrafia_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                         }
@@ -3885,7 +4001,7 @@ if ($aJson) { ?>
                         var js_variable_extra3 = js_respuesta.DigEmp; //trae los valores de DigEmp
 
                         if ("impresion_digital" in js_variable_extra3) {
-                            
+
                             showModErrorDigital("No cabe la impresión en Digital(Empalme) con estas medidas.");
                         } else  {
 
@@ -3903,7 +4019,7 @@ if ($aJson) { ?>
                                 }
 
 
-                                var js_costo_tot_digital = js_variable_extra3[c]['costo_tot_proceso'].toFixed(2);
+                                var js_costo_tot_digital = js_variable_extra3[c]['costo_tot_proceso'];
                                 var processdigital = '<tr><td colspan="4" style="background: steelblue;color: white;">Empalme del Cajón</td></tr><tr><td>Cantidad</td><td>Costo Unitario</td><td>Costo Total</td></tr><tr><td>'+ js_cantidad_con_merma_digital +'</td><td>'+ js_costo_unitario_digital +'</td><td>$'+ js_costo_tot_digital +'<input type="hidden" class="prices" value=" '+ js_costo_tot_digital +'"></td></tr><tr><td colspan="4"></td></tr>';
 
                                 jQuery214('#table_proc_digital').append(processdigital);
@@ -3954,14 +4070,14 @@ if ($aJson) { ?>
 
                             var js_costo_unitario_tiro_emp = js_variable_extra4[a]['costo_unitario_tiro'];
 
-                            
+
                             if (js_costo_unitario_tiro_emp <= 0) {
 
                                 showModError("Offset Forro del Cajon (costo unitario tiro)");
                             }
 
 
-                            var js_costo_tot_tiro_emp = js_variable_extra4[a]['costo_tot_tiro']; 
+                            var js_costo_tot_tiro_emp = js_variable_extra4[a]['costo_tot_tiro'];
                             //js_variable_extra4[a]['costo_tot_tiro'];
 
 
@@ -3983,7 +4099,7 @@ if ($aJson) { ?>
                             $('#proceso_offset_M1').show();
 
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                         }
@@ -4044,7 +4160,7 @@ if ($aJson) { ?>
 
                             $('#proceso_offset_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                         }
@@ -4098,7 +4214,7 @@ if ($aJson) { ?>
 
                             $('#proceso_serigrafia_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_tot_serigrafia_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_tot_serigrafia_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                         }
@@ -4111,7 +4227,7 @@ if ($aJson) { ?>
                         var js_variable_extra6 = js_respuesta.DigFCaj; //trae los valores de DigFCaj
 
                         if ("impresion_digital" in js_variable_extra6) {
-                            
+
                             showModErrorDigital("No cabe la impresión Digital(Forro del Cajon) con estas medidas.");
                         } else  {
 
@@ -4205,7 +4321,7 @@ if ($aJson) { ?>
 
                             $('#proceso_offset_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                         }
@@ -4266,14 +4382,14 @@ if ($aJson) { ?>
 
                             $('#proceso_offset_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                         }
                     }
 
 
-                    // Fcartera Proceso Serigrafia
+                // Fcartera Proceso Serigrafia
 
                     if ("SerFCar" in js_respuesta) {
 
@@ -4315,20 +4431,20 @@ if ($aJson) { ?>
 
                             $('#proceso_serigrafia_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_tot_serigrafia_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_tot_serigrafia_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                         }
                     }
 
-                    // Fcartera Proceso Digital
+                // Fcartera Proceso Digital
 
                     if ("DigFCar" in js_respuesta) {
 
                         var js_variable_extra9 = js_respuesta.DigFCar; //trae los valores de DigFCar
 
                         if ("impresion_digital" in js_variable_extra9) {
-                            
+
                             showModErrorDigital("No cabe la impresión en Digital(Forro Cartera) con estas medidas.");
                         } else  {
 
@@ -4423,7 +4539,7 @@ if ($aJson) { ?>
 
                             $('#proceso_offset_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenguarda" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                         }
@@ -4484,7 +4600,7 @@ if ($aJson) { ?>
 
                             $('#proceso_offset_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_total_offset_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="pricesresumenguarda" value="'+ js_total_offset_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                         }
@@ -4536,7 +4652,7 @@ if ($aJson) { ?>
 
                             $('#proceso_serigrafia_M1').show();
 
-                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_tot_serigrafia_emp.toFixed(2) +'"></td><td></td></tr>';
+                            var parteresumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ js_tot_serigrafia_emp +'<input type="hidden" class="pricesresumenguarda" value="'+ js_tot_serigrafia_emp +'"></td><td></td></tr>';
 
                             jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                         }
@@ -4550,7 +4666,7 @@ if ($aJson) { ?>
                         var js_variable_extra12 = js_respuesta.DigG; //trae los valores de DigG
 
                         if ("impresion_digital" in js_variable_extra12) {
-                            
+
                             showModErrorDigital("No cabe la impresión en Digital(Guada) con estas medidas.");
                         } else  {
 
@@ -4566,7 +4682,7 @@ if ($aJson) { ?>
 
                                     showModError("Digital Guarda (costo unitario tiro)");
                                 }
-                                
+
 
                                 var js_costo_tot_digital = js_variable_extra12[c]['costo_tot_proceso'];
 
@@ -4584,7 +4700,7 @@ if ($aJson) { ?>
                         }
                     }
 
-                
+
                 // oculta
                     $('#proceso_hs_M1').hide();
 
@@ -4604,11 +4720,11 @@ if ($aJson) { ?>
                     $('#table_proc_Laser').empty();
                     $('#table_proc_BarnizUV').empty();
 
-                    
+
                     $('#table_proc_BarnizUV').empty();
                     $('#proceso_barnizuv_M1').hide();
 
-                
+
                 // (ACABADOS)
 
                     var respuestaacabados;
@@ -4657,7 +4773,7 @@ if ($aJson) { ?>
 
 
                                 var js_costo_unitario_lam_emp = js_respuesta[c][a]['costo_unitario'];
-                                
+
 
                                 if (js_costo_unitario_lam_emp <= 0) {
 
@@ -4687,7 +4803,7 @@ if ($aJson) { ?>
 
                                     if (js_parte_nombre == 'Empalme del Cajón') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado Laminado</td><td>$'+ js_costo_tiro_lam_emp.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tiro_lam_emp +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado Laminado</td><td>$'+ js_costo_tiro_lam_emp +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tiro_lam_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
@@ -4749,7 +4865,7 @@ if ($aJson) { ?>
 
                                 var js_pelicula_costo_emp = js_respuesta[c][a]['pelicula_costo'];
 
-                                js_pelicula_costo_emp = js_pelicula_costo_emp.toFixed(2);
+                                js_pelicula_costo_emp = js_pelicula_costo_emp;
 
 
                                 var js_arreglo_costo_unitario_emp = js_respuesta[c][a]['arreglo_costo_unitario'];
@@ -4779,7 +4895,7 @@ if ($aJson) { ?>
 
                                     console.log('(5144) Buscando los hoststamping agregados');
 
-                                } else { 
+                                } else {
 
                                     var acabadoTr = '<tr><td colspan="3" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoHS_emp +'</td><td>Color: '+ js_ColorHS_emp +'</td><td>Tamaño: '+ js_LargoHS_emp +'x'+ js_AnchoHS_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Placa</td><td>'+ js_placa_costo_unitario_emp +'</td><td>'+ js_placa_costo_emp +'</td></tr><tr><td>Pelicula</td><td>'+ js_pelicula_costo_unitario_emp +'</td><td>'+ js_pelicula_costo_emp +'</td></tr><tr><td>Arrego</td><td>'+ js_arreglo_costo_unitario_emp +'</td><td>'+ js_arreglo_costo_emp +'</td></tr><tr><td>Tiro</td><td>'+ js_estampado_costo_unitario_emp +'</td><td>'+ js_estampado_costo_tiro_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_costo_acabadohs_emp +'<input type="hidden" class="prices" value="'+ js_costo_acabadohs_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
@@ -4793,28 +4909,28 @@ if ($aJson) { ?>
 
                                     if (js_parte_nombre == 'Empalme del Cajón') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_acabadohs_emp.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_acabadohs_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Forro del Cajón') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_acabadohs_emp.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_acabadohs_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Forro de la Cartera') {
 
-                                       parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_acabadohs_emp.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_acabadohs_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Guarda') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_acabadohs_emp.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ js_costo_acabadohs_emp +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_acabadohs_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -4857,7 +4973,7 @@ if ($aJson) { ?>
 
                                 var js_estampado_costo_unitario_grab_emp = js_respuesta[c][a]['costo_unitario'];
 
-                                
+
                                 if (js_estampado_costo_unitario_grab_emp <= 0) {
 
                                     showModError("Grabado (costo unitario " + js_tipoGrabadoGrab_emp + ")");
@@ -4886,28 +5002,28 @@ if ($aJson) { ?>
 
                                     if (js_parte_nombre == 'Empalme del Cajón') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_acabado_grab_emp.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_acabado_grab_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Forro del Cajón') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_acabado_grab_emp.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_acabado_grab_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Forro de la Cartera') {
 
-                                       parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_acabado_grab_emp.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_acabado_grab_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Guarda') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_acabado_grab_emp.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ js_costo_acabado_grab_emp +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_acabado_grab_emp +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -4965,28 +5081,28 @@ if ($aJson) { ?>
 
                                     if (js_parte_nombre == 'Empalme del Cajón') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_acabado_suaje.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_acabado_suaje +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Forro del Cajón') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_acabado_suaje.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_acabado_suaje +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Forro de la Cartera') {
 
-                                       parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_acabado_suaje.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_acabado_suaje +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (js_parte_nombre == 'Guarda') {
 
-                                        parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_acabado_suaje.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ js_costo_acabado_suaje +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_acabado_suaje +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5025,11 +5141,11 @@ if ($aJson) { ?>
 
                                     $('#proceso_barnizuv_M1').show();
 
-             
+
 
                                     var parteresumen;
                                     var js_costo_tiro_lam_emp = js_respuesta[c][a]['costo_tot_proceso'];
-                                
+
                                     js_costo_tiro_lam_emp = js_costo_tiro_lam_emp;
 
                                     if (js_parte_nombre == 'Empalme del Cajón') {
@@ -5071,7 +5187,7 @@ if ($aJson) { ?>
                                 var js_AnchoLaser       = js_respuesta[c][a]['Ancho'];
 
                                 var js_costo_unitario_Laser_emp = js_respuesta[c][a]['costo_unitario'];
-                                
+
 
                                 if (js_costo_unitario_Laser_emp <= 0) {
 
@@ -5080,7 +5196,7 @@ if ($aJson) { ?>
 
 
                                 var js_costo_Laser_emp = parseFloat(js_respuesta[c][a]['costo_tot_proceso']);
-                                js_costo_Laser_emp     = js_costo_Laser_emp.toFixed(2);
+                                js_costo_Laser_emp     = js_costo_Laser_emp;
 
 
                                 if (js_tipoGrabadoLaser === undefined || js_costo_unitario_Laser_emp === undefined || js_costo_Laser_emp === undefined) {
@@ -5200,26 +5316,26 @@ if ($aJson) { ?>
 
                         for (a in respuestamermas) {
 
-                            if (c === "OffEmp" || c === "SerEmp" || c === "DigEmp" 
+                            if (c === "OffEmp" || c === "SerEmp" || c === "DigEmp"
                                 || c === "OffFCaj" || c === "SerFCaj" || c === "DigFCaj"
 
                                 || c === "OffFCar" || c === "SerFCar" || c === "DigFCar"
 
                                 || c === "OffG" || c === "SerG" || c === "DigG"
 
-                                || c == 'Laminado' || c == 'HotStamping' || c == 'Grabado' 
-                                || c == 'Suaje' 
+                                || c == 'Laminado' || c == 'HotStamping' || c == 'Grabado'
+                                || c == 'Suaje'
 
-                                || c == 'OffFCaj' || c == 'SerFCaj' || c == 'DigFCaj' 
-                                || c == 'LaminadoFcaj' || c == 'HotStampingFcaj' 
+                                || c == 'OffFCaj' || c == 'SerFCaj' || c == 'DigFCaj'
+                                || c == 'LaminadoFcaj' || c == 'HotStampingFcaj'
                                 || c == 'GrabadoFcaj' || c == 'SuajeFcaj'
 
-                                || c == 'OffFCar' || c == 'SerFCar' || c == 'DigFCar' 
-                                || c == 'LaminadoFcar' || c == 'HotStampingFcar' 
-                                || c == 'GrabadoFcar' || c == 'SuajeFcar' 
+                                || c == 'OffFCar' || c == 'SerFCar' || c == 'DigFCar'
+                                || c == 'LaminadoFcar' || c == 'HotStampingFcar'
+                                || c == 'GrabadoFcar' || c == 'SuajeFcar'
 
-                                || c == 'OffG' || c == 'SerG' || c == 'DigG' 
-                                || c == 'LaminadoG' || c == 'HotStampingG' 
+                                || c == 'OffG' || c == 'SerG' || c == 'DigG'
+                                || c == 'LaminadoG' || c == 'HotStampingG'
                                 || c == 'GrabadoG' || c == 'SuajeG'
                                 ) {
 
@@ -5235,32 +5351,32 @@ if ($aJson) { ?>
                                 // Offset
                                 if (c === "OffEmp" || c === "OffFCaj" || c === "OffFCar" || c === "OffG") {
 
-                                    var mermastr = '<tr>'+ js_color_parte +'<td>Offset</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm.toFixed(2) +'</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td></tr>';
+                                    var mermastr = '<tr>'+ js_color_parte +'<td>Offset</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
                                     if (c == "OffEmp") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "OffFCaj") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "OffFCar") {
 
-                                       parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "OffG") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5270,32 +5386,32 @@ if ($aJson) { ?>
                                 //digital
                                 if (c === "DigEmp" || c === "DigFCaj" || c === "DigFCar" || c === "DigG") {
 
-                                    var mermastr = '<tr>'+ js_color_parte +'<td>Digital</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm.toFixed(2) +'</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td></tr>';
+                                    var mermastr = '<tr>'+ js_color_parte +'<td>Digital</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
                                     if (c == "DigEmp") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "DigFCaj") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "DigFCar") {
 
-                                       parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "DigG") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Digital</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5305,32 +5421,32 @@ if ($aJson) { ?>
                                 //serigrafia
                                 if (c === "SerEmp" || c === "SerFCaj" || c === "SerFCar" || c === "SerG") {
 
-                                    var mermastr = '<tr>'+ js_color_parte +'<td>Serigrafia</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm.toFixed(2) +'</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td></tr>';
+                                    var mermastr = '<tr>'+ js_color_parte +'<td>Serigrafia</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
                                     if (c == "SerEmp") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "SerFCaj") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "SerFCar") {
 
-                                       parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "SerG") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Serigrafia</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5340,32 +5456,32 @@ if ($aJson) { ?>
                                 //Laminado
                                 if (c === "Laminado" || c === "LaminadoFcaj" || c === "LaminadoFcar" || c === "LaminadoG") {
 
-                                    var mermastr = '<tr>'+ js_color_parte +'<td>Laminado</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m.toFixed(2) +'</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td></tr>';
+                                    var mermastr = '<tr>'+ js_color_parte +'<td>Laminado</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
                                     if (c == "Laminado") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "LaminadoFcaj") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "LaminadoFcar") {
 
-                                       parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "LaminadoG") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Laminado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5375,32 +5491,32 @@ if ($aJson) { ?>
                                 //HotStamping
                                 if (c === "HotStamping" || c === "HotStampingFcaj" || c === "HotStampingFcar" || c === "HotStampingG") {
 
-                                    var mermastr = '<tr>'+ js_color_parte +'<td>HotStamping</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m.toFixed(2) +'</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td></tr>';
+                                    var mermastr = '<tr>'+ js_color_parte +'<td>HotStamping</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
                                     if (c == "HotStamping") {
 
-                                        parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "HotStampingFcaj") {
 
-                                        parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "HotStampingFcar") {
 
-                                       parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "HotStampingG") {
 
-                                        parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma HotStamping</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5409,32 +5525,32 @@ if ($aJson) { ?>
                                 //Grabado
                                 if (c === "Grabado" || c === "GrabadoFcaj" || c === "GrabadoFcar" || c === "GrabadoG") {
 
-                                    var mermastr = '<tr>'+ js_color_parte +'<td>Grabado</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m.toFixed(2) +'</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td></tr>';
+                                    var mermastr = '<tr>'+ js_color_parte +'<td>Grabado</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
                                     if (c == "Grabado") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "GrabadoFcaj") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "GrabadoFcar") {
 
-                                       parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "GrabadoG") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Grabado</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5443,32 +5559,32 @@ if ($aJson) { ?>
                                 //Suaje
                                 if (c === "Suaje" || c === "SuajeFcaj" || c === "SuajeFcar" || c === "SuajeG") {
 
-                                    var mermastr = '<tr>'+ js_color_parte +'<td>Suaje</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m.toFixed(2) +'</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td></tr>';
+                                    var mermastr = '<tr>'+ js_color_parte +'<td>Suaje</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
                                     if (c == "Suaje") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "SuajeFcaj") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "SuajeFcar") {
 
-                                       parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                       parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
                                     }
 
                                     if (c == "SuajeG") {
 
-                                        parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm.toFixed(2) +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm.toFixed(2) +'"></td><td></td></tr>';
+                                        parteresumen = '<tr><td></td><td>Merma Suaje</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
 
                                         jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                     }
@@ -5493,17 +5609,17 @@ if ($aJson) { ?>
 
                         for(var cont = 0; cont < js_respuesta['Bancos'].length; cont++) {
 
-                            tr = '<tr><td>' + js_respuesta['Bancos'][cont]['Tipo_banco'] +'</td><td>' + js_respuesta['Bancos'][cont]['Suaje'] + '</td><td>$' + js_respuesta['Bancos'][cont]['costo_unit_banco'].toFixed(2) +'<td>' + js_respuesta['Bancos'][cont]['costo_bancos'].toFixed(2) + '</td><td style="display: none;"><input type="hidden" class="prices" value="'+ js_respuesta['Bancos'][cont]['costo_bancos'] +'"></td></tr>';
+                            tr = '<tr><td>' + js_respuesta['Bancos'][cont]['Tipo_banco'] +'</td><td>' + js_respuesta['Bancos'][cont]['Suaje'] + '</td><td>$' + js_respuesta['Bancos'][cont]['costo_unit_banco'] +'<td>' + js_respuesta['Bancos'][cont]['costo_bancos'] + '</td><td style="display: none;"><input type="hidden" class="prices" value="'+ js_respuesta['Bancos'][cont]['costo_bancos'] +'"></td></tr>';
 
                             $('#tabla_bancos').append(tr);
-                            
-                            var resumen = '<tr><td></td><td>' + js_respuesta['Bancos'][cont]['Tipo_banco'] +'</td><td></td><td>$'+ js_respuesta['Bancos'][cont]['costo_bancos'] +'<input type="hidden" class="pricesresumenbancos" value="'+ js_respuesta['Bancos'][cont]['costo_bancos'].toFixed(2) +'"></td><td></td></tr>';
+
+                            var resumen = '<tr><td></td><td>' + js_respuesta['Bancos'][cont]['Tipo_banco'] +'</td><td></td><td>$'+ js_respuesta['Bancos'][cont]['costo_bancos'] +'<input type="hidden" class="pricesresumenbancos" value="'+ js_respuesta['Bancos'][cont]['costo_bancos'] +'"></td><td></td></tr>';
 
                             $('#resumenBancos').append(resumen);
 
                         }
 
-                        
+
                         $('#resumenBancos').append("<tr><td></td><td></td><td></td><td>$" + js_respuesta['costo_bancos'] + "</td></tr>");
                         $('#bancos').show();
                     }
@@ -5542,11 +5658,11 @@ if ($aJson) { ?>
                                 tipo = js_respuesta['Cierres'][cont]['tipo'];
                             }
 
-                            tr = '<tr style="background: steelblue;color: white;"><td style="color: white">Tipo: ' + tipo + '</td><td style="color: white">Color: ' + color + ' </td><td style="color: white">Tamaño: ' + largoAncho + ' </td></tr><tr><td></td><td>Costo Unitario</td><td>Total</td></tr><tr><td>' + js_respuesta['Cierres'][cont]['Tipo_cierre'] +'</td><td>$' + js_respuesta['Cierres'][cont]['costo_unitario'].toFixed(2) +'<td>' + js_respuesta['Cierres'][cont]['costo_cierre'].toFixed(2) + '</td><td style="display: none;"><input type="hidden" class="prices" value="'+ js_respuesta['Cierres'][cont]['costo_cierre'] +'"></td></tr>';
+                            tr = '<tr style="background: steelblue;color: white;"><td style="color: white">Tipo: ' + tipo + '</td><td style="color: white">Color: ' + color + ' </td><td style="color: white">Tamaño: ' + largoAncho + ' </td></tr><tr><td></td><td>Costo Unitario</td><td>Total</td></tr><tr><td>' + js_respuesta['Cierres'][cont]['Tipo_cierre'] +'</td><td>$' + js_respuesta['Cierres'][cont]['costo_unitario'] +'<td>' + js_respuesta['Cierres'][cont]['costo_cierre'] + '</td><td style="display: none;"><input type="hidden" class="prices" value="'+ js_respuesta['Cierres'][cont]['costo_cierre'] +'"></td></tr>';
 
                             $('#tabla_cierres').append(tr);
 
-                            var resumen = '<tr><td></td><td>' + js_respuesta['Cierres'][cont]['Tipo_cierre'] +'</td><td>$'+ js_respuesta['Cierres'][cont]['costo_cierre'] +'<input type="hidden" class="pricesresumenbancos" value="'+ js_respuesta['Cierres'][cont]['costo_cierre'].toFixed(2) +'"></td><td></td></tr>';
+                            var resumen = '<tr><td></td><td>' + js_respuesta['Cierres'][cont]['Tipo_cierre'] +'</td><td>$'+ js_respuesta['Cierres'][cont]['costo_cierre'] +'<input type="hidden" class="pricesresumenbancos" value="'+ js_respuesta['Cierres'][cont]['costo_cierre'] +'"></td><td></td></tr>';
                             $('#resumenCierres').append(resumen);
                         }
 
@@ -5590,11 +5706,11 @@ if ($aJson) { ?>
                                 tipo = js_respuesta['Accesorios'][cont]['Tipo'];
                             }
 
-                            tr = '<tr style="background: steelblue;color: white;"><td style="color: white">Tipo: ' + tipo + '</td><td style="color: white">Color: ' + color + ' </td><td style="color: white">Tamaño: ' + largoAncho + ' </td></tr><tr><td></td><td>Costo Unitario</td><td>Total</td></tr><tr><td>' + js_respuesta['Accesorios'][cont]['Tipo_accesorio'] +'</td><td>$' + js_respuesta['Accesorios'][cont]['costo_unit_accesorio'].toFixed(2) +'<td>' + js_respuesta['Accesorios'][cont]['costo_accesorios'].toFixed(2) + '</td><td style="display: none;"><input type="hidden" class="prices" value="'+ js_respuesta['Accesorios'][cont]['costo_accesorios'] +'"></td></tr>';
+                            tr = '<tr style="background: steelblue;color: white;"><td style="color: white">Tipo: ' + tipo + '</td><td style="color: white">Color: ' + color + ' </td><td style="color: white">Tamaño: ' + largoAncho + ' </td></tr><tr><td></td><td>Costo Unitario</td><td>Total</td></tr><tr><td>' + js_respuesta['Accesorios'][cont]['Tipo_accesorio'] +'</td><td>$' + js_respuesta['Accesorios'][cont]['costo_unit_accesorio'] +'<td>' + js_respuesta['Accesorios'][cont]['costo_accesorios'] + '</td><td style="display: none;"><input type="hidden" class="prices" value="'+ js_respuesta['Accesorios'][cont]['costo_accesorios'] +'"></td></tr>';
 
                             $('#tabla_accesorios').append(tr);
 
-                            var resumen = '<tr><td></td><td>' + js_respuesta['Accesorios'][cont]['Tipo_accesorio'] +'</td><td></td><td>$'+ js_respuesta['Accesorios'][cont]['costo_accesorios'] +'<input type="hidden" class="pricesresumenbancos" value="'+ js_respuesta['Accesorios'][cont]['costo_accesorios'].toFixed(2) +'"></td></tr>';
+                            var resumen = '<tr><td></td><td>' + js_respuesta['Accesorios'][cont]['Tipo_accesorio'] +'</td><td></td><td>$'+ js_respuesta['Accesorios'][cont]['costo_accesorios'] +'<input type="hidden" class="pricesresumenbancos" value="'+ js_respuesta['Accesorios'][cont]['costo_accesorios'] +'"></td></tr>';
 
                             $('#resumenAccesorios').append(resumen);
                         }
@@ -5605,24 +5721,24 @@ if ($aJson) { ?>
                     }
 
                 //DESCUENTOSMIO
-                    $("#tdSubtotalCaja").html("$" + js_respuesta['costo_subtotal'].toFixed(2));
+                    $("#tdSubtotalCaja").html("$" + js_respuesta['costo_subtotal']);
 
-                    $("#UtilidadDrop").html("$" + js_respuesta['Utilidad'].toFixed(2));
-                    
-                    $("#Totalplus").html("$" + js_respuesta['costo_odt'].toFixed(2));
-                    
-                    $("#IVADrop").html("$" + js_respuesta['iva'].toFixed(2));
-                    
-                    $("#ComisionesDrop").html("$" + js_respuesta['comisiones'].toFixed(2));
-                    
-                    $("#IndirectoDrop").html("$" + js_respuesta['indirecto'].toFixed(2));
-                    
-                    $("#VentasDrop").html("$" + js_respuesta['ventas'].toFixed(2));
+                    $("#UtilidadDrop").html("$" + js_respuesta['Utilidad']);
 
-                    $("#ISRDrop").html("$" + js_respuesta['ISR'].toFixed(2));
-                    
-                    
-                    $("#DescuentoDrop").html("$" + js_respuesta['descuento'].toFixed(2));
+                    $("#Totalplus").html("$" + js_respuesta['costo_odt']);
+
+                    $("#IVADrop").html("$" + js_respuesta['iva']);
+
+                    $("#ComisionesDrop").html("$" + js_respuesta['comisiones']);
+
+                    $("#IndirectoDrop").html("$" + js_respuesta['indirecto']);
+
+                    $("#VentasDrop").html("$" + js_respuesta['ventas']);
+
+                    $("#ISRDrop").html("$" + js_respuesta['ISR']);
+
+
+                    $("#DescuentoDrop").html("$" + js_respuesta['descuento']);
 
 
                 //final
@@ -5633,27 +5749,19 @@ if ($aJson) { ?>
 
                     jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
 
-                    collectTotEmpalme();
-
                     parteresumen = '<tr><td></td><td></td><td></td><td class="totalFcajon">$0.00</td></tr>';
 
                     jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
-
-                    collectTotFcajon();
 
                     parteresumen = '<tr><td></td><td></td><td></td><td class="totalFcartera">$0.00</td></tr>';
 
                     jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
 
-                    collectTotFcartera();
-
                     parteresumen = '<tr><td></td><td></td><td></td><td class="totalGuarda">$0.00</td></tr>';
 
                     jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
 
-                    collectTotGuarda();
-
-                   parteresumen = '<tr><td></td><td></td><td><b>Subtotal:</b></td><td class="grand-total"><b>$' + js_respuesta['costo_subtotal'].toFixed(2) +'</b></td></tr><tr><td></td><td></td><td>Utilidad: </td><td id="UtilidadResumen">$' + js_respuesta['Utilidad'].toFixed(2) + '</td></tr><tr><td></td><td></td><td>IVA:</td><td id="IVAResumen">$' + js_respuesta['iva'].toFixed(2) + '</td></tr><tr><td></td><td></td><td>ISR: </td><td id="ISResumen">$' + js_respuesta['ISR'].toFixed(2) + '</td></tr><tr><td></td><td></td><td>Comisiones: </td><td id="ComisionesResumen">$ ' + js_respuesta['comisiones'].toFixed(2) + '</td></tr><tr><td></td><td></td><td>% Indirecto: </td><td id="IndirectoResumen">$' + js_respuesta['indirecto'].toFixed(2) + '</td></tr><tr><td></td><td></td><td>Ventas: </td><td id="ventaResumen">$' + js_respuesta['ventas'].toFixed(2) + '</td></tr><tr><td></td><td></td><td>Descuento: </td><td id="descuentoResumen">$' + js_respuesta['descuento'].toFixed(2) + '</td></tr><tr><tr><td></td><td></td><td><b>Total: </b></td><td id="TotalResumen"><b>$' + js_respuesta['costo_odt'].toFixed(2) + '</b></td></tr>';
+                   parteresumen = '<tr><td></td><td></td><td><b>Subtotal:</b></td><td class="grand-total"><b>$' + js_respuesta['costo_subtotal'] +'</b></td></tr><tr><td></td><td></td><td>Utilidad: </td><td id="UtilidadResumen">$' + js_respuesta['Utilidad'] + '</td></tr><tr><td></td><td></td><td>IVA:</td><td id="IVAResumen">$' + js_respuesta['iva'] + '</td></tr><tr><td></td><td></td><td>ISR: </td><td id="ISResumen">$' + js_respuesta['ISR'] + '</td></tr><tr><td></td><td></td><td>Comisiones: </td><td id="ComisionesResumen">$ ' + js_respuesta['comisiones'] + '</td></tr><tr><td></td><td></td><td>% Indirecto: </td><td id="IndirectoResumen">$' + js_respuesta['indirecto'] + '</td></tr><tr><td></td><td></td><td>Ventas: </td><td id="ventaResumen">$' + js_respuesta['ventas'] + '</td></tr><tr><td></td><td></td><td>Descuento: </td><td id="descuentoResumen">$' + js_respuesta['descuento'] + '</td></tr><tr><td></td><td></td><td><b>Total: </b></td><td id="TotalResumen"><b>$' + js_respuesta['costo_odt'] + '</b></td></tr>';
 
                         //<tr><td></td><td></td><td>Descuento: </td><td id="DescuentoResumen" style="color: red;">$0.00</td></tr>
 
@@ -5663,9 +5771,9 @@ if ($aJson) { ?>
             })
             .fail(function(response) {
 
-                console.log('(6010) Error. Revisa.');
+                console.log('(5700) Error. Revisa.');
 
-                $("#subForm").prop("disabled", true);
+                //$("#subForm").prop("disabled", true);
             });
         }
     });
@@ -5675,7 +5783,7 @@ if ($aJson) { ?>
 
         location.href="<?=URL?>cotizador/getCotizaciones/";
 
-        $("#subForm").prop("disabled", true);
+        //$("#subForm").prop("disabled", true);
     });
 
 
@@ -5742,20 +5850,20 @@ if ($aJson) { ?>
         formData.push({name: 'descuento_pctje', value: descuento});
         formData.push({name: 'grabar', value: grabar});
 
-        
-        $("#subForm").prop("disabled", true);
 
-        formData.push({name: 'odt_anterior', value: "<?= $aJson['num_odt'] ?>"});
+        //$("#subForm").prop("disabled", true);
 
-        $("#subForm").prop("disabled", true);
-        
-        var odt1 = $("#odt-1").val();
+        //formData.push({name: 'odt_anterior', value: "<?= $aJson['num_odt'] ?>"});
 
-        var odtval = [];
+        //$("#subForm").prop("disabled", true);
 
-        odtval.push({name: 'odt', value: odt1});
+        //var odt1 = $("#odt-1").val();
 
-        formData.push({name: 'odt_nueva', value: odt1});
+        //var odtval = [];
+
+        //odtval.push({name: 'odt', value: odt1});
+
+        //formData.push({name: 'odt_nueva', value: odt1});
 
         var id_odt_anterior = $("#id_odt_anterior").val();
 
@@ -5765,46 +5873,48 @@ if ($aJson) { ?>
 
         formData.push({name: 'modificar', value: modificar_odt});
 
-        $.ajax({
+        $.ajax({                                    // GRABAR
 
             type:"POST",
             //async: false,
             //dataType: "json",
-            //url: $('#caja-form').attr('action'),
-            url: "<?php echo URL; ?>cotizador/actCajaAlmeja/",
+            //url: "<?php echo URL; ?>cotizador/actCajaAlmeja/",
+            url: "<?php echo URL; ?>cotizador/saveCaja/",
             data: formData,
         })
         .done(function( response ) {
 
+            console.log("(5813) response: ");
+
             console.log(response);
 
             try {
-                
+
                 var js_respuesta = JSON.parse( response );
+                var error        = js_respuesta.error;
+                var len_error    = error.length;
 
+                if (error.length > 0) {
 
-                if ( js_respuesta == true) {
-
-                    showModCorrecto("Los datos han sido guardados correctamente.");
-
-                    //location.href="<?=URL?>cotizador/getCotizaciones/";
-                } else {
+                    document.getElementsByName("subForm").disabled = true;
 
                     showModError("");
+                    $("#txtContenido").html("(5832) Error: " + error);
 
-                    $("#txtContenido").html("(6167) Error al grabar en la Base de Datos.");
+                } else {
+
+                    showModCorrecto("Los datos han sido guardados correctamente...");
                 }
             } catch(e) {
 
                 showModError("");
-
-                $("#txtContenido").html("(6172) Error de parseo.");
+                $("#txtContenido").html('(5847) ' + response + ' Error al grabar en la BD');
             }
         })
         .fail(function(response) {
 
-            console.log('(6177) Error. Revisa.');
-        }); 
+            console.log('(5852) Bug!');
+        });
     });
 
 
@@ -6033,7 +6143,7 @@ if ($aJson) { ?>
 
 
     function desactivarBtn() {
-        
+
         /*if( aImp.length == 0 && aImpFCaj.length == 0 && aImpFCar.length == 0 && aImpG.length == 0 && aAcb.length == 0 && aAcbFCaj.length == 0 && aAcbFCar.length == 0 && aAcbG.length == 0 ) {
 
             $("#btnabrebancoemp").prop("disabled",true);
@@ -6065,22 +6175,22 @@ if ($aJson) { ?>
             case "Empalme":
 
                 saveBtnAcabados(aAcb,"listacabadosemp");
-                
+
                 break;
             case "forro_cajon":
 
                 saveBtnAcabados(aAcbFCaj,"listacabadosfcajon");
-                
+
                 break;
             case "forro_cartera":
 
                 saveBtnAcabados(aAcbFCar,"listacabadosfcartera");
-                
+
                 break;
             case "guarda":
 
                 saveBtnAcabados(aAcbG,"listacabadosguarda");
-            
+
                 break;
         }
     });
@@ -6093,29 +6203,29 @@ if ($aJson) { ?>
             case "Empalme":
 
                 saveBtnImpresiones(aImp,"listimpresiones");
-                
+
                 break;
             case "forro_cajon":
 
                 saveBtnImpresiones(aImpFCaj,"listimpresionesfcajon");
-                
+
                 break;
             case "forro_cartera":
 
                 saveBtnImpresiones(aImpFCar,"listimpresionesfcartera");
-                
+
                 break;
             case "guarda":
 
                 saveBtnImpresiones(aImpG,"listimpresionesguarda");
-                
+
                 break;
         }
     });
 
 
     function saveBtnAcabados(arrPapeles, tabla) {
-    
+
 
         var IDopAcb  = $("#SelectAcEmp option:selected").data('id');
         var opAcb    = $("#SelectAcEmp option:selected").text();
@@ -6150,7 +6260,7 @@ if ($aJson) { ?>
         var tipoLaser   = $("#SelectLaserEmp option:selected").text();
         var idtipoLaser = $("#SelectHSEmp option:selected").data('id');
         var LargoLaser_s  = document.getElementById('LargoLaser1').value;
-        
+
         var AnchoLaser_s  = document.getElementById('AnchoLaser1').value;
 
 
@@ -6316,7 +6426,7 @@ if ($aJson) { ?>
 
                 if (tipoBarnizUV === 'undefined' || tipoBarnizUV === 'null') {
 
-                    tipoBarnizUV = '';    
+                    tipoBarnizUV = '';
                 }
 
                 if(tipoBarnizUV == "Registro Mate" || tipoBarnizUV == "Registro Brillante") {
@@ -6569,7 +6679,7 @@ if ($aJson) { ?>
 
                     arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": null, "Ancho": null});
                 }
-                
+
             }
 
 
@@ -6790,7 +6900,7 @@ if ($aJson) { ?>
             $("#exterior_cajon").removeClass('paper_selected');
 
             $('#papers_config_button').show();
-        }   
+        }
     });
 </script>
 
@@ -6996,15 +7106,15 @@ if ($aJson) { ?>
 
                 case "Herraje":
                     aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
-                    
+
                     break;
                 case "Ojillos":
                     aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-                    
+
                     break;
                 case "Resorte":
                     aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                    
+
                     break;
                 case "Lengueta de Liston":
                     aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
@@ -7266,7 +7376,7 @@ if ($aJson) { ?>
 
                     document.getElementById('alerterror7').innerHTML = alertmesserror;
                 }
-                
+
                 break;
             case "Ojillos":
 
@@ -7279,7 +7389,7 @@ if ($aJson) { ?>
                 $('#accesorios').modal('hide');
 
                 vacioModalAccesorios();
-                
+
                 break;
             case "Resorte":
 
@@ -7298,7 +7408,7 @@ if ($aJson) { ?>
 
                     document.getElementById('alerterror7').innerHTML = alertmesserror;
                 }
-                
+
                 break;
             case "Lengueta de Liston":
 
@@ -7317,10 +7427,10 @@ if ($aJson) { ?>
 
                     document.getElementById('alerterror7').innerHTML = alertmesserror;
                 }
-                
+
                 break;
         }
-        
+
     });
 
     document.getElementById('SelectAccesorio').onchange = function(event){
@@ -7333,7 +7443,7 @@ if ($aJson) { ?>
         if (opcion == 'Herraje') {
 
             $('#opHerraje').show('normal');
-        }  
+        }
         if (opcion == 'Ojillos') {
 
             $('#opOjillo').show('normal');

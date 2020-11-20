@@ -28,16 +28,6 @@ var url     = "";
 
 jQuery214(".chosen").chosen();
 
-function setClient( cliente ){
-
-    this.cliente = cliente;
-}
-
-function setURL( url ){
-
-    this.url = url;
-}
-
 function appndPapeles(arrPapel, seccion){
 
     var sec = "";
@@ -95,6 +85,11 @@ function appndPapeles(arrPapel, seccion){
     var trResumen = '<tr><td></td><td>Papel '+ nombreP +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
 
     $('#resumen'+sec).append(trResumen);
+}
+
+function setURL( url ){
+
+    this.url = url;
 }
 
 function emptyTables(){
@@ -160,47 +155,6 @@ function setTableBtn(texto, impAcb){
         case "FT":
             return 'list'+impAcb+'FT';
         break;
-    }
-}
-
-//funciones para circular como modcajacircular
-function vacioModalBancos() {
-
-    document.getElementById('SelectBanEmp').value = "selected";
-
-    document.getElementById('llevasuajemodBanco').style.display = "none";
-
-    document.getElementById('SelectSuajeBanco').value = "No";
-    document.getElementById('LargoBanco').value       = 1;
-    document.getElementById('AnchoBanco').value       = 1;
-    document.getElementById('ProfundidadBanco').value = 1;
-}
-
-function vacioModalAccesorios() {
-
-    document.getElementById('LargoAcc').value = 1;
-    document.getElementById('AnchoAcc').value = 1;
-
-    document.getElementById('SelectAccesorio').value = "selected";
-    document.getElementById('SelectHerraje').value   = "selected";
-    document.getElementById('SelectColor').value     = "selected";
-
-    $('#opColores').hide('slow');
-    $('#opMedidas').hide('slow');
-    $('#opHerraje').hide('slow');
-    $('#opOjillo').hide('slow');
-    $('#alerterror7').empty();
-}
-
-
-function revisarPropiedades(variable, texto){
-
-    if( variable == null || variable == "" || variable == undefined ){
-
-        showModError("");
-        $("#txtContenido").html();
-        $("#txtContenido").html("Ingrese " + texto);
-        return false;
     }
 }
 
@@ -328,12 +282,6 @@ function appndImp( aImp, lblaImp ){
             $('#resumen'+lblaImp).append(trResumen);
         }
     }
-}
-
-function changeData(url){
-
-    $("#dataForm").prop("action","");
-    $("#dataForm").prop("action", url);
 }
 
 /*la funcion appndImp con 3 argumentos es para la modificación y apendizacion
@@ -996,6 +944,7 @@ function appndPapelCarton(arrPrincipal, arrPapel, parte ){
     $('#resumen' + tabla ).append(trResumen);
 }
 
+//apendizacion de procesos por default
 function appndPD(aGlobal){
 
     if( aGlobal == undefined || aGlobal == null ) return false;
@@ -1059,1026 +1008,23 @@ function getIdClient() {
     return cliente;
 }
 
-function showModError(proceso) {
-
-    $("#txtContenido").html("No existe el costo para el proceso: " + proceso + " con este tiraje.");
-
-    // $("#modalError").modal("show");
-    $('#modalError').modal({backdrop: 'static', keyboard: false});
-}
-
-function showModCorrecto(texto) {
-
-    $("#txtContCorrecto").html(texto);
-
-    $('#modalCorrecto').modal({backdrop: 'static', keyboard: false});
-}
-
 function appndImg(div, src){
 
 	$(div).html(src)
 }
 
-function divisionesImp(opcion) {
-
-    divisionesImps=opcion;
-}
-
-function divisionesAcb(opcion) {
-
-    divisionesAcbs=opcion;
-}
-
-function saveBtnAcabados(arrPapeles, tabla) {
-
-
-    var IDopAcb  = $("#SelectAcEmp option:selected").data('id');
-    var opAcb    = $("#SelectAcEmp option:selected").text();
-
-    switch(opAcb){
-
-        case "Laminado":
-
-            var tipo  = $("#SelectLaminadoEmp option:selected").text();
-            var id    = $("#SelectLaminadoEmp option:selected").data('id');
-            var nuloo = document.getElementById('SelectLaminadoEmp').value;
-
-            if (nuloo == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr><td style="text-align: left;" class="textAcbEmp">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="tipoLamEmp" style="display: none">'+ tipo +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipo": tipo});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "HotStamping":
-
-            var tipo    = $("#SelectHSEmp option:selected").text();
-            var id      = $("#SelectHSEmp option:selected").data('id');
-            var color   = $("#SelectColorHSEmp option:selected").text();
-            var idColor = $("#SelectHSEmp option:selected").data('id');
-            var largo   = parseInt(document.getElementById('LargoHS_ver').value,10);
-            var ancho   = parseInt(document.getElementById('AnchoHS_ver').value,10);
-            var nulo1   = document.getElementById('SelectHSEmp').value;
-            var nulo2   = document.getElementById('SelectColorHSEmp').value;
-
-            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Color: '+ color +', Medidas: '+ largo +'x'+ ancho +'</span></td><td style="display: none;" >'+ tipo +'</td><td style="display: none;" >' + idColor + '</td><td style="display: none;" >' + color + '</td><td style="display: none;">'+ largo +'</td><td style="display: none;">'+ ancho +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "ColorHS": color, "LargoHS": largo, "AnchoHS": ancho});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Grabado":
-
-            var tipo      = $("#SelectGrabEmp option:selected").text();
-            var idTipo    = $("#SelectHSEmp option:selected").data('id');
-            var largo     = document.getElementById('LargoGrab').value;
-            var ancho     = document.getElementById('AnchoGrab').value;
-            var ubicacion = $("#SelectUbiGrabEmp option:selected").text();
-            var nulo1 = document.getElementById('SelectGrabEmp').value;
-            var nulo2 = document.getElementById('SelectUbiGrabEmp').value;
-
-            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +', Ubicacion: '+ ubicacion +'</span></td><td style="display: none;">'+ tipo +'</td><td style="display: none;">'+ largo +'</td><td style="display: none;">'+ ancho +'</td><td style="display: none;">'+ ubicacion +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho, "ubicacion": ubicacion});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Suaje":
-
-            var tipo   = $("#SelectSuajeEmp option:selected").text();
-            var idTipo = $("#SelectHSEmp option:selected").data('id');
-            var largo  = document.getElementById('LargoSuaje').value;
-            var ancho  = document.getElementById('AnchoSuaje').value;
-            var nulo1 = document.getElementById('SelectSuajeEmp').value;
-
-            if (nulo1 == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +'</span></td><td style="display: none;">'+ tipo +'</td><td style="display: none;">'+ largo +'</td><td style="display: none;">'+ ancho +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "LargoSuaje": largo, "AnchoSuaje": ancho});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Corte Laser":
-
-            var tipo   = $("#SelectLaserEmp option:selected").text();
-            var idTipo = $("#SelectHSEmp option:selected").data('id');
-            var largo  = parseInt(document.getElementById('LargoLaser1').value,10);
-            var ancho  = parseInt(document.getElementById('AnchoLaser1').value,10);
-            var nulo1  = document.getElementById('SelectLaserEmp').value;
-
-            if (nulo1 == 'selected')  {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipo + ', Medidas: ' + largo + 'x' +  ancho + '</span></td><td style="display: none;">' + tipo + '</td><td style="display: none;">' + largo + '</td><td style="display: none;">' + ancho + '</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "LargoLaser": largo, "AnchoLaser": ancho});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Barniz UV":
-
-            var tipo   = $("#SelectBarnizUVEmp option:selected").text();
-            var idTipo = $("#SelectHSEmp option:selected").data('id');
-            var largo  = document.getElementById('LargoBarUVEmp').value;
-            var ancho  = document.getElementById('AnchoBarUVEmp').value;
-            var nulo1  = document.getElementById('SelectBarnizUVEmp').value;
-
-            if (nulo1 == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                if(tipo == "Registro Mate" || tipo == "Registro Brillante") {
-
-                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipo + ', Medidas: ' + largo + 'x' + ancho +'</span></td><td style="display: none">' + tipo + '</td><td style="display: none">' + largo + '</td><td style="display: none">' + ancho + '</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho});
-                } else {
-
-                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipo + '</span></td><td style="display: none">' + tipo + '</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": null, "Ancho": null});
-                }
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Pegados Especiales":
-
-            var tipoEspeciales   = $("#SelectEspecialesEmp option:selected").text();
-            var idtipoEspeciales = $("#SelectHSEmp option:selected").data('id');
-            var nulo1 = document.getElementById('SelectEspecialesEmp').value;
-
-            if (nulo1 == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var acb  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoEspeciales +'</span></td><td class="tipoEspeciales" style="display: none">'+ tipoEspeciales +'<input id="tipoEspeciales" name="tipoEspeciales" type="hidden" value="'+ idtipoEspeciales +'"></td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(acb);
-
-                vacioModalAcabados();
-            }
-        break;
-    }
-    activarBtn();
-}
-
-
-function saveBtnImpresiones(arrpapeles, tabla) {
-
-
-    var IDopImp  = $("#miSelect option:selected").data('id');
-    var opImp    = $("#miSelect option:selected").text();
-    var precio   = $("#miSelect option:selected").data('precio'); //precio unitario
-    var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-    if (opImp == 'Offset') {
-
-        var tipo   = $("#SelectImpTipoOff option:selected").text();
-        var precio = $("#SelectImpTipoOff option:selected").data('precio');
-        var idTipo = $("#SelectImpTipoOff option:selected").data('id');
-        var tintas = document.getElementById('tintasO').value;
-        var nuloo  = document.getElementById('SelectImpTipoOff').value;
-
-        if (nuloo == 'selected') {
-
-            document.getElementById('alerterrorimp').innerHTML = alertDiv;
-
-        } else {
-
-            document.getElementById('alerterrorimp').innerHTML = "";
-
-            var imp  = '<tr><td class="textImp">' + opImp + '</td></td><td class="CellWithComment" >...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td style="display: none;">'+ tintas +'</td><td style="display: none;">'+ tipo +'</td><td class="' + tabla +' img_delete"></td></tr>';
-
-            arrpapeles.push({"Tipo_impresion": opImp, "tintas": tintas, "tipo_offset": tipo});
-
-            $('#Impresiones').modal('hide');
-
-            $('#' + tabla).append(imp);
-
-            vacioModalImpresiones();
-        }
-    }
-
-    if (opImp == 'Digital') {
-
-        var tipo   = $("#SelectImpDigital option:selected").text();
-
-        var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="' + tabla +' img_delete"></td></tr>';
-        arrpapeles.push({"Tipo_impresion": opImp});
-
-        $('#Impresiones').modal('hide');
-
-        $('#' + tabla).append(imp);
-
-        vacioModalImpresiones();
-    }
-
-    if (opImp == 'Serigrafia') {
-
-        var tipo   = $("#SelectImpTipoSeri option:selected").text();
-        var precio = $("#SelectImpTipoSeri option:selected").data('precio');
-        var tintas = document.getElementById('tintasS').value;
-        var nuloo  = document.getElementById('SelectImpTipoSeri').value;
-
-        if (nuloo == 'selected') {
-
-            document.getElementById('alerterrorimp').innerHTML = alertDiv;
-
-        } else {
-
-            document.getElementById('alerterrorimp').innerHTML = "";
-
-            var imp  = '<tr><td class="textImp">' + opImp +'</td></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td style="display: none;">'+ tintas +'</td><td style="display: none;">'+ tipo +'</td><td class="' + tabla +' img_delete"></td></tr>';
-
-            arrpapeles.push({"Tipo_impresion": opImp,  "tintas": tintas, "tipo_offset": tipo});
-
-            $('#Impresiones').modal('hide');
-
-            jQuery214('#' + tabla).append(imp);
-
-            vacioModalImpresiones();
-        }
-    }
-
-    activarBtn();
-}
-
-
-function delBtnAcabados(arrPapeles, tabla) {
-
-    var tipo_acabado = "";
-
-    $("#" + tabla + " tr").each(function(row, tr) {
-
-        var opcion = $(tr).find('td:eq(0)').text();
-
-        switch( opcion ){
-
-            case "HotStamping":
-
-                tipo  = $(tr).find('td:eq(2)').text();
-                color = $(tr).find('td:eq(4)').text();
-                largo = parseInt($(tr).find('td:eq(5)').text());
-                ancho = parseInt($(tr).find('td:eq(6)').text());
-
-                arrPapeles.push({"Tipo_acabado": opcion, "tipoGrabado": tipo, "ColorHS": color, "LargoHS": largo, "AnchoHS": ancho});
-            break;
-            case "Grabado":
-
-                tipo      = $(tr).find('td:eq(2)').text();
-                largo     = parseInt($(tr).find('td:eq(3)').text());
-                ancho     = parseInt($(tr).find('td:eq(4)').text());
-                ubicacion = $(tr).find('td:eq(5)').text();
-
-                arrPapeles.push({"Tipo_acabado": opcion, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho, "ubicacion": ubicacion});
-            break;
-            case "Laminado":
-
-                tipo = $(tr).find('td:eq(2)').text();
-                arrPapeles.push({"Tipo_acabado": opcion, "tipoGrabado": tipo});
-            break;
-            case "Suaje":
-
-                tipo  = $(tr).find('td:eq(2)').text();
-                largo = parseInt($(tr).find('td:eq(3)').text());
-                ancho = parseInt($(tr).find('td:eq(4)').text());
-
-                arrPapeles.push({"Tipo_acabado": opcion, "tipoGrabado": tipo, "LargoSuaje": largo, "AnchoSuaje": ancho});
-            break;
-            case "Barniz UV":
-
-                tipo  = $(tr).find('td:eq(2)').text();
-                largo = parseInt($(tr).find('td:eq(3)').text());
-                ancho = parseInt($(tr).find('td:eq(4)').text());
-
-                if(tipo == "Registro Mate" || tipo == "Registro Brillante"){
-
-                    arrPapeles.push({"Tipo_acabado": opcion, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho});
-
-                } else {
-
-                    arrPapeles.push({"Tipo_acabado": opcion, "tipoGrabado": tipo, "Largo": null, "Ancho": null});
-                }
-            break;
-            case "Corte Laser":
-
-                tipo  = $(tr).find('td:eq(2)').text();
-                largo = parseInt($(tr).find('td:eq(3)').text());
-                ancho = parseInt($(tr).find('td:eq(4)').text());
-
-                arrPapeles.push({"Tipo_acabado": opcion, "tipoGrabado": tipo, "LargoLaser": largo, "AnchoLaser": ancho});
-            break;
-        }
-    });
-    desactivarBtn();
-}
-
-function delBtnImpresiones(arrPapeles, tabla) {
-
-    var TableData       = "";
-    var tipo_imp_offset = "";
-
-    $("#" + tabla + " tr").each(function(row, tr) {
-
-        var opImp   = $(tr).find('td:eq(0)').text();
-        var tintas  = parseInt($(tr).find('td:eq(2)').text(),10);
-        var tipo    = $(tr).find('td:eq(3)').text();
-
-        switch( opImp ){
-
-            case "Offset":
-
-                var idtipoOff = parseInt($("#tipoOffEmp").val());
-
-                arrPapeles.push({"Tipo_impresion": opImp, "tintas": tintas, "tipo_offset": tipo});
-            break;
-            case "Digital":
-
-                arrPapeles.push({"Tipo_impresion": opImp});
-            break;
-            case "Serigrafia":
-
-                var idtipoSeri = parseInt($("#tipoSeriEmp").val());
-
-                arrPapeles.push({"Tipo_impresion": opImp,  "tintas": tintas, "tipo_offset": tipo});
-            break;
-        }
-    });
-    desactivarBtn();
-}
-
-function activarBtn() {
-
-    $("#btnabrebancoemp").prop("disabled",false);
-    $("#btnabreaccesorios").prop("disabled",false);
-    $("#btnabrecierres").prop("disabled",false);
-}
-
-
-function desactivarBtn() {
-    
-    /*if( aImpBC.length == 0 && aImpCC.length == 0 && aImpFEC.length == 0 && aImpPC.length == 0 && aImpFIC.length == 0 && aImpBT.length == 0 && aImpCT.length == 0 && aImpFT.length == 0 && aImpFET.length == 0 && aImpFIT.length == 0 && aAcbBC.length == 0 && aAcbCC.length == 0 && aAcbFEC.length == 0 && aAcbPC.length == 0 && aAcbFIC.length == 0 && aAcbBT.length == 0 && aAcbCT.length == 0 && aAcbFT.length == 0 && aAcbFET.length == 0 && aAcbFIT.length == 0 ){
-
-        $("#btnabrebancoemp").prop("disabled",true);
-        $("#btnabreaccesorios").prop("disabled",true);
-        $("#btnabrecierres").prop("disabled",true);
-    }*/
-}
-
-function vacioModalImpresiones() {
-
-    document.getElementById('miSelect').value                      = "selected";
-    document.getElementById('SelectImpTipoOff').value              = "selected";
-    document.getElementById('SelectImpTipoSeri').value             = "selected";
-    document.getElementById('opImpresionSerigrafia').style.display = "none";
-    document.getElementById('opImpresionOffset').style.display     = "none";
-    document.getElementById('opImpresionDigital').style.display    = "none";
-}
-
-function vacioModalAcabados() {
-
-    document.getElementById('SelectAcEmp').value                = "selected";
-    document.getElementById('SelectLaminadoEmp').value          = "selected";
-    document.getElementById('SelectHSEmp').value                = "selected";
-    document.getElementById('SelectColorHSEmp').value           = "selected";
-    document.getElementById('SelectGrabEmp').value              = "selected";
-    document.getElementById('SelectEspecialesEmp').value        = "selected";
-    document.getElementById('SelectBarnizUVEmp').value          = "selected";
-    document.getElementById('SelectSuajeEmp').value             = "selected";
-    document.getElementById('SelectLaserEmp').value             = "selected";
-    document.getElementById('SelectUbiGrabEmp').value           = "selected";
-    document.getElementById('opAcLaminadoEmp').style.display    = "none";
-    document.getElementById('opAcHotStampingEmp').style.display = "none";
-    document.getElementById('opAcGrabadoEmp').style.display     = "none";
-    document.getElementById('opAcEspecialesEmp').style.display  = "none";
-    document.getElementById('opAcBarnizUVEmp').style.display    = "none";
-    document.getElementById('opAcSuajeEmp').style.display       = "none";
-    document.getElementById('opAcLaserEmp').style.display       = "none";
-    document.getElementById('opAcBarUVEmp').style.display       = "none";
-    document.getElementById('LargoLaser1').value                = "1";
-    document.getElementById('AnchoLaser1').value                = "1";
-    document.getElementById('LargoGrab').value                  = "1";
-    document.getElementById('AnchoGrab').value                  = "1";
-    document.getElementById('LargoHS_ver').value                = "1";
-    document.getElementById('AnchoHS_ver').value                = "1";
-    document.getElementById('LargoSuaje').value                 = "1";
-    document.getElementById('AnchoSuaje').value                 = "1";
-    document.getElementById('LargoBarUVEmp').value              = "1";
-    document.getElementById('AnchoBarUVEmp').value              = "1";
-}
-
-
 //accion onclick botones
 
-//resumen
-$(document).on('click', '#btnResumen', function(event) {
-
-    $('#divDerecho').hide();
-    $('#divIzquierdo').hide();
-    $('#topCotizador').hide();
-    $('#groupButton1').hide();
-    $('#resumentodocaja').css("position","absolute");
-    $('#resumentodocaja').show();
-
-}); 
-
-$(document).on('click', '#btnQuitarResumen', function(event) {
-
-    $('#divDerecho').show("normal");
-    $('#divIzquierdo').show();
-    $('#topCotizador').show();
-    $('#resumentodocaja').css("position","none");
-    $('#resumentodocaja').hide();
-    $('#groupButton1').show();
-});
-
-$("#btnCancelAccesorios").click( function () {
-
-    vacioModalAccesorios();
-});
-
-//Accesorios
-$(document).on("click", "#btnAccesorios", function () {
-
-    var idAccesorio     = $("#SelectAccesorio option:selected").data('id');
-    var precio          = $("#SelectAccesorio option:selected").data('price');
-    var nombreAccesorio = $("#SelectAccesorio option:selected").text();
-    var herraje         = $("#SelectHerraje option:selected").text();
-    var largo           = $('#LargoAcc').val();
-    var ancho           = $('#AnchoAcc').val();
-    var color           = $("#opColores option:selected").text();
-
-    var accesorio       = "";
-
-    var alertmesserror  = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-    switch(nombreAccesorio) {
-
-        case "Herraje":
-
-            if( $("#SelectHerraje option:selected").val() != "selected") {
-
-                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + herraje + '</span></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
-
-                $('#listaccesorios').append(accesorio);
-
-                $('#accesorios').modal('hide');
-
-                vacioModalAccesorios();
-            } else {
-
-                document.getElementById('alerterror7').innerHTML = alertmesserror;
-            }
-            
-            break;
-        case "Ojillos":
-
-            accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td style=""></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-            aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-
-            $('#listaccesorios').append(accesorio);
-
-            $('#accesorios').modal('hide');
-
-            vacioModalAccesorios();
-            
-            break;
-        case "Resorte":
-
-            if( $("#SelectColor option:selected").val() != "selected") {
-
-                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">' + precio + '</td><td class="listaccesorios img_delete"></td></tr>';
-
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-
-                $('#listaccesorios').append(accesorio);
-
-                $('#accesorios').modal('hide');
-
-                vacioModalAccesorios();
-            } else {
-
-                document.getElementById('alerterror7').innerHTML = alertmesserror;
-            }
-            
-            break;
-        case "Lengueta de Liston":
-
-            if( $("#SelectColor option:selected").val() != "selected") {
-
-                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-
-                $('#listaccesorios').append(accesorio);
-
-                $('#accesorios').modal('hide');
-
-                vacioModalAccesorios();
-            } else {
-
-                document.getElementById('alerterror7').innerHTML = alertmesserror;
-            }
-            
-            break;
-    }
-});
-
-jQuery214(document).on("click", ".listaccesorios", function () {
-
-    $(this).closest('tr').remove();
-
-    row_listabancos = 0;
-
-    row_listabancos = $('#listaccesorios > tr').length;
-
-    aAccesorios = [];
-
-    var oTable = document.getElementById('accesoriosTable');
-
-    var rowLength = oTable.rows.length;
-
-    $("#listaccesorios tr").each(function(row, tr) {
-
-        var nombreAccesorio = $(tr).find('td:eq(0)').text();
-
-        //se salta el 1 porque en el td 1 esta el span como comentario
-        var largo   = $(tr).find('td:eq(2)').text();
-        var ancho   = $(tr).find('td:eq(3)').text();
-        var color   = $(tr).find('td:eq(4)').text();
-        var herraje = $(tr).find('td:eq(5)').text();
-        var precio  = $(tr).find('td:eq(6)').text();
-
-        nombreAccesorio = nombreAccesorio.trim();
-
-        switch(nombreAccesorio) {
-
-            case "Herraje":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
-            
-                break;
-            case "Ojillos":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-                
-                break;
-            case "Resorte":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                break;
-            case "Lengueta de Liston":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-            
-                break;
-        }
-    });
-});
-
-//Banco
-$(document).on('click', '#btnBancoEmp', function(event) {
-
-    var IDopBan = $("#SelectBanEmp option:selected").data('id');
-    var opBan   = $("#SelectBanEmp option:selected").text();
-
-    var LargoMBanco       = document.getElementById('LargoBanco').value;
-    var AnchoMBanco       = document.getElementById('AnchoBanco').value;
-    var ProfundidadMBanco = document.getElementById('ProfundidadBanco').value;
-    var LLevaSuajeM       = $("#SelectSuajeBanco option:selected").text();
-
-    var nuloo = document.getElementById('SelectBanEmp').value;
-
-    var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-    if (nuloo === 'selected') {
-
-        document.getElementById('alerterror5').innerHTML = alertDiv;
-
-    } else if (opBan === 'Carton' || opBan === 'Eva' || opBan === 'Espuma' || opBan === 'Empalme Banco') {
-
-        document.getElementById('alerterror5').innerHTML = "";
-
-        var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td style="display: none">'+ LLevaSuajeM +'</td><td class="listbancoemp img_delete"></td></tr>';
-
-        aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM});
-
-        $('#bancoemp').modal('hide');
-
-        jQuery214('#listbancoemp').append(ban);
-
-        vacioModalBancos();
-    } else if (opBan === 'Cartulina Suajada') {
-
-        document.getElementById('alerterror5').innerHTML = "";
-
-        var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td class="listbancoemp img_delete"></td></tr>';
-
-        aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null});
-
-        $('#bancoemp').modal('hide');
-
-        jQuery214('#listbancoemp').append(ban);
-
-        vacioModalBancos();
-    }
-});
-
-jQuery214(document).on("click", ".listbancoemp", function () {
-
-    $(this).closest('tr').remove();
-
-    row_listabancos = 0;
-    row_listabancos = $('#listbancoemp > tr').length;
-
-    aBancos = [];
-
-    var oTable = document.getElementById('banTable');
-
-    var rowLength = oTable.rows.length;
-
-    var tipo_banco = "";
-
-    $("#listbancoemp tr").each(function(row, tr) {
-
-        var largo       = 0;
-        var ancho       = 0;
-        var profundidad = 0;
-        var suaje       = "";
-        var Largo_str   = "";
-        var Ancho_str   = "";
-        var profundidad_str   = "";
-
-
-        tipo_banco      = $(tr).find('td:eq(2)').text();
-        Largo_str       = $(tr).find('td:eq(3)').text();
-        Ancho_str       = $(tr).find('td:eq(4)').text();
-        profundidad_str = $(tr).find('td:eq(5)').text();
-
-        tipo_banco  = tipo_banco.trim();
-        largo       = parseInt(Largo_str, 10);
-        ancho       = parseInt(Ancho_str, 10);
-        profundidad = parseInt(profundidad_str, 10);
-
-
-        if (tipo_banco == "Carton") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Eva") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Espuma") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Empalme Banco") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Cartulina Suajada") {
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": null});
-        }
-    });
-});
-
-//Cierres
-jQuery214(document).on("click", "#btnCierres", function () {
-
-    var IDopCie  = $("#SelectCieEmp option:selected").data('id');
-    var opCie    = $("#SelectCieEmp option:selected").text();
-
-    var numpares = document.getElementById('paresCierre').value;
-
-    // para liston
-    var LarListon    = document.getElementById('LargoListon').value;
-    var AnchListon   = document.getElementById('AnchoListon').value;
-    var tipoListon   = $("#SelectListonEmp option:selected").text();
-    var colorListon  = $("#SelectColorListon option:selected").text();
-
-    // para Suaje calado
-    var LarSuajCal   = document.getElementById('LargoSCalado').value;
-    var AnchSuajCal  = document.getElementById('AnchoSCalado').value;
-    var tipoSuajCal  = $("#SelectSCalado option:selected").text();
-
-    var alertmesserror = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-
-    if (opCie == 'Iman' || opCie == 'Velcro') {
-
-        document.getElementById('alerterror6').innerHTML = "";
-
-        var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
-
-
-        aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-        $('#cierres').modal('hide');
-
-        jQuery214('#listcierres').append(cie);
-
-
-        //vacioModalCierres();
-    }
-
-
-    if (opCie == 'Marialuisa') {
-
-        document.getElementById('alerterror6').innerHTML = "";
-
-        var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="listcierres img_delete"></td></tr>';
-
-        aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-        $('#cierres').modal('hide');
-
-        jQuery214('#listcierres').append(cie);
-
-        //vacioModalCierres();
-    }
-
-
-    if (opCie == 'Liston') {
-
-        var nulo1 = document.getElementById('SelectCieEmp').value;
-        var nulo2 = document.getElementById('SelectListonEmp').value;
-        var nulo3 = document.getElementById('SelectColorListon').value;
-
-        if (nulo1 == 'selected' || nulo2 == 'selected' || nulo3 == 'selected' ) {
-
-            document.getElementById('alerterror6').innerHTML = alertmesserror;
-
-        } else {
-
-            document.getElementById('alerterror6').innerHTML = "";
-
-            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td style="display: none">'+ LarListon +'</td><td style="display: none">'+ AnchListon +'</td><td style="display: none">'+ tipoListon +'</td><td style="display: none">'+ colorListon +'</td><td class="listcierres img_delete"></td></tr>';
-
-
-            aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon});
-
-            $('#cierres').modal('hide');
-
-            jQuery214('#listcierres').append(cie);
-
-            //vacioModalCierres();
-        }
-    }
-
-
-    if (opCie == 'Suaje calado') {
-
-        var nulo1 = document.getElementById('SelectCieEmp').value;
-        var nulo2 = document.getElementById('SelectSCalado').value;
-
-        if (nulo1 == 'selected' || nulo2 == 'selected') {
-
-            document.getElementById('alerterror6').innerHTML = alertmesserror;
-
-        } else {
-
-            document.getElementById('alerterror6').innerHTML = "";
-
-            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td style="display: none">'+ LarSuajCal +'</td><td style="display: none">'+ AnchSuajCal +'</td><td style="display: none">'+ tipoSuajCal +'</td><td class="listcierres img_delete"></td></tr>';
-
-
-            aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null});
-
-            $('#cierres').modal('hide');
-
-            jQuery214('#listcierres').append(cie);
-
-            //vacioModalCierres();
-        }
-    }
-});
-
-jQuery214(document).on("click", ".listcierres", function () {
-
-    $(this).closest('tr').remove();
-
-    row_listacierres = 0;
-
-    row_listacierres = $('#listcierres > tr').length;
-
-    aCierres = [];
-
-    var oTable = document.getElementById('cieTable');
-
-    var rowLength = oTable.rows.length;
-
-    var tipo_cierre = "";
-
-    $("#cieTable tr").each(function(row, tr) {
-
-        var tipo_cierre = "";
-        var numpares    = 1;
-
-        var numpares_str = "";
-        var Largo_str    = "";
-        var Ancho_str    = "";
-        var tipo         = "";
-
-        var Largo = 0;
-        var Ancho = 0;
-
-        tipo_cierre = $(tr).find('td:eq(0)').text();
-
-
-        if (tipo_cierre == "Iman") {
-
-            numpares_str = $(tr).find('td:eq(2)').text();
-            numpares     = parseInt(numpares_str, 10);
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-        }
-
-
-        // falta corregir el modal de Liston
-        if (tipo_cierre == "Liston") {
-
-            tipo_cierre = $(tr).find('td:eq(0)').text();
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-        }
-
-
-        if (tipo_cierre == "Marialuisa") {
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-        }
-
-
-        if (tipo_cierre == "Suaje calado") {
-
-            Largo_str   = $(tr).find('td:eq(2)').text();
-            Ancho_str   = $(tr).find('td:eq(3)').text();
-            tipo        = $(tr).find('td:eq(4)').text();
-
-            Largo = parseInt(Largo_str, 10);
-            Ancho = parseInt(Ancho_str, 10);
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": Largo, "ancho": Ancho, "tipo": tipo, "color": null});
-        }
-
-
-        if (tipo_cierre == "Velcro") {
-
-            numpares_str = $(tr).find('td:eq(2)').text();
-            numpares     = parseInt(numpares_str, 10);
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-        }
-    });
-});
-
-jQuery214(document).on("click", "#btnabrebancoemp", function () {
-
-    $('#footerBancoEmp').show();
-    $('#footerBancoFcajon').hide();
-    $('#footerBancoFcartera').hide();
-    $('#footerBancoGuarda').hide();
-});
-
-//boton seleccionar papeles
-$("#btnCheckPaper").click( function() {
-
-    var chk   =$("#btnCheckPaper").prop("checked");
-    //este id se genera con el plugin chosen
-    var texto = $("#optEC_chosen span").html();
-
-    if(chk) {
-
-        $("#optEC_chosen span").html(texto);
-        $("#optFC_chosen span").html(texto);
-        $("#optET_chosen span").html(texto);
-        $("#optFT_chosen span").html(texto);
-
-        $("#optEC option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optFC option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optET option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optFT option[data-nombre='" + texto +"']").prop("selected",true);
-    } else {
-
-        $("#optFC_chosen span").html("Elegir tipo de papel");
-        $("#optET_chosen span").html("Elegir tipo de papel");
-        $("#optFT_chosen span").html("Elegir tipo de papel");
-
-        $("#optFC option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optET option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optFT option[data-nombre='" + texto +"']").prop("selected",false);
-    }
-});
-
-//boton eliminar. Es el que hace la magia ;)
-jQuery214(document).on("click", ".delete", function () {
-
-    $(this).closest('tr').remove();
-});
-
+/*
+
+    Esta funcion del boton acabados e impresiones
+    FAVOR DE NO MOVERLAS
+    explicacion:
+    cada caja tiene secciones entonces en btnacabados se le especifica
+    ciertas secciones en concreto para el modelo regalo.
+    esta diseñado solamente para caja regalo
+
+*/
 //Acabados
 $('#btnAcabados').click(function() {
 
@@ -2127,13 +1073,36 @@ $("#btnImpresiones").click( function () {
     }
 });
 
-//boton Correcto
-$("#btnModCorrecto").click( function() {
+//boton seleccionar papeles
+$("#btnCheckPaper").click( function() {
 
-    location.href= url + "cotizador/getCotizaciones/";
+    var chk   =$("#btnCheckPaper").prop("checked");
+    //este id se genera con el plugin chosen
+    var texto = $("#optEC_chosen span").html();
 
-    $("#subForm").prop("disabled", true);
+    if(chk) {
+
+        $("#optEC_chosen span").html(texto);
+        $("#optFC_chosen span").html(texto);
+        $("#optET_chosen span").html(texto);
+        $("#optFT_chosen span").html(texto);
+
+        $("#optEC option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optFC option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optET option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optFT option[data-nombre='" + texto +"']").prop("selected",true);
+    } else {
+
+        $("#optFC_chosen span").html("Elegir tipo de papel");
+        $("#optET_chosen span").html("Elegir tipo de papel");
+        $("#optFT_chosen span").html("Elegir tipo de papel");
+
+        $("#optFC option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optET option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optFT option[data-nombre='" + texto +"']").prop("selected",false);
+    }
 });
+
 
 //Boton Calcular
 jQuery214(document).on("click", "#papeles_submit", function () {
@@ -2181,7 +1150,6 @@ jQuery214(document).on("click", "#papeles_submit", function () {
         if( optFT == null ) cadena += "Forro Tapa";
 
         showModError("");
-
         $("#txtContenido").attr("align", "left");
         $("#txtContenido").html("");
         $("#txtContenido").html("Debe de seleccionar un papel para las siguientes secciones: " + cadena + ".");
@@ -2246,6 +1214,7 @@ jQuery214(document).on("click", "#papeles_submit", function () {
         aBancos_tmp     = [];
         aAccesorios_tmp = [];
 
+        showLoading();
         $.ajax({
             type:"POST",
             //dataType: "json",
@@ -2255,9 +1224,10 @@ jQuery214(document).on("click", "#papeles_submit", function () {
         .done(function(response) {
 
             console.log(response);
+            hideLoading();
+            if (response !== " " && response !== "" && response !== undefined) {
 
-            if (response !== " " || response !== "" || response !== undefined) {
-
+                
                 try {
 
                     var respuesta = JSON.parse(response);
@@ -2478,20 +1448,33 @@ jQuery214(document).on("click", "#papeles_submit", function () {
                         $('#resumenOtros').append(parteresumen); //imprime para el resumen
 
                         $("#subForm").prop("disabled", false);
-                } catch(e) {
-                    
-                    console.log("(3328) No se pudo obtener los datos del controlador. Error:\n " + e);
-                    showModError("");
-                    $("#txtContenido").html("");
-                    $("#txtContenido").html("Hubo un error al recibir datos.");
-                    return false;
+                } catch {
+
+                    try{
+
+                        var error = response.split("<br />");
+                        error = error[1].split("<b>").join("");
+                        error = error.split("</b>").join("");
+                        showModError("");
+
+                        $("#txtContenido").html("(3668) Hubo un error al cotizar la caja.");
+                        appndMsgError(error);
+                    }catch {
+
+                        showModError("");
+
+                        $("#txtContenido").html("(3674) Hubo un error al cotizar la caja.");
+                    } finally{
+
+                        return false;    
+                    }
                 }
             }else{
 
-                console.log("Error: no se esta recibiendo informacion del controlador.");
                 showModError("");
-                $("#txtContenido").html("");
-                $("#txtContenido").html("Hubo un error al recibir datos.");
+
+                $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
+                appndMsgError("No se regresa ningun valor. Favor de llamar a sistemas");
                 return false;
             }
         })
@@ -2564,33 +1547,3 @@ jQuery214(document).on("click", ".listAcbFT", function () {
     delBtnAcabados(aAcbFT, "listAcbFT");
 });
 
-//boton Descuento
-jQuery214(document).on("click", "#btnSaveDescuento", function (){
-        
-    $("#descuentoModal").html("Descuento: (" + descuento + "%)");
-
-    $("#descuentos").modal("hide");
-});
-
-
-jQuery214(document).on("click", "#btnCancelDescuento", function (){
-    
-    jQuery214('#DescuentoDrop').html("$0.00");
-
-    $('#descuentos').find("input:checked").prop("checked", false);
-
-    $("#descuentoModal").html("Descuento: (0%)");
-    
-    descuento = 0;
-});
-
-jQuery214(document).on("click", "#descuentoModal", function (){
-
-    //showModal('d_grabado',true);
-    $('#descuentos').modal('show');
-});
-
-jQuery214(document).on("click", ".d-check", function (){
-
-    descuento = $(this).val();
-});

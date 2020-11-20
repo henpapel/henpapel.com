@@ -285,8 +285,9 @@
 			Cargando...
 		</div>
 
-		<div id="formPrincipal" class="fmCompleto">
+		<div id="app" class="fmCompleto">
 			
+			<mensaje></mensaje>
 			<form id="formAction" class="fmCompleto" action="" method="POST">
 				<div id="formulario" class="formulario">
 					<div id="contenidoF" style="display: none;">
@@ -1642,7 +1643,8 @@
 		</div>
 	</div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js" type="text/javascript"></script>
+<script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
 <script>
 	var a=0;
 	var b;
@@ -2281,4 +2283,39 @@
 		var ventana = window.open("<?=URL?>modificaprocesos/imprProcesos", "Impresion", "width=600, height=600");
 		return true;
 	});
+
+
+	Vue.component('mensaje', {
+
+		template: 
+		`
+			<div :class="['alert' , error ? 'alert-danger' : 'alert-success' ,'alert-dismissible', 'fade', 'show']" role="alert">
+  				<div v-if="error == true" v-html="msgError"></div>
+  				<div v-if="error == false" v-html="msgCorrecto"></div>
+			</div>
+		`,computed: {
+
+			...Vuex.mapState(['msgError','msgCorrecto','error'])
+		}
+	});
+
+	const store = new Vuex.Store({
+
+		state: {
+
+			msgCorrecto: "<strong>Listo!</strong> Los datos han sido actualizados correctamente.",
+			msgError: "<strong>Advertencia!</strong> No se pudo modificar los datos ingresados. Favor de reintentar mas tarde.",
+			error: "<?= $_SESSION['error']?>"
+		}
+	});
+
+	const app = new Vue({
+
+		el: "#app",
+		store
+	});
+
 </script>
+<?php
+	unset($_SESSION['error']);
+?>

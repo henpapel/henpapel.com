@@ -57,62 +57,62 @@ class AlmejaModel extends Controller {
         $odt    = $aJson['nomb_odt'];
         $odt    = trim(strval($odt));
 
-        $base           = floatval($aJson['base']);
-        $alto           = floatval($aJson['alto']);
-        $profundidad    = floatval($aJson['profundidad']);
-        $grosor_cajon   = floatval($_POST['grosor-cajon']);
-        $grosor_cartera = floatval($_POST['grosor-cartera']);
+        $base           = round(floatval($aJson['base']), 2);
+        $alto           = round(floatval($aJson['alto']), 2);
+        $profundidad    = round(floatval($aJson['profundidad']), 2);
+        $grosor_cajon   = round(floatval($_POST['grosor-cajon']), 2);
+        $grosor_cartera = round(floatval($_POST['grosor-cartera']), 2);
 
         $id_grosor_cajon   = intval($aJson['CartonCaj']['id_papel']);
         $id_grosor_cartera = intval($aJson['CartonCar']['id_papel']);
 
 
-        $costo_total_odt   = floatval($aJson['costo_odt']);
-        $subtotal          = floatval($aJson['costo_subtotal']);
-        $utilidad          = floatval($aJson['Utilidad']);
-        $iva               = floatval($aJson['iva']);
-        $ISR               = floatval($aJson['ISR']);
-        $comisiones        = floatval($aJson['comisiones']);
-        $indirecto         = floatval($aJson['indirecto']);
-        $ventas            = floatval($aJson['ventas']);
-        $descuento         = floatval($aJson['descuento']);
-        $descuento_pctje   = floatval($aJson['descuento_pctje']);
-        $empaque           = floatval($aJson['empaque']);
-        $mensajeria        = floatval($aJson['mensajeria']);
+        $costo_total_odt   = round(floatval($aJson['costo_odt']), 2);
+        $subtotal          = round(floatval($aJson['costo_subtotal']), 2);
+        $utilidad          = round(floatval($aJson['Utilidad']), 2);
+        $iva               = round(floatval($aJson['iva']), 2);
+        $ISR               = round(floatval($aJson['ISR']), 2);
+        $comisiones        = round(floatval($aJson['comisiones']), 2);
+        $indirecto         = round(floatval($aJson['indirecto']), 2);
+        $ventas            = round(floatval($aJson['ventas']), 2);
+        $descuento         = round(floatval($aJson['descuento']), 2);
+        $descuento_pctje   = round(floatval($aJson['descuento_pctje']), 2);
+        $empaque           = round(floatval($aJson['empaque']), 2);
+        $mensajeria        = round(floatval($aJson['mensajeria']), 2);
 
 
     // calculos
         $aCalculos = $aJson['aCalculos'];
 
         // datos de la calculadora
-        $h       = floatval($aCalculos['h']);
-        $b       = floatval($aCalculos['b']);
-        $p       = floatval($aCalculos['p']);
-        $g       = floatval($aCalculos['g']);
-        $g_may   = floatval($aCalculos['G']);
-        $e       = floatval($aCalculos['e']);
-        $e_may   = floatval($aCalculos['E']);
-        $b1      = floatval($aCalculos['b1']);
-        $h1      = floatval($aCalculos['h1']);
-        $b11     = floatval($aCalculos['b11']);
-        $h11     = floatval($aCalculos['h11']);
-        $b_may   = floatval($aCalculos['B']);
-        $h_may   = floatval($aCalculos['H']);
-        $p_may   = floatval($aCalculos['P']);
-        $y_may   = floatval($aCalculos['Y']);
-        $b1_may  = floatval($aCalculos['B1']);
-        $y1_may  = floatval($aCalculos['Y1']);
-        $b11_may = floatval($aCalculos['B11']);
-        $y11_may = floatval($aCalculos['Y11']);
-        $p1      = floatval($aCalculos['p1']);
-        $x       = floatval($aCalculos['x']);
-        $y       = floatval($aCalculos['y']);
-        $x1      = floatval($aCalculos['x1']);
-        $y1      = floatval($aCalculos['y1']);
-        $x11     = floatval($aCalculos['x11']);
-        $y11     = floatval($aCalculos['y11']);
-        $f       = floatval($aCalculos['f']);
-        $k       = floatval($aCalculos['k']);
+        $h       = round(floatval($aCalculos['h']), 3);
+        $b       = round(floatval($aCalculos['b']), 3);
+        $p       = round(floatval($aCalculos['p']), 3);
+        $g       = round(floatval($aCalculos['g']), 3);
+        $g_may   = round(floatval($aCalculos['G']), 3);
+        $e       = round(floatval($aCalculos['e']), 3);
+        $e_may   = round(floatval($aCalculos['E']), 3);
+        $b1      = round(floatval($aCalculos['b1']), 3);
+        $h1      = round(floatval($aCalculos['h1']), 3);
+        $b11     = round(floatval($aCalculos['b11']), 3);
+        $h11     = round(floatval($aCalculos['h11']), 3);
+        $b_may   = round(floatval($aCalculos['B']), 3);
+        $h_may   = round(floatval($aCalculos['H']), 3);
+        $p_may   = round(floatval($aCalculos['P']), 3);
+        $y_may   = round(floatval($aCalculos['Y']), 3);
+        $b1_may  = round(floatval($aCalculos['B1']), 3);
+        $y1_may  = round(floatval($aCalculos['Y1']), 3);
+        $b11_may = round(floatval($aCalculos['B11']), 3);
+        $y11_may = round(floatval($aCalculos['Y11']), 3);
+        $p1      = round(floatval($aCalculos['p1']), 3);
+        $x       = round(floatval($aCalculos['x']), 3);
+        $y       = round(floatval($aCalculos['y']), 3);
+        $x1      = round(floatval($aCalculos['x1']), 3);
+        $y1      = round(floatval($aCalculos['y1']), 3);
+        $x11     = round(floatval($aCalculos['x11']), 3);
+        $y11     = round(floatval($aCalculos['y11']), 3);
+        $f       = round(floatval($aCalculos['f']), 3);
+        $k       = round(floatval($aCalculos['k']), 3);
 
 
     // papeles
@@ -152,10 +152,10 @@ class AlmejaModel extends Controller {
         $nombre_papel_emp            = utf8_decode(trim(strval($aPap_emp['nombre_papel'])));
         $ancho_papel_emp             = intval($aPap_emp['ancho_papel']);
         $largo_papel_emp             = intval($aPap_emp['largo_papel']);
-        $costo_unit_papel_emp        = floatval($aPap_emp['costo_unit_papel']);
+        $costo_unit_papel_emp        = round(floatval($aPap_emp['costo_unit_papel']), 4);
         $cortes_papel_emp            = intval($aPap_emp['corte']);
         $pliegos_papel_emp           = intval($aPap_emp['tot_pliegos']);
-        $costo_tot_pliegos_papel_emp = floatval($aPap_emp['tot_costo']);
+        $costo_tot_pliegos_papel_emp = round(floatval($aPap_emp['tot_costo']), 2);
         $corte_ancho_papel_emp       = intval($aPap_emp['calculadora']['corte_ancho']);
         $corte_largo_papel_emp       = intval($aPap_emp['calculadora']['corte_largo']);
 
@@ -169,12 +169,12 @@ class AlmejaModel extends Controller {
         $nombre_papel_fcaj     = utf8_decode(trim(strval($aPap_fcaj['nombre_papel'])));
         $ancho_papel_fcaj      = intval($aPap_fcaj['ancho_papel']);
         $largo_papel_fcaj      = intval($aPap_fcaj['largo_papel']);
-        $costo_unit_papel_fcaj = floatval($aPap_fcaj['costo_unit_papel']);
+        $costo_unit_papel_fcaj = round(floatval($aPap_fcaj['costo_unit_papel']), 4);
 
 
         $cortes_papel_fcaj            = intval($aPap_fcaj['corte']);
         $pliegos_papel_fcaj           = intval($aPap_fcaj['tot_pliegos']);
-        $costo_tot_pliegos_papel_fcaj = floatval($aPap_fcaj['tot_costo']);
+        $costo_tot_pliegos_papel_fcaj = round(floatval($aPap_fcaj['tot_costo']), 2);
         $corte_ancho_papel_fcaj       = intval($aPap_fcaj['calculadora']['corte_ancho']);
         $corte_largo_papel_fcaj       = intval($aPap_fcaj['calculadora']['corte_largo']);
 
@@ -187,12 +187,12 @@ class AlmejaModel extends Controller {
         $nombre_papel_fcar     = utf8_decode(trim(strval($aPap_fcar['nombre_papel'])));
         $ancho_papel_fcar      = intval($aPap_fcar['ancho_papel']);
         $largo_papel_fcar      = intval($aPap_fcar['largo_papel']);
-        $costo_unit_papel_fcar = floatval($aPap_fcar['costo_unit_papel']);
+        $costo_unit_papel_fcar = round(floatval($aPap_fcar['costo_unit_papel']), 4);
 
 
         $cortes_papel_fcar            = intval($aPap_fcar['corte']);
         $pliegos_papel_fcar           = intval($aPap_fcar['tot_pliegos']);
-        $costo_tot_pliegos_papel_fcar = floatval($aPap_fcar['tot_costo']);
+        $costo_tot_pliegos_papel_fcar = round(floatval($aPap_fcar['tot_costo']), 2);
         $corte_ancho_papel_fcar       = intval($aPap_fcar['calculadora']['corte_ancho']);
         $corte_largo_papel_fcar       = intval($aPap_fcar['calculadora']['corte_largo']);
 
@@ -204,11 +204,11 @@ class AlmejaModel extends Controller {
         $nombre_papel_g     = utf8_decode(trim(strval($aPap_g['nombre_papel'])));
         $ancho_papel_g      = intval($aPap_g['ancho_papel']);
         $largo_papel_g      = intval($aPap_g['largo_papel']);
-        $costo_unit_papel_g = floatval($aPap_g['costo_unit_papel']);
+        $costo_unit_papel_g = round(floatval($aPap_g['costo_unit_papel']), 4);
 
         $cortes_papel_g            = intval($aPap_g['corte']);
         $pliegos_papel_g           = intval($aPap_g['tot_pliegos']);
-        $costo_tot_pliegos_papel_g = floatval($aPap_g['tot_costo']);
+        $costo_tot_pliegos_papel_g = round(floatval($aPap_g['tot_costo']), 2);
         $corte_ancho_papel_g       = intval($aPap_g['calculadora']['corte_ancho']);
         $corte_largo_papel_g       = intval($aPap_g['calculadora']['corte_largo']);
 
@@ -219,16 +219,16 @@ class AlmejaModel extends Controller {
     // Carton Cajon
         $id_cajon                = intval($aCar_Caj['id_papel']);
         $cajon_nombre            = utf8_decode(trim(strval($aCar_Caj['nombre_papel'])));
-        $id_num_cajon            = floatval($grosor_cajon);
+        $id_num_cajon            = round(floatval($grosor_cajon), 2);
         $cajon_papel             = utf8_decode(trim(strval($aCar_Caj['nombre_papel'])));
-        $cajon_precio            = floatval($aCar_Caj['costo_unit_papel']);
-        $cajon_ancho             = floatval($aCar_Caj['ancho_papel']);
-        $cajon_largo             = floatval($aCar_Caj['largo_papel']);
-        $cajon_corte_ancho       = floatval($aCar_Caj['calculadora']['corte_ancho']);
-        $cajon_corte_largo       = floatval($aCar_Caj['calculadora']['corte_largo']);
+        $cajon_precio            = round(floatval($aCar_Caj['costo_unit_papel']), 2);
+        $cajon_ancho             = round(floatval($aCar_Caj['ancho_papel']), 2);
+        $cajon_largo             = round(floatval($aCar_Caj['largo_papel']), 2);
+        $cajon_corte_ancho       = round(floatval($aCar_Caj['calculadora']['corte_ancho']), 2);
+        $cajon_corte_largo       = round(floatval($aCar_Caj['calculadora']['corte_largo']), 2);
         $cajon_piezas_por_pliego = intval($aCar_Caj['corte']);
         $cajon_num_pliegos       = intval($aCar_Caj['tot_pliegos']);
-        $cajon_costo_tot_carton  = floatval($aCar_Caj['tot_costo']);
+        $cajon_costo_tot_carton  = round(floatval($aCar_Caj['tot_costo']), 2);
 
         unset($aCar_Caj);
 
@@ -239,41 +239,41 @@ class AlmejaModel extends Controller {
         $carton_cartera_nombre            = utf8_decode(trim(strval($aCar_Car['nombre_papel'])));
         $carton_id_num_cartera            = floatval($grosor_cartera);
         $carton_cartera_papel             = utf8_decode(trim(strval($aCar_Car['nombre_papel'])));
-        $carton_cartera_precio            = floatval($aCar_Car['costo_unit_papel']);
+        $carton_cartera_precio            = round(floatval($aCar_Car['costo_unit_papel']), 2);
         $carton_cartera_ancho             = floatval($aCar_Car['ancho_papel']);
         $carton_cartera_largo             = floatval($aCar_Car['largo_papel']);
         $carton_cartera_corte_ancho       = floatval($aCar_Car['calculadora']['corte_ancho']);
         $carton_cartera_corte_largo       = floatval($aCar_Car['calculadora']['corte_largo']);
         $carton_cartera_piezas_por_pliego = intval($aCar_Car['corte']);
         $carton_cartera_num_pliegos       = intval($aCar_Car['tot_pliegos']);
-        $carton_cartera_costo_tot_carton  = floatval($aCar_Car['tot_costo']);
+        $carton_cartera_costo_tot_carton  = round(floatval($aCar_Car['tot_costo']), 2);
 
 
         unset($aCar_Car);
 
 
     // elab_car
-        $elab_car_costo_unit  = floatval($aElab_car['forro_costo_unit']);
-        $elab_car_forro_car   = floatval($aElab_car['forro_car']);
-        $elab_car_costo_total = floatval($aElab_car['forro_car']);
+        $elab_car_costo_unit  = round(floatval($aElab_car['forro_costo_unit']), 2);
+        $elab_car_forro_car   = round(floatval($aElab_car['forro_car']), 2);
+        $elab_car_costo_total = round(floatval($aElab_car['forro_car']), 2);
 
 
         unset($aElab_car);
 
 
     // elab_guarda
-        $elab_guarda_costo_unit = floatval($aElab_guarda['guarda_costo_unit']);
-        $elab_guarda_costo_tot  = floatval($aElab_guarda['guarda']);
+        $elab_guarda_costo_unit = round(floatval($aElab_guarda['guarda_costo_unit']), 2);
+        $elab_guarda_costo_tot  = round(floatval($aElab_guarda['guarda']), 2);
 
 
         unset($aElab_guarda);
 
 
     // Ranurado
-        $ranurado_arreglo               = floatval($aRanurado['arreglo']);
-        $ranurado_costo_unit_por_ranura = floatval($aRanurado['costo_unit_por_ranura']);
-        $ranurado_costo_por_ranura      = floatval($aRanurado['costo_por_ranura']);
-        $ranurado_costo_tot_ranurado    = floatval($aRanurado['costo_tot_ranurado']);
+        $ranurado_arreglo               = round(floatval($aRanurado['arreglo']), 2);
+        $ranurado_costo_unit_por_ranura = round(floatval($aRanurado['costo_unit_por_ranura']), 2);
+        $ranurado_costo_por_ranura      = round(floatval($aRanurado['costo_por_ranura']), 2);
+        $ranurado_costo_tot_ranurado    = round(floatval($aRanurado['costo_tot_ranurado']), 2);
 
 
         unset($aRanurado);
@@ -281,33 +281,33 @@ class AlmejaModel extends Controller {
 
 
     // Ranurado_Fcar
-        $ranurado_fcar_costo_unit_por_ranura = floatval($aRanurado_Fcar['costo_unit_por_ranura']);
-        $ranurado_fcar_costo_por_ranura      = floatval($aRanurado_Fcar['costo_por_ranura']);
-
+        $ranurado_fcar_costo_unit_por_ranura = round(floatval($aRanurado_Fcar['costo_unit_por_ranura']), 2);
+        $ranurado_fcar_costo_por_ranura      = round(floatval($aRanurado_Fcar['costo_por_ranura']), 2);
 
         unset($aRanurado_Fcar);
 
 
+
     // Encuadernacion
-        $perf_iman_costo_unitario               = floatval($aEncuadernacion['perf_iman_costo_unitario']);
-        $perf_iman_y_puesta                     = floatval($aEncuadernacion['perf_iman_y_puesta']);
-        $encuad_despunte_costo_unitario         = floatval($aEncuadernacion['despunte_costo_unitario']);
-        $encuad_despunte_de_esquinas_para_cajon = floatval($aEncuadernacion['despunte_de_esquinas_para_cajon']);
-        $encuad_encajada_costo_unitario         = floatval($aEncuadernacion['encajada_costo_unitario']);
-        $encuad_encajada                        = floatval($aEncuadernacion['costo_encajada']);
-        $encuad_costo_tot_proceso               = floatval($aEncuadernacion['costo_tot_proceso']);
-        $encuad_costo_tot_encuadernacion        = floatval($encuad_costo_tot_proceso + $encuad_encajada);
+        $perf_iman_costo_unitario               = round(floatval($aEncuadernacion['perf_iman_costo_unitario']), 2);
+        $perf_iman_y_puesta                     = round(floatval($aEncuadernacion['perf_iman_y_puesta']), 2);
+        $encuad_despunte_costo_unitario         = round(floatval($aJson['despunte_esquinas']['costo_unit']), 2);
+        $encuad_despunte_de_esquinas_para_cajon = round(floatval($aJson['despunte_esquinas']['costo_tot_despunte']), 2);
+        $encuad_encajada_costo_unitario         = round(floatval($aJson['encajada']['costo_unitario']), 2);
+        $encuad_encajada                        = round(floatval($aJson['encajada']['costo_tot_proceso']), 2);
+        $encuad_costo_tot_proceso               = round(floatval($aEncuadernacion['costo_tot_proceso']), 2);
+        $encuad_costo_tot_encuadernacion        = round(floatval($encuad_costo_tot_proceso + $encuad_encajada), 2);
 
         unset($aEncuadernacion);
 
 
     // Encuadernacion_fcaj
-        $encuad_fcaj_costo_unit_forrado_cajon     = floatval($aEncuadernacion_Fcaj['costo_unit_forrado_cajon']);
-        $encuad_fcaj_forrado_de_cajon             = floatval($aEncuadernacion_Fcaj['forrado_de_cajon']);
-        $encuad_fcaj_empalme_cajon_costo_unitario = floatval($aEncuadernacion_Fcaj['empalme_cajon_costo_unitario']);
-        $encuad_fcaj_empalme_de_cajon             = floatval($aEncuadernacion_Fcaj['empalme_de_cajon']);
-        $encuad_fcaj_arreglo_de_forrado_de_cajon  = floatval($aEncuadernacion_Fcaj['arreglo_de_forrado_de_cajon']);
-        $encuad_fcaj_costo_tot_proceso            = floatval($aEncuadernacion_Fcaj['costo_tot_proceso']  - $encuad_encajada);
+        $encuad_fcaj_costo_unit_forrado_cajon     = round(floatval($aEncuadernacion_Fcaj['costo_unit_forrado_cajon']), 2);
+        $encuad_fcaj_forrado_de_cajon             = round(floatval($aEncuadernacion_Fcaj['forrado_de_cajon']), 2);
+        $encuad_fcaj_empalme_cajon_costo_unitario = round(floatval($aEncuadernacion_Fcaj['empalme_cajon_costo_unitario']), 2);
+        $encuad_fcaj_empalme_de_cajon             = round(floatval($aEncuadernacion_Fcaj['empalme_de_cajon']), 2);
+        $encuad_fcaj_arreglo_de_forrado_de_cajon  = round(floatval($aEncuadernacion_Fcaj['arreglo_de_forrado_de_cajon']), 2);
+        $encuad_fcaj_costo_tot_proceso            = round(floatval($aEncuadernacion_Fcaj['costo_tot_proceso']), 2);
 
         unset($aEncuadernacion_Fcaj);
 
@@ -463,7 +463,7 @@ class AlmejaModel extends Controller {
 
             if (!$inserted or $id_caja_odt <= 0) {
 
-                $aJson['error'] = $aJson['error'] . $msg_error . "ODT;";
+                $aJson['error'] = $aJson['error'] . $msg_error . "ODT;" . " " . $sql . ";";
 
                 $inserted = false;
             }
@@ -492,7 +492,8 @@ class AlmejaModel extends Controller {
 
             if (!$inserted_calc) {
 
-                $aJson['error'] = $aJson['error'] . $msg_error . "calculadora;";
+                $aJson['error'] = $aJson['error'] . $msg_error . "calculadora;" . " " . $sql_calc . ";";
+
                 $inserted_calc = false;
             }
 
@@ -511,12 +512,12 @@ class AlmejaModel extends Controller {
 
             if (!$inserted_papel_emp) {
 
-                $aJson['error'] = $aJson['error'] . $msg_error . "papel empalme;";
+                $aJson['error'] = $aJson['error'] . $msg_error . "papel empalme;" . " " . $sql_papel_emp . ";";
 
                 $inserted_papel_emp = false;
             }
 
-            
+
         // Forro del Cajon
             $sql_papel_fcaj = "INSERT INTO cot_alm_papelfcaj
                 (id_odt, id_modelo, id_papel, nombre, ancho, largo, costo_unitario, tiraje, cortes, pliegos,  costo_tot_pliegos, corte_ancho, corte_largo, fecha)
@@ -531,7 +532,7 @@ class AlmejaModel extends Controller {
 
             if (!$inserted_papel_fcaj) {
 
-                $aJson['error'] = $aJson['error'] . $msg_error . "papel forro cajon;";
+                $aJson['error'] = $aJson['error'] . $msg_error . "papel forro cajon;" . " " . $sql_papel_fcaj . ";";
 
                 $inserted_papel_fcaj = false;
             }
@@ -580,11 +581,11 @@ class AlmejaModel extends Controller {
         // corte
 
             // empalme
-            $corte_costo_unitario = floatval($aJson['costo_corte_papel_emp']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_emp']['costo_unitario_corte_papel']), 2);
             $cortes_pliego        = intval($aJson['costo_corte_papel_emp']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_emp']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_papel_emp']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_papel_emp']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_papel_emp']['tot_costo_corte']), 2);
 
             $sql_corte_emp = "INSERT INTO cot_alm_corte_emp
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -606,11 +607,11 @@ class AlmejaModel extends Controller {
 
 
             // forro cajon
-            $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']), 2);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_fcaj']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_papel_fcaj']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']), 2);
 
             $sql_corte_fcaj = "INSERT INTO cot_alm_corte_fcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -632,11 +633,11 @@ class AlmejaModel extends Controller {
 
 
             // corte forro cartera
-            $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcar']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_fcar']['costo_unitario_corte_papel']), 2);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcar']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_fcar']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_papel_fcar']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_papel_fcar']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_papel_fcar']['tot_costo_corte']), 2);
 
             $sql_corte_fcar = "INSERT INTO cot_alm_corte_fcar
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -658,11 +659,11 @@ class AlmejaModel extends Controller {
 
 
             // forro guarda
-            $corte_costo_unitario = floatval($aJson['costo_corte_papel_guarda']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_guarda']['costo_unitario_corte_papel']), 2);
             $cortes_pliego        = intval($aJson['costo_corte_papel_guarda']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_guarda']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_papel_guarda']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_papel_guarda']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_papel_guarda']['tot_costo_corte']), 2);
 
             $sql_corte_guarda = "INSERT INTO cot_alm_corte_guarda
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -684,11 +685,11 @@ class AlmejaModel extends Controller {
 
 
             // corte carton
-            $corte_costo_unitario = floatval($aJson['costo_corte_carton']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_carton']['costo_unitario_corte_papel']), 2);
             $cortes_pliego        = intval($aJson['costo_corte_carton']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_carton']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_carton']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_carton']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_carton']['tot_costo_corte']), 2);
 
             $sql_corte_carton = "INSERT INTO cot_alm_corte_carton_emp
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -710,11 +711,11 @@ class AlmejaModel extends Controller {
 
 
             // corte cartera
-            $corte_costo_unitario = floatval($aJson['costo_corte_cartera']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_cartera']['costo_unitario_corte_papel']), 2);
             $cortes_pliego        = intval($aJson['costo_corte_cartera']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_cartera']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_cartera']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_cartera']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_cartera']['tot_costo_corte']), 2);
 
             $sql_corte_carton_fcar = "INSERT INTO cot_alm_corte_carton_fcar
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -738,7 +739,7 @@ class AlmejaModel extends Controller {
         // Carton Cajon
 
              $id_papel = intval($aJson['CartonCaj']['id_papel']);
-             
+
             $sql_papel_caj = "INSERT INTO cot_alm_cartoncaj
                 (id_odt, id_modelo, id_cajon, num_cajon, tiraje, papel, nombre, precio, ancho, largo, corte_ancho, corte_largo, piezas_por_pliego, num_pliegos, costo_tot_carton, fecha)
             VALUES
@@ -855,10 +856,10 @@ class AlmejaModel extends Controller {
 
 
         // arreglo ranurado horizontal
-            $costo_unit_arreglo = floatval($aJson['arreglo_ranurado_hor_emp']['arreglo']);
-            $costo_unit_ranura  = floatval($aJson['arreglo_ranurado_hor_emp']['costo_unit_por_ranura']);
-            $costo_ranurado     = floatval($aJson['arreglo_ranurado_hor_emp']['costo_por_ranura']);
-            $costo_tot_ranurado  = floatval($aJson['arreglo_ranurado_hor_emp']['costo_tot_ranurado']);
+            $costo_unit_arreglo = round(floatval($aJson['arreglo_ranurado_hor_emp']['arreglo']), 2);
+            $costo_unit_ranura  = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_unit_por_ranura']), 2);
+            $costo_ranurado     = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_por_ranura']), 2);
+            $costo_tot_ranurado = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_tot_ranurado']), 2);
 
             $sql_ranurado_arreglo_ran_hor = "INSERT INTO cot_alm_arreglo_ranurado_hor_emp
                 (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
@@ -880,13 +881,13 @@ class AlmejaModel extends Controller {
 
         // arreglo ranurado vertical
             $l_arr_ran_vert_emp = true;
-            
+
             if ( ($aJson['base'] > $aJson['alto'])  or ($aJson['base'] < $aJson['alto']) ) {
 
-                $costo_unit_arreglo = floatval($aJson['arreglo_ranurado_ver_emp']['arreglo']);
-                $costo_unit_ranura  = floatval($aJson['arreglo_ranurado_ver_emp']['costo_unit_por_ranura']);
-                $costo_ranurado     = floatval($aJson['arreglo_ranurado_ver_emp']['costo_por_ranura']);
-                $costo_tot_ranurado  = floatval($aJson['arreglo_ranurado_ver_emp']['costo_tot_ranurado']);
+                $costo_unit_arreglo = round(floatval($aJson['arreglo_ranurado_ver_emp']['arreglo']), 2);
+                $costo_unit_ranura  = round(floatval($aJson['arreglo_ranurado_ver_emp']['costo_unit_por_ranura']), 2);
+                $costo_ranurado     = round(floatval($aJson['arreglo_ranurado_ver_emp']['costo_por_ranura']), 2);
+                $costo_tot_ranurado = round(floatval($aJson['arreglo_ranurado_ver_emp']['costo_tot_ranurado']), 2);
 
                 if ($costo_tot_ranurado > 0) {
 
@@ -911,7 +912,7 @@ class AlmejaModel extends Controller {
 
         // arreglo ranurado forro de la cartera
             $costo_unit = $aJson['cot_alm_arreglo_ranurado_fcar'];
-            $costo_unit = floatval($costo_unit);
+            $costo_unit = round(floatval($costo_unit), 2);
 
             $sql_ranurado_arreglo_ran_fcar = "INSERT INTO cot_alm_arreglo_ranurado_fcar
                 (id_odt, id_modelo, tiraje, costo_unit, costo_tot_ranurado, fecha)
@@ -949,7 +950,6 @@ class AlmejaModel extends Controller {
                 $inserted_encuadernacion = false;
             }
 
-
         // Encuadernacion_Fcaj
             $sql_encuadernacion_fcaj = "INSERT INTO cot_alm_encuadernacion_fcaj
                 (id_modelo, id_odt, tiraje, costo_unit_forrado_cajon, forrado_de_cajon, arreglo_de_forrado_de_cajon, empalme_cajon_costo_unitario, empalme_de_cajon, costo_tot_proceso, fecha)
@@ -970,8 +970,8 @@ class AlmejaModel extends Controller {
 
 
         // despunte de esquinas empalme
-            $costo_unit         = floatval($aJson['despunte_esquinas']['costo_unit']);
-            $costo_tot_despunte = floatval($aJson['despunte_esquinas']['costo_tot_despunte']);
+            $costo_unit         = round(floatval($aJson['despunte_esquinas']['costo_unit']), 2);
+            $costo_tot_despunte = round(floatval($aJson['despunte_esquinas']['costo_tot_despunte']), 2);
 
             $sql_despunte_emp = "INSERT INTO cot_alm_despunte_esquinas_emp(id_modelo, id_odt, tiraje, costo_unit, costo_tot_despunte, fecha)
             VALUES
@@ -992,10 +992,10 @@ class AlmejaModel extends Controller {
 
         // Pegado guarda
             $costo_unit = $aJson['pegado_guarda']['costo_unitario'];
-            $costo_unit = floatval($costo_unit);
+            $costo_unit = round(floatval($costo_unit), 2);
 
             $costo_tot_proceso = $aJson['pegado_guarda']['costo_tot_proceso'];
-            $costo_tot_proceso = floatval($costo_tot_proceso);
+            $costo_tot_proceso = round(floatval($costo_tot_proceso), 2);
 
             $sql_pegado_g = "INSERT INTO cot_alm_pegado_guarda(id_modelo, id_odt, tiraje, costo_unit, costo_tot_proceso, fecha)
             VALUES
@@ -1013,10 +1013,9 @@ class AlmejaModel extends Controller {
                 $l_pegado_guarda = false;
             }
 
-
         // armado caja final
-            $armado_costo_unit        = floatval($aJson['armado_caja_final']['costo_unit']);
-            $armado_costo_tot_proceso = floatval($aJson['armado_caja_final']['costo_tot_proceso']);
+            $armado_costo_unit        = round(floatval($aJson['armado_caja_final']['costo_unit']), 2);
+            $armado_costo_tot_proceso = round(floatval($aJson['armado_caja_final']['costo_tot_proceso']), 2);
 
             $sql_armado_final = "INSERT INTO cot_alm_armado_caja_final(id_modelo, id_odt, tiraje, costo_unit, costo_tot_proceso, fecha)
             VALUES
@@ -1033,7 +1032,6 @@ class AlmejaModel extends Controller {
 
                 $l_armado_caja_final = false;
             }
-
 
     /*************** Termina costos fijos **********************/
 
@@ -1062,8 +1060,8 @@ class AlmejaModel extends Controller {
                         $ancho = floatval($v_Accesorio_R[$k]['Ancho']);
                         $color = trim(strval($v_Accesorio_R[$k]['Color']));
 
-                        $costo_unitario = floatval($v_Accesorio_R[$k]['costo_unit_accesorio']);
-                        $costo_accesorios = floatval($v_Accesorio_R[$k]['costo_accesorios']);
+                        $costo_unitario   = round(floatval($v_Accesorio_R[$k]['costo_unit_accesorio']), 2);
+                        $costo_accesorios = round(floatval($v_Accesorio_R[$k]['costo_accesorios']), 2);
 
 
                         $sql_Accesorios = "INSERT INTO cot_accesorios
@@ -1119,9 +1117,8 @@ class AlmejaModel extends Controller {
                         $profundidad = intval($v_Banco_R[$k]['profundidad']);
                         $suaje       = trim(strval($v_Banco_R[$k]['Suaje']));
 
-                        $costo_unitario = floatval($v_Banco_R[$k]['costo_unit_banco']);
-
-                        $costo_bancos = floatval($v_Banco_R[$k]['costo_bancos']);
+                        $costo_unitario = round(floatval($v_Banco_R[$k]['costo_unit_banco']), 2);
+                        $costo_bancos   = round(floatval($v_Banco_R[$k]['costo_bancos']), 2);
 
 
                         $sql_Bancos = "INSERT INTO cot_bancos
@@ -1180,9 +1177,8 @@ class AlmejaModel extends Controller {
                         $tipo     = trim(strval($v_Cierre_R[$k]['tipo']));
                         $color    = trim(strval($v_Cierre_R[$k]['color']));
 
-                        $costo_unitario = floatval($v_Cierre_R[$k]['costo_unitario']);
-
-                        $costo_cierre = floatval($v_Cierre_R[$k]['costo_cierre']);
+                        $costo_unitario = round(floatval($v_Cierre_R[$k]['costo_unitario']), 2);
+                        $costo_cierre   = round(floatval($v_Cierre_R[$k]['costo_cierre']), 2);
 
 
                         $sql_Cierres = "INSERT INTO cot_cierres
@@ -1245,8 +1241,8 @@ class AlmejaModel extends Controller {
                         $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                         $sql_OffEmp = "INSERT INTO cot_alm_offsetemp
@@ -1281,15 +1277,15 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                       = trim(strval($v_tmp_R[$k]['Tipo']));
-                        $num_tintas                 = intval($v_tmp_R[$k]['num_tintas']);
-                        $arreglo_costo_unitario     = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                        $arreglo_costo              = floatval($v_tmp_R[$k]['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($v_tmp_R[$k]['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($v_tmp_R[$k]['costo_laminas']);
-                        $costo_unitario             = floatval($v_tmp_R[$k]['costo_unitario_maq']);
-                        $costo_tot                  = floatval($v_tmp_R[$k]['costo_tot_maq']);
-                        $costo_tot_proceso          = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                        $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
+                        $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
+                        $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
+                        $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
+                        $costo_unitario_laminas = round(floatval($v_tmp_R[$k]['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($v_tmp_R[$k]['costo_laminas']), 2);
+                        $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario_maq']), 2);
+                        $costo_tot              = round(floatval($v_tmp_R[$k]['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                         $sql_Off_maq_Emp = "INSERT INTO cot_alm_offset_maq_emp
@@ -1333,16 +1329,16 @@ class AlmejaModel extends Controller {
 
                         $tipo                   = trim(strval($v_tmp_R[$k]['tipo_offset']));
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
-                        $corte_costo_unitario   = floatval($v_tmp_R[$k]['corte_costo_unitario']);
-                        $corte_por_millar       = floatval($v_tmp_R[$k]['corte_por_millar']);
-                        $costo_corte            = floatval($v_tmp_R[$k]['costo_corte']);
-                        $costo_unitario_laminas = floatval($v_tmp_R[$k]['costo_unitario_laminas']);
-                        $costo_tot_laminas      = floatval($v_tmp_R[$k]['costo_tot_laminas']);
-                        $costo_unitario_arreglo = floatval($v_tmp_R[$k]['costo_unitario_arreglo']);
-                        $costo_tot_arreglo      = floatval($v_tmp_R[$k]['costo_tot_arreglo']);
-                        $costo_unitario_tiro    = floatval($v_tmp_R[$k]['costo_unitario_tiro']);
-                        $costo_tot_tiro         = floatval($v_tmp_R[$k]['costo_tiro']);
-                        $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                        $corte_costo_unitario   = round(floatval($v_tmp_R[$k]['corte_costo_unitario']), 2);
+                        $corte_por_millar       = round(floatval($v_tmp_R[$k]['corte_por_millar']), 2);
+                        $costo_corte            = round(floatval($v_tmp_R[$k]['costo_corte']), 2);
+                        $costo_unitario_laminas = round(floatval($v_tmp_R[$k]['costo_unitario_laminas']), 2);
+                        $costo_tot_laminas      = round(floatval($v_tmp_R[$k]['costo_tot_laminas']), 2);
+                        $costo_unitario_arreglo = round(floatval($v_tmp_R[$k]['costo_unitario_arreglo']), 2);
+                        $costo_tot_arreglo      = round(floatval($v_tmp_R[$k]['costo_tot_arreglo']), 2);
+                        $costo_unitario_tiro    = round(floatval($v_tmp_R[$k]['costo_unitario_tiro']), 2);
+                        $costo_tot_tiro         = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                        $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                         $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -1350,8 +1346,8 @@ class AlmejaModel extends Controller {
                         $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                         $sql_OffFcaj = "INSERT INTO cot_alm_offsetfcaj
@@ -1386,15 +1382,15 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo       = trim(strval($v_tmp_R[$k]['Tipo']));
-                        $num_tintas = intval($v_tmp_R[$k]['num_tintas']);
-                        $arreglo_costo_unitario     = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                        $arreglo_costo              = floatval($v_tmp_R[$k]['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($v_tmp_R[$k]['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($v_tmp_R[$k]['costo_laminas']);
-                        $costo_unitario         = floatval($v_tmp_R[$k]['costo_unitario_maq']);
-                        $costo_tot          = floatval($v_tmp_R[$k]['costo_tot_maq']);
-                        $costo_tot_proceso          = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                        $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
+                        $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
+                        $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
+                        $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
+                        $costo_unitario_laminas = round(floatval($v_tmp_R[$k]['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($v_tmp_R[$k]['costo_laminas']), 2);
+                        $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario_maq']), 2);
+                        $costo_tot              = round(floatval($v_tmp_R[$k]['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                         $sql_Off_maq_Fcaj = "INSERT INTO cot_alm_offset_maq_fcaj
@@ -1438,16 +1434,16 @@ class AlmejaModel extends Controller {
 
                         $tipo                   = trim(strval($v_tmp_R[$k]['tipo_offset']));
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
-                        $corte_costo_unitario   = floatval($v_tmp_R[$k]['corte_costo_unitario']);
-                        $corte_por_millar       = floatval($v_tmp_R[$k]['corte_por_millar']);
-                        $costo_corte            = floatval($v_tmp_R[$k]['costo_corte']);
-                        $costo_unitario_laminas = floatval($v_tmp_R[$k]['costo_unitario_laminas']);
-                        $costo_tot_laminas      = floatval($v_tmp_R[$k]['costo_tot_laminas']);
-                        $costo_unitario_arreglo = floatval($v_tmp_R[$k]['costo_unitario_arreglo']);
-                        $costo_tot_arreglo      = floatval($v_tmp_R[$k]['costo_tot_arreglo']);
-                        $costo_unitario_tiro    = floatval($v_tmp_R[$k]['costo_unitario_tiro']);
-                        $costo_tot_tiro         = floatval($v_tmp_R[$k]['costo_tiro']);
-                        $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                        $corte_costo_unitario   = round(floatval($v_tmp_R[$k]['corte_costo_unitario']), 2);
+                        $corte_por_millar       = round(floatval($v_tmp_R[$k]['corte_por_millar']), 2);
+                        $costo_corte            = round(floatval($v_tmp_R[$k]['costo_corte']), 2);
+                        $costo_unitario_laminas = round(floatval($v_tmp_R[$k]['costo_unitario_laminas']), 2);
+                        $costo_tot_laminas      = round(floatval($v_tmp_R[$k]['costo_tot_laminas']), 2);
+                        $costo_unitario_arreglo = round(floatval($v_tmp_R[$k]['costo_unitario_arreglo']), 2);
+                        $costo_tot_arreglo      = round(floatval($v_tmp_R[$k]['costo_tot_arreglo']), 2);
+                        $costo_unitario_tiro    = round(floatval($v_tmp_R[$k]['costo_unitario_tiro']), 2);
+                        $costo_tot_tiro         = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                        $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                         $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -1455,8 +1451,8 @@ class AlmejaModel extends Controller {
                         $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                         $sql_OffFcar = "INSERT INTO cot_alm_offsetfcar
@@ -1494,14 +1490,14 @@ class AlmejaModel extends Controller {
                         $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($v_tmp_R[$k]['arreglo_costo']);
+                        $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
 
 
-                        $costo_unitario_laminas = floatval($v_tmp_R[$k]['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($v_tmp_R[$k]['costo_laminas']);
-                        $costo_unitario         = floatval($v_tmp_R[$k]['costo_unitario_maq']);
-                        $costo_tot              = floatval($v_tmp_R[$k]['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                        $costo_unitario_laminas = round(floatval($v_tmp_R[$k]['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($v_tmp_R[$k]['costo_laminas']), 2);
+                        $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario_maq']), 2);
+                        $costo_tot              = round(floatval($v_tmp_R[$k]['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                         $sql_Off_maq_Fcar = "INSERT INTO cot_alm_offset_maq_fcar
@@ -1545,16 +1541,16 @@ class AlmejaModel extends Controller {
 
                         $tipo                   = trim(strval($v_tmp_R[$k]['tipo_offset']));
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
-                        $corte_costo_unitario   = floatval($v_tmp_R[$k]['corte_costo_unitario']);
-                        $corte_por_millar       = floatval($v_tmp_R[$k]['corte_por_millar']);
-                        $costo_corte            = floatval($v_tmp_R[$k]['costo_corte']);
-                        $costo_unitario_laminas = floatval($v_tmp_R[$k]['costo_unitario_laminas']);
-                        $costo_tot_laminas      = floatval($v_tmp_R[$k]['costo_tot_laminas']);
-                        $costo_unitario_arreglo = floatval($v_tmp_R[$k]['costo_unitario_arreglo']);
-                        $costo_tot_arreglo      = floatval($v_tmp_R[$k]['costo_tot_arreglo']);
-                        $costo_unitario_tiro    = floatval($v_tmp_R[$k]['costo_unitario_tiro']);
-                        $costo_tot_tiro         = floatval($v_tmp_R[$k]['costo_tiro']);
-                        $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                        $corte_costo_unitario   = round(floatval($v_tmp_R[$k]['corte_costo_unitario']), 2);
+                        $corte_por_millar       = round(floatval($v_tmp_R[$k]['corte_por_millar']), 2);
+                        $costo_corte            = round(floatval($v_tmp_R[$k]['costo_corte']), 2);
+                        $costo_unitario_laminas = round(floatval($v_tmp_R[$k]['costo_unitario_laminas']), 2);
+                        $costo_tot_laminas      = round(floatval($v_tmp_R[$k]['costo_tot_laminas']), 2);
+                        $costo_unitario_arreglo = round(floatval($v_tmp_R[$k]['costo_unitario_arreglo']), 2);
+                        $costo_tot_arreglo      = round(floatval($v_tmp_R[$k]['costo_tot_arreglo']), 2);
+                        $costo_unitario_tiro    = round(floatval($v_tmp_R[$k]['costo_unitario_tiro']), 2);
+                        $costo_tot_tiro         = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                        $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                         $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -1562,8 +1558,8 @@ class AlmejaModel extends Controller {
                         $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                         $sql_OffG = "INSERT INTO cot_alm_offsetguarda
@@ -1602,14 +1598,14 @@ class AlmejaModel extends Controller {
                         $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($v_tmp_R[$k]['arreglo_costo']);
+                        $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
 
 
-                        $costo_unitario_laminas = floatval($v_tmp_R[$k]['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($v_tmp_R[$k]['costo_laminas']);
-                        $costo_unitario         = floatval($v_tmp_R[$k]['costo_unitario_maq']);
-                        $costo_tot          = floatval($v_tmp_R[$k]['costo_tot_maq']);
-                        $costo_tot_proceso          = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                        $costo_unitario_laminas = round(floatval($v_tmp_R[$k]['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($v_tmp_R[$k]['costo_laminas']), 2);
+                        $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario_maq']), 2);
+                        $costo_tot              = round(floatval($v_tmp_R[$k]['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                         $sql_Off_maq_G = "INSERT INTO cot_alm_offset_maq_guarda
@@ -1651,21 +1647,21 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $corte_ancho       = floatval($v_tmp_R[$k]['corte_ancho']);
-                    $corte_largo       = floatval($v_tmp_R[$k]['corte_largo']);
-                    $imp_ancho         = floatval($v_tmp_R[$k]['imp_ancho']);
-                    $imp_largo         = floatval($v_tmp_R[$k]['imp_largo']);
+                    $corte_ancho       = round(floatval($v_tmp_R[$k]['corte_ancho']), 2);
+                    $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
+                    $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
+                    $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
                     $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tot_pliegos       = intval($v_tmp_R[$k]['tot_pliegos']);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unitario']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot']);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unitario']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot']), 2);
 
 
                     $sql_DigEmp = "INSERT INTO cot_alm_digemp
@@ -1706,21 +1702,21 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $corte_ancho       = floatval($v_tmp_R[$k]['corte_ancho']);
-                    $corte_largo       = floatval($v_tmp_R[$k]['corte_largo']);
-                    $imp_ancho         = floatval($v_tmp_R[$k]['imp_ancho']);
-                    $imp_largo         = floatval($v_tmp_R[$k]['imp_largo']);
+                    $corte_ancho       = round(floatval($v_tmp_R[$k]['corte_ancho']), 2);
+                    $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
+                    $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
+                    $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
                     $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tot_pliegos       = intval($v_tmp_R[$k]['tot_pliegos']);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unitario']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot']);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unitario']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot']), 2);
 
 
                     $sql_DigFcaj = "INSERT INTO cot_alm_digfcaj
@@ -1762,21 +1758,21 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $corte_ancho       = floatval($v_tmp_R[$k]['corte_ancho']);
-                    $corte_largo       = floatval($v_tmp_R[$k]['corte_largo']);
-                    $imp_ancho         = floatval($v_tmp_R[$k]['imp_ancho']);
-                    $imp_largo         = floatval($v_tmp_R[$k]['imp_largo']);
+                    $corte_ancho       = round(floatval($v_tmp_R[$k]['corte_ancho']), 2);
+                    $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
+                    $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
+                    $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
                     $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $tot_pliegos    = floatval($v_tmp_R[$k]['tot_pliegos']);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $tot_pliegos       = round(floatval($v_tmp_R[$k]['tot_pliegos']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unitario']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot']);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unitario']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot']), 2);
 
 
                     $sql_DigFcar = "INSERT INTO cot_alm_digfcar
@@ -1817,21 +1813,21 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $corte_ancho       = floatval($v_tmp_R[$k]['corte_ancho']);
-                    $corte_largo       = floatval($v_tmp_R[$k]['corte_largo']);
-                    $imp_ancho         = floatval($v_tmp_R[$k]['imp_ancho']);
-                    $imp_largo         = floatval($v_tmp_R[$k]['imp_largo']);
+                    $corte_ancho       = round(floatval($v_tmp_R[$k]['corte_ancho']), 2);
+                    $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
+                    $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
+                    $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
                     $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tot_pliegos       = intval($v_tmp_R[$k]['tot_pliegos']);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unitario']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot']);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unitario']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot']), 2);
 
 
                     $sql_DigG = "INSERT INTO cot_alm_digguarda
@@ -1872,20 +1868,20 @@ class AlmejaModel extends Controller {
 
                     $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
-                    $costo_unit_arreglo = floatval($v_tmp_R[$k]["costo_unit_arreglo"]);
-                    $costo_arreglo      = floatval($v_tmp_R[$k]["costo_arreglo"]);
-                    $costo_unit_tiro    = floatval($v_tmp_R[$k]["costo_unitario_tiro"]);
-                    $costo_tiro         = floatval($v_tmp_R[$k]["costo_tiro"]);
-                    $costo_tot_proceso  = floatval($v_tmp_R[$k]["costo_tot_proceso"]);
+                    $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
+                    $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
+                    $costo_unit_tiro    = round(floatval($v_tmp_R[$k]["costo_unitario_tiro"]), 2);
+                    $costo_tiro         = round(floatval($v_tmp_R[$k]["costo_tiro"]), 2);
+                    $costo_tot_proceso  = round(floatval($v_tmp_R[$k]["costo_tot_proceso"]), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
-                    $merma_tot_pliegos       = floatval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $merma_tot_pliegos       = round(floatval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']), 2);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
                     $sql_SerEmp = "INSERT INTO cot_alm_seremp
                         (id_odt, id_modelo, tipo, tiraje, num_tintas, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha)
@@ -1925,20 +1921,20 @@ class AlmejaModel extends Controller {
 
                     $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
-                    $costo_unit_arreglo = floatval($v_tmp_R[$k]["costo_unit_arreglo"]);
-                    $costo_arreglo      = floatval($v_tmp_R[$k]["costo_arreglo"]);
-                    $costo_unit_tiro    = floatval($v_tmp_R[$k]["costo_unitario_tiro"]);
-                    $costo_tiro         = floatval($v_tmp_R[$k]["costo_tiro"]);
-                    $costo_tot_proceso  = floatval($v_tmp_R[$k]["costo_tot_proceso"]);
+                    $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
+                    $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
+                    $costo_unit_tiro    = round(floatval($v_tmp_R[$k]["costo_unitario_tiro"]), 2);
+                    $costo_tiro         = round(floatval($v_tmp_R[$k]["costo_tiro"]), 2);
+                    $costo_tot_proceso  = round(floatval($v_tmp_R[$k]["costo_tot_proceso"]), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
-                    $merma_tot_pliegos       = floatval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $merma_tot_pliegos       = round(floatval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']), 2);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_SerFCaj = "INSERT INTO cot_alm_serfcaj
@@ -1963,8 +1959,6 @@ class AlmejaModel extends Controller {
             }
 
 
-        /*********** Serigrafia FCar ***************/
-
             // Inicia Serigrafia Forro de la Cartera
 
             if (array_key_exists("SerFCar", $aJson)) {
@@ -1980,20 +1974,20 @@ class AlmejaModel extends Controller {
 
                     $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
-                    $costo_unit_arreglo = floatval($v_tmp_R[$k]["costo_unit_arreglo"]);
-                    $costo_arreglo      = floatval($v_tmp_R[$k]["costo_arreglo"]);
-                    $costo_unit_tiro    = floatval($v_tmp_R[$k]["costo_unitario_tiro"]);
-                    $costo_tiro         = floatval($v_tmp_R[$k]["costo_tiro"]);
-                    $costo_tot_proceso  = floatval($v_tmp_R[$k]["costo_tot_proceso"]);
+                    $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
+                    $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
+                    $costo_unit_tiro    = round(floatval($v_tmp_R[$k]["costo_unitario_tiro"]), 2);
+                    $costo_tiro         = round(floatval($v_tmp_R[$k]["costo_tiro"]), 2);
+                    $costo_tot_proceso  = round(floatval($v_tmp_R[$k]["costo_tot_proceso"]), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
-                    $merma_tot_pliegos       = floatval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $merma_tot_pliegos       = round(floatval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']), 2);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_SerFCar = "INSERT INTO cot_alm_serfcar
@@ -2034,11 +2028,11 @@ class AlmejaModel extends Controller {
 
                     $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
-                    $costo_unit_arreglo = floatval($v_tmp_R[$k]["costo_unit_arreglo"]);
-                    $costo_arreglo      = floatval($v_tmp_R[$k]["costo_arreglo"]);
-                    $costo_unit_tiro    = floatval($v_tmp_R[$k]["costo_unitario_tiro"]);
-                    $costo_tiro         = floatval($v_tmp_R[$k]["costo_tiro"]);
-                    $costo_tot_proceso  = floatval($v_tmp_R[$k]["costo_tot_proceso"]);
+                    $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
+                    $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
+                    $costo_unit_tiro    = round(floatval($v_tmp_R[$k]["costo_unitario_tiro"]), 2);
+                    $costo_tiro         = round(floatval($v_tmp_R[$k]["costo_tiro"]), 2);
+                    $costo_tot_proceso  = round(floatval($v_tmp_R[$k]["costo_tot_proceso"]), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2046,8 +2040,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_papel_merma  = floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_papel_merma  = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_papel_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_SerG = "INSERT INTO cot_alm_serguarda
@@ -2092,19 +2086,19 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $area              = floatval($v_tmp_R[$k]['area']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $area              = round(floatval($v_tmp_R[$k]['area']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_BUVEmp = "INSERT INTO cot_alm_barnizuvemp
@@ -2142,19 +2136,19 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $area              = floatval($v_tmp_R[$k]['area']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $area              = round(floatval($v_tmp_R[$k]['area']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_BUVFcaj = "INSERT INTO cot_alm_barnizuvfcaj
@@ -2190,20 +2184,19 @@ class AlmejaModel extends Controller {
                 for ($k = 0; $k < $cuantos_v_BUVFcar; $k++) {
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
-
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $area              = floatval($v_tmp_R[$k]['area']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $area              = round(floatval($v_tmp_R[$k]['area']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_BUVFcar = "INSERT INTO cot_alm_barnizuvfcar
@@ -2241,11 +2234,11 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $area              = floatval($v_tmp_R[$k]['area']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $area              = round(floatval($v_tmp_R[$k]['area']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2253,8 +2246,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_BUVG = "INSERT INTO cot_alm_barnizuvguarda
@@ -2294,11 +2287,11 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $tiempo_requerido  = floatval($v_tmp_R[$k]['tiempo_requerido']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
                     $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
@@ -2338,11 +2331,11 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $tiempo_requerido  = floatval($v_tmp_R[$k]['tiempo_requerido']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
                     $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
@@ -2382,11 +2375,11 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $tiempo_requerido  = floatval($v_tmp_R[$k]['tiempo_requerido']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
                     $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
@@ -2425,11 +2418,11 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
-                    $largo             = floatval($v_tmp_R[$k]['Largo']);
-                    $ancho             = floatval($v_tmp_R[$k]['Ancho']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $tiempo_requerido  = floatval($v_tmp_R[$k]['tiempo_requerido']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
                     $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
@@ -2473,14 +2466,14 @@ class AlmejaModel extends Controller {
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
-                    $placa_area             = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario   = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo            = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $arreglo_costo_unitario = intval($v_tmp_R[$k]['arreglo_costo_unitario']);
                     $arreglo_costo          = intval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario         = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2488,8 +2481,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_GrabEmp = "INSERT INTO cot_alm_grabemp
@@ -2531,14 +2524,14 @@ class AlmejaModel extends Controller {
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
-                    $placa_area             = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario   = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo            = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $arreglo_costo_unitario = intval($v_tmp_R[$k]['arreglo_costo_unitario']);
                     $arreglo_costo          = intval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario         = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2546,8 +2539,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_GrabFcaj = "INSERT INTO cot_alm_grabfcaj
@@ -2588,14 +2581,14 @@ class AlmejaModel extends Controller {
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
-                    $placa_area             = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario   = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo            = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $arreglo_costo_unitario = intval($v_tmp_R[$k]['arreglo_costo_unitario']);
                     $arreglo_costo          = intval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario         = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2603,8 +2596,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_GrabFcar = "INSERT INTO cot_alm_grabfcar
@@ -2645,14 +2638,14 @@ class AlmejaModel extends Controller {
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
-                    $placa_area             = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario   = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo            = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $arreglo_costo_unitario = intval($v_tmp_R[$k]['arreglo_costo_unitario']);
                     $arreglo_costo          = intval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario         = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $costo_unitario         = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2660,8 +2653,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_GrabG = "INSERT INTO cot_alm_grabguarda
@@ -2704,19 +2697,19 @@ class AlmejaModel extends Controller {
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
                     $color                   = trim(strval($v_tmp_R[$k]['Color']));
-                    $placa_area              = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario    = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo             = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
-                    $pelicula_area           = floatval($v_tmp_R[$k]['pelicula_area']);
-                    $pelicula_costo_unitario = floatval($v_tmp_R[$k]['pelicula_costo_unitario']);
-                    $pelicula_costo          = floatval($v_tmp_R[$k]['pelicula_costo']);
-                    $arreglo_costo_unitario  = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                    $arreglo_costo           = floatval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario          = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro              = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso       = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
+                    $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
+                    $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
+                    $costo_unitario          = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro              = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso       = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2724,8 +2717,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_HSEmp = "INSERT INTO cot_alm_hsemp
@@ -2765,19 +2758,19 @@ class AlmejaModel extends Controller {
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
                     $color                   = trim(strval($v_tmp_R[$k]['Color']));
-                    $placa_area              = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario    = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo             = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
-                    $pelicula_area           = floatval($v_tmp_R[$k]['pelicula_area']);
-                    $pelicula_costo_unitario = floatval($v_tmp_R[$k]['pelicula_costo_unitario']);
-                    $pelicula_costo          = floatval($v_tmp_R[$k]['pelicula_costo']);
-                    $arreglo_costo_unitario  = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                    $arreglo_costo           = floatval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario          = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro              = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso       = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
+                    $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
+                    $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
+                    $costo_unitario          = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro              = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso       = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -2785,8 +2778,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_HSFcaj = "INSERT INTO cot_alm_hsfcaj
@@ -2827,27 +2820,27 @@ class AlmejaModel extends Controller {
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
                     $Color                   = trim(strval($v_tmp_R[$k]['Color']));
-                    $placa_area              = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario    = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo             = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
-                    $pelicula_area           = floatval($v_tmp_R[$k]['pelicula_area']);
-                    $pelicula_costo_unitario = floatval($v_tmp_R[$k]['pelicula_costo_unitario']);
-                    $pelicula_costo          = floatval($v_tmp_R[$k]['pelicula_costo']);
-                    $arreglo_costo_unitario  = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                    $arreglo_costo           = floatval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario          = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro              = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso       = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
+                    $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
+                    $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
+                    $costo_unitario          = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro              = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso       = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_HSFcar = "INSERT INTO cot_alm_hsfcar
@@ -2887,27 +2880,27 @@ class AlmejaModel extends Controller {
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
                     $color                   = trim(strval($v_tmp_R[$k]['Color']));
-                    $placa_area              = floatval($v_tmp_R[$k]['placa_area']);
-                    $placa_costo_unitario    = floatval($v_tmp_R[$k]['placa_costo_unitario']);
-                    $placa_costo             = floatval($v_tmp_R[$k]['placa_costo']);
+                    $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
+                    $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
+                    $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
-                    $pelicula_area           = floatval($v_tmp_R[$k]['pelicula_area']);
-                    $pelicula_costo_unitario = floatval($v_tmp_R[$k]['pelicula_costo_unitario']);
-                    $pelicula_costo          = floatval($v_tmp_R[$k]['pelicula_costo']);
-                    $arreglo_costo_unitario  = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
-                    $arreglo_costo           = floatval($v_tmp_R[$k]['arreglo_costo']);
-                    $costo_unitario          = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tiro              = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso       = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
+                    $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
+                    $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
+                    $costo_unitario          = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tiro              = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso       = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_HSG = "INSERT INTO cot_alm_hsguarda
@@ -2949,17 +2942,17 @@ class AlmejaModel extends Controller {
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
                     $largo             = intval($v_tmp_R[$k]['Largo']);
                     $ancho             = intval($v_tmp_R[$k]['Ancho']);
-                    $area              = floatval($v_tmp_R[$k]['area']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $area              = round(floatval($v_tmp_R[$k]['area']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_LamEmp = "INSERT INTO cot_alm_lamemp
@@ -2999,9 +2992,9 @@ class AlmejaModel extends Controller {
 
                     $largo             = intval($v_tmp_R[$k]['Largo']);
                     $ancho             = intval($v_tmp_R[$k]['Ancho']);
-                    $area              = floatval($v_tmp_R[$k]['area']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $area              = round(floatval($v_tmp_R[$k]['area']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -3009,8 +3002,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_LamFcaj = "INSERT INTO cot_alm_lamfcaj
@@ -3060,8 +3053,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_LamFcar = "INSERT INTO cot_alm_lamfcar
@@ -3100,9 +3093,9 @@ class AlmejaModel extends Controller {
                     $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
                     $largo             = intval($v_tmp_R[$k]['Largo']);
                     $ancho             = intval($v_tmp_R[$k]['Ancho']);
-                    $area              = floatval($v_tmp_R[$k]['area']);
-                    $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $area              = round(floatval($v_tmp_R[$k]['area']), 2);
+                    $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -3110,8 +3103,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_LamG = "INSERT INTO cot_alm_lamguarda
@@ -3154,11 +3147,11 @@ class AlmejaModel extends Controller {
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
-                    $tabla_suaje            = floatval($v_tmp_R[$k]['tabla_suaje']);
-                    $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo']);
-                    $tiro_costo_unitario    = floatval($v_tmp_R[$k]['tiro_costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $tabla_suaje            = round(floatval($v_tmp_R[$k]['tabla_suaje']), 2);
+                    $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
+                    $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -3166,8 +3159,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_SuaEmp = "INSERT INTO cot_alm_suajeemp
@@ -3210,10 +3203,10 @@ class AlmejaModel extends Controller {
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
                     $tabla_suaje            = intval($v_tmp_R[$k]['tabla_suaje']);
-                    $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo']);
-                    $tiro_costo_unitario    = floatval($v_tmp_R[$k]['tiro_costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
+                    $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -3221,8 +3214,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_SuaFcaj = "INSERT INTO cot_alm_suajefcaj
@@ -3263,19 +3256,19 @@ class AlmejaModel extends Controller {
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
-                    $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo']);
-                    $tabla_suaje            = floatval($v_tmp_R[$k]['tabla_suaje']);
-                    $tiro_costo_unitario    = floatval($v_tmp_R[$k]['tiro_costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
+                    $tabla_suaje            = round(floatval($v_tmp_R[$k]['tabla_suaje']), 2);
+                    $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
                     $merma_adic              = intval($v_tmp_R[$k]['mermas']['merma_adic']);
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_SuaFcar = "INSERT INTO cot_alm_suajefcar
@@ -3317,10 +3310,10 @@ class AlmejaModel extends Controller {
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
                     $tabla_suaje            = intval($v_tmp_R[$k]['tabla_suaje']);
-                    $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo']);
-                    $tiro_costo_unitario    = floatval($v_tmp_R[$k]['tiro_costo_unitario']);
-                    $costo_tiro             = floatval($v_tmp_R[$k]['costo_tiro']);
-                    $costo_tot_proceso      = floatval($v_tmp_R[$k]['costo_tot_proceso']);
+                    $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
+                    $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
+                    $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
+                    $costo_tot_proceso      = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -3328,8 +3321,8 @@ class AlmejaModel extends Controller {
                     $merma_tot               = intval($v_tmp_R[$k]['mermas']['merma_tot']);
                     $cortes_por_pliego       = intval($v_tmp_R[$k]['mermas']['cortes_por_pliego']);
                     $merma_tot_pliegos       = intval($v_tmp_R[$k]['mermas']['merma_tot_pliegos']);
-                    $costo_unit_merma        = floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']);
-                    $costo_tot_pliegos_merma = floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']);
+                    $costo_unit_merma        = round(floatval($v_tmp_R[$k]['mermas']['costo_unit_merma']), 2);
+                    $costo_tot_pliegos_merma = round(floatval($v_tmp_R[$k]['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                     $sql_SuaG = "INSERT INTO cot_alm_suajeguarda
@@ -3381,34 +3374,34 @@ class AlmejaModel extends Controller {
                 and ($l_despunte_esquinas and $l_pegado_guarda and $l_armado_caja_final)
 
                 and ($l_insert_cierres and $l_insert_bancos and $l_insert_accesorios)
-                
+
                 and ($l_insert_OffEmp and $l_insert_OffFcaj)
                 and ($l_insert_OffFcar and $l_insert_OffG)
-                
+
                 and ($l_insert_Off_maq_Emp and $l_insert_Off_maq_Fcaj)
                 and ($l_insert_Off_maq_Fcar and $l_insert_Off_maq_G)
-                
+
                 and ($l_insert_DigEmp and $l_insert_DigFCaj)
                 and ($l_insert_DigFCar and $l_insert_DigG)
-                
+
                 and ($l_insert_SerEmp and $l_insert_SerFCaj)
                 and ($l_insert_SerFCar and $l_insert_SerG)
-                
+
                 and ($l_insert_LamEmp and $l_insert_LamFcaj)
                 and ($l_insert_LamFcar and $l_insert_LamG)
-                
+
                 and ($l_insert_HSEmp and $l_insert_HSFcaj)
                 and ($l_insert_HSFcar and $l_insert_HSG)
-                
+
                 and ($l_insert_GrabEmp and $l_insert_GrabFcaj)
                 and ($l_insert_GrabFcar and $l_insert_GrabG)
-                
+
                 and ($l_insert_BUVEmp and $l_insert_BUVFcaj)
                 and ($l_insert_BUVFcar and $l_insert_BUVG)
-                
+
                 and ($l_insert_SuaEmp and $l_insert_SuaFcaj)
                 and ($l_insert_SuaFcar and $l_insert_SuaG)
-                
+
                 and ($l_insert_LaserEmp and $l_insert_LaserFcaj)
                 and ($l_insert_LaserFcar and $l_insert_LaserG)
                ) {
