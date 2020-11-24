@@ -1,3 +1,6 @@
+
+<link rel="stylesheet" type="text/css" href="<?=URL?>public/css/style.css">
+
 <style type="text/css">
 
 	@keyframes rotate {
@@ -69,6 +72,7 @@
 		height: 92%;
 		overflow: auto;
 		overflow-x: hidden;
+		margin: 0px;
 	}
 	.menu-s{
 		align-items: center;
@@ -83,11 +87,12 @@
 	.menu-right{
 		position: relative;
 		display: block;
-		width: 84%;
+		width: 85%;
 		height: 90%;
 		float: right;
 		overflow: auto;
 		overflow-y: hidden;
+		margin: 0px;
 	}
 	body{
 		display: block;
@@ -106,6 +111,7 @@
 		font-size: 16px;
 		border: none;
 		cursor: pointer;
+		margin: 0px;
 	}
 
 	.boton:hover {
@@ -136,23 +142,19 @@
 		list-style: none;
 	}
 	.formulario{
-		margin-left: auto;
-		margin-right: auto;
-		width: 98%;
+		width: 100%;
 		display: block;
 		height: 98%;
-		margin-top: 1%;
-		margin-bottom: 1%;
 		border: 1px solid rgb(0,0,0,.2); 
-		border-radius: 9px;
-		background: #46607B;
+		border-radius: 5px;
+		background-color: #2A3F54;
 		text-align: center;
-		padding-top: 50px;
+		padding-top: 25px;
 		overflow: auto;
 	}
 	h4, input, select, label{
 		margin-bottom: 0px;
-		font-size: 17px;
+		font-size: 16px;
 		margin-top: 5px;
 		border: none;
 		border-radius: 2px;
@@ -180,19 +182,15 @@
 		margin-top: 20px;
 		color: #212939;
 		font-size: 25px;
-		font-weight: bold;
 		margin-bottom: 20px;
 	}
 	.titulo{
-		margin-top: 40px;
+		
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background: #46607B;
-		border-radius: 9px;
-		margin-left: 10%;
-		margin-right: 10%;
-		width: 80%;
+		background-color: #2A3F54;
+		width: 100%;
 		height: 60px;
 		margin-bottom: 40px;	
 	}
@@ -209,7 +207,7 @@
 		margin-bottom: 15px;
 	}
 	.seccion p, h4, label{
-		color: #D9D9D9;
+		color: #fff;
 	}
 
 	.aForms{
@@ -231,6 +229,7 @@
 <div class="posicion">
 
 	<div class="menu-left">
+		<div style="height: 60px;"></div>
 		<button id="btnCor" name="btnCor" class="boton" onclick="switchForm('Corte','formC','C');">Corte</button>
 		<button class="boton" onclick="show('idOffset')">Offset</button>
 		<div id="idOffset" style="display: none;">
@@ -277,7 +276,7 @@
 
 		<div class="titulo">
 
-			<p id="txtTitulo" style="color: #fff;">Procedimientos</p>
+			<p id="txtTitulo" style="color: #fff;">Costo - Procesos</p>
 		</div>
 
 		<div id="principal" style="display: none;" class="mod">
@@ -287,9 +286,9 @@
 
 		<div id="app" class="fmCompleto">
 			
-			<mensaje></mensaje>
-			<form id="formAction" class="fmCompleto" action="" method="POST">
+			<form id="formAction" class="fmCompleto container" action="" method="POST">
 				<div id="formulario" class="formulario">
+					<mensaje></mensaje>
 					<div id="contenidoF" style="display: none;">
 						
 					</div>
@@ -932,7 +931,7 @@
 			<div class="seccion" id="HotStamPlac">
 				<table>
 				<tr>
-					<th align="center" colspan="3">
+					<th align="center" colspan="2">
 						<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Placa</p>
 					</th>
 				</tr>
@@ -961,7 +960,7 @@
 			<div class="seccion" id="HotStamPel">
 				<table>
 				<tr>
-					<th align="center" colspan="3">
+					<th align="center" colspan="2">
 						<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Pelicula</p>
 					</th>
 				</tr>
@@ -981,7 +980,7 @@
 			<div class="seccion" id="HotStamArr">
 				<table>
 				<tr>
-					<th align="center" colspan="3">
+					<th align="center" colspan="2">
 						<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Arreglo</p>
 					</th>
 					
@@ -2289,13 +2288,15 @@
 
 		template: 
 		`
-			<div :class="['alert' , error ? 'alert-danger' : 'alert-success' ,'alert-dismissible', 'fade', 'show']" role="alert">
-  				<div v-if="error == true" v-html="msgError"></div>
-  				<div v-if="error == false" v-html="msgCorrecto"></div>
+			<div v-if="mensaje" :class="['alert' , error ? 'alert-danger' : 'alert-success' ,'alert-dismissible', 'fade', 'show']" role="alert" v-html="error ? msgError : msgCorrecto" @click='closeError' style="cursor: pointer">
 			</div>
 		`,computed: {
 
-			...Vuex.mapState(['msgError','msgCorrecto','error'])
+			...Vuex.mapState(['msgError','msgCorrecto','error','mensaje'])
+		},
+		methods: {
+
+			...Vuex.mapMutations(['closeError'])
 		}
 	});
 
@@ -2305,7 +2306,15 @@
 
 			msgCorrecto: "<strong>Listo!</strong> Los datos han sido actualizados correctamente.",
 			msgError: "<strong>Advertencia!</strong> No se pudo modificar los datos ingresados. Favor de reintentar mas tarde.",
-			error: "<?= $_SESSION['error']?>"
+			error: "<?= $_SESSION['error']?>",
+			mensaje: "<?= $_SESSION['msg']?>"
+		},
+		mutations: {
+
+			closeError(state){
+
+				state.mensaje = false;
+			}
 		}
 	});
 
@@ -2317,5 +2326,5 @@
 
 </script>
 <?php
-	unset($_SESSION['error']);
+	unset($_SESSION['msg']);
 ?>

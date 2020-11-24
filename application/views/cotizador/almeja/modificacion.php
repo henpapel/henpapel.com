@@ -548,7 +548,7 @@
 
                     <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
-                    <a class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</a>
+                    <button id="btnImprimir" class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</button>
                     <br>
 
                     <!--<div style="float: left; font-size: 18px; text-align: right; margin-right: 375px;">Cantidad: <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required></div>-->
@@ -3421,6 +3421,7 @@ if ($aJson) { ?>
                     $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
                     appndMsgError("No se regresa ningun valor. Favor de llamar a sistemas");
                     return false;
+                    desactivarBtn();
                 }
 
                 console.log('(3358) mensaje: ' + js_respuesta.mensaje);
@@ -5767,13 +5768,13 @@ if ($aJson) { ?>
 
                     jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
-                    $("#subForm").prop("disabled", false);
+                    activarBtn();
             })
             .fail(function(response) {
 
                 console.log('(5700) Error. Revisa.');
 
-                //$("#subForm").prop("disabled", true);
+                desactivarBtn();
             });
         }
     });
@@ -5872,7 +5873,7 @@ if ($aJson) { ?>
         var modificar_odt = "SI";
 
         formData.push({name: 'modificar', value: modificar_odt});
-
+        desactivarBtn();
         $.ajax({                                    // GRABAR
 
             type:"POST",
@@ -5895,8 +5896,6 @@ if ($aJson) { ?>
                 var len_error    = error.length;
 
                 if (error.length > 0) {
-
-                    document.getElementsByName("subForm").disabled = true;
 
                     showModError("");
                     $("#txtContenido").html("(5832) Error: " + error);
@@ -6136,20 +6135,15 @@ if ($aJson) { ?>
 
     function activarBtn() {
 
-        /*$("#btnabrebancoemp").prop("disabled",false);
-        $("#btnabreaccesorios").prop("disabled",false);
-        $("#btnabrecierres").prop("disabled",false);*/
+        $("#btnImprimir").prop("disabled",false);
+        $("#subForm2").prop("disabled",false);
     }
 
 
     function desactivarBtn() {
 
-        /*if( aImp.length == 0 && aImpFCaj.length == 0 && aImpFCar.length == 0 && aImpG.length == 0 && aAcb.length == 0 && aAcbFCaj.length == 0 && aAcbFCar.length == 0 && aAcbG.length == 0 ) {
-
-            $("#btnabrebancoemp").prop("disabled",true);
-            $("#btnabreaccesorios").prop("disabled",true);
-            $("#btnabrecierres").prop("disabled",true);
-        }*/
+        $("#btnImprimir").prop("disabled",true);
+        $("#subForm2").prop("disabled",true);
     }
 
     var divisionesImps="";
@@ -6471,8 +6465,6 @@ if ($aJson) { ?>
                 vacioModalAcabados();
             }
         }
-
-        activarBtn();
     }
 
 
@@ -6585,10 +6577,6 @@ if ($aJson) { ?>
                 vacioModalImpresiones();
             }
         }
-
-        //console.log(arrpapeles);
-
-        activarBtn();
     }
 
 
@@ -6696,8 +6684,6 @@ if ($aJson) { ?>
             }
 
         });
-
-        desactivarBtn();
     }
 
 
@@ -6738,7 +6724,6 @@ if ($aJson) { ?>
                 arrPapeles.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
-        desactivarBtn();
     }
 
 
@@ -7516,5 +7501,5 @@ if ($aJson) { ?>
     history.forward();
 
     $(".medidas-input").addClass("not-empty");
-
+    $("#box-model").val("1");
 </script>

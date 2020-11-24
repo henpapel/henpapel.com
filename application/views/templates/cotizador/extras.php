@@ -965,20 +965,15 @@
     }
     function activarBtn() {
 
-        $("#btnabrebancoemp").prop("disabled",false);
-        $("#btnabreaccesorios").prop("disabled",false);
-        $("#btnabrecierres").prop("disabled",false);
+        $("#btnImprimir").prop("disabled",false);
+        $("#subForm2").prop("disabled",false);
     }
 
 
     function desactivarBtn() {
         
-        /*if( aImpBC.length == 0 && aImpCC.length == 0 && aImpFEC.length == 0 && aImpPC.length == 0 && aImpFIC.length == 0 && aImpBT.length == 0 && aImpCT.length == 0 && aImpFT.length == 0 && aImpFET.length == 0 && aImpFIT.length == 0 && aAcbBC.length == 0 && aAcbCC.length == 0 && aAcbFEC.length == 0 && aAcbPC.length == 0 && aAcbFIC.length == 0 && aAcbBT.length == 0 && aAcbCT.length == 0 && aAcbFT.length == 0 && aAcbFET.length == 0 && aAcbFIT.length == 0 ){
-
-            $("#btnabrebancoemp").prop("disabled",true);
-            $("#btnabreaccesorios").prop("disabled",true);
-            $("#btnabrecierres").prop("disabled",true);
-        }*/
+        $("#btnImprimir").prop("disabled",true);
+        $("#subForm2").prop("disabled",true);
     }
 
     function showModError(proceso) {

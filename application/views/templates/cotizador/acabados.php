@@ -557,7 +557,6 @@
                 }
             break;
         }
-        activarBtn();
     }
 
     function delBtnAcabados(arrPapeles, tabla) {
@@ -626,7 +625,6 @@
                 break;
             }
         });
-        desactivarBtn();
     }
 
     function vacioModalAcabados() {

@@ -98,20 +98,15 @@ function hideSelectImp(select){
 
 function activarBtn() {
 
-    $("#btnabrebancoemp").prop("disabled",false);
-    $("#btnabreaccesorios").prop("disabled",false);
-    $("#btnabrecierres").prop("disabled",false);
+    $("#btnImprimir").prop("disabled",false);
+    $("#subForm2").prop("disabled",false);
 }
 
 
 function desactivarBtn() {
-    
-    if( aImp.length == 0 && aImpFCaj.length == 0 && aImpFCar.length == 0 && aImpG.length == 0 && aAcb.length == 0 && aAcbFCaj.length== 0 && aAcbFCar.length == 0 && aAcbG.length == 0 ){
 
-        /*$("#btnabrebancoemp").prop("disabled",true);
-        $("#btnabreaccesorios").prop("disabled",true);
-        $("#btnabrecierres").prop("disabled",true);*/
-    }
+    $("#btnImprimir").prop("disabled",true);
+    $("#subForm2").prop("disabled",true);
 }
 
 function vacioModalBancos() {

@@ -203,11 +203,11 @@
         </div>
 
         <!-- Mismo papel para todos -->
-        <div class="input-group custom-control custom-checkbox mr-sm-2">
+        <!--<div class="input-group custom-control custom-checkbox mr-sm-2">
             
             <input type="checkbox" name="btnCheckPaper" id="btnCheckPaper" class="custom-control-input">
             <label class="custom-control-label" for="btnCheckPaper"style="font-size: 15px; cursor: pointer;" class="btn btn-outline-primary">Mismo Papel P/Todos</label>
-        </div>
+        </div>-->
     </div>
 
     <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
@@ -311,13 +311,13 @@
 
     <button id="papeles_submit" type="button" class="btn btn-primary" style="font-size: 10px;">CALCULAR</button>
 
-    <button id="subForm" type="button" class="btn btn-success" style="font-size: 10px;" enabled="" data-toggle="modal" data-target="#modalSaveAll" disabled="">GUARDAR</button>
+    <button id="subForm" type="button" class="btn btn-success" style="font-size: 10px;" data-toggle="modal" data-target="#modalSaveAll" disabled="">GUARDAR</button>
 
     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
 
     <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
-    <a class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</a>
+    <button id="btnImprimir" disabled="" class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</button>
     <br>
 
     <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
@@ -459,16 +459,17 @@
     $("#divDerecho").empty();
     $("#divDerecho").append(contenidoDerecho);*/
     $("#divDerecho").empty();
-    divSecciones("Empalme Cajón", "optEC" , "EC", "<?=URL ?>/public/images/regalo/regalo.png");
-    divSecciones("Forro Cajón", "optFC" , "FC", "<?=URL ?>/public/images/regalo/regalo.png");
-    divSecciones("Empalme Tapa", "optET" , "ET", "<?=URL ?>/public/images/regalo/regalo.png");
-    divSecciones("Forro Tapa", "optFT" , "FT", "<?=URL ?>/public/images/regalo/regalo.png");
+
+    divSecciones("Empalme Cajón", "optEC" , "EC", "<?=URL ?>/public/images/regalo/regalo.png",true);
+    divSecciones("Forro Cajón", "optFC" , "FC", "<?=URL ?>/public/images/regalo/regalo.png",false);
+    divSecciones("Empalme Tapa", "optET" , "ET", "<?=URL ?>/public/images/regalo/regalo.png",false);
+    divSecciones("Forro Tapa", "optFT" , "FT", "<?=URL ?>/public/images/regalo/regalo.png",false);
 
     var cliente = getIdClient();
     //eligira a donde se enviara la informacion
     changeData("<?=URL?>regalo/saveCaja");
     setClient( cliente );
-    setURL("<?= URL ?>?cliente="+cliente);
+    setURL("<?= URL ?>");
 
     //Boton Calcular
     $("#subForm2").click( function() {
@@ -600,12 +601,11 @@
             $("#subForm").prop("disabled", true);
         });
     });
+    $("#box-model").val("4");
 </script>
 
 
 <script>
-
-    
 
     /*
     //PROYECTO A FUTURO...

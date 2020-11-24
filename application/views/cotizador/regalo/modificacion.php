@@ -256,7 +256,7 @@
 
     <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
-    <a class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</a>
+    <button id="btnImprimir" class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank" disabled="">IMPRIMIR</button>
     <br>
 
     <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
@@ -733,9 +733,10 @@
 
             console.log('(1900) Hubo un Error inesperado. Por favor llame a sistemas.');
 
-            $("#subForm").prop("disabled", true);
+            desactivarBtn();
         });
     });
 
     history.forward();
+    $("#box-model").val("4");
 </script>

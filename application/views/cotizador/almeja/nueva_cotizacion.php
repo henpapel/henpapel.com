@@ -3720,6 +3720,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                     $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
                     appndMsgError("No se regresa ningun valor. Favor de llamar a sistemas");
+                    desactivarBtn();
                     return false;
                 }
 
@@ -5985,15 +5986,14 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                     jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
-                    $("#subForm").prop("disabled", false);
-                    $("#btnImprimir").prop("disabled", false);
+                    activarBtn();
                     
             })
             .fail(function(response) {
 
                 console.log('(6112) Error. Revisa.');
 
-                $("#subForm").prop("disabled", true);
+                desactivarBtn();
             });
         }
     });
@@ -6084,13 +6084,13 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
         formData.push({name: 'modificar', value: modificar_odt});
 
-        $("#subForm").prop("disabled", true);
-
         var odt1 = $("#odt-1").val();
 
         var odtval = [];
 
         odtval.push({name: 'odt', value: odt1});
+        
+        desactivarBtn();
 
         $.ajax({                    // boton GUARDAR(grabar)
             type:"POST",
@@ -6172,8 +6172,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImp.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
-
-        desactivarBtn();
     });
 
 
@@ -6217,8 +6215,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImpFCaj.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
-
-        desactivarBtn();
     });
 
 
@@ -6259,8 +6255,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImpFCar.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
-
-        desactivarBtn();
     });
 
 
@@ -6304,8 +6298,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImpG.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
-
-        desactivarBtn();
     });
 
 
@@ -6507,8 +6499,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalImpresiones();
             }
         }
-
-        activarBtn();
     });
 
 
@@ -6620,9 +6610,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalImpresiones();
             }
         }
-
-
-        activarBtn();
     });
 
 
@@ -6734,8 +6721,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalImpresiones();
             }
         }
-
-        activarBtn();
     });
 
 
@@ -6847,8 +6832,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     vacioModalImpresiones();
                 }
         }
-
-        activarBtn();
     });
 </script>
 
@@ -7679,8 +7662,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
-
-        activarBtn();
     });
 
 
@@ -7906,8 +7887,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
-
-        activarBtn();
     });
 
 
@@ -8133,8 +8112,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
-
-        activarBtn();
     });
 
 
@@ -8357,8 +8334,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
-
-        activarBtn();
     });
 
     jQuery214(document).on("click", ".listacabadosemp", function () {
@@ -8480,8 +8455,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
             }
 
         });
-
-        desactivarBtn();
     });
 
 
@@ -8600,8 +8573,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoLaser": Largo, "AnchoLaser": Ancho});
             }
         });
-
-        desactivarBtn();
     });
 
     jQuery214(document).on("click", ".listacabadosfcartera", function () {
@@ -8720,8 +8691,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoLaser": Largo, "AnchoLaser": Ancho});
             }
         });
-
-        desactivarBtn();
     });
 
     jQuery214(document).on("click", ".listacabadosguarda", function () {
@@ -8839,8 +8808,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoLaser": Largo, "AnchoLaser": Ancho});
             }
         });
-
-        desactivarBtn();
     });
 </script>
 
@@ -9516,4 +9483,5 @@ foreach ($Porcentajes as $porcentaje) { ?>
         var ventana = window.open("<?=URL?>cotizador/imprCaja", "Impresion", "width=600, height=600");
         return true;
     });
+    $("#box-model").val("1");
 </script>

@@ -87,6 +87,35 @@ function appndPapeles(arrPapel, seccion){
     $('#resumen'+sec).append(trResumen);
 }
 
+function chkPaper(){
+
+    var chk   =$("#btnCheckPaper").prop("checked");
+    //este id se genera con el plugin chosen
+    var texto = $("#optEC_chosen span").html();
+
+    if(chk) {
+
+        $("#optEC_chosen span").html(texto);
+        $("#optFC_chosen span").html(texto);
+        $("#optET_chosen span").html(texto);
+        $("#optFT_chosen span").html(texto);
+
+        $("#optEC option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optFC option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optET option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optFT option[data-nombre='" + texto +"']").prop("selected",true);
+    } else {
+
+        $("#optFC_chosen span").html("Elegir tipo de papel");
+        $("#optET_chosen span").html("Elegir tipo de papel");
+        $("#optFT_chosen span").html("Elegir tipo de papel");
+
+        $("#optFC option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optET option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optFT option[data-nombre='" + texto +"']").prop("selected",false);
+    }
+}
+
 function setURL( url ){
 
     this.url = url;
@@ -1073,36 +1102,6 @@ $("#btnImpresiones").click( function () {
     }
 });
 
-//boton seleccionar papeles
-$("#btnCheckPaper").click( function() {
-
-    var chk   =$("#btnCheckPaper").prop("checked");
-    //este id se genera con el plugin chosen
-    var texto = $("#optEC_chosen span").html();
-
-    if(chk) {
-
-        $("#optEC_chosen span").html(texto);
-        $("#optFC_chosen span").html(texto);
-        $("#optET_chosen span").html(texto);
-        $("#optFT_chosen span").html(texto);
-
-        $("#optEC option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optFC option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optET option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optFT option[data-nombre='" + texto +"']").prop("selected",true);
-    } else {
-
-        $("#optFC_chosen span").html("Elegir tipo de papel");
-        $("#optET_chosen span").html("Elegir tipo de papel");
-        $("#optFT_chosen span").html("Elegir tipo de papel");
-
-        $("#optFC option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optET option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optFT option[data-nombre='" + texto +"']").prop("selected",false);
-    }
-});
-
 
 //Boton Calcular
 jQuery214(document).on("click", "#papeles_submit", function () {
@@ -1447,7 +1446,7 @@ jQuery214(document).on("click", "#papeles_submit", function () {
 
                         $('#resumenOtros').append(parteresumen); //imprime para el resumen
 
-                        $("#subForm").prop("disabled", false);
+                        activarBtn();
                 } catch {
 
                     try{
@@ -1475,6 +1474,7 @@ jQuery214(document).on("click", "#papeles_submit", function () {
 
                 $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
                 appndMsgError("No se regresa ningun valor. Favor de llamar a sistemas");
+                desactivarBtn();
                 return false;
             }
         })
@@ -1482,7 +1482,7 @@ jQuery214(document).on("click", "#papeles_submit", function () {
 
             console.log('(7257) Error. Revisa.');
 
-            $("#subForm").prop("disabled", true);
+            desactivarBtn();
         });
     }
 });
@@ -1545,5 +1545,11 @@ jQuery214(document).on("click", ".listAcbFT", function () {
     $(this).closest('tr').remove();
     aAcbFT = [];
     delBtnAcabados(aAcbFT, "listAcbFT");
+});
+
+$("#btnImprimir").click( function(){
+
+    var ventana = window.open(url +"cotizador/imprCaja", "Impresion", "width=600, height=600");
+    return true;
 });
 

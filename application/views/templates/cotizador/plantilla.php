@@ -1,4 +1,3 @@
-
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap-theme.min.css">
 
@@ -8,6 +7,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="<?= URL; ?>public/css/cotizador.css">
+<link rel="stylesheet" type="text/css" href="<?=URL?>public/css/style.css">
+
 <style type="text/css">
     
     #modLoading{
@@ -52,7 +53,7 @@
         </div>
 
         <div id="topCotizador" style="width: 100%; height: 25px;">
-            <select  id="box-model" class="seleccionModelo" style="background: #1A2C4C;color:#fff;font-size: 16px; width: 20%; border: none; height: 100%;">
+            <select  id="box-model" class="seleccionModelo" style="background: #1A2C4C;color:#fff;font-size: 16px; width: 20%; border: none; height: 100%; cursor: pointer;">
 
                 <option selected disabled>Seleccione Modelo de Caja</option>
                     <?php
@@ -85,13 +86,26 @@
 
 <script>
 
-    function divSecciones(titulo, idOpt, seccion, imagen){
+    function divSecciones(titulo, idOpt, seccion, imagen, activa){
         
         var option = "";
         <?php foreach ($papers as $paper) {?>
             
             option += '<option value="<?=$paper['id_papel']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>';
         <?php }?>
+
+        var boton = 
+        `
+            <!-- Mismo papel para todos -->
+            <div class="custom-control custom-checkbox mr-sm-2">
+            
+                <input type="checkbox" name="btnCheckPaper" id="btnCheckPaper" class="custom-control-input" onclick="chkPaper()">
+                <label class="custom-control-label" for="btnCheckPaper"style="font-size: 15px; cursor: pointer;" class="btn btn-outline-primary">Mismo Papel P/Todos</label>
+            </div>
+        </div>
+        `
+        var check = activa ? boton : '</div><br>';
+        
         
         var divSeccion = `
             <div class="divgral">
@@ -105,8 +119,7 @@
                     <select class="chosen forros" name="` + idOpt +`" id="` + idOpt + `" tabindex="9" required>
                         <option selected disabled>Elegir tipo de papel</option>` + option + `
                     </select>
-                </div>
-                <br>
+                ` + check + `
                 <div>
                     <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('` + seccion + `')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;">
                     </button>

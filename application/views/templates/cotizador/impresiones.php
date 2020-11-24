@@ -264,8 +264,6 @@
                 vacioModalImpresiones();
             }
         }
-
-        activarBtn();
     }
 
     function delBtnImpresiones(arrPapeles, tabla) {
@@ -299,7 +297,6 @@
                 break;
             }
         });
-        desactivarBtn();
     }
 
     function vacioModalImpresiones() {

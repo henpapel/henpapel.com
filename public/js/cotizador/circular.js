@@ -46,6 +46,94 @@ function setClient( cliente ){
     this.cliente = cliente;
 }
 
+function chkPaper(){
+
+    var chk   =$("#btnCheckPaper").prop("checked");
+    //este id se genera con el plugin chosen
+    var texto = $("#optBasCajon_chosen span").html();
+
+    if(chk) {
+
+        $("#optCirCajon_chosen span").html(texto);
+        $("#optExtCajon_chosen span").html(texto);
+        $("#optPomCajon_chosen span").html(texto);
+        $("#optIntCajon_chosen span").html(texto);
+        $("#optBasTapa_chosen span").html(texto);
+        $("#optCirTapa_chosen span").html(texto);
+        $("#optForTapa_chosen span").html(texto);
+        $("#optExtTapa_chosen span").html(texto);
+        $("#optIntTapa_chosen span").html(texto);
+
+        $("#optCirCajon option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optExtCajon option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optPomCajon option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optIntCajon option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optBasTapa option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optCirTapa option[data-nombre='" + texto +"']").prop("selected",true);
+
+        $("#optForTapa option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optExtTapa option[data-nombre='" + texto +"']").prop("selected",true);
+        $("#optIntTapa option[data-nombre='" + texto +"']").prop("selected",true);
+
+
+        papel_elegido = true;
+
+        $("#optCirCajon").addClass('paper_selected');
+        $("#optExtCajon").addClass('paper_selected');
+        $("#optPomCajon").addClass('paper_selected');
+        $("#optIntCajon").addClass('paper_selected');
+        $("#optBasTapa").addClass('paper_selected');
+        $("#optCirTapa").addClass('paper_selected');
+        $("#optForTapa").addClass('paper_selected');
+        $("#optExtTapa").addClass('paper_selected');
+        $("#optIntTapa").addClass('paper_selected');
+        $('#papers_config_button').hide();
+    } else {
+
+        $("#optCirCajon_chosen span").html("Elegir tipo de papel");
+        $("#optExtCajon_chosen span").html("Elegir tipo de papel");
+        $("#optPomCajon_chosen span").html("Elegir tipo de papel");
+        $("#optIntCajon_chosen span").html("Elegir tipo de papel");
+        $("#optBasTapa_chosen span").html("Elegir tipo de papel");
+        $("#optCirTapa_chosen span").html("Elegir tipo de papel");
+        $("#optForTapa_chosen span").html("Elegir tipo de papel");
+        $("#optExtTapa_chosen span").html("Elegir tipo de papel");
+        $("#optIntTapa_chosen span").html("Elegir tipo de papel");
+
+        $("#optCirCajon option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optExtCajon option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optPomCajon option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optIntCajon option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optBasTapa option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optCirTapa option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optForTapa option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optExtTapa option[data-nombre='" + texto +"']").prop("selected",false);
+        $("#optIntTapa option[data-nombre='" + texto +"']").prop("selected",false);
+
+        $("#optCirCajon").val(null);
+        $("#optExtCajon").val(null);
+        $("#optPomCajon").val(null);
+        $("#optIntCajon").val(null);
+        $("#optBasTapa").val(null);
+        $("#optCirTapa").val(null);
+        $("#optForTapa").val(null);
+        $("#optExtTapa").val(null);
+        $("#optIntTapa").val(null);
+        papel_elegido = false;
+
+        $("#optCirCajon").removeClass('paper_selected');
+        $("#optExtCajon").removeClass('paper_selected');
+        $("#optPomCajon").removeClass('paper_selected');
+        $("#optIntCajon").removeClass('paper_selected');
+        $("#optBasTapa").removeClass('paper_selected');
+        $("#optCirTapa").removeClass('paper_selected');
+        $("#optForTapa").removeClass('paper_selected');
+        $("#optExtTapa").removeClass('paper_selected');
+        $("#optIntTapa").removeClass('paper_selected');
+        $('#papers_config_button').show();
+    }
+}
+
 function setURL( url ){
 
     this.url = url;
@@ -114,7 +202,7 @@ function setTableBtn(texto, impAcb){
         break;
 
         case "FextCaj":
-            return 'list'+impAcb+'FEC';
+            return 'list'+impAcb+'EC';
         break;
 
         case "PomCaj":
@@ -122,7 +210,7 @@ function setTableBtn(texto, impAcb){
         break;
 
         case "FintCaj":
-            return 'list'+impAcb+'FIC';
+            return 'list'+impAcb+'IC';
         break;
 
         case "BasTap":
@@ -138,53 +226,12 @@ function setTableBtn(texto, impAcb){
         break;
 
         case "FexTap":
-            return 'list'+impAcb+'FET';
+            return 'list'+impAcb+'ET';
         break;
 
         case "FinTap":
-            return 'list'+impAcb+'FIT';
+            return 'list'+impAcb+'IT';
         break;
-    }
-}
-
-//funciones para circular como modcajacircular
-function vacioModalBancos() {
-
-    document.getElementById('SelectBanEmp').value = "selected";
-
-    document.getElementById('llevasuajemodBanco').style.display = "none";
-
-    document.getElementById('SelectSuajeBanco').value = "No";
-    document.getElementById('LargoBanco').value       = 1;
-    document.getElementById('AnchoBanco').value       = 1;
-    document.getElementById('ProfundidadBanco').value = 1;
-}
-
-function vacioModalAccesorios() {
-
-    document.getElementById('LargoAcc').value = 1;
-    document.getElementById('AnchoAcc').value = 1;
-
-    document.getElementById('SelectAccesorio').value = "selected";
-    document.getElementById('SelectHerraje').value   = "selected";
-    document.getElementById('SelectColor').value     = "selected";
-
-    $('#opColores').hide('slow');
-    $('#opMedidas').hide('slow');
-    $('#opHerraje').hide('slow');
-    $('#opOjillo').hide('slow');
-    $('#alerterror7').empty();
-}
-
-
-function revisarPropiedades(variable, texto){
-
-    if( variable == null || variable == "" || variable == undefined ){
-
-        showModError("");
-        $("#txtContenido").html();
-        $("#txtContenido").html("Ingrese " + texto);
-        return false;
     }
 }
 
@@ -316,12 +363,6 @@ function appndImp( aImp, lblaImp ){
     }
 }
 
-function changeData(url){
-
-    //circular/saveCaja/
-    $("#dataForm").prop("action","");
-    $("#dataForm").prop("action", url);
-}
 
 /*la funcion appndImp con 3 argumentos es para la modificación y apendizacion
 del mismo*/
@@ -717,7 +758,7 @@ function appndAcb( aAcb, lblaAcb ){
             var ancho     = suaje[i]['Ancho'];
             var total     = suaje[i]['costo_tot_proceso'];
             var costo     = suaje[i]['costo_unitario'];
-            var cUArr     = suaje[i]['costo_unitario_arreglo'];
+            var cUArr     = suaje[i]['arreglo_costo_unitario'];
             var cTArr     = suaje[i]['arreglo'];
             var cUTir     = suaje[i]['tiro_costo_unitario'];
             var cTTir     = suaje[i]['costo_tiro'];
@@ -740,12 +781,12 @@ function appndAcb( aAcb, lblaAcb ){
 function appndAcbMod( aAcb, lblaAcb, arrPrincipal ){
 
     if ( aAcb == undefined ) return false;
-    var barniz        = aAcb['Barniz'];
-    var laser = aAcb['Laser'];
-    var grabado       = aAcb['Grabado'];
-    var hotStamping    = aAcb['HotStamping'];
+    var barniz      = aAcb['Barniz'];
+    var laser       = aAcb['Laser'];
+    var grabado     = aAcb['Grabado'];
+    var hotStamping = aAcb['HotStamping'];
     var laminado    = aAcb['Laminado'];
-    var suaje    = aAcb['Suaje'];
+    var suaje       = aAcb['Suaje'];
 
     var titulo = insrtTitulo(lblaAcb);
     var tabla = setTableBtn(lblaAcb,'Acb');
@@ -1037,6 +1078,58 @@ function appndPapeles(arrPapel, seccion){
         $('#resumenEmpalme').append(trResumen);
 }
 
+//apendizacion de procesos por default
+/*function appndPD(aGlobal){
+
+    if( aGlobal == undefined || aGlobal == null ) return false;
+
+    var cantidad = aGlobal['tiraje'];
+    //Elaboracion
+
+        var elabFC = aGlobal['elab_FCaj'];
+        var elabFT = aGlobal['elab_FTap'];
+        
+        var trFC = appndE(elabFC,'Forro Cajón');
+        var trFT = appndE(elabFT, 'Forro Tapa');
+
+        var suma = parseInt( parseInt(elabFC['costo_tot_proceso']) + parseInt(elabFT['costo_tot_proceso']));
+        var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Elaboración</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ cantidad +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Totales</td></tr>' + trFC + trFT + '<tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ suma +'<input type="hidden" class="prices" value="'+ suma +'"></td></tr><tr><td colspan="3"></td></tr>';
+        $("#table_adicionales_tr").append(tr);
+        function appndE(proceso, titulo){
+
+            var costoT = parseInt(proceso['costo_tot_proceso']);
+            var costoU = parseInt(proceso['costo_unit_forrado_cajon']);
+            var tr = '<tr><td>' + titulo + '</td><td>$'+ costoU +'</td><td>$'+ costoT +'</td></tr>';
+            return tr;
+        }
+    //Ranurado
+
+        var ranFC = aGlobal['ranurado'];
+        //var ranFT = aGlobal['elab_FTap'];
+        
+        var trFC = appndR(ranFC,'Arreglo');
+        //var trFT = appndE(ranFT, 'Forro Tapa');
+
+        var suma = parseInt( parseInt(ranFC['costo_tot_proceso']));
+        var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Ranura</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ cantidad +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Totales</td></tr>' + trFC + '<tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ suma +'<input type="hidden" class="prices" value="'+ suma +'"></td></tr><tr><td colspan="3"></td></tr>';
+        $("#table_adicionales_tr").append(tr);
+        function appndR(proceso, titulo){
+
+            var costoU = proceso['costo_unit_por_ranura'];
+            var costoT = proceso['costo_tot_proceso'];
+            return tr = '<tr><td>' + titulo + '</td><td>$'+ costoU +'</td><td>$'+ costoT +'</td></tr>'
+        }
+    //Encuadernacion
+        var enc        = aGlobal['encuadernacion'];
+        var cUDespunte = enc['despunte_costo_unitario'];
+        var cTDespunte = enc['despunte_de_esquinas_para_cajon'];
+        var cUEncajada = enc['encajada_costo_unitario'];
+        var cTEncajada = enc['costo_encajada'];
+        var total      = enc['costo_tot_proceso'];
+        var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Encuadernación</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ cantidad +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Despunte</td><td>$'+ cUDespunte +'</td><td>$'+ cTDespunte +'</td></tr><tr><td>Encajada</td><td>$'+ cUEncajada +'</td><td>$'+ cTEncajada +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ total +'</td></tr>';
+        $("#table_adicionales_tr").append(tr);
+}
+*/
 function getIdClient() {
 
     var url     = location.href;
@@ -1048,1171 +1141,77 @@ function getIdClient() {
 
     return cliente;
 }
-
-
-function showModError(proceso) {
-
-    $("#txtContenido").html("No existe el costo para el proceso: " + proceso + " con este tiraje.");
-
-    // $("#modalError").modal("show");
-    $('#modalError').modal({backdrop: 'static', keyboard: false});
-}
-
-
-function showModCorrecto(texto) {
-
-    $("#txtContCorrecto").html(texto);
-
-    $('#modalCorrecto').modal({backdrop: 'static', keyboard: false});
-}
 function appndImg(div, src){
 
 	$(div).html(src)
 }
-function divisionesImp(opcion) {
 
-    divisionesImps=opcion;
-}
-
-
-function divisionesAcb(opcion) {
-
-    divisionesAcbs=opcion;
-}
-
-function saveBtnAcabados(arrPapeles, tabla) {
-
-
-    var IDopAcb  = $("#SelectAcEmp option:selected").data('id');
-    var opAcb    = $("#SelectAcEmp option:selected").text();
-
-    switch(opAcb){
-
-        case "Laminado":
-
-            var tipo  = $("#SelectLaminadoEmp option:selected").text();
-            var id    = $("#SelectLaminadoEmp option:selected").data('id');
-            var nuloo = document.getElementById('SelectLaminadoEmp').value;
-
-            if (nuloo == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr id="AcLamEmp"><td style="text-align: left;" class="textAcbEmp">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="tipoLamEmp" style="display: none">'+ tipo +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipo": tipo});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "HotStamping":
-
-            var tipo    = $("#SelectHSEmp option:selected").text();
-            var id      = $("#SelectHSEmp option:selected").data('id');
-            var color   = $("#SelectColorHSEmp option:selected").text();
-            var idColor = $("#SelectHSEmp option:selected").data('id');
-            var largo   = parseInt(document.getElementById('LargoHS_ver').value,10);
-            var ancho   = parseInt(document.getElementById('AnchoHS_ver').value,10);
-            var nulo1   = document.getElementById('SelectHSEmp').value;
-            var nulo2   = document.getElementById('SelectColorHSEmp').value;
-
-            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr id="AcHSEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Color: '+ color +', Medidas: '+ largo +'x'+ ancho +'</span></td><td style="display: none;" >'+ tipo +'</td><td style="display: none;" >' + idColor + '</td><td style="display: none;" >' + color + '</td><td style="display: none;">'+ largo +'</td><td style="display: none;">'+ ancho +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "ColorHS": color, "LargoHS": largo, "AnchoHS": ancho});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Grabado":
-
-            var tipo      = $("#SelectGrabEmp option:selected").text();
-            var idTipo    = $("#SelectHSEmp option:selected").data('id');
-            var largo     = document.getElementById('LargoGrab').value;
-            var ancho     = document.getElementById('AnchoGrab').value;
-            var ubicacion = $("#SelectUbiGrabEmp option:selected").text();
-            var nulo1 = document.getElementById('SelectGrabEmp').value;
-            var nulo2 = document.getElementById('SelectUbiGrabEmp').value;
-
-            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr id="AcGrabEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +', Ubicacion: '+ ubicacion +'</span></td><td style="display: none;">'+ tipo +'</td><td style="display: none;">'+ largo +'</td><td style="display: none;">'+ ancho +'</td><td style="display: none;">'+ ubicacion +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho, "ubicacion": ubicacion});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Suaje":
-
-            var tipo   = $("#SelectSuajeEmp option:selected").text();
-            var idTipo = $("#SelectHSEmp option:selected").data('id');
-            var largo  = document.getElementById('LargoSuaje').value;
-            var ancho  = document.getElementById('AnchoSuaje').value;
-            var nulo1 = document.getElementById('SelectSuajeEmp').value;
-
-            if (nulo1 == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr  = '<tr id="AcSuajeEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +'</span></td><td style="display: none;">'+ tipo +'</td><td style="display: none;">'+ largo +'</td><td style="display: none;">'+ ancho +'</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "LargoSuaje": largo, "AnchoSuaje": ancho});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Corte Laser":
-
-            var tipo   = $("#SelectLaserEmp option:selected").text();
-            var idTipo = $("#SelectHSEmp option:selected").data('id');
-            var largo  = parseInt(document.getElementById('LargoLaser1').value,10);
-            var ancho  = parseInt(document.getElementById('AnchoLaser1').value,10);
-            var nulo1  = document.getElementById('SelectLaserEmp').value;
-
-            if (nulo1 == 'selected')  {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var tr = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipo + ', Medidas: ' + largo + 'x' +  ancho + '</span></td><td style="display: none;">' + tipo + '</td><td style="display: none;">' + largo + '</td><td style="display: none;">' + ancho + '</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "LargoLaser": largo, "AnchoLaser": ancho});
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Barniz UV":
-
-            var tipo   = $("#SelectBarnizUVEmp option:selected").text();
-            var idTipo = $("#SelectHSEmp option:selected").data('id');
-            var largo  = document.getElementById('LargoBarUVEmp').value;
-            var ancho  = document.getElementById('AnchoBarUVEmp').value;
-            var nulo1  = document.getElementById('SelectBarnizUVEmp').value;
-
-            if (nulo1 == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                if(tipo == "Registro Mate" || tipo == "Registro Brillante") {
-
-                    var tr  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipo + ', Medidas: ' + largo + 'x' + ancho +'</span></td><td style="display: none">' + tipo + '</td><td style="display: none">' + largo + '</td><td style="display: none">' + ancho + '</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho});
-                } else {
-
-                    var tr  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipo + '</span></td><td style="display: none">' + tipo + '</td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": null, "Ancho": null});
-                }
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(tr);
-
-                vacioModalAcabados();
-            }
-        break;
-
-        case "Pegados Especiales":
-
-            var tipoEspeciales   = $("#SelectEspecialesEmp option:selected").text();
-            var idtipoEspeciales = $("#SelectHSEmp option:selected").data('id');
-            var nulo1 = document.getElementById('SelectEspecialesEmp').value;
-
-            if (nulo1 == 'selected') {
-
-                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-            } else {
-
-                document.getElementById('alerterror').innerHTML = "";
-
-                var acb  = '<tr id="AcEspecialesEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoEspeciales +'</span></td><td class="tipoEspeciales" style="display: none">'+ tipoEspeciales +'<input id="tipoEspeciales" name="tipoEspeciales" type="hidden" value="'+ idtipoEspeciales +'"></td><td class="' + tabla + ' img_delete"></td></tr>';
-
-                $('#acabados').modal('hide');
-
-                jQuery214('#' + tabla).append(acb);
-
-                vacioModalAcabados();
-            }
-        break;
-    }
-    activarBtn();
-}
-
-
-function saveBtnImpresiones(arrpapeles, tabla) {
-
-
-    var IDopImp  = $("#miSelect option:selected").data('id');
-    var opImp    = $("#miSelect option:selected").text();
-    var precio   = $("#miSelect option:selected").data('precio'); //precio unitario
-    var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-    if (opImp == 'Offset') {
-
-        var tipo   = $("#SelectImpTipoOff option:selected").text();
-        var precio = $("#SelectImpTipoOff option:selected").data('precio');
-        var idTipo = $("#SelectImpTipoOff option:selected").data('id');
-        var tintas = document.getElementById('tintasO').value;
-        var nuloo  = document.getElementById('SelectImpTipoOff').value;
-
-        if (nuloo == 'selected') {
-
-            document.getElementById('alerterrorimp').innerHTML = alertDiv;
-
-        } else {
-
-            document.getElementById('alerterrorimp').innerHTML = "";
-
-            var imp  = '<tr id="ImpOfEmp"><td class="textImp">' + opImp + '</td></td><td class="CellWithComment" >...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td style="display: none;">'+ tintas +'</td><td style="display: none;">'+ tipo +'</td><td class="' + tabla +' img_delete"></td></tr>';
-
-            arrpapeles.push({"Tipo_impresion": opImp, "tintas": tintas, "tipo_offset": tipo});
-
-            $('#Impresiones').modal('hide');
-
-            $('#' + tabla).append(imp);
-
-            vacioModalImpresiones();
-        }
-    }
-
-    if (opImp == 'Digital') {
-
-        var tipo   = $("#SelectImpDigital option:selected").text();
-
-        var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="' + tabla +' img_delete"></td></tr>';
-        arrpapeles.push({"Tipo_impresion": opImp});
-
-        $('#Impresiones').modal('hide');
-
-        $('#' + tabla).append(imp);
-
-        vacioModalImpresiones();
-    }
-
-    if (opImp == 'Serigrafia') {
-
-        var tipo       = $("#SelectImpTipoSeri option:selected").text();
-        var precio = $("#SelectImpTipoSeri option:selected").data('precio');
-        var tintas     = document.getElementById('tintasS').value;
-        var nuloo = document.getElementById('SelectImpTipoSeri').value;
-
-        if (nuloo == 'selected') {
-
-            document.getElementById('alerterrorimp').innerHTML = alertDiv;
-
-        } else {
-
-            document.getElementById('alerterrorimp').innerHTML = "";
-
-            var imp  = '<tr id="ImpSerEmp"><td class="textImp">' + opImp +'</td></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td style="display: none;">'+ tintas +'</td><td style="display: none;">'+ tipo +'</td><td class="' + tabla +' img_delete"></td></tr>';
-
-            arrpapeles.push({"Tipo_impresion": opImp,  "tintas": tintas, "tipo_offset": tipo});
-
-            $('#Impresiones').modal('hide');
-
-            jQuery214('#' + tabla).append(imp);
-
-            vacioModalImpresiones();
-        }
-    }
-
-    activarBtn();
-}
-
-
-function delBtnAcabados(arrPapeles, tabla) {
-
-    var tipo_acabado = "";
-
-    $("#" + tabla + " tr").each(function(row, tr) {
-
-        var tipoGrabadoHS = "";
-        var ColorHS       = "";
-        var LargoHS_str   = "";
-        var AnchoHS_str   = "";
-        var LargoHS       = 0;
-        var AnchoHS       = 0;
-
-        var tipoGrabado = "";
-        var Largo_str   = "";
-        var Ancho_str   = "";
-        var ubicacion   = "";
-        var Largo       = 0;
-        var Ancho       = 0;
-
-
-        tipo_acabado = $(tr).find('td:eq(0)').text();
-
-        if (tipo_acabado == "HotStamping") {
-
-            tipoGrabadoHS = $(tr).find('td:eq(2)').text();
-            ColorHS       = $(tr).find('td:eq(4)').text();
-            LargoHS_str   = $(tr).find('td:eq(5)').text();
-            AnchoHS_str   = $(tr).find('td:eq(6)').text();
-
-            LargoHS = parseInt(LargoHS_str, 10);
-            AnchoHS = parseInt(AnchoHS_str, 10);
-
-
-            arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
-
-        }
-
-
-        if (tipo_acabado == "Grabado") {
-
-            tipoGrabado = $(tr).find('td:eq(2)').text();
-            Largo_str   = $(tr).find('td:eq(3)').text();
-            Ancho_str   = $(tr).find('td:eq(4)').text();
-            ubicacion   = $(tr).find('td:eq(5)').text();
-
-            Largo = parseInt(Largo_str, 10);
-            Ancho = parseInt(Ancho_str, 10);
-
-            arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
-        }
-
-
-        if (tipo_acabado == "Laminado") {
-
-            tipoGrabado = $(tr).find('td:eq(2)').text();
-
-            arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
-        }
-
-
-        if (tipo_acabado == "Suaje") {
-
-            tipoGrabado = $(tr).find('td:eq(2)').text();
-            Largo_str   = $(tr).find('td:eq(3)').text();
-            Ancho_str   = $(tr).find('td:eq(4)').text();
-
-            Largo = parseInt(Largo_str, 10);
-            Ancho = parseInt(Ancho_str, 10);
-
-            arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
-        }
-
-
-        if (tipo_acabado == "Barniz UV") {
-
-            tipo = $(tr).find('td:eq(2)').text();
-            largo       = parseInt($(tr).find('td:eq(3)').text());
-            ancho       = parseInt($(tr).find('td:eq(4)').text());
-
-            if(tipo == "Registro Mate" || tipo == "Registro Brillante"){
-
-                arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho});
-
-            } else {
-
-                arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipo, "Largo": null, "Ancho": null});
-            }
-        }
-
-        if (tipo_acabado == "Corte Laser") {
-
-            tipoGrabado = $(tr).find('td:eq(2)').text();
-            Largo_str   = $(tr).find('td:eq(3)').text();
-            Ancho_str   = $(tr).find('td:eq(4)').text();
-
-            Largo = parseInt(Largo_str, 10);
-            Ancho = parseInt(Ancho_str, 10);
-
-            arrPapeles.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoLaser": Largo, "AnchoLaser": Ancho});
-        }
-
-    });
-    desactivarBtn();
-}
-
-
-function delBtnImpresiones(arrPapeles, tabla) {
-
-    var TableData       = "";
-    var tipo_imp_offset = "";
-
-    $("#" + tabla + " tr").each(function(row, tr) {
-
-        var opImp   = $(tr).find('td:eq(0)').text(); // IDopImp
-        var tintas  = parseInt($(tr).find('td:eq(2)').text(),10);
-        var tipo    = $(tr).find('td:eq(3)').text();
-
-        if (opImp == 'Offset') {
-
-            var idtipoOff = parseInt($("#tipoOffEmp").val());
-
-            arrPapeles.push({"Tipo_impresion": opImp, "tintas": tintas, "tipo_offset": tipo});
-        } else if (opImp == "Digital") {
-
-            arrPapeles.push({"Tipo_impresion": opImp});
-
-        } else if (opImp == "Serigrafia") {
-
-            var idtipoSeri = parseInt($("#tipoSeriEmp").val());
-
-            arrPapeles.push({"Tipo_impresion": opImp,  "tintas": tintas, "tipo_offset": tipo});
-        }
-    });
-    console.log(arrPapeles);
-    desactivarBtn();
-}
-
-function activarBtn() {
-
-    $("#btnabrebancoemp").prop("disabled",false);
-    $("#btnabreaccesorios").prop("disabled",false);
-    $("#btnabrecierres").prop("disabled",false);
-}
-
-
-function desactivarBtn() {
-    
-    /*if( aImpBC.length == 0 && aImpCC.length == 0 && aImpFEC.length == 0 && aImpPC.length == 0 && aImpFIC.length == 0 && aImpBT.length == 0 && aImpCT.length == 0 && aImpFT.length == 0 && aImpFET.length == 0 && aImpFIT.length == 0 && aAcbBC.length == 0 && aAcbCC.length == 0 && aAcbFEC.length == 0 && aAcbPC.length == 0 && aAcbFIC.length == 0 && aAcbBT.length == 0 && aAcbCT.length == 0 && aAcbFT.length == 0 && aAcbFET.length == 0 && aAcbFIT.length == 0 ){
-
-        $("#btnabrebancoemp").prop("disabled",true);
-        $("#btnabreaccesorios").prop("disabled",true);
-        $("#btnabrecierres").prop("disabled",true);
-    }*/
-}
-
-function vacioModalImpresiones() {
-
-    document.getElementById('miSelect').value                      = "selected";
-    document.getElementById('SelectImpTipoOff').value              = "selected";
-    document.getElementById('SelectImpTipoSeri').value             = "selected";
-    document.getElementById('opImpresionSerigrafia').style.display = "none";
-    document.getElementById('opImpresionOffset').style.display     = "none";
-    document.getElementById('opImpresionDigital').style.display    = "none";
-}
-
-function vacioModalAcabados() {
-
-    document.getElementById('SelectAcEmp').value                = "selected";
-    document.getElementById('SelectLaminadoEmp').value          = "selected";
-    document.getElementById('SelectHSEmp').value                = "selected";
-    document.getElementById('SelectColorHSEmp').value           = "selected";
-    document.getElementById('SelectGrabEmp').value              = "selected";
-    document.getElementById('SelectEspecialesEmp').value        = "selected";
-    document.getElementById('SelectBarnizUVEmp').value          = "selected";
-    document.getElementById('SelectSuajeEmp').value             = "selected";
-    document.getElementById('SelectLaserEmp').value             = "selected";
-    document.getElementById('SelectUbiGrabEmp').value           = "selected";
-    document.getElementById('opAcLaminadoEmp').style.display    = "none";
-    document.getElementById('opAcHotStampingEmp').style.display = "none";
-    document.getElementById('opAcGrabadoEmp').style.display     = "none";
-    document.getElementById('opAcEspecialesEmp').style.display  = "none";
-    document.getElementById('opAcBarnizUVEmp').style.display    = "none";
-    document.getElementById('opAcSuajeEmp').style.display       = "none";
-    document.getElementById('opAcLaserEmp').style.display       = "none";
-    document.getElementById('opAcBarUVEmp').style.display       = "none";
-    document.getElementById('LargoLaser1').value                = "1";
-    document.getElementById('AnchoLaser1').value                = "1";
-    document.getElementById('LargoGrab').value                  = "1";
-    document.getElementById('AnchoGrab').value                  = "1";
-    document.getElementById('LargoHS_ver').value                = "1";
-    document.getElementById('AnchoHS_ver').value                = "1";
-    document.getElementById('LargoSuaje').value                 = "1";
-    document.getElementById('AnchoSuaje').value                 = "1";
-    document.getElementById('LargoBarUVEmp').value              = "1";
-    document.getElementById('AnchoBarUVEmp').value              = "1";
-}
 
 
 //accion onclick botones
-
-//resumen
-$(document).on('click', '#btnResumen', function(event) {
-
-    $('#form_modelo_1').hide();
-    $('#form_modelo_1_derecho').hide();
-    $('.selectormodelo').hide();
-    $('#resumentodocaja').show();
-
-}); 
-
-$(document).on('click', '#btnQuitarResumen', function(event) {
-
-    $('.selectormodelo').show();
-    $('#form_modelo_1').show();
-    $('#form_modelo_1_derecho').show('normal');
-    $('#resumentodocaja').hide();
-});
-$("#btnCancelAccesorios").click( function () {
-
-    vacioModalAccesorios();
-});
-
-//Accesorios
-$(document).on("click", "#btnAccesorios", function () {
-
-    var idAccesorio     = $("#SelectAccesorio option:selected").data('id');
-    var precio          = $("#SelectAccesorio option:selected").data('price');
-    var nombreAccesorio = $("#SelectAccesorio option:selected").text();
-    var herraje         = $("#SelectHerraje option:selected").text();
-    var largo           = $('#LargoAcc').val();
-    var ancho           = $('#AnchoAcc').val();
-    var color           = $("#opColores option:selected").text();
-
-    var accesorio       = "";
-
-    var alertmesserror  = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-    switch(nombreAccesorio) {
-
-        case "Herraje":
-
-            if( $("#SelectHerraje option:selected").val() != "selected") {
-
-                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + herraje + '</span></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
-
-                $('#listaccesorios').append(accesorio);
-
-                $('#accesorios').modal('hide');
-
-                vacioModalAccesorios();
-            } else {
-
-                document.getElementById('alerterror7').innerHTML = alertmesserror;
-            }
-            
-            break;
-        case "Ojillos":
-
-            accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td style=""></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-            aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-
-            $('#listaccesorios').append(accesorio);
-
-            $('#accesorios').modal('hide');
-
-            vacioModalAccesorios();
-            
-            break;
-        case "Resorte":
-
-            if( $("#SelectColor option:selected").val() != "selected") {
-
-                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">' + precio + '</td><td class="listaccesorios img_delete"></td></tr>';
-
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-
-                $('#listaccesorios').append(accesorio);
-
-                $('#accesorios').modal('hide');
-
-                vacioModalAccesorios();
-            } else {
-
-                document.getElementById('alerterror7').innerHTML = alertmesserror;
-            }
-            
-            break;
-        case "Lengueta de Liston":
-
-            if( $("#SelectColor option:selected").val() != "selected") {
-
-                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-
-                $('#listaccesorios').append(accesorio);
-
-                $('#accesorios').modal('hide');
-
-                vacioModalAccesorios();
-            } else {
-
-                document.getElementById('alerterror7').innerHTML = alertmesserror;
-            }
-            
-            break;
-    }
-});
-
-jQuery214(document).on("click", ".listaccesorios", function () {
-
-    $(this).closest('tr').remove();
-
-    row_listabancos = 0;
-
-    row_listabancos = $('#listaccesorios > tr').length;
-
-    aAccesorios = [];
-
-    var oTable = document.getElementById('accesoriosTable');
-
-    var rowLength = oTable.rows.length;
-
-    $("#listaccesorios tr").each(function(row, tr) {
-
-        var nombreAccesorio = $(tr).find('td:eq(0)').text();
-
-        //se salta el 1 porque en el td 1 esta el span como comentario
-        var largo   = $(tr).find('td:eq(2)').text();
-        var ancho   = $(tr).find('td:eq(3)').text();
-        var color   = $(tr).find('td:eq(4)').text();
-        var herraje = $(tr).find('td:eq(5)').text();
-        var precio  = $(tr).find('td:eq(6)').text();
-
-        nombreAccesorio = nombreAccesorio.trim();
-
-        switch(nombreAccesorio) {
-
-            case "Herraje":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
-            
-                break;
-            case "Ojillos":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-                
-                break;
-            case "Resorte":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                break;
-            case "Lengueta de Liston":
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-            
-                break;
-        }
-    });
-});
-
-//Banco
-$(document).on('click', '#btnBancoEmp', function(event) {
-
-    var IDopBan = $("#SelectBanEmp option:selected").data('id');
-    var opBan   = $("#SelectBanEmp option:selected").text();
-
-    var LargoMBanco       = document.getElementById('LargoBanco').value;
-    var AnchoMBanco       = document.getElementById('AnchoBanco').value;
-    var ProfundidadMBanco = document.getElementById('ProfundidadBanco').value;
-    var LLevaSuajeM       = $("#SelectSuajeBanco option:selected").text();
-
-    var nuloo = document.getElementById('SelectBanEmp').value;
-
-    var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-    if (nuloo === 'selected') {
-
-        document.getElementById('alerterror5').innerHTML = alertDiv;
-
-    } else if (opBan === 'Carton' || opBan === 'Eva' || opBan === 'Espuma' || opBan === 'Empalme Banco') {
-
-        document.getElementById('alerterror5').innerHTML = "";
-
-        var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td style="display: none">'+ LLevaSuajeM +'</td><td class="listbancoemp img_delete"></td></tr>';
-
-        aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM});
-
-        $('#bancoemp').modal('hide');
-
-        jQuery214('#listbancoemp').append(ban);
-
-        vacioModalBancos();
-    } else if (opBan === 'Cartulina Suajada') {
-
-        document.getElementById('alerterror5').innerHTML = "";
-
-        var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td class="listbancoemp img_delete"></td></tr>';
-
-        aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null});
-
-        $('#bancoemp').modal('hide');
-
-        jQuery214('#listbancoemp').append(ban);
-
-        vacioModalBancos();
-    }
-});
-
-jQuery214(document).on("click", ".listbancoemp", function () {
-
-    $(this).closest('tr').remove();
-
-    row_listabancos = 0;
-    row_listabancos = $('#listbancoemp > tr').length;
-
-    aBancos = [];
-
-    var oTable = document.getElementById('banTable');
-
-    var rowLength = oTable.rows.length;
-
-    var tipo_banco = "";
-
-    $("#listbancoemp tr").each(function(row, tr) {
-
-        var largo       = 0;
-        var ancho       = 0;
-        var profundidad = 0;
-        var suaje       = "";
-        var Largo_str   = "";
-        var Ancho_str   = "";
-        var profundidad_str   = "";
-
-
-        tipo_banco      = $(tr).find('td:eq(2)').text();
-        Largo_str       = $(tr).find('td:eq(3)').text();
-        Ancho_str       = $(tr).find('td:eq(4)').text();
-        profundidad_str = $(tr).find('td:eq(5)').text();
-
-        tipo_banco  = tipo_banco.trim();
-        largo       = parseInt(Largo_str, 10);
-        ancho       = parseInt(Ancho_str, 10);
-        profundidad = parseInt(profundidad_str, 10);
-
-
-        if (tipo_banco == "Carton") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Eva") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Espuma") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Empalme Banco") {
-
-            suaje = $(tr).find('td:eq(6)').text();
-            suaje = suaje.trim();
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-        }
-
-
-        if (tipo_banco == "Cartulina Suajada") {
-
-            aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": null});
-        }
-    });
-});
-
-//Cierres
-jQuery214(document).on("click", "#btnCierres", function () {
-
-    var IDopCie  = $("#SelectCieEmp option:selected").data('id');
-    var opCie    = $("#SelectCieEmp option:selected").text();
-
-    var numpares = document.getElementById('paresCierre').value;
-
-    // para liston
-    var LarListon    = document.getElementById('LargoListon').value;
-    var AnchListon   = document.getElementById('AnchoListon').value;
-    var tipoListon   = $("#SelectListonEmp option:selected").text();
-    var colorListon  = $("#SelectColorListon option:selected").text();
-
-    // para Suaje calado
-    var LarSuajCal   = document.getElementById('LargoSCalado').value;
-    var AnchSuajCal  = document.getElementById('AnchoSCalado').value;
-    var tipoSuajCal  = $("#SelectSCalado option:selected").text();
-
-    var alertmesserror = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-
-    if (opCie == 'Iman' || opCie == 'Velcro') {
-
-        document.getElementById('alerterror6').innerHTML = "";
-
-        var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
-
-
-        aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-        $('#cierres').modal('hide');
-
-        jQuery214('#listcierres').append(cie);
-
-
-        //vacioModalCierres();
-    }
-
-
-    if (opCie == 'Marialuisa') {
-
-        document.getElementById('alerterror6').innerHTML = "";
-
-        var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="listcierres img_delete"></td></tr>';
-
-        aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-        $('#cierres').modal('hide');
-
-        jQuery214('#listcierres').append(cie);
-
-        //vacioModalCierres();
-    }
-
-
-    if (opCie == 'Liston') {
-
-        var nulo1 = document.getElementById('SelectCieEmp').value;
-        var nulo2 = document.getElementById('SelectListonEmp').value;
-        var nulo3 = document.getElementById('SelectColorListon').value;
-
-        if (nulo1 == 'selected' || nulo2 == 'selected' || nulo3 == 'selected' ) {
-
-            document.getElementById('alerterror6').innerHTML = alertmesserror;
-
-        } else {
-
-            document.getElementById('alerterror6').innerHTML = "";
-
-            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td style="display: none">'+ LarListon +'</td><td style="display: none">'+ AnchListon +'</td><td style="display: none">'+ tipoListon +'</td><td style="display: none">'+ colorListon +'</td><td class="listcierres img_delete"></td></tr>';
-
-
-            aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon});
-
-            $('#cierres').modal('hide');
-
-            jQuery214('#listcierres').append(cie);
-
-            //vacioModalCierres();
-        }
-    }
-
-
-    if (opCie == 'Suaje calado') {
-
-        var nulo1 = document.getElementById('SelectCieEmp').value;
-        var nulo2 = document.getElementById('SelectSCalado').value;
-
-        if (nulo1 == 'selected' || nulo2 == 'selected') {
-
-            document.getElementById('alerterror6').innerHTML = alertmesserror;
-
-        } else {
-
-            document.getElementById('alerterror6').innerHTML = "";
-
-            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td style="display: none">'+ LarSuajCal +'</td><td style="display: none">'+ AnchSuajCal +'</td><td style="display: none">'+ tipoSuajCal +'</td><td class="listcierres img_delete"></td></tr>';
-
-
-            aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null});
-
-            $('#cierres').modal('hide');
-
-            jQuery214('#listcierres').append(cie);
-
-            //vacioModalCierres();
-        }
-    }
-});
-
-jQuery214(document).on("click", ".listcierres", function () {
-
-    $(this).closest('tr').remove();
-
-    row_listacierres = 0;
-
-    row_listacierres = $('#listcierres > tr').length;
-
-    aCierres = [];
-
-    var oTable = document.getElementById('cieTable');
-
-    var rowLength = oTable.rows.length;
-
-    var tipo_cierre = "";
-
-    $("#cieTable tr").each(function(row, tr) {
-
-        var tipo_cierre = "";
-        var numpares    = 1;
-
-        var numpares_str = "";
-        var Largo_str    = "";
-        var Ancho_str    = "";
-        var tipo         = "";
-
-        var Largo = 0;
-        var Ancho = 0;
-
-        tipo_cierre = $(tr).find('td:eq(0)').text();
-
-
-        if (tipo_cierre == "Iman") {
-
-            numpares_str = $(tr).find('td:eq(2)').text();
-            numpares     = parseInt(numpares_str, 10);
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-        }
-
-
-        // falta corregir el modal de Liston
-        if (tipo_cierre == "Liston") {
-
-            tipo_cierre = $(tr).find('td:eq(0)').text();
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-        }
-
-
-        if (tipo_cierre == "Marialuisa") {
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-        }
-
-
-        if (tipo_cierre == "Suaje calado") {
-
-            Largo_str   = $(tr).find('td:eq(2)').text();
-            Ancho_str   = $(tr).find('td:eq(3)').text();
-            tipo        = $(tr).find('td:eq(4)').text();
-
-            Largo = parseInt(Largo_str, 10);
-            Ancho = parseInt(Ancho_str, 10);
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": Largo, "ancho": Ancho, "tipo": tipo, "color": null});
-        }
-
-
-        if (tipo_cierre == "Velcro") {
-
-            numpares_str = $(tr).find('td:eq(2)').text();
-            numpares     = parseInt(numpares_str, 10);
-
-            aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-        }
-    });
-});
-
-jQuery214(document).on("click", "#btnabrebancoemp", function () {
-
-    $('#footerBancoEmp').show();
-    $('#footerBancoFcajon').hide();
-    $('#footerBancoFcartera').hide();
-    $('#footerBancoGuarda').hide();
-});
-
-//boton seleccionar papeles
-$("#btnCheckPaper").click( function() {
-
-    var chk   =$("#btnCheckPaper").prop("checked");
-    //este id se genera con el plugin chosen
-    var texto = $("#optBasCajon_chosen span").html();
-
-    if(chk) {
-
-        $("#optCirCajon_chosen span").html(texto);
-        $("#optExtCajon_chosen span").html(texto);
-        $("#optPomCajon_chosen span").html(texto);
-        $("#optIntCajon_chosen span").html(texto);
-        $("#optBasTapa_chosen span").html(texto);
-        $("#optCirTapa_chosen span").html(texto);
-        $("#optForTapa_chosen span").html(texto);
-        $("#optExtTapa_chosen span").html(texto);
-        $("#optIntTapa_chosen span").html(texto);
-
-        $("#optCirCajon option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optExtCajon option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optPomCajon option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optIntCajon option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optBasTapa option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optCirTapa option[data-nombre='" + texto +"']").prop("selected",true);
-
-        $("#optForTapa option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optExtTapa option[data-nombre='" + texto +"']").prop("selected",true);
-        $("#optIntTapa option[data-nombre='" + texto +"']").prop("selected",true);
-
-
-        papel_elegido = true;
-
-        $("#optCirCajon").addClass('paper_selected');
-        $("#optExtCajon").addClass('paper_selected');
-        $("#optPomCajon").addClass('paper_selected');
-        $("#optIntCajon").addClass('paper_selected');
-        $("#optBasTapa").addClass('paper_selected');
-        $("#optCirTapa").addClass('paper_selected');
-        $("#optForTapa").addClass('paper_selected');
-        $("#optExtTapa").addClass('paper_selected');
-        $("#optIntTapa").addClass('paper_selected');
-        $('#papers_config_button').hide();
-    } else {
-
-        $("#optCirCajon_chosen span").html("Elegir tipo de papel");
-        $("#optExtCajon_chosen span").html("Elegir tipo de papel");
-        $("#optPomCajon_chosen span").html("Elegir tipo de papel");
-        $("#optIntCajon_chosen span").html("Elegir tipo de papel");
-        $("#optBasTapa_chosen span").html("Elegir tipo de papel");
-        $("#optCirTapa_chosen span").html("Elegir tipo de papel");
-        $("#optForTapa_chosen span").html("Elegir tipo de papel");
-        $("#optExtTapa_chosen span").html("Elegir tipo de papel");
-        $("#optIntTapa_chosen span").html("Elegir tipo de papel");
-
-        $("#optCirCajon option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optExtCajon option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optPomCajon option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optIntCajon option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optBasTapa option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optCirTapa option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optForTapa option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optExtTapa option[data-nombre='" + texto +"']").prop("selected",false);
-        $("#optIntTapa option[data-nombre='" + texto +"']").prop("selected",false);
-
-        $("#optCirCajon").val(null);
-        $("#optExtCajon").val(null);
-        $("#optPomCajon").val(null);
-        $("#optIntCajon").val(null);
-        $("#optBasTapa").val(null);
-        $("#optCirTapa").val(null);
-        $("#optForTapa").val(null);
-        $("#optExtTapa").val(null);
-        $("#optIntTapa").val(null);
-        papel_elegido = false;
-
-        $("#optCirCajon").removeClass('paper_selected');
-        $("#optExtCajon").removeClass('paper_selected');
-        $("#optPomCajon").removeClass('paper_selected');
-        $("#optIntCajon").removeClass('paper_selected');
-        $("#optBasTapa").removeClass('paper_selected');
-        $("#optCirTapa").removeClass('paper_selected');
-        $("#optForTapa").removeClass('paper_selected');
-        $("#optExtTapa").removeClass('paper_selected');
-        $("#optIntTapa").removeClass('paper_selected');
-        $('#papers_config_button').show();
-    }
-});
-
-//boton eliminar. Es el que hace la magia ;)
-jQuery214(document).on("click", ".delete", function () {
-
-    $(this).closest('tr').remove();
-});
-
-
+/*
+
+    Esta funcion del boton acabados e impresiones
+    FAVOR DE NO MOVERLAS
+    explicacion:
+    cada caja tiene secciones entonces en btnacabados se le especifica
+    ciertas secciones en concreto para el modelo circular.
+    ESTA DISEÑADO SOLAMENTE PARA CAJA CIRCULAR
+
+*/
 //Acabados
 $('#btnAcabados').click(function() {
 
     switch(divisionesAcbs){
 
-        case "base_cajon":
+        case "BC":
 
             saveBtnAcabados(aAcbBC,"listAcbBC");
             
             break;
-        case "circunferencia_cajon":
+        case "CC":
 
             saveBtnAcabados(aAcbCC,"listAcbCC");
             
             break;
-        case "forro_exterior_cajon":
+        case "EC":
 
-            saveBtnAcabados(aAcbFEC,"listAcbFEC");
+            saveBtnAcabados(aAcbFEC,"listAcbEC");
             
             break;
-        case "pompa_cajon":
+        case "PC":
 
             saveBtnAcabados(aAcbPC,"listAcbPC");
             
             break;
-        case "forro_interior_cajon":
+        case "IC":
 
-            saveBtnAcabados(aAcbFIC,"listAcbFIC");
+            saveBtnAcabados(aAcbFIC,"listAcbIC");
             
             break;
-        case "base_tapa":
+        case "BT":
 
             saveBtnAcabados(aAcbBT,"listAcbBT");
             
             break;
-        case "circunferencia_tapa":
+        case "CT":
 
             saveBtnAcabados(aAcbCT,"listAcbCT");
             
             break;
-        case "forro_tapa":
+        case "FT":
 
             saveBtnAcabados(aAcbFT,"listAcbFT");
             
             break;
-        case "forro_exterior_tapa":
+        case "ET":
 
-            saveBtnAcabados(aAcbFET,"listAcbFET");
+            saveBtnAcabados(aAcbFET,"listAcbET");
             
             break;
-        case "forro_interior_tapa":
+        case "IT":
 
-            saveBtnAcabados(aAcbFIT,"listAcbFIT");
+            saveBtnAcabados(aAcbFIT,"listAcbIT");
             
             break;
     }
@@ -2223,65 +1222,57 @@ $("#btnImpresiones").click( function () {
 
     switch(divisionesImps){
 
-        case "base_cajon":
+        case "BC":
 
             saveBtnImpresiones(aImpBC,"listImpBC");
             
             break;
-        case "circunferencia_cajon":
+        case "CC":
 
             saveBtnImpresiones(aImpCC,"listImpCC");
             
             break;
-        case "forro_exterior_cajon":
+        case "EC":
 
-            saveBtnImpresiones(aImpFEC,"listImpFEC");
+            saveBtnImpresiones(aImpFEC,"listImpEC");
             
             break;
-        case "pompa_cajon":
+        case "PC":
 
             saveBtnImpresiones(aImpPC,"listImpPC");
             
             break;
-        case "forro_interior_cajon":
+        case "IC":
 
-            saveBtnImpresiones(aImpFIC,"listImpFIC");
+            saveBtnImpresiones(aImpFIC,"listImpIC");
             
             break;
-        case "base_tapa":
+        case "BT":
 
             saveBtnImpresiones(aImpBT,"listImpBT");
             
             break;
-        case "circunferencia_tapa":
+        case "CT":
 
             saveBtnImpresiones(aImpCT,"listImpCT");
             
             break;
-        case "forro_tapa":
+        case "FT":
 
             saveBtnImpresiones(aImpFT,"listImpFT");
             
             break;
-        case "forro_exterior_tapa":
+        case "ET":
 
-            saveBtnImpresiones(aImpFET,"listImpFET");
+            saveBtnImpresiones(aImpFET,"listImpET");
             
             break;
-        case "forro_interior_tapa":
+        case "IT":
 
-            saveBtnImpresiones(aImpFIT,"listImpFIT");
+            saveBtnImpresiones(aImpFIT,"listImpIT");
             
             break;
     }
-});
-
-//boton Correcto
-$("#btnModCorrecto").click( function() {
-
-    location.href= url + "cotizador/getCotizaciones/";
-
-    $("#subForm").prop("disabled", true);
 });
 
 //Boton Calcular
@@ -2352,7 +1343,7 @@ jQuery214(document).on("click", "#papeles_submit", function () {
             formData = [];
         }
 
-        var formData      = $("#caja-form").serializeArray();
+        var formData      = $("#dataForm").serializeArray();
 
         // impresion
         var aImpBC_tmp  = JSON.stringify(aImpBC, null, 4);
@@ -2452,16 +1443,17 @@ jQuery214(document).on("click", "#papeles_submit", function () {
         aBancos_tmp     = [];
         aAccesorios_tmp = [];
 
+        showLoading();
         $.ajax({
             type:"POST",
             //dataType: "json",
-            url: $('#caja-form').attr('action'),
+            url: $('#dataForm').attr('action'),
             data: formData,
         })
         .done(function(response) {
 
             console.log(response);
-
+            hideLoading();
             if (response !== " " || response !== "" || response !== undefined) {
 
                 try {
@@ -2557,11 +1549,11 @@ jQuery214(document).on("click", "#papeles_submit", function () {
                         appndAcb( respuesta['aAcbFextCaj'], "FextCaj" );
                         appndAcb( respuesta['aAcbPomCaj'], "PomCaj" );
                         appndAcb( respuesta['aAcbFintCaj'], "FintCaj" );
-                        appndAcb( respuesta['aAcbBasTap'], "BasTap" );
-                        appndAcb( respuesta['aAcbCirTap'], "CirTap" );
+                        appndAcb( respuesta['aAcbBTapa'], "BasTap" );
+                        appndAcb( respuesta['aAcbCirTapa'], "CirTap" );
                         appndAcb( respuesta['aAcbFTapa'], "FTap" );
-                        appndAcb( respuesta['aAcbFexTap'], "FexTap" );
-                        appndAcb( respuesta['aAcbFinTap'], "FinTap" );
+                        appndAcb( respuesta['aAcbFexTapa'], "FexTap" );
+                        appndAcb( respuesta['aAcbFinTapa'], "FinTap" );
 
                     // BANCOS
                         
@@ -2701,21 +1693,34 @@ jQuery214(document).on("click", "#papeles_submit", function () {
 
                         $('#resumenOtros').append(parteresumen); //imprime para el resumen
 
-                        $("#subForm").prop("disabled", false);
+                        activarBtn();
                 } catch(e) {
                     
-                    console.log("(3328) No se pudo obtener los datos del controlador. Error:\n " + e);
-                    showModError("");
-                    $("#txtContenido").html("");
-                    $("#txtContenido").html("Hubo un error al recibir datos.");
-                    return false;
+                    try{
+
+                        var error = response.split("<br />");
+                        error = error[1].split("<b>").join("");
+                        error = error.split("</b>").join("");
+                        showModError("");
+
+                        $("#txtContenido").html("(3668) Hubo un error al cotizar la caja.");
+                        appndMsgError(error);
+                    }catch {
+
+                        showModError("");
+
+                        $("#txtContenido").html("(3674) Hubo un error al cotizar la caja.");
+                    } finally{
+
+                        return false;    
+                    }
                 }
             }else{
 
-                console.log("Error: no se esta recibiendo informacion del controlador.");
                 showModError("");
-                $("#txtContenido").html("");
-                $("#txtContenido").html("Hubo un error al recibir datos.");
+
+                $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
+                appndMsgError("No se regresa ningun valor. Favor de llamar a sistemas");
                 return false;
             }
         })
@@ -2723,7 +1728,7 @@ jQuery214(document).on("click", "#papeles_submit", function () {
 
             console.log('(7257) Error. Revisa.');
 
-            $("#subForm").prop("disabled", true);
+            desactivarBtn();
         });
     }
 });
@@ -2743,11 +1748,11 @@ jQuery214(document).on("click", ".listImpCC", function () {
     delBtnImpresiones(aImpCC, "listImpCC");
 });
 
-jQuery214(document).on("click", ".listImpFEC", function () {
+jQuery214(document).on("click", ".listImpEC", function () {
 
     $(this).closest('tr').remove();
     aImpFEC = [];
-    delBtnImpresiones(aImpFEC, "listImpFEC");
+    delBtnImpresiones(aImpFEC, "listImpEC");
 });
 
 jQuery214(document).on("click", ".listImpPC", function () {
@@ -2757,11 +1762,11 @@ jQuery214(document).on("click", ".listImpPC", function () {
     delBtnImpresiones(aImpPC, "listImpPC");
 });
 
-jQuery214(document).on("click", ".listImpFIC", function () {
+jQuery214(document).on("click", ".listImpIC", function () {
 
     $(this).closest('tr').remove();
     aImpFIC = [];
-    delBtnImpresiones(aImpFIC, "listImpFIC");
+    delBtnImpresiones(aImpFIC, "listImpIC");
 });
 
 jQuery214(document).on("click", ".listImpBT", function () {
@@ -2785,18 +1790,18 @@ jQuery214(document).on("click", ".listImpFT", function () {
     delBtnImpresiones(aImpFT, "listImpFT");
 });
 
-jQuery214(document).on("click", ".listImpFET", function () {
+jQuery214(document).on("click", ".listImpET", function () {
 
     $(this).closest('tr').remove();
     aImpFET = [];
-    delBtnImpresiones(aImpFET, "listImpFET");
+    delBtnImpresiones(aImpFET, "listImpET");
 });
 
-jQuery214(document).on("click", ".listImpFIT", function () {
+jQuery214(document).on("click", ".listImpIT", function () {
 
     $(this).closest('tr').remove();
     aImpFIT = [];
-    delBtnImpresiones(aImpFIT, "listImpFIT");
+    delBtnImpresiones(aImpFIT, "listImpIT");
 });
 
 
@@ -2816,11 +1821,11 @@ jQuery214(document).on("click", ".listAcbCC", function () {
     delBtnAcabados(aAcbCC, "listAcbCC");
 });
 
-jQuery214(document).on("click", ".listAcbFEC", function () {
+jQuery214(document).on("click", ".listAcbEC", function () {
 
     $(this).closest('tr').remove();
     aAcbFEC = [];
-    delBtnAcabados(aAcbFEC, "listAcbFEC");
+    delBtnAcabados(aAcbFEC, "listAcbEC");
 });
 
 jQuery214(document).on("click", ".listAcbPC", function () {
@@ -2830,11 +1835,11 @@ jQuery214(document).on("click", ".listAcbPC", function () {
     delBtnAcabados(aAcbPC, "listAcbPC");
 });
 
-jQuery214(document).on("click", ".listAcbFIC", function () {
+jQuery214(document).on("click", ".listAcbIC", function () {
 
     $(this).closest('tr').remove();
     aAcbFIC = [];
-    delBtnAcabados(aAcbFIC, "listAcbFIC");
+    delBtnAcabados(aAcbFIC, "listAcbIC");
 });
 
 jQuery214(document).on("click", ".listAcbBT", function () {
@@ -2858,47 +1863,22 @@ jQuery214(document).on("click", ".listAcbFT", function () {
     delBtnAcabados(aAcbFT, "listAcbFT");
 });
 
-jQuery214(document).on("click", ".listAcbFET", function () {
+jQuery214(document).on("click", ".listAcbET", function () {
 
     $(this).closest('tr').remove();
     aAcbFET = [];
-    delBtnAcabados(aAcbFET, "listAcbFET");
+    delBtnAcabados(aAcbFET, "listAcbET");
 });
 
-jQuery214(document).on("click", ".listAcbFIT", function () {
+jQuery214(document).on("click", ".listAcbIT", function () {
 
     $(this).closest('tr').remove();
     aAcbFIT = [];
-    delBtnAcabados(aAcbFIT, "listAcbFIT");
+    delBtnAcabados(aAcbFIT, "listAcbIT");
 });
 
-//boton Descuento
-jQuery214(document).on("click", "#btnSaveDescuento", function (){
-        
-    $("#descuentoModal").html("Descuento: (" + descuento + "%)");
-
-    $("#descuentos").modal("hide");
-});
-
-
-jQuery214(document).on("click", "#btnCancelDescuento", function (){
-    
-    jQuery214('#DescuentoDrop').html("$0.00");
-
-    $('#descuentos').find("input:checked").prop("checked", false);
-
-    $("#descuentoModal").html("Descuento: (0%)");
-    
-    descuento = 0;
-});
-
-jQuery214(document).on("click", "#descuentoModal", function (){
-
-    //showModal('d_grabado',true);
-    $('#descuentos').modal('show');
-});
-
-jQuery214(document).on("click", ".d-check", function (){
-
-    descuento = $(this).val();
+$("#btnImprimir").click( function(){
+            
+    var ventana = window.open(url + "cotizador/imprCaja", "Impresion", "width=600, height=600");
+    return true;
 });

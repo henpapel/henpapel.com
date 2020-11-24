@@ -17,6 +17,7 @@
     
 
     <script src="<?php echo URL; ?>public/js/libs/jquery.min.js"></script>
+    <!--Al cargar la pagina el archivo: '2.1.4.jquery.min.js' no se puede cargar debido a que busca un archivo dependiente llamado: 'jquery.min.map.js'. -->
     <script src="<?php echo URL; ?>public/js/libs/2.1.4.jquery.min.js"></script>
     <script src="<?php echo URL; ?>public/js/libs/jquery-ui.min.js"></script>
     <script src="<?php echo URL; ?>public/js/mi.jquery.tools.min.js"></script>
