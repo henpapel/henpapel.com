@@ -1276,7 +1276,7 @@ $("#btnImpresiones").click( function () {
 });
 
 //Boton Calcular
-jQuery214(document).on("click", "#papeles_submit", function () {
+jQuery214(document).on("click", "#btnCalcularC", function () {
 
     var precio;
     var papel;

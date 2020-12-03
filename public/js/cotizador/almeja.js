@@ -98,15 +98,15 @@ function hideSelectImp(select){
 
 function activarBtn() {
 
+    $("#subForm").prop("disabled",false);
     $("#btnImprimir").prop("disabled",false);
-    $("#subForm2").prop("disabled",false);
 }
 
 
 function desactivarBtn() {
 
+    $("#subForm").prop("disabled",true);
     $("#btnImprimir").prop("disabled",true);
-    $("#subForm2").prop("disabled",true);
 }
 
 function vacioModalBancos() {

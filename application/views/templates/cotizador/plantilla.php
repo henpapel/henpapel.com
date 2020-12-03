@@ -45,14 +45,14 @@
 </style>
 <div class="div-principal" style="width: 100%; height: 93%; position: absolute; overflow-y: hidden;">
 
-    <form id="dataForm" method="post" action="" style="width: 100%; height: 100%; position: absolute; overflow-y: hidden;">
+    <form id="dataForm" method="post" action="" style="width: 100%; height: 100%; position: absolute; overflow: hidden;">
 
         <div id="modLoading" style="display: none;">
             <img id="rotate1" class="imgr" style="width: 80px; height: 80px;" src="<?= URL?>public/img/cargando.png">
             Cargando...
         </div>
 
-        <div id="topCotizador" style="width: 100%; height: 25px;">
+        <div id="topCotizador" style="width: 100%; height: 5%;">
             <select  id="box-model" class="seleccionModelo" style="background: #1A2C4C;color:#fff;font-size: 16px; width: 20%; border: none; height: 100%; cursor: pointer;">
 
                 <option selected disabled>Seleccione Modelo de Caja</option>
@@ -68,18 +68,75 @@
             </div>
         </div>
         
-        <div id="divIzquierdo" class="div-izquierdo" style="width: 20%; height: 97%; display: block; overflow: auto; position: absolute;">
+        <div id="divIzquierdo" class="div-izquierdo" style="width: 20%; height: 96%; display: block; position: absolute; padding: 0px;">
 
-            <div style="width: 100%; text-align: center; background-image: url(<?=URL ;?>public/img/worn_dots.png); background-repeat: repeat; height: 25%;">
-            </div>
-            <!-- formulario de la caja almeja -->
-            <div class="form-content medidas" style="height: 74%;">
-            </div>
         </div>
 
-        <div id="divDerecho" class="grid div-derecho" style=" width: 80%; height: 96%; position: relative;">
+        <div id="divDerecho" class="grid div-derecho" style=" width: 80%; height: 79%; position: relative;">
 
             <img id="imgPrincipal" border="0" src="<?=URL ;?>public/img/henpp.png" style="">
+        </div>
+
+        <div id="divFooter" style="position:fixed; top:50px; right:0; top:85%;">
+            <div id="groupButton1" style="width: 100%;">
+
+                <button id="btnCalcularC" type="button" class="btn btn-primary btn-sm" style="font-size: 10px;">CALCULAR</button>
+
+                <button id="btnActG" type="button" class="btn btn-success btn-sm" style="font-size: 10px;" data-toggle="modal" data-target="#modalSaveAll" disabled="">GUARDAR</button>
+
+                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
+
+                <button type="button" class="btn btn-warning btn-sm" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
+
+                <button type="button" id="btnImprimir" disabled="" class="btn btn-info btn-sm" style="font-size: 10px;">IMPRIMIR</button>
+                <br>
+
+                <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
+                    <label style="font-size: 25px; margin-right: 100px;">Total: </label>
+                    <label id="Totalplus" style="font-size: 25px;">$0.00</label>
+                </button>
+
+                <div class="dropdown-menu" style="width: 350px;">
+
+                    <table class="table">
+                        <tr>
+                            <td>Subtotal: </td>
+                            <td id="tdSubtotalCaja" class="grand-total">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Utilidad: </td>
+                            <td id="UtilidadDrop">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>IVA:</td>
+                            <td id="IVADrop">$0.00</td>
+                        </tr>
+
+                        <tr>
+                            <td>ISR: </td>
+                            <td id="ISRDrop">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Comisiones: </td>
+                            <td id="ComisionesDrop">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>% Indirecto: </td>
+                            <td id="IndirectoDrop">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Ventas: </td>
+                            <td id="VentasDrop">$0.00</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" id="descuentoModal" style="border: none; background: white;">Descuento: (0%) </button>
+                            </td>
+                            <td id="DescuentoDrop">$0.00</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </form>
 </div>
@@ -121,7 +178,7 @@
                     </select>
                 ` + check + `
                 <div>
-                    <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('` + seccion + `')">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;">
+                    <button type="button" class="btn btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#Impresiones" onclick="divisionesImp('` + seccion + `')"><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"> Impresiones
                     </button>
                     <div class="container divimpresiones">
                         <table class="table">
@@ -131,7 +188,7 @@
                     </div>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('` + seccion + `')">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;">
+                    <button type="button" class="btn btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#acabados" onclick="divisionesAcb('` + seccion + `')"><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"> Acabados
                     </button>
                     <div class="container divacabados">
                         <table class="table">

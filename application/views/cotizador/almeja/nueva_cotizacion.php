@@ -3182,7 +3182,7 @@
                 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true" style="color: #fff">&times;</span>
                 </button>
                 
             </div>
@@ -3577,7 +3577,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
             $("#txtContenido").html("Debe de seleccionar un papel para las siguientes secciones: " + cadena + ".");
         } else {
 
-            $("#modLoading").show();
             if (typeof formData !== 'undefined' && formData.length > 0) {
 
                 formData = [];
@@ -3658,7 +3657,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
             aCierres_tmp    = [];
             aBancos_tmp     = [];
             aAccesorios_tmp = [];
-
+            $("#modLoading").show();
             $.ajax({                    // boton CALCULAR
                 type:"POST",
                 //dataType: "json",
@@ -5987,7 +5986,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
                     activarBtn();
-                    
             })
             .fail(function(response) {
 
@@ -6009,7 +6007,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
     // graba en la Base de Datos
     $("#subForm2").click( function() {
 
-        $("#modLoading").show();
         if(formData){
 
             if (formData.length > 0) {
@@ -6091,7 +6088,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
         odtval.push({name: 'odt', value: odt1});
         
         desactivarBtn();
-
+        $("#modLoading").show();
         $.ajax({                    // boton GUARDAR(grabar)
             type:"POST",
             async: false,

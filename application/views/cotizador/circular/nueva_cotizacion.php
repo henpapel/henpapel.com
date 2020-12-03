@@ -195,66 +195,6 @@
     </div>
 </div>
 
-<div id="groupButton1" style="position:fixed; top:90%; right:0; float: right; width: 40%;text-align: right;">
-
-    <button id="papeles_submit" type="button" class="btn btn-primary" style="font-size: 10px;">CALCULAR</button>
-
-    <button id="subForm" type="button" class="btn btn-success" style="font-size: 10px;" enabled="" data-toggle="modal" data-target="#modalSaveAll" disabled="">GUARDAR</button>
-
-    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
-
-    <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
-
-    <button id="btnImprimir" class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</button>
-    <br>
-
-    <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
-        <label style="font-size: 25px; margin-right: 100px;">Total: </label>
-        <label id="Totalplus" style="font-size: 25px;">$0.00</label>
-    </button>
-
-    <div class="dropdown-menu" style="width: 350px;">
-
-        <table class="table">
-            <tr>
-                <td>Subtotal: </td>
-                <td id="tdSubtotalCaja" class="grand-total">$0.00</td>
-            </tr>
-            <tr>
-                <td>Utilidad: </td>
-                <td id="UtilidadDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>IVA:</td>
-                <td id="IVADrop">$0.00</td>
-            </tr>
-
-            <tr>
-                <td>ISR: </td>
-                <td id="ISRDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>Comisiones: </td>
-                <td id="ComisionesDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>% Indirecto: </td>
-                <td id="IndirectoDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>Ventas: </td>
-                <td id="VentasDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="button" id="descuentoModal" style="border: none; background: white;">Descuento: (0%) </button>
-                </td>
-                <td id="DescuentoDrop">$0.00</td>
-            </tr>
-        </table>
-    </div>
-</div>
-
 <!-- Resumen -->
     <div id="resumentodocaja" style="display: none;">
 
@@ -384,8 +324,9 @@
     setURL("<?= URL ?>");
 
     //Boton Grabar
-    $("#subForm2").click( function() {
+    $("#btnGrabarC").click( function() {
 
+        showLoading();
         if(formData){
 
             if (formData.length > 0) {
@@ -511,7 +452,7 @@
             data: formData,
         })
         .done(function( response ) {
-
+            hideLoading();
             console.log("(3033) response: ");
             console.log(response);
 
@@ -522,8 +463,6 @@
 
                 if (error.length > 0) {
 
-                    document.getElementsByName("subForm").disabled = true;
-
                     showModError("");
                     $("#txtContenido").html("(3046 " + error);
 
@@ -533,19 +472,15 @@
                 }
             } catch(e) {
 
+                desactivarBtn();
                 var js_respuesta = JSON.parse( response );
                 var error        = js_respuesta.error;
 
                 if (error.length > 0) {
 
-                    document.getElementsByName("subForm").disabled = true;
-
                     showModError("");
                     $("#txtContenido").html("(3062) " + error);
                 } else {
-
-                    document.getElementsByName("subForm").disabled = true;
-
                     showModError("");
                     $("#txtContenido").html("(3068) Error al grabar en la Base de Datos");
                 }
@@ -554,6 +489,7 @@
         .fail(function(response) {
 
             console.log('(3074) Bug! revisa...');
+            desactivarBtn();
         });
     });
     $("#box-model").val("2");

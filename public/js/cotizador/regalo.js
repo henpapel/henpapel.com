@@ -1104,7 +1104,7 @@ $("#btnImpresiones").click( function () {
 
 
 //Boton Calcular
-jQuery214(document).on("click", "#papeles_submit", function () {
+jQuery214(document).on("click", "#btnCalcularC", function () {
 
     var odt               = $("#odt").val();
     var base              = $("#base").val();
@@ -1552,4 +1552,3 @@ $("#btnImprimir").click( function(){
     var ventana = window.open(url +"cotizador/imprCaja", "Impresion", "width=600, height=600");
     return true;
 });
-

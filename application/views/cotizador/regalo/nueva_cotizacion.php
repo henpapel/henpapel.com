@@ -32,7 +32,7 @@
     }
 </style>
 
-<div id="divIzquierdo-slave" class="div-izquierdo" style="display: none; height: 98%;">
+<div id="divIzquierdo-slave" class="div-izquierdo" style="display: none; height: 98%; margin: 0px;">
 
     <div style="width: 100%; text-align: center; display: inline-block; background-image: url(<?=URL ;?>public/img/worn_dots.png); background-repeat: repeat; height: 25%;">
         <!-- imagenes de circular -->
@@ -49,170 +49,165 @@
     </div>
 
     <!-- formulario de la caja circular -->
-    <div class="form-content medidas" style="height: 50%; overflow-y: auto;margin-left: 5px;">
+    <div class="form-content medidas" style="height: 50%; width: 100%;overflow: auto;">
 
-        <input type="hidden" name="modelo" id="modelo" value="$id_modelo">
+        <div style="min-width: 200px; width: 100%;">
 
-        <!-- ODT -->
-        <div class="input-group">
+            <input type="hidden" name="modelo" id="modelo" value="<?=$id_modelo?>">
 
-            <div class="cajas-col-input t-left">
+            <!-- ODT -->
+            <div class="input-group">
 
-                <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
-                <span>ODT: </span>
+                <div class="cajas-col-input t-left">
+
+                    <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
+                    <span>ODT: </span>
+                </div>
+
+                <div class="cajas-col-input t-right">
+
+                    <input class="cajas-input medidas-input" name="odt" id="odt" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus="" required="">
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Base -->
+            <div class="input-group">
 
-                <input class="cajas-input medidas-input" name="odt" id="odt" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus="" required="">
+                <div class="cajas-col-input t-left">
+
+                    <span>Base: </span>
+                </div>
+
+                <div class="cajas-col-input t-right">
+
+                    <input class="cajas-input medidas-input" name="base" id="base" type="number" placeholder="cm" tabindex="2" min="0.01" step="any" required>
+                </div>
             </div>
 
+            <!-- Alto -->
+            <div class="input-group">
 
-        </div>
+                <div class="cajas-col-input t-left">
 
-        <!-- Base -->
-        <div class="input-group">
+                    <span>Alto: </span>
+                </div>
 
-            <div class="cajas-col-input t-left">
+                <div class="cajas-col-input t-right">
 
-                <span>Base: </span>
+                    <input class="cajas-input medidas-input" name="alto" id="alto" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required>
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Profundidad del Cajón -->
+            <div class="input-group">
 
-                <input class="cajas-input medidas-input" name="base" id="base" type="number" placeholder="cm" tabindex="2" min="0.01" step="any" required>
-            </div>
-        </div>
+                <div class="cajas-col-input t-left">
 
-        <!-- Alto -->
-        <div class="input-group">
+                    <span>Profundidad Cajón: </span>
+                </div>
 
-            <div class="cajas-col-input t-left">
+                <div class="cajas-col-input t-right">
 
-                <span>Alto: </span>
-            </div>
-
-            <div class="cajas-col-input t-right">
-
-                <input class="cajas-input medidas-input" name="alto" id="alto" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required>
-            </div>
-        </div>
-
-        <!-- Profundidad del Cajón -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Profundidad Cajón: </span>
+                    <input class="cajas-input medidas-input" name="profundidad_cajon" id="profundidad_cajon" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required>
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Profundidad de la Tapa -->
+            <div class="input-group">
 
-                <input class="cajas-input medidas-input" name="profundidad_cajon" id="profundidad_cajon" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required>
-            </div>
-        </div>
+                <div class="cajas-col-input t-left">
 
-        <!-- Profundidad de la Tapa -->
-        <div class="input-group">
+                    <span>Profundidad Tapa: </span>
+                </div>
 
-            <div class="cajas-col-input t-left">
+                <div class="cajas-col-input t-right">
 
-                <span>Profundidad Tapa: </span>
-            </div>
-
-            <div class="cajas-col-input t-right">
-
-                <input class="cajas-input medidas-input" name="profundidad_tapa" id="profundidad_tapa" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required>
-            </div>
-        </div>
-
-        <!-- Grosor Cajón -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Grosor Cartón: </span>
+                    <input class="cajas-input medidas-input" name="profundidad_tapa" id="profundidad_tapa" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required>
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Grosor Cajón -->
+            <div class="input-group">
 
-                <select class="cajas-input medidas-input" name="grosor_carton" id="grosor_carton" tabindex="5" required>
+                <div class="cajas-col-input t-left">
 
-                    <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
+                    <span>Grosor Cartón: </span>
+                </div>
 
-                    <?php
-                    foreach ($cartones as $carton) {
+                <div class="cajas-col-input t-right">
 
-                        $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+                    <select class="cajas-input medidas-input" name="grosor_carton" id="grosor_carton" tabindex="5" required>
 
-                        if ($expensive) {
+                        <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
 
-                            ?>
-                            <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
-                            <?php
+                        <?php
+                        foreach ($cartones as $carton) {
+
+                            $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+
+                            if ($expensive) {
+
+                                ?>
+                                <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                                <?php
+                            }
                         }
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-
-        <!-- Grosor Tapa -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Grosor Tapa: </span>
+                        ?>
+                    </select>
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Grosor Tapa -->
+            <div class="input-group">
 
-                <select class="cajas-input medidas-input" name="grosor_tapa" id="grosor_tapa" tabindex="5" required>
+                <div class="cajas-col-input t-left">
 
-                    <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
+                    <span>Grosor Tapa: </span>
+                </div>
 
-                    <?php
-                    foreach ($cartones as $carton) {
+                <div class="cajas-col-input t-right">
 
-                        $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+                    <select class="cajas-input medidas-input" name="grosor_tapa" id="grosor_tapa" tabindex="5" required>
 
-                        if ($expensive) {
+                        <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
 
-                            ?>
-                            <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
-                            <?php
+                        <?php
+                        foreach ($cartones as $carton) {
+
+                            $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+
+                            if ($expensive) {
+
+                                ?>
+                                <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                                <?php
+                            }
                         }
-                    }
-                    ?>
-                </select>
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Cantidad -->
+            <div class="input-group">
+
+                <div class="cajas-col-input t-left">
+
+                    <span>Cantidad: </span>
+                </div>
+
+                <div class="cajas-col-input t-right">
+
+                    <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="6" required="">
+                </div>
             </div>
         </div>
-
-        <!-- Cantidad -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Cantidad: </span>
-            </div>
-
-            <div class="cajas-col-input t-right">
-
-                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="6" required="">
-            </div>
-        </div>
-
-        <!-- Mismo papel para todos -->
-        <!--<div class="input-group custom-control custom-checkbox mr-sm-2">
-            
-            <input type="checkbox" name="btnCheckPaper" id="btnCheckPaper" class="custom-control-input">
-            <label class="custom-control-label" for="btnCheckPaper"style="font-size: 15px; cursor: pointer;" class="btn btn-outline-primary">Mismo Papel P/Todos</label>
-        </div>-->
+        
     </div>
 
     <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
         
-        <button type="button" id="btnabrecierres" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#cierres" >Añadir Cierres <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+        <button type="button" id="btnabrecierres" class="btn btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#cierres" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"> Cierres</button>
 
         <div id="ListaCierres" class="">
 
@@ -223,7 +218,7 @@
         </div>
 
 
-        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#accesorios" >Añadir Accesorios <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#accesorios" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"> Accesorios </button>
 
         <div id="ListaAccesoriosEmp" class="">
 
@@ -234,7 +229,7 @@
             </table>
         </div>
 
-        <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary chkSize  btn-sm" data-toggle="modal" data-target="#bancoemp">Añadir Banco <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+        <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary chkSize  btn-sm text-left" data-toggle="modal" data-target="#bancoemp"><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"> Banco</button>
 
         <div id="ListaBancoEmp" class="">
             <table class="table" id="banTable">
@@ -243,127 +238,6 @@
                 </tbody>
             </table>
         </div>    
-    </div>
-</div>
-
-<!--<div id="divToggle" style="position:fixed; top:95%; right:0%; float: right; width: 90%;text-align: right; padding: 0px; margin: 0px;">
-    <button id="btnToggle" class="btn btn-primary btn-slave" style="margin-right: 10px;">▲</button>
-    <br>
-    <br>
-    <button id="papeles_submit" type="button" class="btn btn-primary btn-slave" style="font-size: 10px;">CALCULAR</button>
-
-    <button id="subForm" type="button" class="btn btn-success btn-slave" style="font-size: 10px;" enabled="" data-toggle="modal" data-target="#modalSaveAll">GUARDAR</button>
-
-    <button type="button" class="btn btn-warning btn-slave" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
-
-    <button type="button" class="btn btn-warning btn-slave" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
-
-    <a class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</a>
-
-    <button type="button" class="btn btn-lg dropdown-toggle btn-slave" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
-        <label style="font-size: 25px; margin-right: 100px;">Total: </label>
-        <label id="Totalplus" style="font-size: 25px;">$0.00</label>
-    </button>
-
-    <div class="dropdown-menu" style="width: 350px;">
-
-        <table class="table">
-            <tr>
-                <td>Subtotal: </td>
-                <td id="tdSubtotalCaja" class="grand-total">$0.00</td>
-            </tr>
-            <tr>
-                <td>Utilidad: </td>
-                <td id="UtilidadDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>IVA:</td>
-                <td id="IVADrop">$0.00</td>
-            </tr>
-
-            <tr>
-                <td>ISR: </td>
-                <td id="ISRDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>Comisiones: </td>
-                <td id="ComisionesDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>% Indirecto: </td>
-                <td id="IndirectoDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>Ventas: </td>
-                <td id="VentasDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="button" id="descuentoModal" style="border: none; background: white;">Descuento: (0%) </button>
-                </td>
-                <td id="DescuentoDrop">$0.00</td>
-            </tr>
-        </table>
-    </div>
-</div>-->
-
-<div id="groupButton1" style="position:fixed; top:90%; right:0; float: right; width: 70%;text-align: right;">
-
-    <button id="papeles_submit" type="button" class="btn btn-primary" style="font-size: 10px;">CALCULAR</button>
-
-    <button id="subForm" type="button" class="btn btn-success" style="font-size: 10px;" data-toggle="modal" data-target="#modalSaveAll" disabled="">GUARDAR</button>
-
-    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
-
-    <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
-
-    <button id="btnImprimir" disabled="" class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</button>
-    <br>
-
-    <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
-        <label style="font-size: 25px; margin-right: 100px;">Total: </label>
-        <label id="Totalplus" style="font-size: 25px;">$0.00</label>
-    </button>
-
-    <div class="dropdown-menu" style="width: 350px;">
-
-        <table class="table">
-            <tr>
-                <td>Subtotal: </td>
-                <td id="tdSubtotalCaja" class="grand-total">$0.00</td>
-            </tr>
-            <tr>
-                <td>Utilidad: </td>
-                <td id="UtilidadDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>IVA:</td>
-                <td id="IVADrop">$0.00</td>
-            </tr>
-
-            <tr>
-                <td>ISR: </td>
-                <td id="ISRDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>Comisiones: </td>
-                <td id="ComisionesDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>% Indirecto: </td>
-                <td id="IndirectoDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>Ventas: </td>
-                <td id="VentasDrop">$0.00</td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="button" id="descuentoModal" style="border: none; background: white;">Descuento: (0%) </button>
-                </td>
-                <td id="DescuentoDrop">$0.00</td>
-            </tr>
-        </table>
     </div>
 </div>
 
@@ -472,7 +346,7 @@
     setURL("<?= URL ?>");
 
     //Boton Calcular
-    $("#subForm2").click( function() {
+    $("#btnGrabarC").click( function() {
 
         var precio;
         var papel;
@@ -598,7 +472,7 @@
 
             console.log('(2307) Hubo un Error inesperado. Por favor llame a sistemas.');
 
-            $("#subForm").prop("disabled", true);
+            desactivarBtn();
         });
     });
     $("#box-model").val("4");

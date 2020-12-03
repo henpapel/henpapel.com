@@ -23,7 +23,7 @@
 
             <div class="modal-footer">
 
-                <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" id="subForm2">Si</button>
+                <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" id="btnGrabarC">Si</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
             </div>
         </div>
@@ -351,7 +351,7 @@
                     
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true" style="color: #fff">&times;</span>
                     </button>
                     
                 </div>
@@ -966,14 +966,14 @@
     function activarBtn() {
 
         $("#btnImprimir").prop("disabled",false);
-        $("#subForm2").prop("disabled",false);
+        $("#btnActG").prop("disabled",false);
     }
 
 
     function desactivarBtn() {
         
         $("#btnImprimir").prop("disabled",true);
-        $("#subForm2").prop("disabled",true);
+        $("#btnActG").prop("disabled",true);
     }
 
     function showModError(proceso) {
@@ -1520,7 +1520,7 @@
 
         location.href= url + "cotizador/getCotizaciones/";
 
-        $("#subForm").prop("disabled", true);
+        desactivarBtn();
     });
 
     //boton Descuento

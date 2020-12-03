@@ -2109,12 +2109,12 @@
                 <div class="modal-header azulWhi" style="background: red">
 
                     <h5 class="modal-title" id="txtTituloModal">Error</h5>
-                    <!--
+                    
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true" style="color: #fff;">&times;</span>
                     </button>
-                    -->
+                    
                 </div>
 
                 <div id="modBody" class="modal-body">
@@ -3353,10 +3353,14 @@ if ($aJson) { ?>
             // descuento
             formData.push({name: 'descuento_pctje', value: descuento});
 
-            var modificar_odt = "NO";
+            var modificar_odt = "SI";
 
             formData.push({name: 'modificar', value: modificar_odt});
             formData.push({name: 'grabar', value: grabar});
+
+            var id_odt = "<?=$aJson['id_odt']?>";
+
+            formData.push({name: 'id_odt_ant', value: id_odt});
 
             $.ajax({                                // CALCULAR
                 type:"POST",
@@ -6136,14 +6140,14 @@ if ($aJson) { ?>
     function activarBtn() {
 
         $("#btnImprimir").prop("disabled",false);
-        $("#subForm2").prop("disabled",false);
+        $("#subForm").prop("disabled",false);
     }
 
 
     function desactivarBtn() {
 
         $("#btnImprimir").prop("disabled",true);
-        $("#subForm2").prop("disabled",true);
+        $("#subForm").prop("disabled",true);
     }
 
     var divisionesImps="";

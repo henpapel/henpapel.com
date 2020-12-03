@@ -51,162 +51,157 @@
     <!-- formulario de la caja circular -->
     <div class="form-content medidas" style="height: 50%; overflow-y: auto;margin-left: 5px;">
 
-        <input type="hidden" name="modelo" id="modelo" value="$id_modelo">
+        <div style="min-width: 200px; width: 100%;">
+            <input type="hidden" name="modelo" id="modelo" value="$id_modelo">
 
-        <!-- ODT -->
-        <div class="input-group">
+            <!-- ODT -->
+            <div class="input-group">
 
-            <div class="cajas-col-input t-left">
+                <div class="cajas-col-input t-left">
 
-                <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
-                <span>ODT: </span>
+                    <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
+                    <span>ODT: </span>
+                </div>
+
+                <div class="cajas-col-input t-right">
+
+                    <input class="cajas-input medidas-input" name="odt" id="odt" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus="" required="" value="<?= $aJson['num_odt']?>">
+                </div>
+
+
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Base -->
+            <div class="input-group">
 
-                <input class="cajas-input medidas-input" name="odt" id="odt" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus="" required="" value="<?= $aJson['num_odt']?>">
+                <div class="cajas-col-input t-left">
+
+                    <span>Base: </span>
+                </div>
+
+                <div class="cajas-col-input t-right">
+
+                    <input class="cajas-input medidas-input" name="base" id="base" type="number" placeholder="cm" tabindex="2" min="0.01" step="any" required value="<?= $aJson['base']?>">
+                </div>
             </div>
 
+            <!-- Alto -->
+            <div class="input-group">
 
-        </div>
+                <div class="cajas-col-input t-left">
 
-        <!-- Base -->
-        <div class="input-group">
+                    <span>Alto: </span>
+                </div>
 
-            <div class="cajas-col-input t-left">
+                <div class="cajas-col-input t-right">
 
-                <span>Base: </span>
+                    <input class="cajas-input medidas-input" name="alto" id="alto" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required value="<?= $aJson['alto']?>">
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Profundidad del Cajón -->
+            <div class="input-group">
 
-                <input class="cajas-input medidas-input" name="base" id="base" type="number" placeholder="cm" tabindex="2" min="0.01" step="any" required value="<?= $aJson['base']?>">
-            </div>
-        </div>
+                <div class="cajas-col-input t-left">
 
-        <!-- Alto -->
-        <div class="input-group">
+                    <span>Profundidad Cajón: </span>
+                </div>
 
-            <div class="cajas-col-input t-left">
+                <div class="cajas-col-input t-right">
 
-                <span>Alto: </span>
-            </div>
-
-            <div class="cajas-col-input t-right">
-
-                <input class="cajas-input medidas-input" name="alto" id="alto" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required value="<?= $aJson['alto']?>">
-            </div>
-        </div>
-
-        <!-- Profundidad del Cajón -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Profundidad Cajón: </span>
+                    <input class="cajas-input medidas-input" name="profundidad_cajon" id="profundidad_cajon" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_cajon']?>">
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Profundidad de la Tapa -->
+            <div class="input-group">
 
-                <input class="cajas-input medidas-input" name="profundidad_cajon" id="profundidad_cajon" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_cajon']?>">
-            </div>
-        </div>
+                <div class="cajas-col-input t-left">
 
-        <!-- Profundidad de la Tapa -->
-        <div class="input-group">
+                    <span>Profundidad Tapa: </span>
+                </div>
 
-            <div class="cajas-col-input t-left">
+                <div class="cajas-col-input t-right">
 
-                <span>Profundidad Tapa: </span>
-            </div>
-
-            <div class="cajas-col-input t-right">
-
-                <input class="cajas-input medidas-input" name="profundidad_tapa" id="profundidad_tapa" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_tapa']?>">
-            </div>
-        </div>
-
-        <!-- Grosor Cajón -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Grosor Cartón: </span>
+                    <input class="cajas-input medidas-input" name="profundidad_tapa" id="profundidad_tapa" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_tapa']?>">
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Grosor Cajón -->
+            <div class="input-group">
 
-                <select class="cajas-input medidas-input" name="grosor_carton" id="grosor_carton" tabindex="5" required>
+                <div class="cajas-col-input t-left">
 
-                    <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
+                    <span>Grosor Cartón: </span>
+                </div>
 
-                    <?php
-                    foreach ($cartones as $carton) {
+                <div class="cajas-col-input t-right">
 
-                        $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+                    <select class="cajas-input medidas-input" name="grosor_carton" id="grosor_carton" tabindex="5" required>
 
-                        if ($expensive) {
+                        <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
 
-                            ?>
-                            <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
-                            <?php
+                        <?php
+                        foreach ($cartones as $carton) {
+
+                            $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+
+                            if ($expensive) {
+
+                                ?>
+                                <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                                <?php
+                            }
                         }
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-
-        <!-- Grosor Tapa -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Grosor Tapa: </span>
+                        ?>
+                    </select>
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Grosor Tapa -->
+            <div class="input-group">
 
-                <select class="cajas-input medidas-input" name="grosor_tapa" id="grosor_tapa" tabindex="5" required>
+                <div class="cajas-col-input t-left">
 
-                    <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
+                    <span>Grosor Tapa: </span>
+                </div>
 
-                    <?php
-                    foreach ($cartones as $carton) {
+                <div class="cajas-col-input t-right">
 
-                        $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+                    <select class="cajas-input medidas-input" name="grosor_tapa" id="grosor_tapa" tabindex="5" required>
 
-                        if ($expensive) {
+                        <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
 
-                            ?>
-                            <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
-                            <?php
+                        <?php
+                        foreach ($cartones as $carton) {
+
+                            $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+
+                            if ($expensive) {
+
+                                ?>
+                                <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                                <?php
+                            }
                         }
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-
-        <!-- Cantidad -->
-        <div class="input-group">
-
-            <div class="cajas-col-input t-left">
-
-                <span>Cantidad: </span>
+                        ?>
+                    </select>
+                </div>
             </div>
 
-            <div class="cajas-col-input t-right">
+            <!-- Cantidad -->
+            <div class="input-group">
 
-                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="6" required="" value="<?= $aJson['tiraje']?>">
+                <div class="cajas-col-input t-left">
+
+                    <span>Cantidad: </span>
+                </div>
+
+                <div class="cajas-col-input t-right">
+
+                    <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="6" required="" value="<?= $aJson['tiraje']?>">
+                </div>
             </div>
-        </div>
-
-        <!-- Mismo papel para todos -->
-        <div class="input-group custom-control custom-checkbox mr-sm-2">
-            
-            <input type="checkbox" name="btnCheckPaper" id="btnCheckPaper" class="custom-control-input">
-            <label class="custom-control-label" for="btnCheckPaper"style="font-size: 15px; cursor: pointer;" class="btn btn-outline-primary">Mismo Papel P/Todos</label>
         </div>
     </div>
 
@@ -243,66 +238,6 @@
                 </tbody>
             </table>
         </div>    
-    </div>
-</div>
-
-<div id="groupButton1" style="position:fixed; top:90%; right:0; float: right; width: 70%;text-align: right;">
-
-    <button id="papeles_submit" type="button" class="btn btn-primary" style="font-size: 10px;">CALCULAR</button>
-
-    <button id="subForm" type="button" class="btn btn-success" style="font-size: 10px;" enabled="" data-toggle="modal" data-target="#modalSaveAll" disabled="">ACUALIZAR</button>
-
-    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
-
-    <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
-
-    <button id="btnImprimir" class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank" disabled="">IMPRIMIR</button>
-    <br>
-
-    <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
-        <label style="font-size: 25px; margin-right: 100px;">Total: </label>
-        <label id="Totalplus" style="font-size: 25px;">$<?= $aJson['costo_odt']?></label>
-    </button>
-
-    <div class="dropdown-menu" style="width: 350px;">
-
-        <table class="table">
-            <tr>
-                <td>Subtotal: </td>
-                <td id="tdSubtotalCaja" class="grand-total">$<?= $aJson['costo_subtotal']?></td>
-            </tr>
-            <tr>
-                <td>Utilidad: </td>
-                <td id="UtilidadDrop">$<?= $aJson['Utilidad']?></td>
-            </tr>
-            <tr>
-                <td>IVA:</td>
-                <td id="IVADrop">$<?= $aJson['iva']?></td>
-            </tr>
-
-            <tr>
-                <td>ISR: </td>
-                <td id="ISRDrop">$<?= $aJson['ISR']?></td>
-            </tr>
-            <tr>
-                <td>Comisiones: </td>
-                <td id="ComisionesDrop">$<?= $aJson['comisiones']?></td>
-            </tr>
-            <tr>
-                <td>% Indirecto: </td>
-                <td id="IndirectoDrop">$<?= $aJson['indirecto']?></td>
-            </tr>
-            <tr>
-                <td>Ventas: </td>
-                <td id="VentasDrop">$<?= $aJson['ventas']?></td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="button" id="descuentoModal" style="border: none; background: white;">Descuento: (<?= $aJson['descuento_pctje']?>%) </button>
-                </td>
-                <td id="DescuentoDrop">$<?= $aJson['descuento']?></td>
-            </tr>
-        </table>
     </div>
 </div>
 
@@ -604,7 +539,7 @@
     }
 
     //Boton Guardar
-    $("#subForm2").click( function() {
+    $("#btnGrabarC").click( function() {
 
         var precio;
         var papel;
