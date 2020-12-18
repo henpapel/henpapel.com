@@ -1,6 +1,6 @@
 <?php
 
-class RegaloModel {
+class RegaloModel extends Controller {
 
     function __construct($db) {
 
@@ -11,326 +11,6 @@ class RegaloModel {
 
             exit('Ups! Error de conexion a la Base de Datos. ' . $e);
         }
-    }
-
-
-    // Tablas Offset
-    public function getOffsetTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                     = intval($row['id']);
-            $result[$iii]['id_odt']                 = intval($row['id_odt']);
-            $result[$iii]['id_modelo']              = intval($row['id_modelo']);
-            $result[$iii]['tipo']                   = utf8_encode(trim(strval($row['tipo'])));
-            $result[$iii]['tiraje']                 = intval($row['tiraje']);
-            $result[$iii]['num_tintas']             = intval($row['num_tintas']);
-            $result[$iii]['corte_costo_unitario']   = floatval($row['corte_costo_unitario']);
-            $result[$iii]['corte_por_millar']       = intval($row['corte_por_millar']);
-            $result[$iii]['costo_corte']            = floatval($row['costo_corte']);
-            $result[$iii]['costo_unitario_laminas'] = floatval($row['costo_unitario_laminas']);
-            $result[$iii]['costo_tot_laminas']      = floatval($row['costo_tot_laminas']);
-            $result[$iii]['costo_unitario_arreglo'] = floatval($row['costo_unitario_arreglo']);
-            $result[$iii]['costo_tot_arreglo']      = floatval($row['costo_tot_arreglo']);
-            $result[$iii]['costo_unitario_tiro']    = floatval($row['costo_unitario_tiro']);
-            $result[$iii]['costo_tot_tiro']         = floatval($row['costo_tot_tiro']);
-            $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas Digital
-    public function getDigitalTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                = intval($row['id']);
-            $result[$iii]['id_odt']            = intval($row['id_odt']);
-            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
-            $result[$iii]['cabe_digital']      = trim(strval($row['cabe_digital']));
-            $result[$iii]['tiraje']            = intval($row['tiraje']);
-            $result[$iii]['corte_ancho']       = floatval($row['corte_ancho']);
-            $result[$iii]['corte_largo']       = floatval($row['corte_largo']);
-            $result[$iii]['imp_ancho']         = floatval($row['imp_ancho']);
-            $result[$iii]['imp_largo']         = floatval($row['imp_largo']);
-            $result[$iii]['impresion']         = trim(strval($row['impresion']));
-            $result[$iii]['costo_unitario ']   = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-    // Tablas serigrafia
-    public function getSerigrafiaTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                 = intval($row['id']);
-            $result[$iii]['id_odt']             = intval($row['id_odt']);
-            $result[$iii]['id_modelo']          = intval($row['id_modelo']);
-            $result[$iii]['tipo']               = utf8_encode(trim(strval($row['tipo'])));
-            $result[$iii]['tiraje']             = intval($row['tiraje']);
-            $result[$iii]['num_tintas']         = intval($row['num_tintas']);
-            $result[$iii]['cortes_por_pliego']  = intval($row['cortes_por_pliego']);
-            $result[$iii]['costo_unit_arreglo'] = floatval($row['costo_unit_arreglo']);
-            $result[$iii]['costo_arreglo']      = intval($row['costo_arreglo']);
-            $result[$iii]['costo_unit_tiro']    = floatval($row['costo_unit_tiro']);
-            $result[$iii]['costo_tiro']         = floatval($row['costo_tiro']);
-            $result[$iii]['costo_tot_proceso']  = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas barnizuv
-    public function getBarnizuvTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                 = intval($row['id']);
-            $result[$iii]['id_odt']             = intval($row['id_odt']);
-            $result[$iii]['id_modelo']          = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']       = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']             = floatval($row['largo']);
-            $result[$iii]['ancho']             = floatval($row['ancho']);
-            $result[$iii]['area']              = floatval($row['area']);
-            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-            $result[$iii]['cortes_por_pliego'] = intval($row['cortes_por_pliego']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas corte laser
-    public function getLaserTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                = intval($row['id']);
-            $result[$iii]['id_odt']            = intval($row['id_odt']);
-            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']      = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']             = floatval($row['largo']);
-            $result[$iii]['ancho']             = floatval($row['ancho']);
-            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
-            $result[$iii]['tiempo_requerido']  = floatval($row['tiempo_requerido']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas grabado
-    public function getGrabadoTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                     = intval($row['id']);
-            $result[$iii]['id_odt']                 = intval($row['id_odt']);
-            $result[$iii]['id_modelo']              = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']           = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']                  = floatval($row['largo']);
-            $result[$iii]['ancho']                  = floatval($row['ancho']);
-            $result[$iii]['ubicacion']              = trim(strval($row['ubicacion']));
-            $result[$iii]['placa_area']             = floatval($row['placa_area']);
-            $result[$iii]['placa_costo_unitario']   = floatval($row['placa_costo_unitario']);
-            $result[$iii]['placa_costo']            = floatval($row['placa_costo']);
-            $result[$iii]['arreglo_costo_unitario'] = floatval($row['arreglo_costo_unitario']);
-            $result[$iii]['arreglo_costo']          = floatval($row['arreglo_costo']);
-            $result[$iii]['costo_unitario']         = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tiro']             = floatval($row['costo_tiro']);
-            $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas HotStamping
-    public function getHotStampingTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                      = intval($row['id']);
-            $result[$iii]['id_odt']                  = intval($row['id_odt']);
-            $result[$iii]['id_modelo']               = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']            = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']                   = floatval($row['largo']);
-            $result[$iii]['ancho']                   = floatval($row['ancho']);
-            $result[$iii]['color']                   = trim(strval($row['color']));
-            $result[$iii]['placa_area']              = floatval($row['placa_area']);
-            $result[$iii]['placa_costo_unitario']    = floatval($row['placa_costo_unitario']);
-            $result[$iii]['placa_costo']             = floatval($row['placa_costo']);
-            $result[$iii]['pelicula_largo']          = intval($row['pelicula_largo']);
-            $result[$iii]['pelicula_ancho']          = intval($row['pelicula_ancho']);
-            $result[$iii]['pelicula_area']           = floatval($row['pelicula_area']);
-            $result[$iii]['pelicula_costo_unitario'] = floatval($row['pelicula_costo_unitario']);
-            $result[$iii]['pelicula_costo']          = floatval($row['pelicula_costo']);
-            $result[$iii]['arreglo_costo_unitario']  = floatval($row['arreglo_costo_unitario']);
-            $result[$iii]['arreglo_costo']           = floatval($row['arreglo_costo']);
-            $result[$iii]['costo_unitario']          = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tiro']              = floatval($row['costo_tiro']);
-            $result[$iii]['costo_tot_proceso']       = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas Suaje
-    public function getSuajeTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                      = intval($row['id']);
-            $result[$iii]['id_odt']                  = intval($row['id_odt']);
-            $result[$iii]['id_modelo']               = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']            = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']                   = floatval($row['largo']);
-            $result[$iii]['ancho']                   = floatval($row['ancho']);
-            $result[$iii]['perimetro']              = intval($row['perimetro']);
-            $result[$iii]['tabla_suaje']    = floatval($row['tabla_suaje']);
-            $result[$iii]['arreglo_costo_unitario']    = floatval($row['arreglo_costo_unitario']);
-            $result[$iii]['tiro_costo_unitario']             = floatval($row['tiro_costo_unitario']);
-            $result[$iii]['costo_tiro']          = intval($row['costo_tiro']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas Laminado
-    public function getLaminadoTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                = intval($row['id']);
-            $result[$iii]['id_odt']            = intval($row['id_odt']);
-            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']      = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']             = floatval($row['largo']);
-            $result[$iii]['ancho']             = floatval($row['ancho']);
-            $result[$iii]['area']              = floatval($row['area']);
-            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    public function readODT($num_odt) {
-
-        $sql = "SELECT * from cot_odt where status = 'A' and num_odt = '" . $num_odt . "'";
-
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        $result = array();
-
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[] = $row;
-        }
-
-        return $result;
     }
 
 
@@ -345,13 +25,13 @@ class RegaloModel {
         $id_usuario = intval($id_usuario);
 
         $id_modelo         = intval($aJson['modelo']);
-        $nomb_odt          = strtoupper(trim(strval($aJson['nomb_odt'])));
+        $nomb_odt          = strtoupper(self::strip_slashes_recursive($aJson['nomb_odt']));
         $id_cliente        = intval($aJson['id_cliente']);
         $tiraje            = intval($aJson['tiraje']);
-        $base              = floatval($aJson['base']);
-        $alto              = floatval($aJson['alto']);
-        $profundidad_cajon = floatval($aJson['profundidad_cajon']);
-        $profundidad_tapa  = floatval($aJson['profundidad_tapa']);
+        $base              = round(floatval($aJson['base']), 2);
+        $alto              = round(floatval($aJson['alto']), 2);
+        $profundidad_cajon = round(floatval($aJson['profundidad_cajon']), 2);
+        $profundidad_tapa  = round(floatval($aJson['profundidad_tapa']), 2);
         $id_grosor_carton  = intval($aJson['costo_grosor_carton']['id_papel']);
         $id_grosor_tapa    = intval($aJson['costo_grosor_tapa']['id_papel']);
         $id_usuario        = intval($aJson['id_usuario']);
@@ -362,21 +42,24 @@ class RegaloModel {
         $id_papel_FTap     = intval($aJson['papel_FTap']['id_papel']);
 
 
-        $costo_total_odt   = floatval($aJson['costo_odt']);
-        $subtotal          = floatval($aJson['costo_subtotal']);
-        $utilidad          = floatval($aJson['Utilidad']);
-        $iva               = floatval($aJson['iva']);
-        $ISR               = floatval($aJson['ISR']);
-        $comisiones        = floatval($aJson['comisiones']);
-        $indirecto         = floatval($aJson['indirecto']);
-        $ventas            = floatval($aJson['ventas']);
-        $descuento         = floatval($aJson['descuento']);
-        $descuento_pctje   = floatval($aJson['descuento_pctje']);
-        $empaque           = floatval($aJson['empaque']);
-        $mensajeria        = floatval($aJson['mensajeria']);
+        $costo_total_odt   = round(floatval($aJson['costo_odt']), 2);
+        $subtotal          = round(floatval($aJson['costo_subtotal']), 2);
+        $utilidad          = round(floatval($aJson['Utilidad']), 2);
+        $iva               = round(floatval($aJson['iva']), 2);
+        $ISR               = round(floatval($aJson['ISR']), 2);
+        $comisiones        = round(floatval($aJson['comisiones']), 2);
+        $indirecto         = round(floatval($aJson['indirecto']), 2);
+        $ventas            = round(floatval($aJson['ventas']), 2);
+        $descuento         = round(floatval($aJson['descuento']), 2);
+        $descuento_pctje   = round(floatval($aJson['descuento_pctje']), 2);
+        $empaque           = round(floatval($aJson['empaque']), 2);
+        $mensajeria        = round(floatval($aJson['mensajeria']), 2);
 
-        $keys              = trim(strval($aJson['keys']));
+        $keys              = self::strip_slashes_recursive($aJson['keys']);
 
+
+        $mensaje = "ERROR";
+        $error   = "Error al grabar en la tabla ";
 
         $l_existe = $ventas_model->chkODT();
 
@@ -395,13 +78,13 @@ class RegaloModel {
         $l_modificar_odt = false;
 
         $modificar = $_POST['modificar'];
-        $modificar = trim(strval($modificar));
+        $modificar = self::strip_slashes_recursive($modificar);
 
         if ($modificar == "SI") {
 
             $l_modificar_odt = true;
 
-            $id_odt_ant = intval($_POST['id_cot_odt_ant']);
+            $id_odt_ant = intval($_POST['id_odt_ant']);
         }
 
         try {
@@ -433,7 +116,7 @@ class RegaloModel {
 
             if ($id_caja_odt <= 0 or !$l_inserted) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la odt;");
+                self::mError($aJson, $mensaje, $error .  "odt;");
 
                 $l_inserted = false;
             }
@@ -441,9 +124,7 @@ class RegaloModel {
 
             if ($l_modificar_odt) {
 
-                //$sql_mod = "UPDATE cot_odt SET status = 'M', id_odt_ant = " . $id_caja_odt . ", id_usuario_baja = " . $id_usuario . ", fecha_baja = '$d_fecha', hora_baja = '$time' WHERE id_odt = " . $id_odt_ant;
                 $sql_mod = "UPDATE cot_odt SET status = 'M', id_usuario_baja = " . $id_usuario . ", fecha_baja = '$d_fecha', hora_baja = '$time' WHERE id_odt = " . $id_odt_ant;
-                //$sql_mod = "UPDATE cot_odt SET status = 'M' WHERE id_odt = " . $id_odt_anterior;
 
                 $query_mod_odt = $this->db->prepare($sql_mod);
 
@@ -451,10 +132,9 @@ class RegaloModel {
 
                 if (!$mod_odt) {
 
-                    self::mError($aJson, $mensaje, "Error al actualizar en la odt;");
+                    self::mError($aJson, $mensaje, $error .  "odt;");
 
                     $l_inserted = false;
-                    $mod_odt    = false;
                 }
             }
 
@@ -462,41 +142,41 @@ class RegaloModel {
         // Calculadora
             $l_calculadora = true;
 
-            $b     = floatval($aJson['Calculadora']['b']);
-            $h     = floatval($aJson['Calculadora']['h']);
-            $p     = floatval($aJson['Calculadora']['p']);
-            $T     = floatval($aJson['Calculadora']['T']);
-            $g     = floatval($aJson['Calculadora']['g']);
-            $G     = floatval($aJson['Calculadora']['G']);
-            $e     = floatval($aJson['Calculadora']['e']);
-            $E     = floatval($aJson['Calculadora']['E']);
-            $b1    = floatval($aJson['Calculadora']['b1']);
-            $h1    = floatval($aJson['Calculadora']['h1']);
-            $p1    = floatval($aJson['Calculadora']['p1']);
-            $x     = floatval($aJson['Calculadora']['x']);
-            $y     = floatval($aJson['Calculadora']['y']);
-            $x1    = floatval($aJson['Calculadora']['x1']);
-            $y1    = floatval($aJson['Calculadora']['y1']);
-            $x11   = floatval($aJson['Calculadora']['x11']);
-            $y11   = floatval($aJson['Calculadora']['y11']);
-            $b11   = floatval($aJson['Calculadora']['b11']);
-            $h11   = floatval($aJson['Calculadora']['h11']);
-            $f     = floatval($aJson['Calculadora']['f']);
-            $k     = floatval($aJson['Calculadora']['k']);
-            $B     = floatval($aJson['Calculadora']['B']);
-            $H     = floatval($aJson['Calculadora']['H']);
-            $X     = floatval($aJson['Calculadora']['X']);
-            $Y     = floatval($aJson['Calculadora']['Y']);
-            $B1    = floatval($aJson['Calculadora']['B1']);
-            $H1    = floatval($aJson['Calculadora']['H1']);
-            $X1    = floatval($aJson['Calculadora']['X1']);
-            $Y1    = floatval($aJson['Calculadora']['Y1']);
-            $X11   = floatval($aJson['Calculadora']['X11']);
-            $Y11   = floatval($aJson['Calculadora']['Y11']);
-            $B11   = floatval($aJson['Calculadora']['B11']);
-            $H11   = floatval($aJson['Calculadora']['H11']);
-            $F     = floatval($aJson['Calculadora']['F']);
-            $K     = floatval($aJson['Calculadora']['K']);
+            $b     = round(floatval($aJson['Calculadora']['b']), 3);
+            $h     = round(floatval($aJson['Calculadora']['h']), 3);
+            $p     = round(floatval($aJson['Calculadora']['p']), 3);
+            $T     = round(floatval($aJson['Calculadora']['T']), 3);
+            $g     = round(floatval($aJson['Calculadora']['g']), 3);
+            $G     = round(floatval($aJson['Calculadora']['G']), 3);
+            $e     = round(floatval($aJson['Calculadora']['e']), 3);
+            $E     = round(floatval($aJson['Calculadora']['E']), 3);
+            $b1    = round(floatval($aJson['Calculadora']['b1']), 3);
+            $h1    = round(floatval($aJson['Calculadora']['h1']), 3);
+            $p1    = round(floatval($aJson['Calculadora']['p1']), 3);
+            $x     = round(floatval($aJson['Calculadora']['x']), 3);
+            $y     = round(floatval($aJson['Calculadora']['y']), 3);
+            $x1    = round(floatval($aJson['Calculadora']['x1']), 3);
+            $y1    = round(floatval($aJson['Calculadora']['y1']), 3);
+            $x11   = round(floatval($aJson['Calculadora']['x11']), 3);
+            $y11   = round(floatval($aJson['Calculadora']['y11']), 3);
+            $b11   = round(floatval($aJson['Calculadora']['b11']), 3);
+            $h11   = round(floatval($aJson['Calculadora']['h11']), 3);
+            $f     = round(floatval($aJson['Calculadora']['f']), 3);
+            $k     = round(floatval($aJson['Calculadora']['k']), 3);
+            $B     = round(floatval($aJson['Calculadora']['B']), 3);
+            $H     = round(floatval($aJson['Calculadora']['H']), 3);
+            $X     = round(floatval($aJson['Calculadora']['X']), 3);
+            $Y     = round(floatval($aJson['Calculadora']['Y']), 3);
+            $B1    = round(floatval($aJson['Calculadora']['B1']), 3);
+            $H1    = round(floatval($aJson['Calculadora']['H1']), 3);
+            $X1    = round(floatval($aJson['Calculadora']['X1']), 3);
+            $Y1    = round(floatval($aJson['Calculadora']['Y1']), 3);
+            $X11   = round(floatval($aJson['Calculadora']['X11']), 3);
+            $Y11   = round(floatval($aJson['Calculadora']['Y11']), 3);
+            $B11   = round(floatval($aJson['Calculadora']['B11']), 3);
+            $H11   = round(floatval($aJson['Calculadora']['H11']), 3);
+            $F     = round(floatval($aJson['Calculadora']['F']), 3);
+            $K     = round(floatval($aJson['Calculadora']['K']), 3);
 
 
 
@@ -509,7 +189,7 @@ class RegaloModel {
 
             if (!$l_calculadora) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en la calculadora;");
+                self::mError($aJson, $mensaje, $error .  "calculadora;");
 
                 $l_calculadora = false;
             }
@@ -522,15 +202,15 @@ class RegaloModel {
             $id_papel      = intval($aJson['costo_grosor_carton']['id_papel']);
             $num_carton    = intval($aJson['costo_grosor_carton']['num_carton']);
             $cantidad      = $tiraje;
-            $nombre        = trim(strval($aJson['costo_grosor_carton']['nombre_papel']));
-            $costo_unit    = floatval($aJson['costo_grosor_carton']['costo_unit_papel']);
-            $ancho         = floatval($aJson['costo_grosor_carton']['ancho_papel']);
-            $largo         = floatval($aJson['costo_grosor_carton']['largo_papel']);
-            $c_ancho       = floatval($aJson['costo_grosor_carton']['calculadora']['corte_ancho']);
-            $c_largo       = floatval($aJson['costo_grosor_carton']['calculadora']['corte_largo']);
+            $nombre        = self::strip_slashes_recursive($aJson['costo_grosor_carton']['nombre_papel']);
+            $costo_unit    = round(floatval($aJson['costo_grosor_carton']['costo_unit_papel']), 4);
+            $ancho         = round(floatval($aJson['costo_grosor_carton']['ancho_papel']), 2);
+            $largo         = round(floatval($aJson['costo_grosor_carton']['largo_papel']), 2);
+            $c_ancho       = round(floatval($aJson['costo_grosor_carton']['calculadora']['corte_ancho']), 2);
+            $c_largo       = round(floatval($aJson['costo_grosor_carton']['calculadora']['corte_largo']), 2);
             $corte         = intval($aJson['costo_grosor_carton']['corte']);
-            $tot_pliegos   = floatval($aJson['costo_grosor_carton']['tot_pliegos']);
-            $tot_costo     = floatval($aJson['costo_grosor_carton']['tot_costo']);
+            $tot_pliegos   = intval($aJson['costo_grosor_carton']['tot_pliegos']);
+            $tot_costo     = round(floatval($aJson['costo_grosor_carton']['tot_costo']), 2);
 
 
 
@@ -547,27 +227,28 @@ class RegaloModel {
 
             if (!$inserted_papel_car) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en carton cajon;");
+                self::mError($aJson, $mensaje, $error .  "carton;");
 
                 $inserted_papel_car = false;
             }
 
 
-            $inserted_papel_cartap = true;
-
 
         /******* Carton de la Tapa *******/
-            $id_papel     = intval($aJson['costo_grosor_tapa']['id_papel']);
+
+            $inserted_papel_cartap = true;
+
+            $id_papel      = intval($aJson['costo_grosor_tapa']['id_papel']);
             $num_carton    = intval($aJson['costo_grosor_tapa']['num_carton']);
             $cantidad      = $tiraje;
-            $nombre        = trim(strval($aJson['costo_grosor_tapa']['nombre_papel']));
-            $costo_unit    = floatval($aJson['costo_grosor_tapa']['costo_unit_papel']);
-            $ancho         = floatval($aJson['costo_grosor_tapa']['ancho_papel']);
-            $largo         = floatval($aJson['costo_grosor_tapa']['largo_papel']);
-            $c_ancho       = floatval($aJson['costo_grosor_tapa']['calculadora']['corte_ancho']);
-            $c_largo       = floatval($aJson['costo_grosor_tapa']['calculadora']['corte_largo']);
+            $nombre        = self::strip_slashes_recursive($aJson['costo_grosor_tapa']['nombre_papel']);
+            $costo_unit    = round(floatval($aJson['costo_grosor_tapa']['costo_unit_papel']), 4);
+            $ancho         = round(floatval($aJson['costo_grosor_tapa']['ancho_papel']), 2);
+            $largo         = round(floatval($aJson['costo_grosor_tapa']['largo_papel']), 2);
+            $c_ancho       = round(floatval($aJson['costo_grosor_tapa']['calculadora']['corte_ancho']), 2);
+            $c_largo       = round(floatval($aJson['costo_grosor_tapa']['calculadora']['corte_largo']), 2);
             $corte         = intval($aJson['costo_grosor_tapa']['corte']);
-            $tot_pliegos   = floatval($aJson['costo_grosor_tapa']['tot_pliegos']);
+            $tot_pliegos   = intval($aJson['costo_grosor_tapa']['tot_pliegos']);
             $tot_costo     = floatval($aJson['costo_grosor_tapa']['tot_costo']);
 
 
@@ -584,7 +265,7 @@ class RegaloModel {
 
             if (!$inserted_papel_cartap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar carton tapa;");
+                self::mError($aJson, $mensaje, $error .  "carton tapa;");
 
                 $inserted_papel_cartap = false;
             }
@@ -598,15 +279,15 @@ class RegaloModel {
             $inserted_papel_empcaj = true;
 
             $id_papel          = intval($aJson['papel_Emp']['id_papel']);
-            $nombre            = trim(strval($aJson['papel_Emp']['nombre_papel']));
-            $ancho             = floatval($aJson['papel_Emp']['ancho_papel']);
-            $largo             = floatval($aJson['papel_Emp']['largo_papel']);
-            $costo_unit        = floatval($aJson['papel_Emp']['costo_unit_papel']);
+            $nombre            = self::strip_slashes_recursive($aJson['papel_Emp']['nombre_papel']);
+            $ancho             = round(floatval($aJson['papel_Emp']['ancho_papel']), 2);
+            $largo             = round(floatval($aJson['papel_Emp']['largo_papel']), 2);
+            $costo_unit        = round(floatval($aJson['papel_Emp']['costo_unit_papel']), 4);
             $cortes            = intval($aJson['papel_Emp']['corte']);
             $pliegos           = intval($aJson['papel_Emp']['tot_pliegos']);
-            $costo_tot_pliegos = floatval($aJson['papel_Emp']['tot_costo']);
-            $corte_ancho       = floatval($aJson['papel_Emp']['calculadora']['corte_ancho']);
-            $corte_largo       = floatval($aJson['papel_Emp']['calculadora']['corte_largo']);
+            $costo_tot_pliegos = round(floatval($aJson['papel_Emp']['tot_costo']), 2);
+            $corte_ancho       = round(floatval($aJson['papel_Emp']['calculadora']['corte_ancho']), 2);
+            $corte_largo       = round(floatval($aJson['papel_Emp']['calculadora']['corte_largo']), 2);
 
 
             $sql_papel_empcaj = "INSERT INTO cot_reg_papelempcaj
@@ -621,7 +302,7 @@ class RegaloModel {
 
             if (!$inserted_papel_empcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar papel empalme cajon;");
+                self::mError($aJson, $mensaje, $error .  "papel empalme cajon;");
 
                 $inserted_papel_empcaj = false;
             }
@@ -631,15 +312,15 @@ class RegaloModel {
             $inserted_papel_fcaj = true;
 
             $id_papel          = intval($aJson['papel_FCaj']['id_papel']);
-            $nombre            = trim(strval($aJson['papel_FCaj']['nombre_papel']));
-            $ancho             = floatval($aJson['papel_FCaj']['ancho_papel']);
-            $largo             = floatval($aJson['papel_FCaj']['largo_papel']);
-            $costo_unit        = floatval($aJson['papel_FCaj']['costo_unit_papel']);
+            $nombre            = self::strip_slashes_recursive($aJson['papel_FCaj']['nombre_papel']);
+            $ancho             = round(floatval($aJson['papel_FCaj']['ancho_papel']), 2);
+            $largo             = round(floatval($aJson['papel_FCaj']['largo_papel']), 2);
+            $costo_unit        = round(floatval($aJson['papel_FCaj']['costo_unit_papel']), 4);
             $cortes            = intval($aJson['papel_FCaj']['corte']);
             $pliegos           = intval($aJson['papel_FCaj']['tot_pliegos']);
-            $costo_tot_pliegos = floatval($aJson['papel_FCaj']['tot_costo']);
-            $corte_ancho       = floatval($aJson['papel_FCaj']['calculadora']['corte_ancho']);
-            $corte_largo       = floatval($aJson['papel_FCaj']['calculadora']['corte_largo']);
+            $costo_tot_pliegos = round(floatval($aJson['papel_FCaj']['tot_costo']), 2);
+            $corte_ancho       = round(floatval($aJson['papel_FCaj']['calculadora']['corte_ancho']), 2);
+            $corte_largo       = round(floatval($aJson['papel_FCaj']['calculadora']['corte_largo']), 2);
 
 
             $sql_papel_fcaj = "INSERT INTO cot_reg_papelfcaj
@@ -654,7 +335,7 @@ class RegaloModel {
 
             if (!$inserted_papel_fcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar papel forro cajon;");
+                self::mError($aJson, $mensaje, $error .  "papel forro cajon;");
 
                 $inserted_papel_fcaj = false;
             }
@@ -664,15 +345,15 @@ class RegaloModel {
             $inserted_papel_emptap = true;
 
             $id_papel          = intval($aJson['papel_EmpTap']['id_papel']);
-            $nombre            = trim(strval($aJson['papel_EmpTap']['nombre_papel']));
-            $ancho             = floatval($aJson['papel_EmpTap']['ancho_papel']);
-            $largo             = floatval($aJson['papel_EmpTap']['largo_papel']);
-            $costo_unit        = floatval($aJson['papel_EmpTap']['costo_unit_papel']);
+            $nombre            = self::strip_slashes_recursive($aJson['papel_EmpTap']['nombre_papel']);
+            $ancho             = round(floatval($aJson['papel_EmpTap']['ancho_papel']), 2);
+            $largo             = round(floatval($aJson['papel_EmpTap']['largo_papel']), 2);
+            $costo_unit        = round(floatval($aJson['papel_EmpTap']['costo_unit_papel']), 4);
             $cortes            = intval($aJson['papel_EmpTap']['corte']);
             $pliegos           = intval($aJson['papel_EmpTap']['tot_pliegos']);
-            $costo_tot_pliegos = floatval($aJson['papel_EmpTap']['tot_costo']);
-            $corte_ancho       = floatval($aJson['papel_EmpTap']['calculadora']['corte_ancho']);
-            $corte_largo       = floatval($aJson['papel_EmpTap']['calculadora']['corte_largo']);
+            $costo_tot_pliegos = round(floatval($aJson['papel_EmpTap']['tot_costo']), 2);
+            $corte_ancho       = round(floatval($aJson['papel_EmpTap']['calculadora']['corte_ancho']), 2);
+            $corte_largo       = round(floatval($aJson['papel_EmpTap']['calculadora']['corte_largo']), 2);
 
 
             $sql_papel_emptap = "INSERT INTO cot_reg_papelemptap
@@ -688,7 +369,7 @@ class RegaloModel {
 
             if (!$inserted_papel_emptap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar papel empalme tapa;");
+                self::mError($aJson, $mensaje, $error .  "papel empalme tapa;");
 
                 $inserted_papel_emptap = false;
             }
@@ -698,15 +379,15 @@ class RegaloModel {
             $inserted_papel_ftap = true;
 
             $id_papel          = intval($aJson['papel_FTap']['id_papel']);
-            $nombre            = trim(strval($aJson['papel_FTap']['nombre_papel']));
-            $ancho             = floatval($aJson['papel_FTap']['ancho_papel']);
-            $largo             = floatval($aJson['papel_FTap']['largo_papel']);
-            $costo_unit        = floatval($aJson['papel_FTap']['costo_unit_papel']);
+            $nombre            = self::strip_slashes_recursive($aJson['papel_FTap']['nombre_papel']);
+            $ancho             = round(floatval($aJson['papel_FTap']['ancho_papel']), 2);
+            $largo             = round(floatval($aJson['papel_FTap']['largo_papel']), 2);
+            $costo_unit        = round(floatval($aJson['papel_FTap']['costo_unit_papel']), 4);
             $cortes            = intval($aJson['papel_FTap']['corte']);
             $pliegos           = intval($aJson['papel_FTap']['tot_pliegos']);
-            $costo_tot_pliegos = floatval($aJson['papel_FTap']['tot_costo']);
-            $corte_ancho       = floatval($aJson['papel_FTap']['calculadora']['corte_ancho']);
-            $corte_largo       = floatval($aJson['papel_FTap']['calculadora']['corte_largo']);
+            $costo_tot_pliegos = round(floatval($aJson['papel_FTap']['tot_costo']), 2);
+            $corte_ancho       = round(floatval($aJson['papel_FTap']['calculadora']['corte_ancho']), 2);
+            $corte_largo       = round(floatval($aJson['papel_FTap']['calculadora']['corte_largo']), 2);
 
             $sql_papel_ftap = "INSERT INTO cot_reg_papelftap
                 (id_modelo, id_odt, id_papel, nombre, ancho, largo, costo_unitario, tiraje, cortes, pliegos, costo_tot_pliegos, corte_ancho, corte_largo, fecha)
@@ -720,7 +401,7 @@ class RegaloModel {
 
             if (!$inserted_papel_ftap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar papel forro tapa;");
+                self::mError($aJson, $mensaje, $error .  "papel forro tapa;");
 
                 $inserted_papel_ftap = false;
             }
@@ -737,10 +418,10 @@ class RegaloModel {
 
             $ranurado = $aJson['ranurado'];
 
-            $arreglo               = floatval($ranurado['arreglo']);
-            $costo_unit_por_ranura = floatval($ranurado['costo_unit_por_ranura']);
-            $costo_por_ranura      = floatval($ranurado['costo_por_ranura']);
-            $costo_tot_proceso     = floatval($ranurado['costo_tot_proceso']);
+            $arreglo               = round(floatval($ranurado['arreglo']), 2);
+            $costo_unit_por_ranura = round(floatval($ranurado['costo_unit_por_ranura']), 2);
+            $costo_por_ranura      = round(floatval($ranurado['costo_por_ranura']), 2);
+            $costo_tot_proceso     = round(floatval($ranurado['costo_tot_proceso']), 2);
 
 
             $sql_ranurado = "INSERT INTO cot_reg_ranurado
@@ -755,7 +436,7 @@ class RegaloModel {
 
             if (!$l_ranurado) {
 
-                self::mError($aJson, $mensaje, "Error al grabar en ranurado;");
+                self::mError($aJson, $mensaje, $error .  "ranurado;");
 
                 $l_ranurado = false;
             }
@@ -766,10 +447,10 @@ class RegaloModel {
 
             $ranurado = $aJson['ranurado'];
 
-            $arreglo               = floatval($ranurado['arreglo']);
-            $costo_unit_por_ranura = floatval($ranurado['costo_unit_por_ranura']);
-            $costo_por_ranura      = floatval($ranurado['costo_por_ranura']);
-            $costo_tot_proceso     = floatval($ranurado['costo_tot_proceso']);
+            $arreglo               = round(floatval($ranurado['arreglo']), 2);
+            $costo_unit_por_ranura = round(floatval($ranurado['costo_unit_por_ranura']), 2);
+            $costo_por_ranura      = round(floatval($ranurado['costo_por_ranura']), 2);
+            $costo_tot_proceso     = round(floatval($ranurado['costo_tot_proceso']), 2);
 
 
             $sql_ranurado = "INSERT INTO cot_reg_ranurado_tap
@@ -784,7 +465,7 @@ class RegaloModel {
 
             if (!$l_ranurado_tap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar ranurado tapa;");
+                self::mError($aJson, $mensaje, $error .  "ranurado tapa;");
 
                 $l_ranurado_tap = false;
             }
@@ -794,20 +475,23 @@ class RegaloModel {
         // encuadernacion
             $l_encuadernacion = true;
 
-            $perf_iman_costo_unitario        = floatval($aJson['encuadernacion']['perf_iman_costo_unitario']);
-            $perf_iman_y_puesta              = floatval($aJson['encuadernacion']['perf_iman_y_puesta']);
-            $despunte_costo_unitario         = floatval($aJson['despunte_esquinas_emptap']['costo_unitario_esquinas']);
-            $despunte_de_esquinas_para_cajon = floatval($aJson['despunte_esquinas_emptap']['costo_tot_proceso']);
-            $encajada_costo_unitario         = floatval($aJson['elab_FCaj']['enc_encajada_costo_unitario']);
-            $costo_encajada                  = floatval($aJson['elab_FCaj']['enc_encajada_costo_tot']);
-            $costo_tot_proceso               = floatval($aJson['encuadernacion']['costo_tot_proceso']);
-            $costo_tot_encuadernacion               = floatval($costo_tot_proceso + $costo_encajada);
+            $aEncuadernacion = $aJson['encuadernacion'];
 
+            $encuad_encajada_costo_unitario         = round(floatval($aEncuadernacion['encajada_costo_unitario']), 2);
+            $encuad_encajada                        = round(floatval($aEncuadernacion['encajada_costo_tot']), 2);
+            $arreglo_forrado_cajon_costo_unitario   = round(floatval($aJson['encuadernacion']['arreglo_forrado_cajon_costo_unitario']), 2);
+            $arreglo_forrado_cajon_costo_tot        = round(floatval($aJson['encuadernacion']['arreglo_forrado_cajon_costo']), 2);
+            $forrado_cajon_costo_unitario           = round(floatval($aJson['encuadernacion']['forrado_cajon_costo_unitario']), 2);
+            $forrado_cajon_costo                    = round(floatval($aJson['encuadernacion']['forrado_cajon_costo']), 2);
+            $encuad_costo_tot_proceso               = round(floatval($aEncuadernacion['costo_tot_proceso']), 2);
+
+
+            unset($aEncuadernacion);
 
             $sql_encuadernacion = "INSERT INTO cot_reg_encuadernacion
-                (id_modelo, id_odt, tiraje, costo_unit_iman, perforado_iman_y_puesta, despunte_costo_unit, despunte_esquina_cajon, encajada_costo_unit, encajada_costo_tot, costo_tot_proceso, costo_tot_encuadernacion, fecha)
+                (id_modelo, id_odt, tiraje, encajada_costo_unit, encajada_costo_tot, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, costo_tot_proceso, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $perf_iman_costo_unitario, $perf_iman_y_puesta, $despunte_costo_unitario, $despunte_de_esquinas_para_cajon, $encajada_costo_unitario, $costo_encajada, $costo_tot_proceso, $costo_tot_encuadernacion, '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $encuad_encajada_costo_unitario, $encuad_encajada, $arreglo_forrado_cajon_costo_unitario, $arreglo_forrado_cajon_costo_tot, $forrado_cajon_costo_unitario, $forrado_cajon_costo, $encuad_costo_tot_proceso, '$d_fecha')";
 
 
             $query_encuadernacion = $this->db->prepare($sql_encuadernacion);
@@ -816,27 +500,60 @@ class RegaloModel {
 
             if (!$l_encuadernacion) {
 
-                self::mError($aJson, $mensaje, "Error al grabar encuadernacion;");
+                self::mError($aJson, $mensaje, $error . "encuadernacion;");
 
                 $l_encuadernacion = false;
             }
 
 
-            // Encuadernacion forro del Cajon
+            $forrado_cajon_costo_unit = $aJson['encuadernacion_fcaj']['forrado_cajon_costo_unit'];
+            $forrado_de_cajon = $aJson['encuadernacion_fcaj']['forrado_de_cajon'];
+
+            $empalme_cajon_costo_unitario = $aJson['encuadernacion_fcaj']['empalme_cajon_costo_unitario'];
+            $empalme_de_cajon = $aJson['encuadernacion_fcaj']['empalme_de_cajon'];
+            
+            $arreglo_de_forrado_de_cajon = $aJson['encuadernacion_fcaj']['arreglo_de_forrado_de_cajon'];
+            $arreglo_de_forrado_de_cajon = $aJson['encuadernacion_fcaj']['arreglo_de_forrado_de_cajon'];
+
+            $costo_tot_proceso = $aJson['encuadernacion_fcaj']['costo_tot_proceso'];
+
+
+            // encuadernacion forro del cajon
+            $sql_encuadernacionfcaj = "INSERT INTO cot_reg_encuadernacionfcaj
+                (id_modelo, id_odt, tiraje, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, empalme_cajon_costo_unitario, empalme_de_cajon, costo_tot_proceso, fecha)
+            VALUES
+                ($id_modelo, $id_caja_odt, $tiraje, $arreglo_de_forrado_de_cajon, $arreglo_de_forrado_de_cajon, $forrado_cajon_costo_unit, $forrado_de_cajon, $empalme_cajon_costo_unitario, $empalme_de_cajon, $costo_tot_proceso, '$d_fecha')";
+
+
+            $query_encuadernacionfcaj = $this->db->prepare($sql_encuadernacionfcaj);
+
+            $l_encuadernacionfcaj = $query_encuadernacionfcaj->execute();
+
+            if (!$l_encuadernacionfcaj) {
+
+                self::mError($aJson, $mensaje, $error . "encuadernacion;");
+
+                $l_encuadernacionfcaj = false;
+            }
+
+
+            // Elaboracion forro del Cajon
             $l_elab_fcaj = true;
 
-            $forro_costo_unit       = floatval($aJson['elab_FCaj']['costo_unit_forrado_cajon']);
-            $forro_cajon            = floatval($aJson['elab_FCaj']['forrado_de_cajon']);
-            $arreglo                = floatval($aJson['elab_FCaj']['arreglo']);
-            $empalme_costo_unitario = floatval($aJson['elab_FCaj']['empalme_cajon_costo_unitario']);
-            $empalme_de_cajon       = floatval($aJson['elab_FCaj']['empalme_de_cajon']);
-            $costo_total            = floatval($aJson['elab_FCaj']['costo_tot_proceso']);
+            $forro_costo_unit       = round(floatval($aJson['elab_FCaj']['costo_unit_forrado_cajon']), 2);
+            $forro_cajon            = round(floatval($aJson['elab_FCaj']['forrado_de_cajon']), 2);
+            $arreglo                = round(floatval($aJson['elab_FCaj']['arreglo']), 2);
+            $empalme_costo_unitario = round(floatval($aJson['elab_FCaj']['empalme_cajon_costo_unitario']), 2);
+            $empalme_de_cajon       = round(floatval($aJson['elab_FCaj']['empalme_de_cajon']), 2);
+            $enc_encajada_costo_unit = round(floatval($aJson['elab_FCaj']['enc_encajada_costo_unitario']), 2);
+            $enc_encajada_costo_tot       = round(floatval($aJson['elab_FCaj']['enc_encajada_costo_tot']), 2);
+            $costo_total            = round(floatval($aJson['elab_FCaj']['costo_tot_proceso']), 2);
 
 
             $sql_elabfcaj = "INSERT INTO cot_reg_elab_fcaj
-                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, costo_total, fecha)
+                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, enc_encajada_costo_unit, enc_encajada_costo_tot, costo_total, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $costo_total,  '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $enc_encajada_costo_unit, $enc_encajada_costo_tot, $costo_total,  '$d_fecha')";
 
 
             $query_elabfcaj = $this->db->prepare($sql_elabfcaj);
@@ -845,7 +562,7 @@ class RegaloModel {
 
             if (!$l_elab_fcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar elaboracion forro cajon;");
+                self::mError($aJson, $mensaje, $error . "elaboracion forro cajon;");
 
                 $l_elab_fcaj = false;
             }
@@ -854,17 +571,19 @@ class RegaloModel {
             // Encuadernacion forro de la Tapa
             $l_elab_ftap = true;
 
-            $forro_costo_unit       = floatval($aJson['elab_FTap']['costo_unit_forrado_cajon']);
-            $forro_cajon            = floatval($aJson['elab_FTap']['forrado_de_cajon']);
-            $arreglo                = floatval($aJson['elab_FTap']['arreglo']);
-            $empalme_costo_unitario = floatval($aJson['elab_FTap']['empalme_cajon_costo_unitario']);
-            $empalme_de_cajon       = floatval($aJson['elab_FTap']['empalme_de_cajon']);
-            $costo_total            = floatval($aJson['elab_FTap']['costo_tot_proceso']);
+            $forro_costo_unit       = round(floatval($aJson['elab_FTap']['costo_unit_forrado_cajon']), 2);
+            $forro_cajon            = round(floatval($aJson['elab_FTap']['forrado_de_cajon']), 2);
+            $arreglo                = round(floatval($aJson['elab_FTap']['arreglo']), 2);
+            $empalme_costo_unitario = round(floatval($aJson['elab_FTap']['empalme_cajon_costo_unitario']), 2);
+            $empalme_de_cajon       = round(floatval($aJson['elab_FTap']['empalme_de_cajon']), 2);
+            $enc_encajada_costo_unit = round(floatval($aJson['elab_FTap']['enc_encajada_costo_unitario']), 2);
+            $enc_encajada_costo_tot       = round(floatval($aJson['elab_FTap']['enc_encajada_costo_tot']), 2);
+            $costo_total            = round(floatval($aJson['elab_FTap']['costo_tot_proceso']), 2);
 
             $sql_elab_ftap = "INSERT INTO cot_reg_elab_ftap
-                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, costo_total, fecha)
+                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, enc_encajada_costo_unit, enc_encajada_costo_tot, costo_total, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $costo_total,  '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $enc_encajada_costo_unit, $enc_encajada_costo_tot, $costo_total,  '$d_fecha')";
 
 
             $query_elab_ftap = $this->db->prepare($sql_elab_ftap);
@@ -873,21 +592,24 @@ class RegaloModel {
 
             if (!$l_elab_ftap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar elaboracion forro tapa;");
+                self::mError($aJson, $mensaje, $error . "elaboracion forro tapa;");
 
                 $l_elab_ftap = false;
             }
 
 
+//// aqui me quede...
+
+            
             // corte carton
             $l_corte_carton_empcaj  = true;
 
             // corte carton empalme
-            $corte_costo_unitario = floatval($aJson['costo_corte_carton_empcaj']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_carton_empcaj']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_corte_carton_empcaj']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_carton_empcaj']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_carton_empcaj']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_carton_empcaj']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_carton_empcaj']['tot_costo_corte']), 2);
 
             $sql_corte_carton = "INSERT INTO cot_reg_corte_carton_empcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -901,7 +623,7 @@ class RegaloModel {
 
             if (!$l_corte_carton_empcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte carton empalme cajon;");
+                self::mError($aJson, $mensaje, $error . "corte carton empalme cajon;");
 
                 $l_corte_carton_empcaj = false;
             }
@@ -910,11 +632,11 @@ class RegaloModel {
             // corte carton empalme tapa
             $l_corte_carton_emptap = true;
 
-            $corte_costo_unitario = floatval($aJson['costo_corte_carton_emptap']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_carton_emptap']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_corte_carton_emptap']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_carton_emptap']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_carton_emptap']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_carton_emptap']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_carton_emptap']['tot_costo_corte']), 2);
 
             $sql_corte_carton_emptap = "INSERT INTO cot_reg_corte_carton_emptap
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -928,20 +650,20 @@ class RegaloModel {
 
             if (!$l_corte_carton_emptap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte carton empalme tapa;");
+                self::mError($aJson, $mensaje, $error . "corte carton empalme tapa;");
 
                 $l_corte_carton_emptap = false;
             }
 
 
             // corte carton empalme
-            $l_corte_carton_emp  = true;
+            $l_corte_papel_empcaj  = true;
 
-            $corte_costo_unitario = floatval($aJson['costo_papel_corte']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_papel_corte']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_papel_corte']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_papel_corte']['tot_pliegos']);
             $millares             = intval($aJson['costo_papel_corte']['millares']);
-            $costo_corte          = floatval($aJson['costo_papel_corte']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_papel_corte']['tot_costo_corte']), 2);
 
             $sql_corte_papel = "INSERT INTO cot_reg_corte_papel_empcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -951,24 +673,24 @@ class RegaloModel {
 
             $query_corte_papel = $this->db->prepare($sql_corte_papel);
 
-            $l_corte_carton_emp = $query_corte_papel->execute();
+            $l_corte_papel_empcaj = $query_corte_papel->execute();
 
-            if (!$l_corte_carton_emp) {
+            if (!$l_corte_papel_empcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte carton empalme cajon;");
+                self::mError($aJson, $mensaje, $error . "corte papel empalme cajon;");
 
-                $l_corte_carton_emp = false;
+                $l_corte_papel_empcaj = false;
             }
 
 
             // corte papel empalme
-            $l_corte_papel_emp_emptap = true;
+            $l_corte_papel_emptap = true;
 
-            $corte_costo_unitario = floatval($aJson['costo_papel_corte_emptap']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_papel_corte_emptap']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_papel_corte_emptap']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_papel_corte_emptap']['tot_pliegos']);
             $millares             = intval($aJson['costo_papel_corte_emptap']['millares']);
-            $costo_corte          = floatval($aJson['costo_papel_corte_emptap']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_papel_corte_emptap']['tot_costo_corte']), 2);
 
             $sql_corte_papel_emptap = "INSERT INTO cot_reg_corte_papel_emptap
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -983,7 +705,7 @@ class RegaloModel {
 
             if (!$l_corte_papel_emp_emptap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte papel empalme;");
+                self::mError($aJson, $mensaje, $error . "corte papel empalme tapa;");
 
                 $l_corte_papel_emp_emptap = false;
             }
@@ -992,11 +714,11 @@ class RegaloModel {
             // corte refine empalme
             $l_corte_refine_emp  = true;
 
-            $corte_costo_unitario = floatval($aJson['costo_corte_refine_emp']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_refine_emp']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_corte_refine_emp']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_refine_emp']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_refine_emp']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_refine_emp']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_refine_emp']['tot_costo_corte']), 2);
 
             $sql_corte_refine = "INSERT INTO cot_reg_corte_refine_empcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -1011,49 +733,52 @@ class RegaloModel {
 
             if (!$l_corte_refine_emp) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte refine empalme cajon;");
+                self::mError($aJson, $mensaje, $error . "corte refine empalme cajon;");
 
                 $l_corte_refine_emp = false;
             }
 
 
-            // corte refine empalmado tapa 
-            $l_corte_refine_empalmado_emptap = true;
+            // corte refine empalmado tapa
+            $l_corte_refine_emptap = true;
 
-            $corte_costo_unitario = floatval($aJson['costo_papel_corte_emptap']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_papel_corte_emptap']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_papel_corte_emptap']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_papel_corte_emptap']['tot_pliegos']);
             $millares             = intval($aJson['costo_papel_corte_emptap']['millares']);
-            $costo_corte          = floatval($aJson['costo_papel_corte_emptap']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_papel_corte_emptap']['tot_costo_corte']), 2);
 
-            $sql_corte_refine_empalmado_emptap = "INSERT INTO cot_reg_corte_refine_emptap
+            $sql_corte_refine_emptap = "INSERT INTO cot_reg_corte_refine_emptap
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
             VALUES
                 ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
 
 
-            $query_corte_refine_empalmado_emptap = $this->db->prepare($sql_corte_refine_empalmado_emptap);
+            $query_corte_refine_emptap = $this->db->prepare($sql_corte_refine_emptap);
 
-            $l_corte_refine_empalmado_emptap = $query_corte_refine_empalmado_emptap->execute();
+            $l_corte_refine_emptap = $query_corte_refine_emptap->execute();
 
 
-            if (!$l_corte_refine_empalmado_emptap) {
+            if (!$l_corte_refine_emptap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte refine empalme tapa;");
+                self::mError($aJson, $mensaje, $error . "corte refine empalme tapa;");
 
-                $l_corte_refine_empalmado_emptap = false;
+                $l_corte_refine_emptap = false;
             }
 
 
         // arreglo ranurado horizontal
             $l_arr_ran_hor_emp = true;
 
-            $costo_unit = floatval($aJson['arreglo_ranurado_hor_emp']);
+            $costo_arreglo = round(floatval($aJson['arreglo_ranurado_hor_emp']['arreglo']), 2);
+            $costo_unit_ranura = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_unit_por_ranura']), 2);
+            $costo_ranura = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_por_ranura']), 2);
+            $costo_tot_ranurado = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_tot_ranurado']), 2);
 
             $sql_ranurado_arreglo_ran_hor = "INSERT INTO cot_reg_arreglo_ranurado_hor_empcaj
-                (id_odt, id_modelo, tiraje, costo_unit, costo_tot_ranurado, fecha)
+                (id_odt, id_modelo, tiraje, costo_arreglo, costo_unit_ranura, costo_ranura, costo_tot_ranurado, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $costo_arreglo, $costo_unit_ranura, $costo_por_ranura, $costo_tot_ranurado, '$d_fecha')";
 
             $query_arreglo_ranurado_hor = $this->db->prepare($sql_ranurado_arreglo_ran_hor);
 
@@ -1062,7 +787,7 @@ class RegaloModel {
 
             if (!$l_arr_ran_hor_emp) {
 
-                self::mError($aJson, $mensaje, "Error al grabar arreglo ranurado horizontal empalme cajon;");
+                self::mError($aJson, $mensaje, $error . "arreglo ranurado horizontal empalme cajon;");
 
                 $l_arr_ran_hor_emp = false;
             }
@@ -1073,15 +798,13 @@ class RegaloModel {
 
             if ( ($aJson['base'] > $aJson['alto'])  or ($aJson['base'] < $aJson['alto']) ) {
 
-                $costo_unit = 0;
-                $costo_unit = floatval($aJson['arreglo_ranurado_ver_emp']);
 
                 if ($costo_unit > 0) {
 
                     $sql_ranurado_arreglo_ran_ver = "INSERT INTO cot_reg_arreglo_ranurado_vert_empcaj
-                        (id_odt, id_modelo, tiraje, costo_unit, costo_tot_ranurado, fecha)
-                    VALUES
-                        ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit, '$d_fecha')";
+                        (id_odt, id_modelo, tiraje, costo_arreglo, costo_unit_ranura, costo_ranura, costo_tot_ranurado, fecha)
+                VALUES
+                ($id_caja_odt, $id_modelo, $tiraje, $costo_arreglo, $costo_unit_ranura, $costo_por_ranura, $costo_tot_ranurado, '$d_fecha')";
 
                     $query_arreglo_ranurado_vert = $this->db->prepare($sql_ranurado_arreglo_ran_ver);
 
@@ -1089,7 +812,7 @@ class RegaloModel {
 
                     if (!$l_arr_ran_vert_emp) {
 
-                        self::mError($aJson, $mensaje, "Error al grabar en arreglo ranurado vertical empalme cajon;");
+                        self::mError($aJson, $mensaje, $error . "arreglo ranurado vertical empalme cajon;");
 
                         $l_arr_ran_vert_emp = false;
                     }
@@ -1100,8 +823,8 @@ class RegaloModel {
         // despunte de esquinas empalme cajon
             $l_despunte_esquinas = true;
 
-            $costo_unit = floatval($aJson['despunte_esquinas_emptap']['costo_unitario_esquinas']);
-            $costo_tot_despunte = floatval($aJson['despunte_esquinas_emptap']['costo_tot_proceso']);
+            $costo_unit = round(floatval($aJson['despunte_esquinas_emptap']['costo_unitario_esquinas']), 2);
+            $costo_tot_despunte = round(floatval($aJson['despunte_esquinas_emptap']['costo_tot_proceso']), 2);
 
             $sql_despunte_emp = "INSERT INTO cot_reg_despunte_esquinas_emptap(id_modelo, id_odt, tiraje, costo_unit, costo_tot_despunte, fecha)
             VALUES
@@ -1114,7 +837,7 @@ class RegaloModel {
 
             if (!$l_despunte_esquinas) {
 
-                self::mError($aJson, $mensaje, "Error al grabar despunte esquinas empalme tapa;");
+                self::mError($aJson, $mensaje, $error . "despunte esquinas empalme tapa;");
 
                 $l_despunte_esquinas = false;
             }
@@ -1122,11 +845,11 @@ class RegaloModel {
             // forro cajon
             $l_corte_fcaj = true;
 
-            $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_fcaj']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_papel_fcaj']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']), 2);
 
             $sql_corte_fcaj = "INSERT INTO cot_reg_corte_fcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -1141,7 +864,7 @@ class RegaloModel {
 
             if (!$l_corte_fcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte forro cajon;");
+                self::mError($aJson, $mensaje, $error . "corte forro cajon;");
 
                 $l_corte_fcaj = false;
             }
@@ -1150,11 +873,11 @@ class RegaloModel {
             // corte papel forro cajon
             $l_corte_papel_fcaj = true;
 
-            $corte_costo_unitario = floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']);
+            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']), 4);
             $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
             $tot_pliegos          = intval($aJson['costo_corte_papel_fcaj']['tot_pliegos']);
             $millares             = intval($aJson['costo_corte_papel_fcaj']['millares']);
-            $costo_corte          = floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']);
+            $costo_corte          = round(floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']), 2);
 
             $sql_corte_papel_fcaj = "INSERT INTO cot_reg_corte_papel_fcaj
                 (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
@@ -1169,7 +892,7 @@ class RegaloModel {
 
             if (!$l_corte_papel_fcaj) {
 
-                self::mError($aJson, $mensaje, "Error al grabar corte papel forro cajon;");
+                self::mError($aJson, $mensaje, $error . "corte papel forro cajon;");
 
                 $l_corte_papel_fcaj = false;
             }
@@ -1178,22 +901,23 @@ class RegaloModel {
             // suaje forro cajon(fijo)
             $l_Suaje_fcaj_fijo = true;
 
-            $tipoGrabado             = trim(strval($aJson['suaje_fcaj_fijo']['tipoGrabado']));
+            $tipoGrabado             = self::strip_slashes_recursive($aJson['suaje_fcaj_fijo']['tipoGrabado']);
             $Largo                   = intval($aJson['suaje_fcaj_fijo']['Largo']);
             $Ancho                   = intval($aJson['suaje_fcaj_fijo']['Ancho']);
             $perimetro               = intval($aJson['suaje_fcaj_fijo']['perimetro']);
-            $tabla_suaje             = floatval($aJson['suaje_fcaj_fijo']['tabla_suaje']);
-            $arreglo                 = floatval($aJson['suaje_fcaj_fijo']['arreglo']);
-            $tiro_costo_unitario     = floatval($aJson['suaje_fcaj_fijo']['tiro_costo_unitario']);
-            $costo_tiro              = floatval($aJson['suaje_fcaj_fijo']['costo_tiro']);
-            $costo_tot_proceso       = floatval($aJson['suaje_fcaj_fijo']['costo_tot_proceso']);
+            $costo_unit_tabla_suaje  = round(floatval($aJson['suaje_fcaj_fijo']['costo_unit_tabla_suaje']), 2);
+            $tabla_suaje             = round(floatval($aJson['suaje_fcaj_fijo']['tabla_suaje']), 2);
+            $arreglo                 = round(floatval($aJson['suaje_fcaj_fijo']['arreglo']), 2);
+            $tiro_costo_unitario     = round(floatval($aJson['suaje_fcaj_fijo']['tiro_costo_unitario']), 2);
+            $costo_tiro              = round(floatval($aJson['suaje_fcaj_fijo']['costo_tiro']), 2);
+            $costo_tot_proceso       = round(floatval($aJson['suaje_fcaj_fijo']['costo_tot_proceso']), 2);
             $merma_min               = intval($aJson['suaje_fcaj_fijo']['mermas']['merma_min']);
             $merma_adic              = intval($aJson['suaje_fcaj_fijo']['mermas']['merma_adic']);
             $merma_tot               = intval($aJson['suaje_fcaj_fijo']['mermas']['merma_tot']);
             $cortes_por_pliego       = intval($aJson['suaje_fcaj_fijo']['mermas']['cortes_por_pliego']);
             $merma_tot_pliegos       = intval($aJson['suaje_fcaj_fijo']['mermas']['merma_tot_pliegos']);
-            $costo_unit_merma        = floatval($aJson['suaje_fcaj_fijo']['mermas']['costo_unit_merma']);
-            $costo_tot_pliegos_merma = floatval($aJson['suaje_fcaj_fijo']['mermas']['costo_tot_pliegos_merma']);
+            $costo_unit_merma        = round(floatval($aJson['suaje_fcaj_fijo']['mermas']['costo_unit_merma']), 2);
+            $costo_tot_pliegos_merma = round(floatval($aJson['suaje_fcaj_fijo']['mermas']['costo_tot_pliegos_merma']), 2);
 
             $sql_suaje_fcaj_fijo = "INSERT INTO cot_reg_suajefcaj_fijo(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -1204,7 +928,7 @@ class RegaloModel {
 
             if (!$l_Suaje_fcaj_fijo) {
 
-                self::mError($aJson, $mensaje, "Error al grabar suaje forro cajon;");
+                self::mError($aJson, $mensaje, $error . "suaje forro cajon;");
 
                 $l_Suaje_fcaj_fijo = false;
             }
@@ -1213,22 +937,22 @@ class RegaloModel {
             // suaje forro tapasuaje_ftap_fijo(fijo)
             $l_Suaje_ftap_fijo = true;
 
-            $tipoGrabado             = trim(strval($aJson['suaje_ftap_fijo']['tipoGrabado']));
+            $tipoGrabado             = self::strip_slashes_recursive($aJson['suaje_ftap_fijo']['tipoGrabado']);
             $Largo                   = intval($aJson['suaje_ftap_fijo']['Largo']);
             $Ancho                   = intval($aJson['suaje_ftap_fijo']['Ancho']);
             $perimetro               = intval($aJson['suaje_ftap_fijo']['perimetro']);
-            $tabla_suaje             = floatval($aJson['suaje_ftap_fijo']['tabla_suaje']);
-            $arreglo                 = floatval($aJson['suaje_ftap_fijo']['arreglo']);
-            $tiro_costo_unitario     = floatval($aJson['suaje_ftap_fijo']['tiro_costo_unitario']);
-            $costo_tiro              = floatval($aJson['suaje_ftap_fijo']['costo_tiro']);
-            $costo_tot_proceso       = floatval($aJson['suaje_ftap_fijo']['costo_tot_proceso']);
+            $tabla_suaje             = round(floatval($aJson['suaje_ftap_fijo']['tabla_suaje']), 2);
+            $arreglo                 = round(floatval($aJson['suaje_ftap_fijo']['arreglo']), 2);
+            $tiro_costo_unitario     = round(floatval($aJson['suaje_ftap_fijo']['tiro_costo_unitario']), 2);
+            $costo_tiro              = round(floatval($aJson['suaje_ftap_fijo']['costo_tiro']), 2);
+            $costo_tot_proceso       = round(floatval($aJson['suaje_ftap_fijo']['costo_tot_proceso']), 2);
             $merma_min               = intval($aJson['suaje_ftap_fijo']['mermas']['merma_min']);
             $merma_adic              = intval($aJson['suaje_ftap_fijo']['mermas']['merma_adic']);
             $merma_tot               = intval($aJson['suaje_ftap_fijo']['mermas']['merma_tot']);
             $cortes_por_pliego       = intval($aJson['suaje_ftap_fijo']['mermas']['cortes_por_pliego']);
             $merma_tot_pliegos       = intval($aJson['suaje_ftap_fijo']['mermas']['merma_tot_pliegos']);
-            $costo_unit_merma        = floatval($aJson['suaje_ftap_fijo']['mermas']['costo_unit_merma']);
-            $costo_tot_pliegos_merma = floatval($aJson['suaje_ftap_fijo']['mermas']['costo_tot_pliegos_merma']);
+            $costo_unit_merma        = round(floatval($aJson['suaje_ftap_fijo']['mermas']['costo_unit_merma']), 2);
+            $costo_tot_pliegos_merma = round(floatval($aJson['suaje_ftap_fijo']['mermas']['costo_tot_pliegos_merma']), 2);
 
             $sql_suaje_ftap_fijo = "INSERT INTO cot_reg_suajeftap_fijo(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -1239,7 +963,7 @@ class RegaloModel {
 
             if (!$l_Suaje_ftap_fijo) {
 
-                self::mError($aJson, $mensaje, "Error al grabar suaje forro tapa;");
+                self::mError($aJson, $mensaje, $error . "suaje forro tapa;");
 
                 $l_Suaje_ftap_fijo = false;
             }
@@ -1248,15 +972,15 @@ class RegaloModel {
         // arreglo ranurado horizontal empalme tapa
             $l_arr_ran_hor_emptap = true;
 
-            $costo_unit                 = floatval($aJson['arreglo_ranurado_hor_emptap']['arreglo']);
-            $costo_unit_ranura          = floatval($aJson['arreglo_ranurado_hor_emptap']['costo_unit_por_ranura']);
-            $costo_ranurado             = floatval($aJson['arreglo_ranurado_hor_emptap']['costo_por_ranura']);
-            $costo_tot_arreglo_ranurado = floatval($aJson['arreglo_ranurado_hor_emptap']['costo_tot_proceso']);
+            $arreglo                    = round(floatval($aJson['arreglo_ranurado_hor_emptap']['arreglo']), 2);
+            $costo_unit_ranura          = round(floatval($aJson['arreglo_ranurado_hor_emptap']['costo_unit_por_ranura']), 2);
+            $costo_ranurado             = round(floatval($aJson['arreglo_ranurado_hor_emptap']['costo_por_ranura']), 2);
+            $costo_tot_arreglo_ranurado = round(floatval($aJson['arreglo_ranurado_hor_emptap']['costo_tot_proceso']), 2);
 
             $sql_ranurado_arreglo_ran_hor_emptap = "INSERT INTO cot_reg_arreglo_ranurado_hor_emptap
                 (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit_ranura, $costo_ranurado, $costo_tot_arreglo_ranurado, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $arreglo, $costo_unit_ranura, $costo_ranurado, $costo_tot_arreglo_ranurado, '$d_fecha')";
 
             $query_arreglo_ranurado_hor_emptap = $this->db->prepare($sql_ranurado_arreglo_ran_hor_emptap);
 
@@ -1265,7 +989,7 @@ class RegaloModel {
 
             if (!$l_arr_ran_hor_emptap) {
 
-                self::mError($aJson, $mensaje, "Error al grabar arreglo ranurado horizontal empalme tapa;");
+                self::mError($aJson, $mensaje, $error . "arreglo ranurado horizontal empalme tapa;");
 
                 $l_arr_ran_hor_emptap = false;
             }
@@ -1279,7 +1003,7 @@ class RegaloModel {
                 $sql_ranurado_arreglo_ran_ver_emptap = "INSERT INTO cot_reg_arreglo_ranurado_vert_emptap
                     (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit_ranura, $costo_ranurado, $costo_tot_arreglo_ranurado, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $arreglo, $costo_unit_ranura, $costo_ranurado, $costo_tot_arreglo_ranurado, '$d_fecha')";
 
                 $query_arreglo_ranurado_vert_emptap = $this->db->prepare($sql_ranurado_arreglo_ran_ver_emptap);
 
@@ -1287,7 +1011,7 @@ class RegaloModel {
 
                 if (!$l_arr_ran_vert_emptap) {
 
-                    self::mError($aJson, $mensaje, "Error al grabar arreglo ranurado vertical empalme tapa;");
+                    self::mError($aJson, $mensaje, $error . "arreglo ranurado vertical empalme tapa;");
 
                     $l_arr_ran_vert_emptap = false;
                 }
@@ -1324,26 +1048,26 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
+                        $tipo_offset             = self::strip_slashes_recursive($row['tipo_offset']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
+                        $corte_costo_unitario    = round(floatval($row['corte_costo_unitario']), 2);
                         $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_corte             = round(floatval($row['costo_corte']), 2);
+                        $costo_unitario_laminas  = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_tot_laminas       = round(floatval($row['costo_tot_laminas']), 2);
+                        $costo_unitario_arreglo  = round(floatval($row['costo_unitario_arreglo']), 2);
+                        $costo_tot_arreglo       = round(floatval($row['costo_tot_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_offset_empcaj = "INSERT INTO cot_reg_offsetempcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -1354,7 +1078,7 @@ class RegaloModel {
 
                         if (!$l_offset_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar offset empalme cajon;");
+                            self::mError($aJson, $mensaje, $error . "offset empalme cajon;");
 
                             $l_offset_empcaj = false;
 
@@ -1374,17 +1098,17 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
+                        $es_maquila             = self::strip_slashes_recursive($row['es_maquila']);
+                        $Tipo                   = self::strip_slashes_recursive($row['Tipo']);
                         $tiraje                 = intval($row['cantidad']);
                         $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
+                        $arreglo_costo_unitario = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo          = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_laminas = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($row['costo_laminas']), 2);
+                        $costo_unitario_maq     = round(floatval($row['costo_unitario_maq']), 2);
+                        $costo_tot_maq          = round(floatval($row['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($row['costo_tot_proceso']), 2);
 
                         $sql_offset_maq_empcaj = "INSERT INTO cot_reg_offset_maq_empcaj(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
@@ -1395,7 +1119,7 @@ class RegaloModel {
 
                         if (!$l_offset_maq_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar maquila empalme cajon;");
+                            self::mError($aJson, $mensaje, $error . "maquila empalme cajon;");
 
                             $l_offset_maq_empcaj = false;
 
@@ -1413,23 +1137,23 @@ class RegaloModel {
 
                     foreach($aDigital as $row) {
 
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
+                        $cabe_digital      = self::strip_slashes_recursive($row['cabe_digital']);
+                        $tipo_impresion    = self::strip_slashes_recursive($row['tipo_impresion']);
+                        $imp_ancho         = floatval($row['imp_ancho']);
+                        $imp_largo         = floatval($row['imp_largo']);
+                        $tiraje            = intval($row['tiraje']);
+                        $corte_ancho       = round(floatval($row['corte_ancho']), 2);
+                        $corte_largo       = round(floatval($row['corte_largo']), 2);
+                        $costo_unitario    = round(floatval($row['costo_unitario']), 2);
                         $cortes_por_pliego = intval($row['cortes_por_pliego']);
                         $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
+                        $costo_tot_proceso = round(floatval($row['costo_tot_proceso']), 2);
 
                         $merma_min         = intval($row['mermas']['merma_min']);
                         $merma_adic        = intval($row['mermas']['merma_adic']);
                         $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
+                        $costo_unitario    = round(floatval($row['mermas']['costo_unitario']), 2);
+                        $costo_tot         = round(floatval($row['mermas']['costo_tot']), 2);
 
                         $sql_digital_empcaj = "INSERT INTO cot_reg_digempcaj(id_odt, id_modelo, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos,  $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
 
@@ -1439,7 +1163,7 @@ class RegaloModel {
 
                         if (!$l_digital_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar digital empalme cajon;");
+                            self::mError($aJson, $mensaje, $error . "digital empalme cajon;");
 
                             $l_digital_empcaj = false;
 
@@ -1457,21 +1181,21 @@ class RegaloModel {
 
                     foreach($aSerigrafia as $row) {
 
-                        $tipo                    = trim(strval($row['tipo']));
+                        $tipo                    = self::strip_slashes_recursive($row['tipo']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_arreglo      = round(floatval($row['costo_unit_arreglo']), 2);
+                        $costo_arreglo           = round(floatval($row['costo_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                         $sql_serigrafia_empcaj = "INSERT INTO cot_reg_serempcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
@@ -1482,7 +1206,7 @@ class RegaloModel {
 
                         if (!$l_serigrafia_empcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar serigrafia empalme cajon;");
+                            self::mError($aJson, $mensaje, $error . "serigrafia empalme cajon;");
 
                             $l_serigrafia_empcaj = false;
 
@@ -1519,26 +1243,26 @@ class RegaloModel {
 
                     foreach($aOffset as $row) {
 
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
+                        $tipo_offset             = self::strip_slashes_recursive($row['tipo_offset']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
+                        $corte_costo_unitario    = round(floatval($row['corte_costo_unitario']), 2);
                         $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_corte             = round(floatval($row['costo_corte']), 2);
+                        $costo_unitario_laminas  = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_tot_laminas       = round(floatval($row['costo_tot_laminas']), 2);
+                        $costo_unitario_arreglo  = round(floatval($row['costo_unitario_arreglo']), 2);
+                        $costo_tot_arreglo       = round(floatval($row['costo_tot_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_offset_fcaj = "INSERT INTO cot_reg_offsetfcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -1548,7 +1272,7 @@ class RegaloModel {
 
                         if (!$l_offset_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar offset forro cajon;");
+                            self::mError($aJson, $mensaje, $error . "offset forro cajon;");
 
                             $l_offset_fcaj = false;
 
@@ -1568,17 +1292,17 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
+                        $es_maquila             = self::strip_slashes_recursive($row['es_maquila']);
+                        $Tipo                   = self::strip_slashes_recursive($row['Tipo']);
                         $tiraje                 = intval($row['cantidad']);
                         $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
+                        $arreglo_costo_unitario = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo          = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_laminas = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($row['costo_laminas']), 2);
+                        $costo_unitario_maq     = round(floatval($row['costo_unitario_maq']), 2);
+                        $costo_tot_maq          = round(floatval($row['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($row['costo_tot_proceso']), 2);
 
                         if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
 
@@ -1590,7 +1314,7 @@ class RegaloModel {
 
                             if(!$l_offset_maq_fcaj) {
 
-                                self::mError($aJson, $mensaje, "Error al grabar offset maquila forro cajon;");
+                                self::mError($aJson, $mensaje, $error . "offset maquila forro cajon;");
 
                                 $l_offset_maq_fcaj = false;
 
@@ -1616,23 +1340,23 @@ class RegaloModel {
 
                     foreach($aDigital as $row) {
 
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
+                        $cabe_digital      = self::strip_slashes_recursive($row['cabe_digital']);
+                        $tipo_impresion    = self::strip_slashes_recursive($row['tipo_impresion']);
+                        $imp_ancho         = floatval($row['imp_ancho']);
+                        $imp_largo         = floatval($row['imp_largo']);
+                        $tiraje            = intval($row['tiraje']);
+                        $corte_ancho       = round(floatval($row['corte_ancho']), 2);
+                        $corte_largo       = round(floatval($row['corte_largo']), 2);
+                        $costo_unitario    = round(floatval($row['costo_unitario']), 2);
+                        $costo_unitario    = round(floatval($row['costo_unitario']), 2);
                         $cortes_por_pliego = intval($row['cortes_por_pliego']);
                         $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
+                        $costo_tot_proceso = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min         = intval($row['mermas']['merma_min']);
                         $merma_adic        = intval($row['mermas']['merma_adic']);
                         $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
+                        $costo_unitario    = round(floatval($row['mermas']['costo_unitario']), 2);
+                        $costo_tot         = round(floatval($row['mermas']['costo_tot']), 2);
 
                         if ($cabe_digital == "NO") {
 
@@ -1649,7 +1373,7 @@ class RegaloModel {
 
                         if (!$l_digital_fcaj) {
 
-                            self::mError($aJson, $mensaje, "Error al grabar offset digital forro cajon;");
+                            self::mError($aJson, $mensaje, $error . "digital forro cajon;");
 
                             $l_digital_fcaj = false;
 
@@ -1657,6 +1381,7 @@ class RegaloModel {
                         }
                     }
                 }
+
 
 
                 if (array_key_exists("Serigrafia", $aImpFCaj)) {
@@ -1667,21 +1392,21 @@ class RegaloModel {
 
                     foreach($aSerigrafia as $row) {
 
-                        $tipo                    = trim(strval($row['tipo']));
+                        $tipo                    = self::strip_slashes_recursive($row['tipo']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_arreglo      = round(floatval($row['costo_unit_arreglo']), 2);
+                        $costo_arreglo           = round(floatval($row['costo_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_serigrafia_fcaj = "INSERT INTO cot_reg_serfcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -1727,26 +1452,26 @@ class RegaloModel {
 
                     foreach($aOffset as $row) {
 
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
+                        $tipo_offset             = self::strip_slashes_recursive($row['tipo_offset']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
+                        $corte_costo_unitario    = round(floatval($row['corte_costo_unitario']), 2);
                         $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_corte             = round(floatval($row['costo_corte']), 2);
+                        $costo_unitario_laminas  = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_tot_laminas       = round(floatval($row['costo_tot_laminas']), 2);
+                        $costo_unitario_arreglo  = round(floatval($row['costo_unitario_arreglo']), 2);
+                        $costo_tot_arreglo       = round(floatval($row['costo_tot_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                         $sql_offset_emptap = "INSERT INTO cot_reg_offsetemptap(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
@@ -1777,17 +1502,17 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
+                        $es_maquila             = self::strip_slashes_recursive($row['es_maquila']);
+                        $Tipo                   = self::strip_slashes_recursive($row['Tipo']);
                         $tiraje                 = intval($row['cantidad']);
                         $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
+                        $arreglo_costo_unitario = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo          = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_laminas = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($row['costo_laminas']), 2);
+                        $costo_unitario_maq     = round(floatval($row['costo_unitario_maq']), 2);
+                        $costo_tot_maq          = round(floatval($row['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($row['costo_tot_proceso']), 2);
 
                         $sql_offset_maq_emptap = "INSERT INTO cot_reg_offset_maq_emptap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
@@ -1815,22 +1540,22 @@ class RegaloModel {
 
                     foreach($aDigital as $row) {
 
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
+                        $cabe_digital      = self::strip_slashes_recursive($row['cabe_digital']);
+                        $tipo_impresion    = self::strip_slashes_recursive($row['tipo_impresion']);
+                        $imp_ancho         = floatval($row['imp_ancho']);
+                        $imp_largo         = floatval($row['imp_largo']);
+                        $tiraje            = intval($row['tiraje']);
+                        $corte_ancho       = round(floatval($row['corte_ancho']), 2);
+                        $corte_largo       = round(floatval($row['corte_largo']), 2);
+                        $costo_unitario    = round(floatval($row['costo_unitario']), 2);
                         $cortes_por_pliego = intval($row['cortes_por_pliego']);
                         $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
+                        $costo_tot_proceso = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min         = intval($row['mermas']['merma_min']);
                         $merma_adic        = intval($row['mermas']['merma_adic']);
                         $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
+                        $costo_unitario    = round(floatval($row['mermas']['costo_unitario']), 2);
+                        $costo_tot         = round(floatval($row['mermas']['costo_tot']), 2);
 
                         $sql_digital_emptap = "INSERT INTO cot_reg_digemptap(id_odt, id_modelo, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
 
@@ -1850,29 +1575,31 @@ class RegaloModel {
                 }
 
 
-                if (array_key_exists("Serigrafiacot_reg_seremptap", $aImpEmpTap)) {
+
+
+                if (array_key_exists("Serigrafia", $aImpEmpTap)) {
 
                     $aSerigrafia = [];
 
-                    $aSerigrafia = $aImpEmpTap['Serigrafiacot_reg_seremptap'];
+                    $aSerigrafia = $aImpEmpTap['Serigrafia'];
 
                     foreach($aSerigrafia as $row) {
 
-                        $tipo                    = trim(strval($row['tipo']));
+                        $tipo                    = self::strip_slashes_recursive($row['tipo']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_arreglo      = round(floatval($row['costo_unit_arreglo']), 2);
+                        $costo_arreglo           = round(floatval($row['costo_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_serigrafia_emptap = "INSERT INTO cot_reg_seremptap(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -1918,26 +1645,26 @@ class RegaloModel {
 
                     foreach($aOffset as $row) {
 
-                        $tipo_offset             = trim(strval($row['tipo_offset']));
+                        $tipo_offset             = self::strip_slashes_recursive($row['tipo_offset']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $corte_costo_unitario    = floatval($row['corte_costo_unitario']);
+                        $corte_costo_unitario    = round(floatval($row['corte_costo_unitario']), 2);
                         $corte_por_millar        = intval($row['corte_por_millar']);
-                        $costo_corte             = floatval($row['costo_corte']);
-                        $costo_unitario_laminas  = floatval($row['costo_unitario_laminas']);
-                        $costo_tot_laminas       = floatval($row['costo_tot_laminas']);
-                        $costo_unitario_arreglo  = floatval($row['costo_unitario_arreglo']);
-                        $costo_tot_arreglo       = floatval($row['costo_tot_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_corte             = round(floatval($row['costo_corte']), 2);
+                        $costo_unitario_laminas  = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_tot_laminas       = round(floatval($row['costo_tot_laminas']), 2);
+                        $costo_unitario_arreglo  = round(floatval($row['costo_unitario_arreglo']), 2);
+                        $costo_tot_arreglo       = round(floatval($row['costo_tot_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
 
                         $sql_offset_ftap = "INSERT INTO cot_reg_offsetftap(id_odt, id_modelo, tipo, tiraje, num_tintas, corte_costo_unitario, corte_por_millar, costo_corte, costo_unitario_laminas, costo_tot_laminas, costo_unitario_arreglo, costo_tot_arreglo, costo_unitario_tiro, costo_tot_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_offset', $tiraje, $num_tintas, $corte_costo_unitario, $corte_por_millar, $costo_corte, $costo_unitario_laminas, $costo_tot_laminas, $costo_unitario_arreglo, $costo_tot_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
@@ -1968,17 +1695,17 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $es_maquila             = trim(strval($row['es_maquila']));
-                        $Tipo                   = trim(strval($row['Tipo']));
+                        $es_maquila             = self::strip_slashes_recursive($row['es_maquila']);
+                        $Tipo                   = self::strip_slashes_recursive($row['Tipo']);
                         $tiraje                 = intval($row['cantidad']);
                         $num_tintas             = intval($row['num_tintas']);
-                        $arreglo_costo_unitario = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo          = floatval($row['arreglo_costo']);
-                        $costo_unitario_laminas = floatval($row['costo_unitario_laminas']);
-                        $costo_laminas          = floatval($row['costo_laminas']);
-                        $costo_unitario_maq     = floatval($row['costo_unitario_maq']);
-                        $costo_tot_maq          = floatval($row['costo_tot_maq']);
-                        $costo_tot_proceso      = floatval($row['costo_tot_proceso']);
+                        $arreglo_costo_unitario = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo          = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_laminas = round(floatval($row['costo_unitario_laminas']), 2);
+                        $costo_laminas          = round(floatval($row['costo_laminas']), 2);
+                        $costo_unitario_maq     = round(floatval($row['costo_unitario_maq']), 2);
+                        $costo_tot_maq          = round(floatval($row['costo_tot_maq']), 2);
+                        $costo_tot_proceso      = round(floatval($row['costo_tot_proceso']), 2);
 
                         $sql_offset_maq_ftap = "INSERT INTO cot_reg_offset_maq_ftap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
@@ -2006,22 +1733,22 @@ class RegaloModel {
 
                     foreach($aDigital as $row) {
 
-                        $cabe_digital      = trim(strval($row['cabe_digital']));
-                        $tipo_impresion     = trim(strval($row['tipo_impresion']));
-                        $imp_ancho         = trim(strval($row['imp_ancho']));
-                        $imp_largo         = trim(strval($row['imp_largo']));
-                        $tiraje            = intval($row['cantidad']);
-                        $corte_ancho       = floatval($row['corte_ancho']);
-                        $corte_largo       = floatval($row['corte_largo']);
-                        $costo_unitario    = floatval($row['costo_unitario']);
+                        $cabe_digital      = self::strip_slashes_recursive($row['cabe_digital']);
+                        $tipo_impresion    = self::strip_slashes_recursive($row['tipo_impresion']);
+                        $imp_ancho         = floatval($row['imp_ancho']);
+                        $imp_largo         = floatval($row['imp_largo']);
+                        $tiraje            = intval($row['tiraje']);
+                        $corte_ancho       = round(floatval($row['corte_ancho']), 2);
+                        $corte_largo       = round(floatval($row['corte_largo']), 2);
+                        $costo_unitario    = round(floatval($row['costo_unitario']), 2);
                         $cortes_por_pliego = intval($row['cortes_por_pliego']);
                         $tot_pliegos       = intval($row['tot_pliegos']);
-                        $costo_tot_proceso = floatval($row['costo_tot_proceso']);
+                        $costo_tot_proceso = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min         = intval($row['mermas']['merma_min']);
                         $merma_adic        = intval($row['mermas']['merma_adic']);
                         $merma_tot         = intval($row['mermas']['merma_tot']);
-                        $costo_unitario    = floatval($row['mermas']['costo_unitario']);
-                        $costo_tot         = floatval($row['mermas']['costo_tot']);
+                        $costo_unitario    = round(floatval($row['mermas']['costo_unitario']), 2);
+                        $costo_tot         = round(floatval($row['mermas']['costo_tot']), 2);
 
                         $sql_digital_ftap = "INSERT INTO cot_reg_digftap(id_odt, id_modelo, tiraje, corte_ancho, corte_largo, imp_ancho, imp_largo, impresion, costo_unitario, cortes_por_pliego, tot_pliegos, costo_tot_proceso, merma_min, merma_adic, merma_tot, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, $corte_ancho, $corte_largo, $imp_ancho, $imp_largo, '$tipo_impresion', $costo_unitario, $cortes_por_pliego, $tot_pliegos, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $costo_unitario, $costo_tot, '$d_fecha')";
 
@@ -2041,6 +1768,7 @@ class RegaloModel {
                 }
 
 
+
                 if (array_key_exists("Serigrafia", $aImpFTap)) {
 
                     $aSerigrafia = [];
@@ -2049,21 +1777,21 @@ class RegaloModel {
 
                     foreach($aSerigrafia as $row) {
 
-                        $tipo                    = trim(strval($row['tipo']));
+                        $tipo                    = self::strip_slashes_recursive($row['tipo']);
                         $tiraje                  = intval($row['cantidad']);
                         $num_tintas              = intval($row['num_tintas']);
-                        $costo_unit_arreglo      = floatval($row['costo_unit_arreglo']);
-                        $costo_arreglo           = floatval($row['costo_arreglo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario_tiro']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_arreglo      = round(floatval($row['costo_unit_arreglo']), 2);
+                        $costo_arreglo           = round(floatval($row['costo_arreglo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario_tiro']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_papel_merma  = floatval($row['mermas']['costo_unit_papel_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_papel_merma  = round(floatval($row['mermas']['costo_unit_papel_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_serigrafia_ftap = "INSERT INTO cot_reg_serftap(id_odt, id_modelo, tipo, tiraje, num_tintas, cortes_por_pliego, costo_unit_arreglo, costo_arreglo, costo_unit_tiro, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, merma_tot_pliegos, costo_unit_papel_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo', $tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_arreglo, $costo_arreglo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $merma_tot_pliegos, $costo_unit_papel_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2088,7 +1816,6 @@ class RegaloModel {
 
 
    /********** termina impresion ********************/
-
 
 
    /******************** inicia acabados  ************************/
@@ -2120,19 +1847,19 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $area                    = round(floatval($row['area']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_barnizuv_empcaj = "INSERT INTO cot_reg_barnizuvempcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
@@ -2160,12 +1887,12 @@ class RegaloModel {
 
                     foreach($aCorte_Laser as $row) {
 
-                        $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $tiempo_requerido        = floatval($row['tiempo_requerido']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
@@ -2195,25 +1922,25 @@ class RegaloModel {
 
                     foreach($aGrabado as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $ubicacion               = trim(strval($row['ubicacion']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $ubicacion               = self::strip_slashes_recursive($row['ubicacion']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
-                        $merma_tot_pliegos       = floatval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $merma_tot_pliegos       = round(floatval($row['mermas']['merma_tot_pliegos']), 2);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_grab_empcaj = "INSERT INTO cot_reg_grabempcaj(id_odt, id_modelo, tipo_grabado, largo, tiraje, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $Largo, $tiraje, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2241,30 +1968,30 @@ class RegaloModel {
 
                     foreach($aHotStamping as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $Color                   = trim(strval($row['Color']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
-                        $pelicula_Largo          = floatval($row['pelicula_Largo']);
-                        $pelicula_Ancho          = floatval($row['pelicula_Ancho']);
-                        $pelicula_area           = floatval($row['pelicula_area']);
-                        $pelicula_costo_unitario = floatval($row['pelicula_costo_unitario']);
-                        $pelicula_costo          = floatval($row['pelicula_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $Color                   = self::strip_slashes_recursive($row['Color']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
+                        $pelicula_Largo          = round(floatval($row['pelicula_Largo']), 2);
+                        $pelicula_Ancho          = round(floatval($row['pelicula_Ancho']), 2);
+                        $pelicula_area           = round(floatval($row['pelicula_area']), 2);
+                        $pelicula_costo_unitario = round(floatval($row['pelicula_costo_unitario']), 4);
+                        $pelicula_costo          = round(floatval($row['pelicula_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_hs_empcaj = "INSERT INTO cot_reg_hsempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2292,19 +2019,19 @@ class RegaloModel {
 
                     foreach($aLaminado as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $laminado_costo_unitario = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $area                    = round(floatval($row['area']), 2);
+                        $laminado_costo_unitario = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_laminado_empcaj = "INSERT INTO cot_reg_lamempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2332,24 +2059,25 @@ class RegaloModel {
 
                     foreach($aSuaje as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
                         $perimetro               = intval($row['perimetro']);
-                        $tabla_suaje             = floatval($row['tabla_suaje']);
-                        $arreglo                 = floatval($row['arreglo']);
-                        $tiro_costo_unitario     = floatval($row['tiro_costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
+                        $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
+                        $tiro_costo_unitario     = round(floatval($row['tiro_costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_suaje_empcaj = "INSERT INTO cot_reg_suajeempcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_suaje_empcaj = "INSERT INTO cot_reg_suajeempcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_suaje_empcaj = $this->db->prepare($sql_suaje_empcaj);
 
@@ -2397,19 +2125,19 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $area                    = round(floatval($row['area']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_barnizuv_fcaj = "INSERT INTO cot_reg_barnizuvfcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
@@ -2437,12 +2165,12 @@ class RegaloModel {
 
                     foreach($aCorte_Laser as $row) {
 
-                        $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $tiempo_requerido        = floatval($row['tiempo_requerido']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
@@ -2472,25 +2200,25 @@ class RegaloModel {
 
                     foreach($aGrabado as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $ubicacion               = trim(strval($row['ubicacion']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $ubicacion               = self::strip_slashes_recursive($row['ubicacion']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_grab_fcaj = "INSERT INTO cot_reg_grabfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2518,30 +2246,30 @@ class RegaloModel {
 
                     foreach($aHotStamping as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $Color                   = trim(strval($row['Color']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
+                        $Color                   = self::strip_slashes_recursive($row['Color']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
                         $pelicula_Largo          = intval($row['pelicula_Largo']);
                         $pelicula_Ancho          = intval($row['pelicula_Ancho']);
-                        $pelicula_area           = floatval($row['pelicula_area']);
-                        $pelicula_costo_unitario = floatval($row['pelicula_costo_unitario']);
-                        $pelicula_costo          = floatval($row['pelicula_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $pelicula_area           = round(floatval($row['pelicula_area']), 2);
+                        $pelicula_costo_unitario = round(floatval($row['pelicula_costo_unitario']), 4);
+                        $pelicula_costo          = round(floatval($row['pelicula_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_hs_fcaj = "INSERT INTO cot_reg_hsfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2569,19 +2297,19 @@ class RegaloModel {
 
                     foreach($aLaminado as $row) {
 
-                        $tipo_grabado            = trim(strval($row['tipoGrabado']));
+                        $tipo_grabado            = self::strip_slashes_recursive($row['tipoGrabado']);
                         $largo                   = intval($row['Largo']);
                         $ancho                   = intval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $area                    = round(floatval($row['area']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_laminado_fcaj = "INSERT INTO cot_reg_lamfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2609,24 +2337,25 @@ class RegaloModel {
 
                     foreach($aSuaje as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
                         $perimetro               = intval($row['perimetro']);
-                        $tabla_suaje             = floatval($row['tabla_suaje']);
-                        $arreglo                 = floatval($row['arreglo']);
-                        $tiro_costo_unitario     = floatval($row['tiro_costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
+                        $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
+                        $tiro_costo_unitario     = round(floatval($row['tiro_costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_suaje_fcaj = "INSERT INTO cot_reg_suajefcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_suaje_fcaj = "INSERT INTO cot_reg_suajefcaj(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_suaje_fcaj = $this->db->prepare($sql_suaje_fcaj);
 
@@ -2675,19 +2404,19 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $area                    = round(floatval($row['area']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_barnizuv_emptap = "INSERT INTO cot_reg_barnizuvemptap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
@@ -2715,12 +2444,12 @@ class RegaloModel {
 
                     foreach($aCorte_Laser as $row) {
 
-                        $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $tiempo_requerido        = floatval($row['tiempo_requerido']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
@@ -2750,25 +2479,25 @@ class RegaloModel {
 
                     foreach($aGrabado as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $ubicacion               = trim(strval($row['ubicacion']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $ubicacion               = self::strip_slashes_recursive($row['ubicacion']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_grab_emptap = "INSERT INTO cot_reg_grabemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2796,30 +2525,30 @@ class RegaloModel {
 
                     foreach($aHotStamping as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $Color                   = trim(strval($row['Color']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
+                        $Color                   = self::strip_slashes_recursive($row['Color']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
                         $pelicula_Largo          = intval($row['pelicula_Largo']);
                         $pelicula_Ancho          = intval($row['pelicula_Ancho']);
-                        $pelicula_area           = floatval($row['pelicula_area']);
-                        $pelicula_costo_unitario = floatval($row['pelicula_costo_unitario']);
-                        $pelicula_costo          = floatval($row['pelicula_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $pelicula_area           = round(floatval($row['pelicula_area']), 2);
+                        $pelicula_costo_unitario = round(floatval($row['pelicula_costo_unitario']), 4);
+                        $pelicula_costo          = round(floatval($row['pelicula_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_hs_emptap = "INSERT INTO cot_reg_hsemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2847,19 +2576,19 @@ class RegaloModel {
 
                     foreach($aLaminado as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $laminado_costo_unitario = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $area                    = round(floatval($row['area']), 2);
+                        $laminado_costo_unitario = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_laminado_emtap = "INSERT INTO cot_reg_lamemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -2887,24 +2616,25 @@ class RegaloModel {
 
                     foreach($aSuaje as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
                         $perimetro               = intval($row['perimetro']);
-                        $tabla_suaje             = floatval($row['tabla_suaje']);
-                        $arreglo                 = floatval($row['arreglo']);
-                        $tiro_costo_unitario     = floatval($row['tiro_costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
+                        $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
+                        $tiro_costo_unitario     = round(floatval($row['tiro_costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_suaje_emptap = "INSERT INTO cot_reg_suajeemptap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_suaje_emptap = "INSERT INTO cot_reg_suajeemptap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_suaje_emptap = $this->db->prepare($sql_suaje_emptap);
 
@@ -2952,19 +2682,19 @@ class RegaloModel {
 
                         $costo_tot_proceso = 0;
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $area                    = round(floatval($row['area']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_barnizuv_ftap = "INSERT INTO cot_reg_barnizuvftap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma,'$d_fecha')";
 
@@ -2992,12 +2722,12 @@ class RegaloModel {
 
                     foreach($aCorte_Laser as $row) {
 
-                        $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
-                        $costo_unitario          = floatval($row['costo_unitario']);
-                        $tiempo_requerido        = floatval($row['tiempo_requerido']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
@@ -3027,25 +2757,25 @@ class RegaloModel {
 
                     foreach($aGrabado as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $ubicacion               = trim(strval($row['ubicacion']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $ubicacion               = self::strip_slashes_recursive($row['ubicacion']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_grab_ftap = "INSERT INTO cot_reg_grabftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, ubicacion, placa_area, placa_costo_unitario, placa_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$ubicacion', $placa_area, $placa_costo_unitario, $placa_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -3073,30 +2803,30 @@ class RegaloModel {
 
                     foreach($aHotStamping as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $Color                   = trim(strval($row['Color']));
-                        $placa_area              = floatval($row['placa_area']);
-                        $placa_costo_unitario    = floatval($row['placa_costo_unitario']);
-                        $placa_costo             = floatval($row['placa_costo']);
+                        $Color                   = self::strip_slashes_recursive($row['Color']);
+                        $placa_area              = round(floatval($row['placa_area']), 2);
+                        $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
+                        $placa_costo             = round(floatval($row['placa_costo']), 2);
                         $pelicula_Largo          = intval($row['pelicula_Largo']);
                         $pelicula_Ancho          = intval($row['pelicula_Ancho']);
-                        $pelicula_area           = floatval($row['pelicula_area']);
-                        $pelicula_costo_unitario = floatval($row['pelicula_costo_unitario']);
-                        $pelicula_costo          = floatval($row['pelicula_costo']);
-                        $arreglo_costo_unitario  = floatval($row['arreglo_costo_unitario']);
-                        $arreglo_costo           = floatval($row['arreglo_costo']);
-                        $costo_unitario_tiro     = floatval($row['costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $pelicula_area           = round(floatval($row['pelicula_area']), 2);
+                        $pelicula_costo_unitario = round(floatval($row['pelicula_costo_unitario']), 4);
+                        $pelicula_costo          = round(floatval($row['pelicula_costo']), 2);
+                        $arreglo_costo_unitario  = round(floatval($row['arreglo_costo_unitario']), 2);
+                        $arreglo_costo           = round(floatval($row['arreglo_costo']), 2);
+                        $costo_unitario_tiro     = round(floatval($row['costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_hs_ftap = "INSERT INTO cot_reg_hsftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, color, placa_area, placa_costo_unitario, placa_costo, pelicula_largo, pelicula_ancho, pelicula_area, pelicula_costo_unitario, pelicula_costo, arreglo_costo_unitario, arreglo_costo, costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, '$Color', $placa_area, $placa_costo_unitario, $placa_costo, $pelicula_Largo, $pelicula_Ancho, $pelicula_area, $pelicula_costo_unitario, $pelicula_costo, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_tiro, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -3124,19 +2854,19 @@ class RegaloModel {
 
                     foreach($aLaminado as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
-                        $area                    = floatval($row['area']);
-                        $laminado_costo_unitario = floatval($row['costo_unitario']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $area                    = round(floatval($row['area']), 2);
+                        $laminado_costo_unitario = round(floatval($row['costo_unitario']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
                         $sql_laminado_ftap = "INSERT INTO cot_reg_lamftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
@@ -3164,24 +2894,25 @@ class RegaloModel {
 
                     foreach($aSuaje as $row) {
 
-                        $tipoGrabado             = trim(strval($row['tipoGrabado']));
+                        $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
                         $Largo                   = intval($row['Largo']);
                         $Ancho                   = intval($row['Ancho']);
                         $perimetro               = intval($row['perimetro']);
-                        $tabla_suaje             = floatval($row['tabla_suaje']);
-                        $arreglo                 = floatval($row['arreglo']);
-                        $tiro_costo_unitario     = floatval($row['tiro_costo_unitario']);
-                        $costo_tiro              = floatval($row['costo_tiro']);
-                        $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
+                        $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
+                        $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
+                        $tiro_costo_unitario     = round(floatval($row['tiro_costo_unitario']), 2);
+                        $costo_tiro              = round(floatval($row['costo_tiro']), 2);
+                        $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
                         $merma_tot               = intval($row['mermas']['merma_tot']);
                         $cortes_por_pliego       = intval($row['mermas']['cortes_por_pliego']);
                         $merma_tot_pliegos       = intval($row['mermas']['merma_tot_pliegos']);
-                        $costo_unit_merma        = floatval($row['mermas']['costo_unit_merma']);
-                        $costo_tot_pliegos_merma = floatval($row['mermas']['costo_tot_pliegos_merma']);
+                        $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
+                        $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_suaje_ftap = "INSERT INTO cot_reg_suajeftap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_suaje_ftap = "INSERT INTO cot_reg_suajeftap(id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$tipoGrabado', $Largo, $Ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_suaje_ftap = $this->db->prepare($sql_suaje_ftap);
 
@@ -3220,17 +2951,17 @@ class RegaloModel {
 
                     $costo_tot_proceso = 0;
 
-                    $Tipo_accesorio = trim(strval($row['Tipo_accesorio']));
-                    $tiraje         = intval($row['tiraje']);
+                    $Tipo_accesorio = self::strip_slashes_recursive($row['Tipo_accesorio']);
+                    $tiraje = intval($row['tiraje']);
 
-                    $costo_unit_accesorio = floatval($row['costo_unit_accesorio']);
-                    $costo_tot_proceso    = floatval($row['costo_tot_proceso']);
+                    $costo_unit_accesorio = round(floatval($row['costo_unit_accesorio']), 2);
+                    $costo_tot_proceso    = round(floatval($row['costo_tot_proceso']), 2);
 
 
                     switch ($Tipo_accesorio) {
                         case 'Herraje':
 
-                            $Tipo = trim(strval($row['Tipo']));
+                            $Tipo = self::strip_slashes_recursive($row['Tipo']);
 
                             $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo, tipo_accesorio, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo', '$Tipo_accesorio', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
 
@@ -3239,7 +2970,7 @@ class RegaloModel {
 
                             $largo = intval($row['Largo']);
                             $ancho = intval($row['Ancho']);
-                            $color = trim(strval($row['Color']));
+                            $color = self::strip_slashes_recursive($row['Color']);
 
                             $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, largo, ancho, color, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $largo, $ancho, '$color', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
 
@@ -3253,7 +2984,7 @@ class RegaloModel {
 
                             $largo = intval($row['Largo']);
                             $ancho = intval($row['Ancho']);
-                            $color = trim(strval($row['Color']));
+                            $color = self::strip_slashes_recursive($row['Color']);
 
                             $sql_accesorios = "INSERT INTO cot_accesorios(id_odt, id_modelo, tiraje, tipo_accesorio, largo, ancho, color, costo_unit, costo_tot_accesorio, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_accesorio', $largo, $ancho, '$color', $costo_unit_accesorio, $costo_tot_proceso, '$d_fecha')";
 
@@ -3293,15 +3024,14 @@ class RegaloModel {
 
                     $costo_tot_proceso = 0;
 
-                    $Tipo_banco = trim(strval($row['Tipo_banco']));
-                    $tiraje         = intval($row['tiraje']);
-
+                    $Tipo_banco        = self::strip_slashes_recursive($row['Tipo_banco']);
+                    $tiraje            = intval($row['tiraje']);
                     $largo             = intval($row['largo']);
                     $ancho             = intval($row['ancho']);
                     $profundidad       = intval($row['profundidad']);
-                    $Suaje             = trim(strval($row['Suaje']));
-                    $costo_unit_banco  = floatval($row['costo_unit_banco']);
-                    $costo_tot_proceso = floatval($row['costo_tot_proceso']);
+                    $Suaje             = self::strip_slashes_recursive($row['Suaje']);
+                    $costo_unit_banco  = round(floatval($row['costo_unit_banco']), 2);
+                    $costo_tot_proceso = round(floatval($row['costo_tot_proceso']), 2);
 
 
                     $sql_bancos = "INSERT INTO cot_bancos(id_odt, id_modelo, tiraje, tipo, largo, ancho, profundidad, suaje, costo_unit, costo_tot_banco, fecha) VALUES($id_caja_odt, $id_modelo, $tiraje, '$Tipo_banco', $largo, $ancho, '$profundidad', '$Suaje', $costo_unit_banco, $costo_tot_proceso, '$d_fecha')";
@@ -3340,12 +3070,12 @@ class RegaloModel {
 
                     $costo_tot_proceso = 0;
 
-                    $Tipo_cierre       = trim(strval($row['Tipo_cierre']));
+                    $Tipo_cierre       = self::strip_slashes_recursive($row['Tipo_cierre']);
                     $tiraje            = intval($row['tiraje']);
                     $numpares          = intval($row['numpares']);
 
-                    $costo_unitario    = floatval($row['costo_unitario']);
-                    $costo_tot_proceso = floatval($row['costo_tot_proceso']);
+                    $costo_unitario    = round(floatval($row['costo_unitario']), 2);
+                    $costo_tot_proceso = round(floatval($row['costo_tot_proceso']), 2);
 
 
                     switch ($Tipo_cierre) {
@@ -3361,8 +3091,8 @@ class RegaloModel {
 
                             $largo = intval($row['largo']);
                             $ancho = intval($row['ancho']);
-                            $tipo  = trim(strval($row['tipo']));
-                            $color = trim(strval($row['color']));
+                            $tipo  = self::strip_slashes_recursive($row['tipo']);
+                            $color = self::strip_slashes_recursive($row['color']);
 
                             $sql_cierres = "INSERT INTO cot_cierres(id_odt, id_modelo, tipo_cierre, tiraje, numpares, largo, ancho, tipo, color, costo_unit, costo_tot_cierre, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo_cierre', $tiraje, $numpares, $largo, $ancho, '$tipo', '$color', $costo_unitario, $costo_tot_proceso, '$d_fecha')";
 
@@ -3376,7 +3106,7 @@ class RegaloModel {
 
                             $largo = intval($row['largo']);
                             $ancho = intval($row['ancho']);
-                            $tipo  = trim(strval($row['tipo']));
+                            $tipo  = self::strip_slashes_recursive($row['tipo']);
 
                             $sql_cierres = "INSERT INTO cot_cierres(id_odt, id_modelo, tipo_cierre, tiraje, numpares, largo, ancho, tipo, costo_unit, costo_tot_cierre, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo_cierre', $tiraje, $numpares, $largo, $ancho, '$tipo', $costo_unitario, $costo_tot_proceso, '$d_fecha')";
 
@@ -3418,17 +3148,17 @@ class RegaloModel {
 
                 and ($l_ranurado and $l_ranurado_tap and $l_encuadernacion)
 
-                and ($l_arr_ran_hor_emptap and $l_arr_ran_vert_emptap)
+                and ($l_Suaje_fcaj_fijo and $l_Suaje_ftap_fijo and $l_despunte_esquinas and $l_corte_refine_emp)
 
-                and ($l_arr_ran_hor_emp and $l_arr_ran_vert_emp)
-
-                and ($l_Suaje_fcaj_fijo and $l_Suaje_ftap_fijo and $l_despunte_esquinas)
-
-                and ($l_elab_fcaj and $l_elab_ftap)
+                and ($l_encuadernacionfcaj and $l_elab_fcaj and $l_elab_ftap)
 
                 and ($l_corte_carton_empcaj and $l_corte_carton_emptap)
-                and ($l_corte_carton_emp and $l_corte_refine_emp)
-                and ($l_corte_papel_emp_emptap and $l_corte_refine_empalmado_emptap)
+
+                and ($l_corte_papel_empcaj and $l_corte_papel_emptap)
+				and ($l_corte_papel_fcaj and $l_corte_refine_emptap)
+
+                and ($l_arr_ran_hor_emp and $l_arr_ran_vert_emp)
+                and ($l_arr_ran_hor_emptap and $l_arr_ran_vert_emptap)
 
                 and ($l_offset_empcaj and $l_offset_maq_empcaj)
                 and ($l_digital_empcaj and $l_serigrafia_empcaj)
@@ -3482,20 +3212,19 @@ class RegaloModel {
 
             if ($excepcion_pos) {
 
-                $mensaje = substr($excepcion, $excepcion_pos);
+                $mensaje_db = substr($excepcion, $excepcion_pos);
             } elseif($excepcion_pos1) {
 
-                $mensaje = substr($excepcion, $excepcion_pos1);
+                $mensaje_db = substr($excepcion, $excepcion_pos1);
             } else {
 
-                $mensaje = $exception->getMessage();
+                $mensaje_db = $exception->getMessage();
             }
 
-            $aJson['error'] = $mensaje . "; Error al grabar en la BD";
+            $aJson['error'] = $mensaje_db . "; Error al grabar en la BD";
 
             return $aJson;
             //return $aJson['error'];
         }
     }       // end function
-
 }           // end class

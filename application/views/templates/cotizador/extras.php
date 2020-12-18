@@ -84,20 +84,8 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer" id="footerBancoEmp" style="display: none">
+            <div class="modal-footer" id="footerBancoEmp">
                 <button type="button" id="btnBancoEmp" name="btnBancoEmp" class="btn btn-guardar-blues">Guardar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
-            <div class="modal-footer" id="footerBancoFcajon" style="display: none">
-                <button type="button" id="btnBancoFcajon" name="btnBancoFcajon" class="btn btn-guardar-blues">Guardar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
-            <div class="modal-footer" id="footerBancoFcartera" style="display: none">
-                <button type="button" id="btnBancoFcartera" name="btnBancoFcartera" class="btn btn-guardar-blues">Guardar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
-            <div class="modal-footer" id="footerBancoGuarda" style="display: none">
-                <button type="button" id="btnBancoGuarda" name="btnBancoGuarda" class="btn btn-guardar-blues">Guardar</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
           </div>
@@ -437,9 +425,9 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" id="btnSaveDescuento" class="btn btn-guardar-blues">Guardar</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-guardar-blues">Guardar</button>
 
-                    <button type="button" id="btnCancelDescuento" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
+                    <button type="button" id="btnDeleteDescuento" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
@@ -954,93 +942,9 @@
         $('#alerterror7').empty();
     }
 
-    function showLoading(){
-
-        $("#modLoading").show();
-    }
-
-    function hideLoading(){
-
-        $("#modLoading").hide();
-    }
-    function activarBtn() {
-
-        $("#btnImprimir").prop("disabled",false);
-        $("#btnActG").prop("disabled",false);
-    }
-
-
-    function desactivarBtn() {
-        
-        $("#btnImprimir").prop("disabled",true);
-        $("#btnActG").prop("disabled",true);
-    }
-
-    function showModError(proceso) {
-
-        $("#txtContenido").html("No existe el costo para el proceso: " + proceso + " con este tiraje.");
-
-        // $("#modalError").modal("show");
-        $('#modalError').modal({backdrop: 'static', keyboard: false});
-    }
-
-    function showModCorrecto(texto) {
-
-        $("#txtContCorrecto").html(texto);
-
-        $('#modalCorrecto').modal({backdrop: 'static', keyboard: false});
-    }
-
-    function revisarPropiedades(variable, texto){
-
-        if( variable == null || variable == "" || variable == undefined ){
-
-            showModError("");
-            $("#txtContenido").html();
-            $("#txtContenido").html("Ingrese " + texto);
-            return false;
-        }
-    }
-
     function cleanModError(){
 
         $("#modError").remove();
-    }
-
-    function appndMsgError(error){
-
-        var divError = $("#modError").html();
-        
-        if( divError !== undefined ){
-
-            $("#modError").remove();
-        }
-        var btnError = `
-
-            <div id="modError">
-                <a class="btn btn-danger" data-toggle="collapse" href="#ModmsgError" role="button" aria-expanded="false" aria-controls="ModmsgError">
-                        Ver mas...
-                </a>
-                <div class="collapse" id="ModmsgError">
-                    <div class="card card-body" id="txtError">
-                        
-                    </div>
-                </div>
-            </div>
-        `;
-        $("#modBody").append(btnError);
-        $("#txtError").html(error);
-
-    }
-
-    function setClient( cliente ){
-
-        this.cliente = cliente;
-    }
-
-    function setURL( url ){
-
-        this.url = url;
     }
 
     //eventos onclick
@@ -1063,7 +967,7 @@
 
         var accesorio       = "";
 
-        var alertmesserror  = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        var alertmesserror  = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Atencion!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
         switch(nombreAccesorio) {
 
@@ -1071,9 +975,10 @@
 
                 if( $("#SelectHerraje option:selected").val() != "selected") {
 
-                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + herraje + '</span></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + herraje + '</span></td><td class="img_delete delAcc"></td></tr>';
 
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
+                    var push = {"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio};
+                    caja.accesorio = push;
 
                     $('#listaccesorios').append(accesorio);
 
@@ -1088,9 +993,10 @@
                 break;
             case "Ojillos":
 
-                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td style=""></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="img_delete delAcc"></td></tr>';
 
-                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
+                var push = {"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio};
+                caja.accesorio = push;
 
                 $('#listaccesorios').append(accesorio);
 
@@ -1103,9 +1009,10 @@
 
                 if( $("#SelectColor option:selected").val() != "selected") {
 
-                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">' + precio + '</td><td class="listaccesorios img_delete"></td></tr>';
+                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td class="img_delete delAcc"></td></tr>';
 
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+                    var push = {"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio};
+                    caja.accesorio = push;
 
                     $('#listaccesorios').append(accesorio);
 
@@ -1122,9 +1029,10 @@
 
                 if( $("#SelectColor option:selected").val() != "selected") {
 
-                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td class="img_delete delAcc"></td></tr>';
 
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+                    var push = {"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio};
+                    caja.accesorio = push;
 
                     $('#listaccesorios').append(accesorio);
 
@@ -1140,54 +1048,6 @@
         }
     });
 
-    jQuery214(document).on("click", ".listaccesorios", function () {
-
-        $(this).closest('tr').remove();
-
-        row_listabancos = 0;
-
-        row_listabancos = $('#listaccesorios > tr').length;
-
-        aAccesorios = [];
-
-        var oTable = document.getElementById('accesoriosTable');
-
-        var rowLength = oTable.rows.length;
-
-        $("#listaccesorios tr").each(function(row, tr) {
-
-            var nombreAccesorio = $(tr).find('td:eq(0)').text();
-
-            //se salta el 1 porque en el td 1 esta el span como comentario
-            var largo   = $(tr).find('td:eq(2)').text();
-            var ancho   = $(tr).find('td:eq(3)').text();
-            var color   = $(tr).find('td:eq(4)').text();
-            var herraje = $(tr).find('td:eq(5)').text();
-            var precio  = $(tr).find('td:eq(6)').text();
-
-            nombreAccesorio = nombreAccesorio.trim();
-
-            switch(nombreAccesorio) {
-
-                case "Herraje":
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
-                
-                    break;
-                case "Ojillos":
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-                    
-                    break;
-                case "Resorte":
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                    break;
-                case "Lengueta de Liston":
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                
-                    break;
-            }
-        });
-    });
-
     //Banco
     $(document).on('click', '#btnBancoEmp', function(event) {
 
@@ -1201,7 +1061,7 @@
 
         var nuloo = document.getElementById('SelectBanEmp').value;
 
-        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Atencion!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
         if (nuloo === 'selected') {
 
@@ -1211,9 +1071,10 @@
 
             document.getElementById('alerterror5').innerHTML = "";
 
-            var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td style="display: none">'+ LLevaSuajeM +'</td><td class="listbancoemp img_delete"></td></tr>';
+            var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td class="img_delete delBan"></td></tr>';
 
-            aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM});
+            var push ={"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM};
+            caja.banco = push;
 
             $('#bancoemp').modal('hide');
 
@@ -1224,9 +1085,11 @@
 
             document.getElementById('alerterror5').innerHTML = "";
 
-            var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td class="listbancoemp img_delete"></td></tr>';
+            var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td class="img_delete delBan"></td></tr>';
 
-            aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null});
+            var push = {"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null};
+
+            caja.banco = push;
 
             $('#bancoemp').modal('hide');
 
@@ -1236,88 +1099,8 @@
         }
     });
 
-    jQuery214(document).on("click", ".listbancoemp", function () {
-
-        $(this).closest('tr').remove();
-
-        row_listabancos = 0;
-        row_listabancos = $('#listbancoemp > tr').length;
-
-        aBancos = [];
-
-        var oTable = document.getElementById('banTable');
-
-        var rowLength = oTable.rows.length;
-
-        var tipo_banco = "";
-
-        $("#listbancoemp tr").each(function(row, tr) {
-
-            var largo       = 0;
-            var ancho       = 0;
-            var profundidad = 0;
-            var suaje       = "";
-            var Largo_str   = "";
-            var Ancho_str   = "";
-            var profundidad_str   = "";
-
-
-            tipo_banco      = $(tr).find('td:eq(2)').text();
-            Largo_str       = $(tr).find('td:eq(3)').text();
-            Ancho_str       = $(tr).find('td:eq(4)').text();
-            profundidad_str = $(tr).find('td:eq(5)').text();
-
-            tipo_banco  = tipo_banco.trim();
-            largo       = parseInt(Largo_str, 10);
-            ancho       = parseInt(Ancho_str, 10);
-            profundidad = parseInt(profundidad_str, 10);
-
-
-            if (tipo_banco == "Carton") {
-
-                suaje = $(tr).find('td:eq(6)').text();
-                suaje = suaje.trim();
-
-                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-            }
-
-
-            if (tipo_banco == "Eva") {
-
-                suaje = $(tr).find('td:eq(6)').text();
-                suaje = suaje.trim();
-
-                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-            }
-
-
-            if (tipo_banco == "Espuma") {
-
-                suaje = $(tr).find('td:eq(6)').text();
-                suaje = suaje.trim();
-
-                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-            }
-
-
-            if (tipo_banco == "Empalme Banco") {
-
-                suaje = $(tr).find('td:eq(6)').text();
-                suaje = suaje.trim();
-
-                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
-            }
-
-
-            if (tipo_banco == "Cartulina Suajada") {
-
-                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": null});
-            }
-        });
-    });
-
     //Cierres
-    jQuery214(document).on("click", "#btnCierres", function () {
+    $(document).on("click", "#btnCierres", function () {
 
         var IDopCie  = $("#SelectCieEmp option:selected").data('id');
         var opCie    = $("#SelectCieEmp option:selected").text();
@@ -1335,17 +1118,17 @@
         var AnchSuajCal  = document.getElementById('AnchoSCalado').value;
         var tipoSuajCal  = $("#SelectSCalado option:selected").text();
 
-        var alertmesserror = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        var alertmesserror = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Atencion!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
 
         if (opCie == 'Iman' || opCie == 'Velcro') {
 
             document.getElementById('alerterror6').innerHTML = "";
 
-            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
+            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td class="img_delete delCie"></td></tr>';
 
-
-            aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
+            var push = {"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null};
+            caja.cierre = push;
 
             $('#cierres').modal('hide');
 
@@ -1360,10 +1143,10 @@
 
             document.getElementById('alerterror6').innerHTML = "";
 
-            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="listcierres img_delete"></td></tr>';
+            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="img_delete  delCie"></td></tr>';
 
-            aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-
+            var push = {"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null};
+            caja.cierre = push;
             $('#cierres').modal('hide');
 
             jQuery214('#listcierres').append(cie);
@@ -1386,10 +1169,10 @@
 
                 document.getElementById('alerterror6').innerHTML = "";
 
-                var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td style="display: none">'+ LarListon +'</td><td style="display: none">'+ AnchListon +'</td><td style="display: none">'+ tipoListon +'</td><td style="display: none">'+ colorListon +'</td><td class="listcierres img_delete"></td></tr>';
+                var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td class="img_delete delCie"></td></tr>';
 
-
-                aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon});
+                var push = {"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon};
+                caja.cierre = push;
 
                 $('#cierres').modal('hide');
 
@@ -1413,11 +1196,10 @@
 
                 document.getElementById('alerterror6').innerHTML = "";
 
-                var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td style="display: none">'+ LarSuajCal +'</td><td style="display: none">'+ AnchSuajCal +'</td><td style="display: none">'+ tipoSuajCal +'</td><td class="listcierres img_delete"></td></tr>';
+                var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td class="img_delete delCie"></td></tr>';
 
-
-                aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null});
-
+                var push = {"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null};
+                caja.cierre = push;
                 $('#cierres').modal('hide');
 
                 jQuery214('#listcierres').append(cie);
@@ -1427,112 +1209,13 @@
         }
     });
 
-    jQuery214(document).on("click", ".listcierres", function () {
-
-        $(this).closest('tr').remove();
-
-        row_listacierres = 0;
-
-        row_listacierres = $('#listcierres > tr').length;
-
-        aCierres = [];
-
-        var oTable = document.getElementById('cieTable');
-
-        var rowLength = oTable.rows.length;
-
-        var tipo_cierre = "";
-
-        $("#cieTable tr").each(function(row, tr) {
-
-            var tipo_cierre = "";
-            var numpares    = 1;
-
-            var numpares_str = "";
-            var Largo_str    = "";
-            var Ancho_str    = "";
-            var tipo         = "";
-
-            var Largo = 0;
-            var Ancho = 0;
-
-            tipo_cierre = $(tr).find('td:eq(0)').text();
-
-
-            if (tipo_cierre == "Iman") {
-
-                numpares_str = $(tr).find('td:eq(2)').text();
-                numpares     = parseInt(numpares_str, 10);
-
-                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-            }
-
-
-            // falta corregir el modal de Liston
-            if (tipo_cierre == "Liston") {
-
-                tipo_cierre = $(tr).find('td:eq(0)').text();
-
-                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-            }
-
-
-            if (tipo_cierre == "Marialuisa") {
-
-                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-            }
-
-
-            if (tipo_cierre == "Suaje calado") {
-
-                Largo_str   = $(tr).find('td:eq(2)').text();
-                Ancho_str   = $(tr).find('td:eq(3)').text();
-                tipo        = $(tr).find('td:eq(4)').text();
-
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
-
-                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": Largo, "ancho": Ancho, "tipo": tipo, "color": null});
-            }
-
-
-            if (tipo_cierre == "Velcro") {
-
-                numpares_str = $(tr).find('td:eq(2)').text();
-                numpares     = parseInt(numpares_str, 10);
-
-                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-            }
-        });
-    });
-
-    jQuery214(document).on("click", "#btnabrebancoemp", function () {
-
-        $('#footerBancoEmp').show();
-        $('#footerBancoFcajon').hide();
-        $('#footerBancoFcartera').hide();
-        $('#footerBancoGuarda').hide();
-    });
-
     //boton Correcto
     $("#btnModCorrecto").click( function() {
 
-        location.href= url + "cotizador/getCotizaciones/";
-
-        desactivarBtn();
+        location.href= "<?=URL?>" + "cotizador/getCotizaciones/";
     });
 
-    //boton Descuento
-    jQuery214(document).on("click", "#btnSaveDescuento", function (){
-            
-        $("#descuentoModal").html("Descuento: (" + descuento + "%)");
-
-        $("#descuentos").modal("hide");
-    });
-
-
-    jQuery214(document).on("click", "#btnCancelDescuento", function (){
+    jQuery214(document).on("click", "#btnDeleteDescuento", function (){
         
         jQuery214('#DescuentoDrop').html("$0.00");
 
@@ -1540,24 +1223,13 @@
 
         $("#descuentoModal").html("Descuento: (0%)");
         
-        descuento = 0;
-    });
-
-    jQuery214(document).on("click", "#descuentoModal", function (){
-
-        //showModal('d_grabado',true);
-        $('#descuentos').modal('show');
+        caja.descuento = 0;
     });
 
     jQuery214(document).on("click", ".d-check", function (){
 
-        descuento = $(this).val();
-    });
-
-    //boton eliminar. Es el que hace la magia ;)
-    jQuery214(document).on("click", ".delete", function () {
-
-        $(this).closest('tr').remove();
+        caja.descuento = $(this).val();
+        $("#descuentoModal").html("Descuento: (" + caja.descuento + "%)");
     });
 
     //resumen
@@ -1580,5 +1252,56 @@
         $('#resumentodocaja').css("position","none");
         $('#resumentodocaja').hide();
         $('#groupButton1').show();
+    });
+
+    //boton eliminar. Es el que hace la magia ;)
+    jQuery214(document).on("click", ".delete", function () {
+        
+        $(this).closest('table').find('tr').each(function(e){
+
+            $(this).data('len',e);
+        });
+
+        var index = $(this).closest('tr').data('len');
+        var tabla = $(this).closest('tr').parent().prop('id');
+
+        caja.delBtnSec(tabla,index);
+        $(this).closest('tr').remove();
+    });
+
+    jQuery214(document).on("click", ".delAcc", function () {
+        
+        $(this).closest('table').find('tr').each(function(e){
+
+            $(this).data('len',e);
+        });
+
+        var index = $(this).closest('tr').data('len');
+        caja.delBtnAcc(index);
+        $(this).closest('tr').remove();
+    });
+
+    jQuery214(document).on("click", ".delCie", function () {
+        
+        $(this).closest('table').find('tr').each(function(e){
+
+            $(this).data('len',e);
+        });
+
+        var index = $(this).closest('tr').data('len');
+        caja.delBtnCie(index);
+        $(this).closest('tr').remove();
+    });
+
+    jQuery214(document).on("click", ".delBan", function () {
+        
+        $(this).closest('table').find('tr').each(function(e){
+
+            $(this).data('len',e);
+        });
+
+        var index = $(this).closest('tr').data('len');
+        caja.delBtnBan(index);
+        $(this).closest('tr').remove();
     });
 </script>

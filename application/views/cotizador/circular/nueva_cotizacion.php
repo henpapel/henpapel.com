@@ -19,13 +19,6 @@
 
         background: #5B84B1;
     }
-
-    .groupButton2{
-
-        transition: 2s linear ;
-
-    }
-
     .divContenido{
 
         display: block; text-align: center; width: 100%;
@@ -195,302 +188,58 @@
     </div>
 </div>
 
-<!-- Resumen -->
-    <div id="resumentodocaja" style="display: none;">
-
-        <button type="button" style="text-align: end; border: none; background: none; width: 100%;" id="btnQuitarResumen"><img border="0" src="<?=URL ;?>public/img/eliminar.png" style="width: 2%;">
-        </button>
-
-        <table class="table tableresumenn" id="ResumenCostos">
-
-            <thead class="thead-dark">
-
-                <tr>
-                    <th style="width: 20%"></th>
-                    <th>Adiciones</th>
-                    <th>Subtotal</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-
-            <thead id="resumenHead">
-                <!-- -->
-            </thead>
-
-            <tbody id="resumenPapeles">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenBCaj">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenCirCaj">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenFextCaj">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenPomCaj">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenFintCaj">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenBasTap">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenCirTap">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenFTap">
-                <!-- -->
-            </tbody>
-            <tbody id="resumenFexTap">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenFinTap">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenEncuadernacion">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenMensajeria">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenEmpaque">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenBancos">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenCierres">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenAccesorios">
-                <!-- -->
-            </tbody>
-
-            <tbody id="resumenOtros">
-                <!-- -->
-            </tbody>
-        </table>
-        <img border="0" src="<?=URL ;?>public/img/henpp.png" style="width: 7%; margin: 2%"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
-    </div>
-
 <?php
     require "application/views/templates/cotizador/acabados.php";
     require "application/views/templates/cotizador/extras.php";
     require "application/views/templates/cotizador/impresiones.php";
 ?>
-
-<script type="text/javascript" src="<?= URL ?>public/js/cotizador/circular.js"></script>
+<script src="<?=URL?>public/js/cotizador/cajas.js"></script>
+<script src="<?=URL?>public/js/cotizador/circular.js"></script>
 
 <script type="text/javascript">
+
+    var option = "";
+    <?php foreach ($papers as $paper) {?>
+        
+        option += '<option value="<?=$paper['id_papel']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>';
+    <?php }?>
+
+    var baseImg = "<?=BASE_URL?>public/img/";
+    
+    var seccion = [
+        { titulo: 'Base Cajón', img: baseImg+'2.png', option: 'optBasCajon', siglas: 'BC', chk: true, aAcb: [], aImp: [], 'siglasP': 'Emp' },
+        { titulo: 'Circunferencia Cajón', img: baseImg+'2.png', option: 'optCirCajon', siglas: 'CC', chk: false, aAcb: [], aImp: [], 'siglasP': 'FCaj' },
+        { titulo: 'Forro Exterior Cajón', img: baseImg+'2.png', option: 'optExtCajon', siglas: 'EC', chk: false, aAcb: [], aImp: [], 'siglasP': 'EmpTap' },
+        { titulo: 'Pompa Cajón', img: baseImg+'2.png', option: 'optPomCajon', siglas: 'PC', chk: false, aAcb: [], aImp: [], 'siglasP': 'FTap' },
+
+        { titulo: 'Forro Interior Cajón', img: baseImg+'2.png', option: 'optIntCajon', siglas: 'IC', chk: true, aAcb: [], aImp: [], 'siglasP': 'Emp' },
+        { titulo: 'Base Tapa', img: baseImg+'2.png', option: 'optBasTapa', siglas: 'BT', chk: false, aAcb: [], aImp: [], 'siglasP': 'FCaj' },
+        { titulo: 'Circunferencia Tapa', img: baseImg+'2.png', option: 'optCirTapa', siglas: 'CT', chk: false, aAcb: [], aImp: [], 'siglasP': 'EmpTap' },
+        { titulo: 'Forro Tapa', img: baseImg+'2.png', option: 'optForTapa', siglas: 'FT', chk: false, aAcb: [], aImp: [], 'siglasP': 'FTap' },
+
+        { titulo: 'Forro Exterior Tapa', img: baseImg+'2.png', option: 'optExtTapa', siglas: 'ET', chk: false, aAcb: [], aImp: [], 'siglasP': 'EmpTap' },
+        { titulo: 'Forro Interior Tapa', img: baseImg+'2.png', option: 'optIntTapa', siglas: 'IT', chk: false, aAcb: [], aImp: [], 'siglasP': 'FTap' },
+    ]
+
+    let caja = new Circular( {secciones: seccion, papeles: option} );
 
     var contenidoIzquierdo = $("#divIzquierdo-slave").contents();
     $("#divIzquierdo").empty();
     $("#divIzquierdo").append(contenidoIzquierdo);
     $("#divDerecho").empty();
 
-    divSecciones("Base Cajón", "optBasCajon" , "BC", "<?=URL ?>/public/img/2.png",true);
-    divSecciones("Circunferencia Cajón", "optCirCajon" , "CC", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Forro Exterior Cajón", "optExtCajon" , "EC", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Pompa Cajón", "optPomCajon" , "PC", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Forro Interior Cajón", "optIntCajon" , "IC", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Base Tapa", "optBasTapa" , "BT", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Circunferencia Tapa", "optCirTapa" , "CT", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Forro Tapa", "optForTapa" , "FT", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Forro Exterior Tapa", "optExtTapa" , "ET", "<?=URL ?>/public/img/2.png",false);
-    divSecciones("Forro Interior Tapa", "optIntTapa" , "IT", "<?=URL ?>/public/img/2.png",false);
-
-    var cliente = getIdClient();
+    caja.url="<?= URL ?>";
     //eligira a donde se enviara la informacion
-    changeData("<?=URL?>circular/saveCaja");
-    setClient( cliente );
-    setURL("<?= URL ?>");
 
-    //Boton Grabar
+    caja.changeData("circular/saveCaja");
+    caja.constructSec();
+    $("#box-model").val("2");
+    history.forward();
+
+    //Boton Guardar
     $("#btnGrabarC").click( function() {
 
-        showLoading();
-        if(formData){
-
-            if (formData.length > 0) {
-
-                formData = [];
-            }
-        }
-
-        var odt         = $("#odt").val();
-        var diametro    = $("#diametro").val();
-        var profundidad = $("#profundidad").val();
-        var altura      = $("#altura_tapa").val();
-        var grosor      = $("#grosor_carton").val();
-        var cantidad    = $("#qty").val();
-
-        var optBasCajon = $("#optBasCajon").val();
-        var optCirCajon = $("#optCirCajon").val();
-        var optExtCajon = $("#optExtCajon").val();
-        var optPomCajon = $("#optPomCajon").val();
-        var optIntCajon = $("#optIntCajon").val();
-        var optBasTapa  = $("#optBasTapa").val();
-        var optCirTapa  = $("#optCirTapa").val();
-        var optForTapa  = $("#optForTapa").val();
-        var optExtTapa  = $("#optExtTapa").val();
-        var optIntTapa  = $("#optIntTapa").val();
-
-        var grabar = "SI";
-
-        var formData = $("#caja-form").serializeArray();
-
-        var formData      = $("#caja-form").serializeArray();
-
-        // impresion
-        var aImpBC_tmp  = JSON.stringify(aImpBC, null, 4);
-        var aImpCC_tmp  = JSON.stringify(aImpCC, null, 4);
-        var aImpFEC_tmp = JSON.stringify(aImpFEC, null, 4);
-        var aImpPC_tmp  = JSON.stringify(aImpPC, null, 4);
-        var aImpFIC_tmp = JSON.stringify(aImpFIC, null, 4);
-        var aImpBT_tmp  = JSON.stringify(aImpBT, null, 4);
-        var aImpCT_tmp  = JSON.stringify(aImpCT, null, 4);
-        var aImpFT_tmp  = JSON.stringify(aImpFT, null, 4);
-        var aImpFET_tmp = JSON.stringify(aImpFET, null, 4);
-        var aImpFIT_tmp = JSON.stringify(aImpFIT, null, 4);
-
-        // acabados
-        var aAcbBC_tmp  = JSON.stringify(aAcbBC, null, 4);
-        var aAcbCC_tmp  = JSON.stringify(aAcbCC, null, 4);
-        var aAcbFEC_tmp = JSON.stringify(aAcbFEC, null, 4);
-        var aAcbPC_tmp  = JSON.stringify(aAcbPC, null, 4);
-        var aAcbFIC_tmp = JSON.stringify(aAcbFIC, null, 4);
-        var aAcbBT_tmp  = JSON.stringify(aAcbBT, null, 4);
-        var aAcbCT_tmp  = JSON.stringify(aAcbCT, null, 4);
-        var aAcbFT_tmp  = JSON.stringify(aAcbFT, null, 4);
-        var aAcbFET_tmp = JSON.stringify(aAcbFET, null, 4);
-        var aAcbFIT_tmp = JSON.stringify(aAcbFIT, null, 4);
-
-        // cierres
-        var aCierres_tmp = JSON.stringify(aCierres, null, 4);
-
-
-        // bancos
-        var aBancos_tmp = JSON.stringify(aBancos, null, 4);
-
-
-        // accesorios
-        var aAccesorios_tmp = JSON.stringify(aAccesorios, null, 4);
-
-        var cliente  = getIdClient();
-
-        var id_cliente_tmp = JSON.stringify(cliente, null, 4);
-
-        formData.push({name: 'id_cliente', value: id_cliente_tmp});   // calculadora
-
-        formData.push({name: 'aImpBCaj', value: aImpBC_tmp});
-        formData.push({name: 'aImpCirCaj', value: aImpCC_tmp});
-        formData.push({name: 'aImpFextCaj', value: aImpFEC_tmp});
-        formData.push({name: 'aImpPomCaj', value: aImpPC_tmp});
-        formData.push({name: 'aImpFintCaj', value: aImpFIC_tmp});
-        formData.push({name: 'aImpBTapa', value: aImpBT_tmp});
-        formData.push({name: 'aImpCirTapa', value: aImpCT_tmp});
-        formData.push({name: 'aImpFTapa', value: aImpFT_tmp});
-        formData.push({name: 'aImpFextTapa', value: aImpFET_tmp});
-        formData.push({name: 'aImpFintTapa', value: aImpFIT_tmp});
-
-        formData.push({name: 'aAcbBCaj', value: aAcbBC_tmp});
-        formData.push({name: 'aAcbCirCaj', value: aAcbCC_tmp});
-        formData.push({name: 'aAcbFextCaj', value: aAcbFEC_tmp});
-        formData.push({name: 'aAcbPomCaj', value: aAcbPC_tmp});
-        formData.push({name: 'aAcbFintCaj', value: aAcbFIC_tmp});
-        formData.push({name: 'aAcbBTapa', value: aAcbBT_tmp});
-        formData.push({name: 'aAcbCirTapa', value: aAcbCT_tmp});
-        formData.push({name: 'aAcbFTapa', value: aAcbFT_tmp});
-        formData.push({name: 'aAcbFextTapa', value: aAcbFET_tmp});
-        formData.push({name: 'aAcbFintTapa', value: aAcbFIT_tmp});
-
-        formData.push({name: 'aCierres', value: aCierres_tmp});
-        formData.push({name: 'aBancos', value: aBancos_tmp});
-        formData.push({name: 'aAccesorios', value: aAccesorios_tmp});
-
-        // descuento
-        formData.push({name: 'descuento_pctje', value: descuento});
-        formData.push({name: 'grabar', value: grabar});
-
-        var modificar_odt = "NO";
-
-        formData.push({name: 'modificar', value: modificar_odt});
-
-        //$("#subForm").prop("disabled", true);
-
-        var odt1 = $("#odt").val();
-
-        var odtval = [];
-
-        odtval.push({name: 'odt', value: odt1});
-
-        //if( revisarImpAcb() == false ) return false;
-
-        $.ajax({                                // GRABAR
-            type:"POST",
-            async: false,
-            //dataType: "json",
-            url: $('#caja-form').attr('action'),
-            data: formData,
-        })
-        .done(function( response ) {
-            hideLoading();
-            console.log("(3033) response: ");
-            console.log(response);
-
-            try {
-
-                var js_respuesta = JSON.parse( response );
-                var error        = js_respuesta.error;
-
-                if (error.length > 0) {
-
-                    showModError("");
-                    $("#txtContenido").html("(3046 " + error);
-
-                } else {
-
-                    showModCorrecto("Los datos han sido guardados correctamente...");
-                }
-            } catch(e) {
-
-                desactivarBtn();
-                var js_respuesta = JSON.parse( response );
-                var error        = js_respuesta.error;
-
-                if (error.length > 0) {
-
-                    showModError("");
-                    $("#txtContenido").html("(3062) " + error);
-                } else {
-                    showModError("");
-                    $("#txtContenido").html("(3068) Error al grabar en la Base de Datos");
-                }
-            }
-        })
-        .fail(function(response) {
-
-            console.log('(3074) Bug! revisa...');
-            desactivarBtn();
-        });
+        //El 'NO' especificado en la funcion sirve para decir si se modificara la odt. Esto sirve cuando se hace la modificacion de la caja. vease en modificacion caja regalo
+        caja.saveCotizacion("NO");
     });
-    $("#box-model").val("2");
 </script>

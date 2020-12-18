@@ -1,6 +1,6 @@
 <?php
 
-class VentasModel {
+class VentasModel extends Controller {
 
     function __construct($db) {
 
@@ -31,6 +31,7 @@ class VentasModel {
 
         return $result;
     }
+
 
     // Obtiene los datos de Offset
     public function costo_offset($proceso) {
@@ -87,6 +88,329 @@ class VentasModel {
 
     }
 
+
+    // Tablas Offset
+    public function getOffsetTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                     = intval($row['id']);
+            $result[$iii]['id_odt']                 = intval($row['id_odt']);
+            $result[$iii]['id_modelo']              = intval($row['id_modelo']);
+            $result[$iii]['tipo']                   = utf8_encode(trim(strval($row['tipo'])));
+            $result[$iii]['tiraje']                 = intval($row['tiraje']);
+            $result[$iii]['num_tintas']             = intval($row['num_tintas']);
+            $result[$iii]['corte_costo_unitario']   = floatval($row['corte_costo_unitario']);
+            $result[$iii]['corte_por_millar']       = intval($row['corte_por_millar']);
+            $result[$iii]['costo_corte']            = floatval($row['costo_corte']);
+            $result[$iii]['costo_unitario_laminas'] = floatval($row['costo_unitario_laminas']);
+            $result[$iii]['costo_tot_laminas']      = floatval($row['costo_tot_laminas']);
+            $result[$iii]['costo_unitario_arreglo'] = floatval($row['costo_unitario_arreglo']);
+            $result[$iii]['costo_tot_arreglo']      = floatval($row['costo_tot_arreglo']);
+            $result[$iii]['costo_unitario_tiro']    = floatval($row['costo_unitario_tiro']);
+            $result[$iii]['costo_tot_tiro']         = floatval($row['costo_tot_tiro']);
+            $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+    // Tablas Digital
+    public function getDigitalTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                = intval($row['id']);
+            $result[$iii]['id_odt']            = intval($row['id_odt']);
+            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
+            //$result[$iii]['cabe_digital']      = trim(strval($row['cabe_digital']));
+            $result[$iii]['tiraje']            = intval($row['tiraje']);
+            $result[$iii]['corte_ancho']       = floatval($row['corte_ancho']);
+            $result[$iii]['corte_largo']       = floatval($row['corte_largo']);
+            $result[$iii]['imp_ancho']         = floatval($row['imp_ancho']);
+            $result[$iii]['imp_largo']         = floatval($row['imp_largo']);
+            $result[$iii]['impresion']         = trim(strval($row['impresion']));
+            $result[$iii]['costo_unitario ']   = floatval($row['costo_unitario']);
+            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+    // Tablas serigrafia
+    public function getSerigrafiaTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                 = intval($row['id']);
+            $result[$iii]['id_odt']             = intval($row['id_odt']);
+            $result[$iii]['id_modelo']          = intval($row['id_modelo']);
+            $result[$iii]['tipo']               = utf8_encode(trim(strval($row['tipo'])));
+            $result[$iii]['tiraje']             = intval($row['tiraje']);
+            $result[$iii]['num_tintas']         = intval($row['num_tintas']);
+            $result[$iii]['cortes_por_pliego']  = intval($row['cortes_por_pliego']);
+            $result[$iii]['costo_unit_arreglo'] = floatval($row['costo_unit_arreglo']);
+            $result[$iii]['costo_arreglo']      = intval($row['costo_arreglo']);
+            $result[$iii]['costo_unit_tiro']    = floatval($row['costo_unit_tiro']);
+            $result[$iii]['costo_tiro']         = floatval($row['costo_tiro']);
+            $result[$iii]['costo_tot_proceso']  = floatval($row['costo_tot_proceso']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+    // Tablas barnizuv
+    public function getBarnizuvTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                 = intval($row['id']);
+            $result[$iii]['id_odt']             = intval($row['id_odt']);
+            $result[$iii]['id_modelo']          = intval($row['id_modelo']);
+            $result[$iii]['tipo_grabado']       = utf8_encode(trim(strval($row['tipo_grabado'])));
+            $result[$iii]['largo']             = floatval($row['largo']);
+            $result[$iii]['ancho']             = floatval($row['ancho']);
+            $result[$iii]['area']              = floatval($row['area']);
+            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
+            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
+            $result[$iii]['cortes_por_pliego'] = intval($row['cortes_por_pliego']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+
+    // Tablas corte laser
+    public function getLaserTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                = intval($row['id']);
+            $result[$iii]['id_odt']            = intval($row['id_odt']);
+            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
+            $result[$iii]['tipo_grabado']      = utf8_encode(trim(strval($row['tipo_grabado'])));
+            $result[$iii]['largo']             = floatval($row['largo']);
+            $result[$iii]['ancho']             = floatval($row['ancho']);
+            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
+            $result[$iii]['tiempo_requerido']  = floatval($row['tiempo_requerido']);
+            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+    // Tablas grabado
+    public function getGrabadoTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                     = intval($row['id']);
+            $result[$iii]['id_odt']                 = intval($row['id_odt']);
+            $result[$iii]['id_modelo']              = intval($row['id_modelo']);
+            $result[$iii]['tipo_grabado']           = utf8_encode(trim(strval($row['tipo_grabado'])));
+            $result[$iii]['largo']                  = floatval($row['largo']);
+            $result[$iii]['ancho']                  = floatval($row['ancho']);
+            $result[$iii]['ubicacion']              = trim(strval($row['ubicacion']));
+            $result[$iii]['placa_area']             = floatval($row['placa_area']);
+            $result[$iii]['placa_costo_unitario']   = floatval($row['placa_costo_unitario']);
+            $result[$iii]['placa_costo']            = floatval($row['placa_costo']);
+            $result[$iii]['arreglo_costo_unitario'] = floatval($row['arreglo_costo_unitario']);
+            $result[$iii]['arreglo_costo']          = floatval($row['arreglo_costo']);
+            $result[$iii]['costo_unitario']         = floatval($row['costo_unitario']);
+            $result[$iii]['costo_tiro']             = floatval($row['costo_tiro']);
+            $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+    // Tablas Laminado
+    public function getLaminadoTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                = intval($row['id']);
+            $result[$iii]['id_odt']            = intval($row['id_odt']);
+            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
+            $result[$iii]['tipo_grabado']      = utf8_encode(trim(strval($row['tipo_grabado'])));
+            $result[$iii]['largo']             = floatval($row['largo']);
+            $result[$iii]['ancho']             = floatval($row['ancho']);
+            $result[$iii]['area']              = floatval($row['area']);
+            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
+            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+
+    // Tablas Suaje
+    public function getSuajeTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                      = intval($row['id']);
+            $result[$iii]['id_odt']                  = intval($row['id_odt']);
+            $result[$iii]['id_modelo']               = intval($row['id_modelo']);
+            $result[$iii]['tipo_grabado']            = utf8_encode(trim(strval($row['tipo_grabado'])));
+            $result[$iii]['largo']                   = floatval($row['largo']);
+            $result[$iii]['ancho']                   = floatval($row['ancho']);
+            $result[$iii]['perimetro']              = intval($row['perimetro']);
+            $result[$iii]['tabla_suaje']    = floatval($row['tabla_suaje']);
+            $result[$iii]['arreglo_costo_unitario']    = floatval($row['arreglo_costo_unitario']);
+            $result[$iii]['tiro_costo_unitario']             = floatval($row['tiro_costo_unitario']);
+            $result[$iii]['costo_tiro']          = intval($row['costo_tiro']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+    // Tablas HotStamping
+    public function getHotStampingTabla($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = array();
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii]['id']                      = intval($row['id']);
+            $result[$iii]['id_odt']                  = intval($row['id_odt']);
+            $result[$iii]['id_modelo']               = intval($row['id_modelo']);
+            $result[$iii]['tipo_grabado']            = utf8_encode(trim(strval($row['tipo_grabado'])));
+            $result[$iii]['largo']                   = floatval($row['largo']);
+            $result[$iii]['ancho']                   = floatval($row['ancho']);
+            $result[$iii]['color']                   = trim(strval($row['color']));
+            $result[$iii]['placa_area']              = floatval($row['placa_area']);
+            $result[$iii]['placa_costo_unitario']    = floatval($row['placa_costo_unitario']);
+            $result[$iii]['placa_costo']             = floatval($row['placa_costo']);
+            $result[$iii]['pelicula_largo']          = intval($row['pelicula_largo']);
+            $result[$iii]['pelicula_ancho']          = intval($row['pelicula_ancho']);
+            $result[$iii]['pelicula_area']           = floatval($row['pelicula_area']);
+            $result[$iii]['pelicula_costo_unitario'] = floatval($row['pelicula_costo_unitario']);
+            $result[$iii]['pelicula_costo']          = floatval($row['pelicula_costo']);
+            $result[$iii]['arreglo_costo_unitario']  = floatval($row['arreglo_costo_unitario']);
+            $result[$iii]['arreglo_costo']           = floatval($row['arreglo_costo']);
+            $result[$iii]['costo_unitario']          = floatval($row['costo_unitario']);
+            $result[$iii]['costo_tiro']              = floatval($row['costo_tiro']);
+            $result[$iii]['costo_tot_proceso']       = floatval($row['costo_tot_proceso']);
+
+            $iii++;
+        }
+
+        return $result;
+    }
+
+
+
+    public function readODT($num_odt) {
+
+        $sql = "SELECT * from cot_odt where status = 'A' and num_odt = '" . $num_odt . "'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
+        }
+
+        return $result;
+    }
 
     // Obtiene los costos de Serigrafia
     public function costo_serigrafia_rango($nombre_campo) {

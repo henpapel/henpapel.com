@@ -19,13 +19,6 @@
 
         background: #5B84B1;
     }
-
-    .groupButton2{
-
-        transition: 2s linear ;
-
-    }
-
     .divContenido{
 
         display: block; text-align: center; width: 100%;

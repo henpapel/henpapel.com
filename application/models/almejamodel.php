@@ -17,7 +17,7 @@ class AlmejaModel extends Controller {
     public function insertCaja_Almeja(&$aJson, $id_modelo) {
 
         $id_cliente     = 0;
-        $nombre_cliente = "";
+        //$nombre_cliente = "";
         $odt            = "";
         $tiraje         = 0;
         $base           = 0;
@@ -32,14 +32,12 @@ class AlmejaModel extends Controller {
         $d_fecha = date("Y-m-d", strtotime($fecha));
         $time    = date("H:i:s", time());
 
+        $id_modelo = intval($id_modelo);
+
+        $tiraje = intval($aJson['tiraje']);
 
         $id_usuario = $aJson['id_usuario'];
         $id_usuario = intval($id_usuario);
-
-        $id_tienda  = $aJson['id_tienda'];
-        $id_tienda  = intval($id_tienda);
-
-        $id_modelo = intval($id_modelo);
 
         $id_cliente = $aJson['id_cliente'];
         $id_cliente = intval($id_cliente);
@@ -47,15 +45,13 @@ class AlmejaModel extends Controller {
         $id_tienda = $aJson['id_tienda'];
         $id_tienda = intval($id_tienda);
 
-
-        $tiraje = intval($aJson['tiraje']);
-
+    /*
         $nombre_cliente = $aJson['Nombre_cliente'];
         $nombre_cliente = strval($nombre_cliente);
         $nombre_cliente = trim($nombre_cliente);
-
+    */
         $odt    = $aJson['nomb_odt'];
-        $odt    = trim(strval($odt));
+        $odt    = self::strip_slashes_recursive($odt);
 
         $base           = round(floatval($aJson['base']), 2);
         $alto           = round(floatval($aJson['alto']), 2);
@@ -63,8 +59,8 @@ class AlmejaModel extends Controller {
         $grosor_cajon   = round(floatval($_POST['grosor-cajon']), 2);
         $grosor_cartera = round(floatval($_POST['grosor-cartera']), 2);
 
-        $id_grosor_cajon   = intval($aJson['CartonCaj']['id_papel']);
-        $id_grosor_cartera = intval($aJson['CartonCar']['id_papel']);
+        //$id_grosor_cajon   = intval($aJson['CartonCaj']['id_papel']);
+        //$id_grosor_cartera = intval($aJson['CartonCar']['id_papel']);
 
 
         $costo_total_odt   = round(floatval($aJson['costo_odt']), 2);
@@ -120,7 +116,7 @@ class AlmejaModel extends Controller {
         $aPap_fcaj            = [];
         $aPap_fcar            = [];
         $aPap_g               = [];
-        $aCaj_Caj             = [];
+        $aCar_Caj             = [];
         $aCar_Car             = [];
         $aElab_car            = [];
         $aElab_guarda         = [];
@@ -149,7 +145,7 @@ class AlmejaModel extends Controller {
 
     // Empalme
         $id_papel_empalme            = intval($aPap_emp['id_papel']);
-        $nombre_papel_emp            = utf8_decode(trim(strval($aPap_emp['nombre_papel'])));
+        $nombre_papel_emp            = utf8_decode(self::strip_slashes_recursive($aPap_emp['nombre_papel']));
         $ancho_papel_emp             = intval($aPap_emp['ancho_papel']);
         $largo_papel_emp             = intval($aPap_emp['largo_papel']);
         $costo_unit_papel_emp        = round(floatval($aPap_emp['costo_unit_papel']), 4);
@@ -166,7 +162,7 @@ class AlmejaModel extends Controller {
 
     // Forro del Cajon
         $id_papel_Fcajon       = intval($aPap_fcaj['id_papel']);
-        $nombre_papel_fcaj     = utf8_decode(trim(strval($aPap_fcaj['nombre_papel'])));
+        $nombre_papel_fcaj     = utf8_decode(self::strip_slashes_recursive($aPap_fcaj['nombre_papel']));
         $ancho_papel_fcaj      = intval($aPap_fcaj['ancho_papel']);
         $largo_papel_fcaj      = intval($aPap_fcaj['largo_papel']);
         $costo_unit_papel_fcaj = round(floatval($aPap_fcaj['costo_unit_papel']), 4);
@@ -184,7 +180,7 @@ class AlmejaModel extends Controller {
 
     // forro de la cartera
         $id_papel_Fcartera     = intval($aPap_fcar['id_papel']);
-        $nombre_papel_fcar     = utf8_decode(trim(strval($aPap_fcar['nombre_papel'])));
+        $nombre_papel_fcar     = utf8_decode(self::strip_slashes_recursive($aPap_fcar['nombre_papel']));
         $ancho_papel_fcar      = intval($aPap_fcar['ancho_papel']);
         $largo_papel_fcar      = intval($aPap_fcar['largo_papel']);
         $costo_unit_papel_fcar = round(floatval($aPap_fcar['costo_unit_papel']), 4);
@@ -201,7 +197,7 @@ class AlmejaModel extends Controller {
 
     // Guarda
         $id_papel_guarda    = intval($aPap_g['id_papel']);
-        $nombre_papel_g     = utf8_decode(trim(strval($aPap_g['nombre_papel'])));
+        $nombre_papel_g     = utf8_decode(self::strip_slashes_recursive($aPap_g['nombre_papel']));
         $ancho_papel_g      = intval($aPap_g['ancho_papel']);
         $largo_papel_g      = intval($aPap_g['largo_papel']);
         $costo_unit_papel_g = round(floatval($aPap_g['costo_unit_papel']), 4);
@@ -215,10 +211,9 @@ class AlmejaModel extends Controller {
         unset($aPap_g);
 
 
-
     // Carton Cajon
         $id_cajon                = intval($aCar_Caj['id_papel']);
-        $cajon_nombre            = utf8_decode(trim(strval($aCar_Caj['nombre_papel'])));
+        $cajon_nombre            = utf8_decode(self::strip_slashes_recursive($aCar_Caj['nombre_papel']));
         $id_num_cajon            = round(floatval($grosor_cajon), 2);
         $cajon_papel             = utf8_decode(trim(strval($aCar_Caj['nombre_papel'])));
         $cajon_precio            = round(floatval($aCar_Caj['costo_unit_papel']), 2);
@@ -236,9 +231,9 @@ class AlmejaModel extends Controller {
 
     // Carton Cartera
         $id_carton_cartera                = intval($aCar_Car['id_papel']);
-        $carton_cartera_nombre            = utf8_decode(trim(strval($aCar_Car['nombre_papel'])));
+        $carton_cartera_nombre            = utf8_decode(self::strip_slashes_recursive($aCar_Car['nombre_papel']));
         $carton_id_num_cartera            = floatval($grosor_cartera);
-        $carton_cartera_papel             = utf8_decode(trim(strval($aCar_Car['nombre_papel'])));
+        $carton_cartera_papel             = utf8_decode(self::strip_slashes_recursive($aCar_Car['nombre_papel']));
         $carton_cartera_precio            = round(floatval($aCar_Car['costo_unit_papel']), 2);
         $carton_cartera_ancho             = floatval($aCar_Car['ancho_papel']);
         $carton_cartera_largo             = floatval($aCar_Car['largo_papel']);
@@ -290,19 +285,21 @@ class AlmejaModel extends Controller {
 
     // Encuadernacion
         $perf_iman_costo_unitario               = round(floatval($aEncuadernacion['perf_iman_costo_unitario']), 2);
-        $perf_iman_y_puesta                     = round(floatval($aEncuadernacion['perf_iman_y_puesta']), 2);
-        $encuad_despunte_costo_unitario         = round(floatval($aJson['despunte_esquinas']['costo_unit']), 2);
-        $encuad_despunte_de_esquinas_para_cajon = round(floatval($aJson['despunte_esquinas']['costo_tot_despunte']), 2);
-        $encuad_encajada_costo_unitario         = round(floatval($aJson['encajada']['costo_unitario']), 2);
-        $encuad_encajada                        = round(floatval($aJson['encajada']['costo_tot_proceso']), 2);
+        $perf_iman_y_puesta                     = round(floatval($aEncuadernacion['perf_iman_costo_tot']), 2);
+        $encuad_encajada_costo_unitario         = round(floatval($aEncuadernacion['encajada_costo_unitario']), 2);
+        $encuad_encajada                        = round(floatval($aEncuadernacion['encajada_costo_tot']), 2);
+        $arreglo_forrado_cajon_costo_unitario   = round(floatval($aEncuadernacion['arreglo_forrado_cajon_costo_unitario']), 2);
+        $arreglo_forrado_cajon_costo_tot        = round(floatval($aEncuadernacion['arreglo_forrado_cajon_costo']), 2);
+        $forrado_cajon_costo_unitario           = round(floatval($aEncuadernacion['forrado_cajon_costo_unitario']), 2);
+        $forrado_cajon_costo                    = round(floatval($aEncuadernacion['forrado_cajon_costo']), 2);
         $encuad_costo_tot_proceso               = round(floatval($aEncuadernacion['costo_tot_proceso']), 2);
-        $encuad_costo_tot_encuadernacion        = round(floatval($encuad_costo_tot_proceso + $encuad_encajada), 2);
+
 
         unset($aEncuadernacion);
 
 
     // Encuadernacion_fcaj
-        $encuad_fcaj_costo_unit_forrado_cajon     = round(floatval($aEncuadernacion_Fcaj['costo_unit_forrado_cajon']), 2);
+        $encuad_fcaj_costo_unit_forrado_cajon     = round(floatval($aEncuadernacion_Fcaj['forrado_cajon_costo_unit']), 2);
         $encuad_fcaj_forrado_de_cajon             = round(floatval($aEncuadernacion_Fcaj['forrado_de_cajon']), 2);
         $encuad_fcaj_empalme_cajon_costo_unitario = round(floatval($aEncuadernacion_Fcaj['empalme_cajon_costo_unitario']), 2);
         $encuad_fcaj_empalme_de_cajon             = round(floatval($aEncuadernacion_Fcaj['empalme_de_cajon']), 2);
@@ -321,9 +318,10 @@ class AlmejaModel extends Controller {
         $aJson['mensaje'] = gettype($keys);
 
         $l_modificar_odt = false;
+        $id_odt_anterior = 0;
 
         $modificar = $_POST['modificar'];
-        $modificar = trim(strval($modificar));
+        $modificar = self::strip_slashes_recursive($modificar);
 
         if ($modificar == "SI") {
 
@@ -477,6 +475,12 @@ class AlmejaModel extends Controller {
                 $query_mod_odt = $this->db->prepare($sql_mod);
 
                 $inserted_mod = $query_mod_odt->execute();
+
+                if (!$inserted_mod) {
+
+                    $inserted     = false;
+                    $inserted_mod = false;
+                }
             }
 
 
@@ -933,10 +937,13 @@ class AlmejaModel extends Controller {
 
 
         // Encuadernacion
+        $forrado_cajon_costo            = round(floatval($aJson['encuadernacion']['forrado_cajon_costo']), 2);
+        $encuad_costo_tot_proceso       = round(floatval($aJson['encuadernacion']['costo_tot_proceso']), 2);
+
             $sql_encuadernacion = "INSERT INTO cot_alm_encuadernacion
-                (id_modelo, id_odt, tiraje, costo_unit_iman, perforado_iman_y_puesta, despunte_costo_unit, despunte_esquina_cajon, encajada_costo_unit, encajada_costo_tot, costo_tot_proceso, costo_tot_encuadernacion, fecha)
+                (id_modelo, id_odt, tiraje, costo_unit_iman, perforado_iman_y_puesta, encajada_costo_unit, encajada_costo_tot, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, costo_tot_proceso, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $perf_iman_costo_unitario, $perf_iman_y_puesta, $encuad_despunte_costo_unitario, $encuad_despunte_de_esquinas_para_cajon, $encuad_encajada_costo_unitario, $encuad_encajada, $encuad_costo_tot_proceso, $encuad_costo_tot_encuadernacion, '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $perf_iman_costo_unitario, $perf_iman_y_puesta, $encuad_encajada_costo_unitario, $encuad_encajada, $arreglo_forrado_cajon_costo_unitario, $arreglo_forrado_cajon_costo_tot, $forrado_cajon_costo_unitario, $forrado_cajon_costo, $encuad_costo_tot_proceso, '$d_fecha')";
 
             $query_encuadernacion = $this->db->prepare($sql_encuadernacion);
 
@@ -1053,12 +1060,12 @@ class AlmejaModel extends Controller {
 
                     for ($k = 0; $k < $cuantos_v_Accesorio; $k++) {
 
-                        $Tipo_accesorio = trim(strval($v_Accesorio_R[$k]['Tipo_accesorio']));
+                        $Tipo_accesorio = self::strip_slashes_recursive($v_Accesorio_R[$k]['Tipo_accesorio']);
 
-                        $Tipo  = trim(strval($v_Accesorio_R[$k]['Tipo']));
+                        $Tipo  = self::strip_slashes_recursive($v_Accesorio_R[$k]['Tipo']);
                         $largo = floatval($v_Accesorio_R[$k]['Largo']);
                         $ancho = floatval($v_Accesorio_R[$k]['Ancho']);
-                        $color = trim(strval($v_Accesorio_R[$k]['Color']));
+                        $color = self::strip_slashes_recursive($v_Accesorio_R[$k]['Color']);
 
                         $costo_unitario   = round(floatval($v_Accesorio_R[$k]['costo_unit_accesorio']), 2);
                         $costo_accesorios = round(floatval($v_Accesorio_R[$k]['costo_accesorios']), 2);
@@ -1109,13 +1116,13 @@ class AlmejaModel extends Controller {
 
                         $costo_bancos = 0;
 
-                        $Tipo_banco = trim(strval($v_Banco_R[$k]['Tipo_banco']));
+                        $Tipo_banco = self::strip_slashes_recursive($v_Banco_R[$k]['Tipo_banco']);
 
                         $tiraje      = intval($v_Banco_R[$k]['tiraje']);
                         $largo       = intval($v_Banco_R[$k]['largo']);
                         $ancho       = intval($v_Banco_R[$k]['ancho']);
                         $profundidad = intval($v_Banco_R[$k]['profundidad']);
-                        $suaje       = trim(strval($v_Banco_R[$k]['Suaje']));
+                        $suaje       = self::strip_slashes_recursive($v_Banco_R[$k]['Suaje']);
 
                         $costo_unitario = round(floatval($v_Banco_R[$k]['costo_unit_banco']), 2);
                         $costo_bancos   = round(floatval($v_Banco_R[$k]['costo_bancos']), 2);
@@ -1168,14 +1175,14 @@ class AlmejaModel extends Controller {
 
                         $costo_cierre = 0;
 
-                        $Tipo_cierre = trim(strval($v_Cierre_R[$k]['Tipo_cierre']));
+                        $Tipo_cierre = self::strip_slashes_recursive($v_Cierre_R[$k]['Tipo_cierre']);
 
                         $tiraje   = intval($v_Cierre_R[$k]['tiraje']);
                         $numpares = intval($v_Cierre_R[$k]['numpares']);
                         $largo    = intval($v_Cierre_R[$k]['largo']);
                         $ancho    = intval($v_Cierre_R[$k]['ancho']);
-                        $tipo     = trim(strval($v_Cierre_R[$k]['tipo']));
-                        $color    = trim(strval($v_Cierre_R[$k]['color']));
+                        $tipo     = self::strip_slashes_recursive($v_Cierre_R[$k]['tipo']);
+                        $color    = self::strip_slashes_recursive($v_Cierre_R[$k]['color']);
 
                         $costo_unitario = round(floatval($v_Cierre_R[$k]['costo_unitario']), 2);
                         $costo_cierre   = round(floatval($v_Cierre_R[$k]['costo_cierre']), 2);
@@ -1222,7 +1229,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['tipo_offset']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_offset']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $corte_costo_unitario   = floatval($v_tmp_R[$k]['corte_costo_unitario']);
                         $corte_por_millar       = intval($v_tmp_R[$k]['corte_por_millar']);
@@ -1277,7 +1284,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['Tipo']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
                         $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -1327,7 +1334,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['tipo_offset']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_offset']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $corte_costo_unitario   = round(floatval($v_tmp_R[$k]['corte_costo_unitario']), 2);
                         $corte_por_millar       = round(floatval($v_tmp_R[$k]['corte_por_millar']), 2);
@@ -1382,7 +1389,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['Tipo']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
                         $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -1432,7 +1439,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['tipo_offset']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_offset']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $corte_costo_unitario   = round(floatval($v_tmp_R[$k]['corte_costo_unitario']), 2);
                         $corte_por_millar       = round(floatval($v_tmp_R[$k]['corte_por_millar']), 2);
@@ -1487,7 +1494,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['Tipo']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
                         $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -1539,7 +1546,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['tipo_offset']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_offset']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $corte_costo_unitario   = round(floatval($v_tmp_R[$k]['corte_costo_unitario']), 2);
                         $corte_por_millar       = round(floatval($v_tmp_R[$k]['corte_por_millar']), 2);
@@ -1595,7 +1602,7 @@ class AlmejaModel extends Controller {
 
                         $costo_tot_proceso = 0;
 
-                        $tipo                   = trim(strval($v_tmp_R[$k]['Tipo']));
+                        $tipo                   = self::strip_slashes_recursive($v_tmp_R[$k]['Tipo']);
                         $num_tintas             = intval($v_tmp_R[$k]['num_tintas']);
                         $arreglo_costo_unitario = floatval($v_tmp_R[$k]['arreglo_costo_unitario']);
                         $arreglo_costo          = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -1651,7 +1658,7 @@ class AlmejaModel extends Controller {
                     $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
                     $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
                     $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
-                    $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
+                    $impresion         = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_impresion']);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tot_pliegos       = intval($v_tmp_R[$k]['tot_pliegos']);
@@ -1706,7 +1713,7 @@ class AlmejaModel extends Controller {
                     $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
                     $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
                     $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
-                    $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
+                    $impresion         = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_impresion']);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tot_pliegos       = intval($v_tmp_R[$k]['tot_pliegos']);
@@ -1762,7 +1769,7 @@ class AlmejaModel extends Controller {
                     $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
                     $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
                     $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
-                    $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
+                    $impresion         = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_impresion']);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tot_pliegos       = round(floatval($v_tmp_R[$k]['tot_pliegos']), 2);
@@ -1817,7 +1824,7 @@ class AlmejaModel extends Controller {
                     $corte_largo       = round(floatval($v_tmp_R[$k]['corte_largo']), 2);
                     $imp_ancho         = round(floatval($v_tmp_R[$k]['imp_ancho']), 2);
                     $imp_largo         = round(floatval($v_tmp_R[$k]['imp_largo']), 2);
-                    $impresion         = trim(strval($v_tmp_R[$k]['tipo_impresion']));
+                    $impresion         = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_impresion']);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
@@ -1866,7 +1873,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
+                    $tipo               = self::strip_slashes_recursive($v_tmp_R[$k]['tipo']);
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
                     $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
                     $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
@@ -1919,7 +1926,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
+                    $tipo               = self::strip_slashes_recursive($v_tmp_R[$k]['tipo']);
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
                     $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
                     $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
@@ -1972,7 +1979,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
+                    $tipo               = self::strip_slashes_recursive($v_tmp_R[$k]['tipo']);
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
                     $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
                     $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
@@ -2026,7 +2033,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo               = trim(strval($v_tmp_R[$k]['tipo']));
+                    $tipo               = self::strip_slashes_recursive($v_tmp_R[$k]['tipo']);
                     $num_tintas         = intval($v_tmp_R[$k]['num_tintas']);
                     $costo_unit_arreglo = round(floatval($v_tmp_R[$k]["costo_unit_arreglo"]), 2);
                     $costo_arreglo      = round(floatval($v_tmp_R[$k]["costo_arreglo"]), 2);
@@ -2085,7 +2092,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
@@ -2135,7 +2142,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
@@ -2183,7 +2190,7 @@ class AlmejaModel extends Controller {
 
                 for ($k = 0; $k < $cuantos_v_BUVFcar; $k++) {
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
@@ -2233,7 +2240,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
@@ -2253,8 +2260,7 @@ class AlmejaModel extends Controller {
                     $sql_BUVG = "INSERT INTO cot_alm_barnizuvguarda
                         (id_odt, id_modelo, tiraje, tipo_grabado, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        (id_caja_odt, id_odt, $id_modelo, $tiraje, '$tipo_grabado', $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
-
+                        ($id_caja_odt, $id_modelo, $tiraje, '$tipo_grabado', $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                     $query_BUVG = $this->db->prepare($sql_BUVG);
 
@@ -2286,7 +2292,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
@@ -2330,7 +2336,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
@@ -2374,7 +2380,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
@@ -2417,7 +2423,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipo_grabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
                     $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
@@ -2462,10 +2468,10 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
-                    $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
+                    $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
@@ -2520,10 +2526,10 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
-                    $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
+                    $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
@@ -2577,10 +2583,10 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
-                    $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
+                    $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
@@ -2634,10 +2640,10 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
-                    $ubicacion              = trim(strval($v_tmp_R[$k]['ubicacion']));
+                    $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo            = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
@@ -2693,17 +2699,17 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado            = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado            = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
-                    $color                   = trim(strval($v_tmp_R[$k]['Color']));
+                    $color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
                     $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
-                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 4);
                     $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
                     $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
                     $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -2754,17 +2760,17 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado            = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado            = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
-                    $color                   = trim(strval($v_tmp_R[$k]['Color']));
+                    $color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
                     $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
-                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 4);
                     $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
                     $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
                     $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -2816,17 +2822,17 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipoGrabado             = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipoGrabado             = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
-                    $Color                   = trim(strval($v_tmp_R[$k]['Color']));
+                    $Color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
                     $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
-                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 4);
                     $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
                     $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
                     $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -2876,17 +2882,17 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado            = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado            = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                   = intval($v_tmp_R[$k]['Largo']);
                     $ancho                   = intval($v_tmp_R[$k]['Ancho']);
-                    $color                   = trim(strval($v_tmp_R[$k]['Color']));
+                    $color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
                     $placa_costo             = round(floatval($v_tmp_R[$k]['placa_costo']), 2);
                     $pelicula_largo          = intval($v_tmp_R[$k]['pelicula_Largo']);
                     $pelicula_ancho          = intval($v_tmp_R[$k]['pelicula_Ancho']);
                     $pelicula_area           = round(floatval($v_tmp_R[$k]['pelicula_area']), 2);
-                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 2);
+                    $pelicula_costo_unitario = round(floatval($v_tmp_R[$k]['pelicula_costo_unitario']), 4);
                     $pelicula_costo          = round(floatval($v_tmp_R[$k]['pelicula_costo']), 2);
                     $arreglo_costo_unitario  = round(floatval($v_tmp_R[$k]['arreglo_costo_unitario']), 2);
                     $arreglo_costo           = round(floatval($v_tmp_R[$k]['arreglo_costo']), 2);
@@ -2939,7 +2945,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo             = intval($v_tmp_R[$k]['Largo']);
                     $ancho             = intval($v_tmp_R[$k]['Ancho']);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
@@ -2988,7 +2994,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
 
                     $largo             = intval($v_tmp_R[$k]['Largo']);
                     $ancho             = intval($v_tmp_R[$k]['Ancho']);
@@ -3040,7 +3046,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo             = intval($v_tmp_R[$k]['Largo']);
                     $ancho             = intval($v_tmp_R[$k]['Ancho']);
                     $area              = floatval($v_tmp_R[$k]['area']);
@@ -3090,7 +3096,7 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado      = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo             = intval($v_tmp_R[$k]['Largo']);
                     $ancho             = intval($v_tmp_R[$k]['Ancho']);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
@@ -3143,10 +3149,11 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
+                    $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
                     $tabla_suaje            = round(floatval($v_tmp_R[$k]['tabla_suaje']), 2);
                     $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
                     $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
@@ -3164,9 +3171,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_SuaEmp = "INSERT INTO cot_alm_suajeemp
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
 
                     $query_SuaEmp = $this->db->prepare($sql_SuaEmp);
@@ -3198,11 +3205,12 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
                     $tabla_suaje            = intval($v_tmp_R[$k]['tabla_suaje']);
+                    $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
                     $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
                     $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
                     $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
@@ -3219,9 +3227,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_SuaFcaj = "INSERT INTO cot_alm_suajefcaj
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
 
                     $query_SuaFcaj = $this->db->prepare($sql_SuaFcaj);
@@ -3252,11 +3260,12 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
                     $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
+                    $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
                     $tabla_suaje            = round(floatval($v_tmp_R[$k]['tabla_suaje']), 2);
                     $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
                     $costo_tiro             = round(floatval($v_tmp_R[$k]['costo_tiro']), 2);
@@ -3272,9 +3281,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_SuaFcar = "INSERT INTO cot_alm_suajefcar
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, tabla_suaje,  arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje,  arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
 
                     $query_SuaFcar = $this->db->prepare($sql_SuaFcar);
@@ -3305,10 +3314,11 @@ class AlmejaModel extends Controller {
 
                     $costo_tot_proceso = 0;
 
-                    $tipo_grabado           = trim(strval($v_tmp_R[$k]['tipoGrabado']));
+                    $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
                     $largo                  = intval($v_tmp_R[$k]['Largo']);
                     $ancho                  = intval($v_tmp_R[$k]['Ancho']);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
+                    $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
                     $tabla_suaje            = intval($v_tmp_R[$k]['tabla_suaje']);
                     $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
                     $tiro_costo_unitario    = round(floatval($v_tmp_R[$k]['tiro_costo_unitario']), 2);
@@ -3326,9 +3336,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_SuaG = "INSERT INTO cot_alm_suajeguarda
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, perimetro, costo_unit_tabla_suaje, tabla_suaje, arreglo_costo_unitario, tiro_costo_unitario, costo_tiro, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $perimetro, $costo_unit_tabla_suaje, $tabla_suaje, $arreglo_costo_unitario, $tiro_costo_unitario, $costo_tiro, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
 
                     $query_SuaG = $this->db->prepare($sql_SuaG);
@@ -3436,7 +3446,7 @@ class AlmejaModel extends Controller {
                 $mensaje = $exception->getMessage();
             }
 
-            $aJson['error'] = $mensaje . "; Error al grabar en la BD";
+            $aJson['error'] = $aJson['error'] . " " . $mensaje . "; Error al grabar en la BD";
 
             return $aJson;
         }

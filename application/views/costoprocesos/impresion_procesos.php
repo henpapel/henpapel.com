@@ -337,7 +337,7 @@
 					<?= $procesosOffset['Maquila Pantone3']['tiraje_maximo']?>
 				</td>
 				<td align="center">
-					<label id="lblTirOff3"><?= $procesosOffset['Maquila3']['costo_unitario']?> MXN</label>
+					<label id="lblTirOff3"><?= $procesosOffset['Maquila Pantone3']['costo_unitario']?> MXN</label>
 				</td>
 			</tr>
 		</table>
@@ -379,7 +379,7 @@
 					Rango
 				</td>
 				<td align="center">
-					Precio
+					Precio C/100
 				</td>
 			</tr>
 			<tr>
@@ -661,7 +661,7 @@
 					<label><?= $digital['Frente Doble Carta'][3]['costo_unitario']?> MXN</label>
 				</td>
 				<td align="center">
-					<label><?= $digital['Frente Doble Carta'][3]['costo_unitario']?> MXN</label>
+					<label><?= $digital['Vuelta Doble Carta'][3]['costo_unitario']?> MXN</label>
 				</td>
 				</tr>
 		</table>
@@ -1411,22 +1411,22 @@
 			<tr>
 				<th></th>
 				<th align="center">
-					<h4 style="text-align: center;">P. Minimo</h4>
+					P. Minimo
 				</th>
 				<th align="center">
-					<h4 style="text-align: center;">Tiro</h4>
+					Tiro
 				</th>
 				<th align="center">
-					<h4 style="text-align: center;">Arreglo</h4>
+					Arreglo
 				</th>
 
 				<th align="center">
-					<h4 style="text-align: center;">Costo</h4>
+					Costo
 				</th>
 			</tr>
 			</tr>
 			<tr>
-				<td align="right"><h4>Perimetral</h4></td>
+				<td align="right">Perimetral</td>
 				
 				<td align="center">
 					<?= $procesosSuaje['Perimetral']['costo_unitario']?>
@@ -1442,7 +1442,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="right"><h4>Figura</h4></td>
+				<td align="right">Figura</td>
 				
 				<td align="center">
 					<?= $procesosSuaje['Arreglo']['costo_unitario']?>
@@ -1455,6 +1455,322 @@
 				</td>
 				<td align="center">
 					<label> <?= $procesosSuaje['Figura']['perimetro_minimo']?> MXN</label>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<br>
+	<div align="center" class="suaje" style="border: 3px solid;">
+
+		<table class="table te" align="center" style="table-layout: fixed;">
+			<tr>
+				<th style="text-align: center;" colspan="4" align="center">
+					ENCUADERNACION
+				</th>
+			</tr>
+			<tr>
+				<th style="text-align: center;" align="center" colspan="2">
+					Tipo
+				</th>
+				<th align="center" style="text-align: center;" colspan="2">
+					Costo Unitario
+				</th>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					Despunte de esquinas para Cajón
+				</td>
+				
+				<td align="center" colspan="2">
+					<label><?= $procesosEncuadernacion['Despunte de esquinas para cajon']['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					Arreglo de Forrado de Cajón
+				</td>
+				<td align="center" colspan="2">
+					<label><?= $procesosEncuadernacion['Arreglo de Forrado de cajon']['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					Encajada
+				</td>
+				<td align="center" colspan="2">
+					<label><?= $procesosEncuadernacion['Encajada']['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					Domi
+				</td>
+				<td align="center" colspan="2">
+					<label><?= $procesosEncuadernacion['Domi']['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+		</table>
+		<table class="table te" align="center" style="table-layout: fixed;">
+
+			<tr>
+				<td align="center" style="text-align: center;">
+					Perforado para imán y puesta de imán
+				</td>
+				<td align="center" colspan="2">
+					Rango
+				</td>
+				<td align="center">
+					Precio
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					Min
+				</td>
+				<td align="center">
+					Max
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Perforado para iman y puesta de iman'][0]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Perforado para iman y puesta de iman'][0]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosEncuadernacion['Perforado para iman y puesta de iman'][0]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Perforado para iman y puesta de iman'][1]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Perforado para iman y puesta de iman'][1]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label id="lblTirOff2"><?= $procesosEncuadernacion['Perforado para iman y puesta de iman'][1]['precio_unitario']?> MXN</label>
+				</td> 
+			</tr>
+			<tr>
+				<td align="center" style="text-align: center;">
+					Empalme del Cajón
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Empalme de cajon'][0]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Empalme de cajon'][0]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosEncuadernacion['Empalme de cajon'][0]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Empalme de cajon'][1]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Empalme de cajon'][1]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosEncuadernacion['Empalme de cajon'][1]['precio_unitario']?> MXN</label>
+				</td> 
+			</tr>
+			<tr>
+				<td align="center" style="text-align: center;">
+					Forrado del Cajón
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Forrado de cajon'][0]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Forrado de cajon'][0]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosEncuadernacion['Forrado de cajon'][0]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Forrado de cajon'][1]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Forrado de cajon'][1]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label id="lblTirOff2"><?= $procesosEncuadernacion['Forrado de cajon'][1]['precio_unitario']?> MXN</label>
+				</td> 
+			</tr>
+			<tr>
+				<td align="center" style="text-align: center;">
+					Puesta de Banco
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Puesta de banco'][0]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Puesta de banco'][0]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosEncuadernacion['Puesta de banco'][0]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Puesta de banco'][1]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosEncuadernacion['Puesta de banco'][1]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label id="lblTirOff2"><?= $procesosEncuadernacion['Puesta de banco'][1]['precio_unitario']?> MXN</label>
+				</td> 
+			</tr>
+		</table>
+	</div>
+	<br>
+	<div align="center" class="suaje" style="border: 3px solid;">
+		<table class="table te" align="center" style="table-layout: fixed;">
+			<tr>
+				<th style="text-align: center;" colspan="4" align="center">
+					RANURADO
+				</th>
+			</tr>
+			<tr>
+				<th style="text-align: center;" align="center" colspan="2">
+					Tipo
+				</th>
+				<th align="center" style="text-align: center;" colspan="2">
+					Costo Unitario
+				</th>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					Arreglo
+				</td>
+				
+				<td align="center" colspan="2">
+					<label><?= $procesosRanurado[0]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+		</table>
+		<table class="table te" align="center" style="table-layout: fixed;">
+
+			<tr>
+				<td align="center" style="text-align: center;">
+					Por Ranura
+				</td>
+				<td align="center" colspan="2">
+					Rango
+				</td>
+				<td align="center">
+					Precio
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					Min
+				</td>
+				<td align="center">
+					Max
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][0]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][0]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosRanurado['Por Ranura'][0]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][1]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][1]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosRanurado['Por Ranura'][1]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][2]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][2]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosRanurado['Por Ranura'][2]['precio_unitario']?> MXN</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][3]['tiraje_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosRanurado['Por Ranura'][3]['tiraje_maximo']?>
+				</td>
+				<td align="center">
+					<label><?= $procesosRanurado['Por Ranura'][3]['precio_unitario']?> MXN</label>
 				</td>
 			</tr>
 		</table>

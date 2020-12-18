@@ -3667,7 +3667,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
             .done(function(response) {
 
                 $("#modLoading").hide();
-                console.log("(3678) response: ");
 
                 console.log(response);
 
@@ -9481,4 +9480,5 @@ foreach ($Porcentajes as $porcentaje) { ?>
         return true;
     });
     $("#box-model").val("1");
+
 </script>

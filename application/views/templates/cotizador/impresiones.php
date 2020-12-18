@@ -145,7 +145,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" id="btnImpresiones" class="btn btn-guardar-blues">Guardar</button>
+                    <button type="button" onclick="caja.saveImpresion()" id="btnImpresiones" class="btn btn-guardar-blues">Guardar</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
@@ -181,122 +181,6 @@
             $('#opImpresionOffset').hide('slow');
             $('#opImpresionDigital').hide('slow');
         }
-    }
-
-    function divisionesImp(opcion) {
-
-        divisionesImps=opcion;
-    }
-
-    function saveBtnImpresiones(arrpapeles, tabla) {
-
-
-        var IDopImp  = $("#miSelect option:selected").data('id');
-        var opImp    = $("#miSelect option:selected").text();
-        var precio   = $("#miSelect option:selected").data('precio'); //precio unitario
-        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-
-        if (opImp == 'Offset') {
-
-            var tipo   = $("#SelectImpTipoOff option:selected").text();
-            var precio = $("#SelectImpTipoOff option:selected").data('precio');
-            var idTipo = $("#SelectImpTipoOff option:selected").data('id');
-            var tintas = document.getElementById('tintasO').value;
-            var nuloo  = document.getElementById('SelectImpTipoOff').value;
-
-            if (nuloo == 'selected') {
-
-                document.getElementById('alerterrorimp').innerHTML = alertDiv;
-
-            } else {
-
-                document.getElementById('alerterrorimp').innerHTML = "";
-
-                var imp  = '<tr><td class="textImp">' + opImp + '</td></td><td class="CellWithComment" >...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td style="display: none;">'+ tintas +'</td><td style="display: none;">'+ tipo +'</td><td class="' + tabla +' img_delete"></td></tr>';
-
-                arrpapeles.push({"Tipo_impresion": opImp, "tintas": tintas, "tipo_offset": tipo});
-
-                $('#Impresiones').modal('hide');
-
-                $('#' + tabla).append(imp);
-
-                vacioModalImpresiones();
-            }
-        }
-
-        if (opImp == 'Digital') {
-
-            var tipo   = $("#SelectImpDigital option:selected").text();
-
-            var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="' + tabla +' img_delete"></td></tr>';
-            arrpapeles.push({"Tipo_impresion": opImp});
-
-            $('#Impresiones').modal('hide');
-
-            $('#' + tabla).append(imp);
-
-            vacioModalImpresiones();
-        }
-
-        if (opImp == 'Serigrafia') {
-
-            var tipo   = $("#SelectImpTipoSeri option:selected").text();
-            var precio = $("#SelectImpTipoSeri option:selected").data('precio');
-            var tintas = document.getElementById('tintasS').value;
-            var nuloo  = document.getElementById('SelectImpTipoSeri').value;
-
-            if (nuloo == 'selected') {
-
-                document.getElementById('alerterrorimp').innerHTML = alertDiv;
-
-            } else {
-
-                document.getElementById('alerterrorimp').innerHTML = "";
-
-                var imp  = '<tr><td class="textImp">' + opImp +'</td></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td style="display: none;">'+ tintas +'</td><td style="display: none;">'+ tipo +'</td><td class="' + tabla +' img_delete"></td></tr>';
-
-                arrpapeles.push({"Tipo_impresion": opImp,  "tintas": tintas, "tipo_offset": tipo});
-
-                $('#Impresiones').modal('hide');
-
-                jQuery214('#' + tabla).append(imp);
-
-                vacioModalImpresiones();
-            }
-        }
-    }
-
-    function delBtnImpresiones(arrPapeles, tabla) {
-
-        var TableData       = "";
-        var tipo_imp_offset = "";
-
-        $("#" + tabla + " tr").each(function(row, tr) {
-
-            var opImp   = $(tr).find('td:eq(0)').text();
-            var tintas  = parseInt($(tr).find('td:eq(2)').text(),10);
-            var tipo    = $(tr).find('td:eq(3)').text();
-
-            switch( opImp ){
-
-                case "Offset":
-
-                    var idtipoOff = parseInt($("#tipoOffEmp").val());
-
-                    arrPapeles.push({"Tipo_impresion": opImp, "tintas": tintas, "tipo_offset": tipo});
-                break;
-                case "Digital":
-
-                    arrPapeles.push({"Tipo_impresion": opImp});
-                break;
-                case "Serigrafia":
-
-                    var idtipoSeri = parseInt($("#tipoSeriEmp").val());
-
-                    arrPapeles.push({"Tipo_impresion": opImp,  "tintas": tintas, "tipo_offset": tipo});
-                break;
-            }
-        });
     }
 
     function vacioModalImpresiones() {

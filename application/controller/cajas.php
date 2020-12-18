@@ -2,15 +2,15 @@
 if (session_status() == PHP_SESSION_NONE) {
 
     session_start();
-} elseif (session_status == PHP_SESSION_DISABLED) {
-    
+} elseif (session_status() == PHP_SESSION_DISABLED) {
+
     echo "Uh?... Las sesiones estan deshabilitadas!";
-    
+
     exit();
 }
 
 class Cajas extends Controller {
-    
+
     public function index() {
 
         $login       = $this->loadController('login');
@@ -20,37 +20,43 @@ class Cajas extends Controller {
         $models        = $options_model->getBoxModels();
 
         if($login->isLoged()) {
-    
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/cajas/index.php';
-            require 'application/views/templates/footer.php';
+
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/cajas/index.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
-    
+
     public function guardados() {
-        
+
         $login         = $this->loadController('login');
         $login_model   = $this->loadModel('LoginModel');
         $options_model = $this->loadModel('OptionsModel');
-        
+
         $rows = $options_model->getSavedCalcs();
 
         if( $login->isLoged() ) {
 
             unset($_SESSION['calculo']);
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/cajas/guardados.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/cajas/guardados.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
@@ -67,7 +73,7 @@ class Cajas extends Controller {
         $options = $options_model->getOptionsByModel($model);
 
         foreach ($options as $option) {
-    
+
             $even  = ($i & 1)? 'even':'';
             $html .= '<div class="cajas-input-group '.$even.'">';
             $html .= '<div class="cajas-col-input left"><span>'.$option['nombre'].': </span></div>';
@@ -77,78 +83,78 @@ class Cajas extends Controller {
             $values = $options_model->getValuesByOption($option['id_variante']);
 
             switch ($option['tipo_opcion']) {
-        
+
                 case 'text':
-            
+
                     foreach ($values as $value) {
-            
+
                         $html .= '<input type="text" step="any" required placeholder="cm" class="cajas-input" name="' . $option['name'] . '">';
                     }
-          
+
                     break;
-        
+
                 case 'number':
-        
+
                     foreach ($values as $value) {
-          
+
                         $html .= '<input type="number" step="any" required placeholder="cm" class="cajas-input" name="' . $option['name'] . '">';
                     }
-          
+
                     break;
-        
+
                 case 'radio':
-        
+
                     foreach ($values as $value) {
-          
+
                         $html .= '<input type="radio" id="' . $value['id_valor'] . '" required  name="' . $option['name'] . '" value="' . $value['valor'] . '" ><label for="' . $value['id_valor'] . '" >' . $value['valor'] . ' </label>';
                     }
-          
+
                     break;
-        
+
                 case 'select':
-          
+
                         $html .= '<select class="cajas-input" name="' . $option['name'] . '" >';
                         $html .= '<option selected disabled>Elige una opcion</option>';
-        
+
                     foreach ($values as $value) {
-          
+
                         $html .= '<option value="' . $value['valor'] . '">' . $value['valor'] . '</option>';
                         }
-                        
+
                         $html.='</select>';
-          
+
                         break;
-        
+
                 default:
                     # code...
                     break;
             }
 
             $html .= '</div></div>';
-            
+
             $i++;
         }
 
         $html.='<input class="cajas-form-submitter" type="submit" value="CALCULAR">';
 
         if ($model=='1') {
-       
+
             echo $html;
         } else {
-      
+
             echo "<p style='font-weight:bold;'>En desarrollo</p>";
         }
     }
 
 
     public function getAllForms($model, $options_model) {
-    
+
         $html = '';
         $i = 1;
         $options = $options_model->getOptionsByModel($model);
-    
+
         foreach ($options as $option) {
-            
+
             $even=($i & 1)? 'even':'';
             $html.='<div class="cajas-input-group ' . $even.'">';
             $html .= '<div class="cajas-col-input left"><span>' . $option['nombre'].': </span></div>';
@@ -158,80 +164,80 @@ class Cajas extends Controller {
             $values = $options_model->getValuesByOption($option['id_variante']);
 
             switch ($option['tipo_opcion']) {
-        
+
                 case 'text':
-                    
+
                     foreach ($values as $value) {
-            
+
                         $html.='<input type="text" step="any" required placeholder="cm" class="cajas-input" name="'.$option['name'].'">';
                     }
-          
+
                     break;
-        
+
                 case 'number':
-        
+
                     foreach ($values as $value) {
-                        
+
                         $html .= '<input type="number" step="any" required placeholder="cm" class="cajas-input" name="'.$option['name'].'">';
                     }
-          
+
                     break;
-        
+
                 case 'radio':
-        
+
                     foreach ($values as $value) {
-                        
+
                         $html .= '<input type="radio" id="'.$value['id_valor'].'" required  name="'.$option['name'].'" value="'.$value['valor'].'" ><label for="'.$value['id_valor'].'" >'.$value['valor'].' </label>';
                     }
-          
+
                     break;
-                
+
                 case 'select':
-          
+
                     $html .= '<select class="cajas-input" name="'.$option['name'].'" >';
                     $html .= '<option selected disabled>Elige una opcion</option>';
-        
+
                     foreach ($values as $value) {
-          
+
                         $html .= '<option value="'.$value['valor'].'">'.$value['valor'].'</option>';
                     }
-                    
+
                     $html .= '</select>';
-                    
+
                     break;
-        
+
                 default:
-                
+
                     # code...
                 break;
             }
 
             $html .= '</div></div>';
-     
+
             $i++;
         }
 
         $html .= '<input class="cajas-form-submitter" type="submit" value="CALCULAR">';
 
         if ($model=='1') {
-       
+
             return $html;
         } else {
-      
+
             return "<p style='font-weight:bold;padding:30px;'>En desarrollo</p>";
         }
     }
-  
+
     // Obtiene los modelos de cajas
     public function admin() {
 
         $options_model = $this->loadModel('OptionsModel');
         $models        = $options_model->getBoxModels();
 
-        require 'application/views/templates/head.php';
-        require 'application/views/templates/top_menu.php';
-        require 'application/views/cajas/admin.php';
-        require 'application/views/templates/footer.php';
+        require_once 'application/views/templates/head.php';
+        require_once 'application/views/templates/top_menu.php';
+        require_once 'application/views/cajas/admin.php';
+        require_once 'application/views/templates/footer.php';
     }
 
     // valida las letras asignadas a las tiendas
@@ -337,17 +343,17 @@ class Cajas extends Controller {
 
     // inserta(guarda) los cálculos en el array datos y llama a saveCalc()
     public function setCalc() {
-        
+
         $login = $this->loadController('login');
-        
+
         $login_model = $this->loadModel('LoginModel');
-        
+
         $options_model = $this->loadModel('OptionsModel');
-        
+
         $response = array();
 
         if($login->isLoged()) {
-    
+
             $_SESSION['calculo'] = $_POST;
 
             $datos = array();
@@ -356,7 +362,7 @@ class Cajas extends Controller {
             $id_modelo = intval($id_modelo);
 
             switch ($id_modelo) {
-                
+
                 case 1:
 
                     $datos['base']           = $_POST['base'];
@@ -367,7 +373,7 @@ class Cajas extends Controller {
 
                     break;
                 case 2:
-        
+
                     $datos['diametro']      = $_POST['diametro'];
                     $datos['profundidad']   = $_POST['profundidad'];
                     $datos['altura-tapa']   = $_POST['altura-tapa'];
@@ -375,7 +381,7 @@ class Cajas extends Controller {
 
                     break;
                 case 3:
-        
+
                     $datos['base']           = $_POST['base'];
                     $datos['alto']           = $_POST['alto'];
                     $datos['profundidad']    = $_POST['profundidad'];
@@ -384,7 +390,7 @@ class Cajas extends Controller {
 
                     break;
                 case 4:
-        
+
                     $datos['base']              = $_POST['base'];
                     $datos['alto']              = $_POST['alto'];
                     $datos['profundidad-cajon'] = $_POST['profundidad-cajon'];
@@ -426,10 +432,9 @@ class Cajas extends Controller {
             $odt = strval($odt);
             $odt = trim($odt);
             $odt = strtoupper($odt);
-           
+
             $odt_resp = $odt;
 
-            $Ok_RegExp = "";
             $letra     = "";
 
             $letra = substr($odt, 0, 1);
@@ -484,132 +489,11 @@ class Cajas extends Controller {
                     break;
             }
 
-            $regExp  = "/^[A-Z][\d]{4}[A-Z]*[\d]*$/";
-            $regExp1 = "/^[6][\d]{4}[A-Z]*[\d]*$/";
-            $regExp2 = "/^[D]{1}[\d]{3}[A-Z]*[\d]*$/";
-
-            $Ok_folio = false;
-
-            if (strlen($odt) < 5) {
-
-                $Ok_folio = false;
-            } elseif( $letra == "E" ) {
-
-                $es_digit_temp = substr($odt, 1, 3);
-
-                $es_digito = is_numeric( $es_digit_temp );
-
-                $e_sufijo = substr($odt, 4, 1);
-
-                if ( $es_digito and $e_sufijo = "D" ) {
-
-                    $Ok_folio = true;
-                }
-            } elseif ( preg_match($regExp, $odt) ) {
-
-                $Ok_folio = true;
-            } elseif ( preg_match($regExp1, $odt) ) {
-
-                $Ok_folio = true;
-
-                $d1 = substr($odt, 0, 1);
-
-                if ($d1 != "6") {
-
-                    $Ok_folio = false;
-                }
-            } else {
-
-                $Ok_folio = false;
-            }
-
-            $dato_sufijo = "";
-
-            $ok_sufijo = false;
 
             // desabilita la verificacion del folio
             $ok_letra = true;
-            $Ok_folio = true;
 
-/*
-            if ( ($ok_letra and $Ok_folio) and (strlen($odt) > 5) ) {
-
-                $sufijo = substr($odt, 5);
-
-                switch($sufijo) {
-
-                    case substr($sufijo, 0, 1) == "D":
-
-                        $dato_sufijo = "D";
-
-                        $ok_sufijo = true;
-                        break;
-                    case substr($sufijo, 0, 2) == "OT":
-
-                        $dato_sufijo = "OT";
-
-                        $ok_sufijo = true;
-                        break;
-                    case substr($sufijo, 0, 2) == "EC":
-
-                        $dato_sufijo = "EC";
-
-                        $ok_sufijo = true;
-                        break;
-                    case substr($sufijo, 0, 2) == "RT":
-
-                        $dato_sufijo = "RT";
-
-                        $ok_sufijo = true;
-                        break;
-                    case substr($sufijo, 0, 1) == "R":
-
-                        $dato_sufijo = "R";
-
-                        $ok_sufijo = true;
-                        break;
-                    case substr($sufijo, 0, 1) == "E":
-
-                        $dato_sufijo = "E";
-
-                        $ok_sufijo = true;
-                        break;
-                    case substr($sufijo, 0, 1) == "V":
-
-                        $dato_sufijo = "V";
-
-                        $ok_sufijo = true;
-                        break;
-
-                    default: 
-
-                        $dato_sufijo = "";
-                        $ok_sufijo = false;
-                        break;
-                }
-            }
-
-            $contador = 0;
-
-            $odt_buscar = substr($odt, 0, 5);
-
-            $contador = $options_model->checkODT($odt_buscar);
-            
-            $contador = intval($contador);
-
-            if ( $contador <= 0) {
-
-                $odt = $odt_buscar;
-
-                $_POST['odt'] = $odt;
-            } else {
-
-                // falta agregar el resto de los sufijos (si los hay)
-                $odt = $odt_buscar . $dato_sufijo . strval($contador);
-            }
-*/
-
-            if ( $ok_letra and $Ok_folio ) {
+            if ( $ok_letra ) {
 
                 $_POST['odt'] = $odt;
 
@@ -622,18 +506,18 @@ class Cajas extends Controller {
                 $response['result'] = $odt;
             }
         } else {
-       
+
             $response['result']='logout';
         }
 
         echo json_encode($response);
     }
-  
+
     // guarda los cálculos en variables de sesion
     public function viewCalc() {
-        
+
         $_SESSION['calculo'] = array();
-        
+
         $options_model = $this->loadModel('OptionsModel');
 
         $cal_info = $options_model->getCalcDetails($_POST['id']);
@@ -650,29 +534,29 @@ class Cajas extends Controller {
                 $_SESSION['calculo']['profundidad']    = $cal_info['profundidad'];
                 $_SESSION['calculo']['grosor-cajon']   = $cal_info['grosor-cajon'];
                 $_SESSION['calculo']['grosor-cartera'] = $cal_info['grosor-cartera'];
-                
+
                 break;
             case 2:
-            
+
                 $_SESSION['calculo']['odt']           = $cal_info['odt'];
                 $_SESSION['calculo']['diametro']      = $cal_info['diametro'];
                 $_SESSION['calculo']['profundidad']   = $cal_info['profundidad'];
                 $_SESSION['calculo']['altura-tapa']   = $cal_info['altura-tapa'];
                 $_SESSION['calculo']['grosor-carton'] = $cal_info['grosor-carton'];
-                
+
                 break;
             case 3:
-            
+
                 $_SESSION['calculo']['odt']            = $cal_info['odt'];
                 $_SESSION['calculo']['base']           = $cal_info['base'];
                 $_SESSION['calculo']['alto']           = $cal_info['alto'];
                 $_SESSION['calculo']['profundidad']    = $cal_info['profundidad'];
                 $_SESSION['calculo']['grosor-carton']  = $cal_info['grosor-carton'];
                 $_SESSION['calculo']['grosor-cartera'] = $cal_info['grosor-cartera'];
-                
+
                 break;
             case 4:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
@@ -680,19 +564,19 @@ class Cajas extends Controller {
                 $_SESSION['calculo']['profundidad-tapa']  = $cal_info['profundidad-tapa'];
                 $_SESSION['calculo']['grosor-cajon']      = $cal_info['grosor-cajon'];
                 $_SESSION['calculo']['grosor-tapa']       = $cal_info['grosor-tapa'];
-                
+
                 break;
             case 5:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
                 $_SESSION['calculo']['profundidad-cajon'] = $cal_info['profundidad-cajon'];
                 $_SESSION['calculo']['grosor-carton']      = $cal_info['grosor-carton'];
-                
+
                 break;
             case 6:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
@@ -700,16 +584,16 @@ class Cajas extends Controller {
                 $_SESSION['calculo']['profundidad-tapa']  = $cal_info['profundidad-tapa'];
                 $_SESSION['calculo']['grosor-cajon']      = $cal_info['grosor-cajon'];
                 $_SESSION['calculo']['grosor-tapa']       = $cal_info['grosor-tapa'];
-                
+
                 break;
             case 7:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
                 $_SESSION['calculo']['profundidad-cajon'] = $cal_info['profundidad-cajon'];
                 $_SESSION['calculo']['grosor-cajon']      = $cal_info['grosor-cajon'];
-                
+
                 break;
         }
     }
@@ -717,9 +601,9 @@ class Cajas extends Controller {
 
     // guarda los cálculos en variables de sesion
     public function editCalc() {
-        
+
         $_SESSION['calculo'] = array();
-        
+
         $options_model = $this->loadModel('OptionsModel');
 
         $cal_info = $options_model->getCalcDetails($_POST['id']);
@@ -739,7 +623,7 @@ class Cajas extends Controller {
 
                 break;
             case 2:
-            
+
                 $_SESSION['calculo']['odt']           = $cal_info['odt'];
                 $_SESSION['calculo']['diametro']      = $cal_info['diametro'];
                 $_SESSION['calculo']['profundidad']   = $cal_info['profundidad'];
@@ -748,7 +632,7 @@ class Cajas extends Controller {
 
                 break;
             case 3:
-            
+
                 $_SESSION['calculo']['odt']            = $cal_info['odt'];
                 $_SESSION['calculo']['base']           = $cal_info['base'];
                 $_SESSION['calculo']['alto']           = $cal_info['alto'];
@@ -758,7 +642,7 @@ class Cajas extends Controller {
 
                 break;
             case 4:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
@@ -769,7 +653,7 @@ class Cajas extends Controller {
 
                 break;
             case 5:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
@@ -780,7 +664,7 @@ class Cajas extends Controller {
 
                 break;
             case 6:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
@@ -791,7 +675,7 @@ class Cajas extends Controller {
 
                 break;
             case 7:
-            
+
                 $_SESSION['calculo']['odt']               = $cal_info['odt'];
                 $_SESSION['calculo']['base']              = $cal_info['base'];
                 $_SESSION['calculo']['alto']              = $cal_info['alto'];
@@ -800,7 +684,7 @@ class Cajas extends Controller {
 
                 break;
         }
-    } 
+    }
 
 
     public function updateCajas() {
@@ -829,7 +713,7 @@ class Cajas extends Controller {
 
             echo '<br /><div class="container col-md-4">';
             echo '<div class="modal-content" style="font-family: Arial,Helvetica,sans-serif; font-size: 1em; color: rgba(255, 255, 255, 1); background-color: white">
-                    
+
                     <!-- Modal Header -->
                     <div class="modal-header" style="background-color: rgba(51, 153, 0, 1)">
                         <h4 class="modal-title"><span  style="color: white">Correcto</span></h4>
@@ -840,7 +724,7 @@ class Cajas extends Controller {
                     <div class="modal-body" style="color: black">
                         <h5>Datos actualizados con éxito...</h5>
                     </div>
-                    
+
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal" style="float: right;">
@@ -855,17 +739,17 @@ class Cajas extends Controller {
             echo '<br /><br />';
             echo '<br /><div class="container col-md-4">';
             echo '<div class="modal-content" style="font-family: Arial,Helvetica,sans-serif;">
-                    
+
                     <!-- Modal Header -->
                     <div class="modal-header" style="color: white; background-color: red">
                         <h4 class="modal-title">Error</h4>
                         <button type="button" class="close" data-dismiss="modal">x</button></div>
-                    
+
                     <!-- Modal body -->
                     <div class="modal-body" style="color: rgba(55, 55, 55, 1); background-color: rgba(250, 250, 250, 1.0)"">
                         <h5>Error de actualización...</h5>
                     </div>
-                    
+
                     <!-- Modal footer -->
                     <div class="modal-footer" style="color: rgba(55, 55, 55, 1); background-color: rgba(250, 250, 250, 1.0)"">
                         <button type="button" class="alert alert-danger" data-dismiss="modal" style="font-size: 1.1em; color: rgba(50, 50, 50, 1); background-color: rgba(200, 200, 200, 1)">
@@ -876,8 +760,10 @@ class Cajas extends Controller {
             echo '</div>';
         }
 
-//        header("Location:" . URL . 'cajas/guardados');
-
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'cajas/guardados/"';
+            echo '</script>';
+        //header("Location:" . URL . 'cajas/guardados');
     }
 
 
@@ -891,7 +777,7 @@ class Cajas extends Controller {
 
             echo "Actualizados correctamente";
         } else {
-    
+
             echo "Error al actualizar los datos";
         }
     }
@@ -901,7 +787,7 @@ class Cajas extends Controller {
     public function getOdt($odt) {
 
         $options_model = $this->loadModel('OptionsModel');
-        $existe        = $options_model->checkODT($odt);
+        $existe        = $options_model->checaODT($odt);
 
         return $existe;
     }
@@ -917,14 +803,14 @@ class Cajas extends Controller {
 
             echo "Correcto...";
         } else {
-    
+
             echo "Error!";
         }
     }
 
 
     public function newOption() {
-        
+
         $options_model = $this->loadModel('OptionsModel');
 
         $saved = $options_model->addNewOption($_POST);
@@ -933,10 +819,9 @@ class Cajas extends Controller {
 
             echo "Datos guardados";
         } else {
-    
-            echo "algo salio mal";
+
+            echo "Error al grabar los datos.";
         }
     }
-
 }
 

@@ -18,12 +18,7 @@
     .secciones:hover{
 
         background: #5B84B1;
-    }
-
-    .groupButton2{
-
-        transition: 2s linear ;
-
+        color: #fff;
     }
 
     .divContenido{
@@ -32,7 +27,7 @@
     }
 </style>
 
-<div id="divIzquierdo-slave" class="div-izquierdo" style="display: none; height: 98%;">
+<div id="divIzquierdo-slave" class="div-izquierdo" style="display: none; height: 98%; margin: 0px;">
 
     <div style="width: 100%; text-align: center; display: inline-block; background-image: url(<?=URL ;?>public/img/worn_dots.png); background-repeat: repeat; height: 25%;">
         <!-- imagenes de circular -->
@@ -49,98 +44,90 @@
     </div>
 
     <!-- formulario de la caja circular -->
-    <div class="form-content medidas" style="height: 50%; overflow-y: auto;margin-left: 5px;">
+    <div id="divContentI" class="form-content medidas" style="height: 50%; width: 100%; overflow: auto;">
+        <div style="min-width: 100px; width: 92%;">
 
-        <div style="min-width: 200px; width: 100%;">
-            <input type="hidden" name="modelo" id="modelo" value="$id_modelo">
-
-            <!-- ODT -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
-                    <span>ODT: </span>
-                </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <input class="cajas-input medidas-input" name="odt" id="odt" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus="" required="" value="<?= $aJson['num_odt']?>">
-                </div>
-
-
-            </div>
-
-            <!-- Base -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <span>Base: </span>
-                </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <input class="cajas-input medidas-input" name="base" id="base" type="number" placeholder="cm" tabindex="2" min="0.01" step="any" required value="<?= $aJson['base']?>">
+            <input type="hidden" name="modelo" id="modelo" value="<?=$id_modelo?>">
+            <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
+            <!--ODT-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ODT: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="ODT" tabindex="1" value="<?= $aJson['num_odt']?>">
                 </div>
             </div>
-
-            <!-- Alto -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <span>Alto: </span>
-                </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <input class="cajas-input medidas-input" name="alto" id="alto" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required value="<?= $aJson['alto']?>">
+            <!--Base-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="base" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Base: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="number" class="form-control form-control-sm" name="base" id="base" placeholder="cm" tabindex="2" value="<?= $aJson['base']?>" min="1">
                 </div>
             </div>
-
-            <!-- Profundidad del Cajón -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <span>Profundidad Cajón: </span>
-                </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <input class="cajas-input medidas-input" name="profundidad_cajon" id="profundidad_cajon" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_cajon']?>">
+            <!--Alto-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="alto" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Alto: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="number" class="form-control form-control-sm" name="alto" id="alto" placeholder="cm" tabindex="3" value="<?= $aJson['alto']?>" min="1">
                 </div>
             </div>
-
-            <!-- Profundidad de la Tapa -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <span>Profundidad Tapa: </span>
-                </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <input class="cajas-input medidas-input" name="profundidad_tapa" id="profundidad_tapa" type="number" step="any" min="0.1" tabindex="4" placeholder="cm" required value="<?= $aJson['profundidad_tapa']?>">
+            <!--Prof Cajon-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="profundidad_cajon" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Prof Cajón: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="number" class="form-control form-control-sm" name="profundidad_cajon" id="profundidad_cajon" placeholder="cm" tabindex="4" value="<?= $aJson['profundidad_cajon']?>" min="1">
                 </div>
             </div>
-
-            <!-- Grosor Cajón -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <span>Grosor Cartón: </span>
+            <!--Prof Tapa-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="profundidad_tapa" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Prof Tapa: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="number" class="form-control form-control-sm" name="profundidad_tapa" id="profundidad_tapa" placeholder="cm" tabindex="5" value="<?= $aJson['profundidad_tapa']?>" min="1">
                 </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <select class="cajas-input medidas-input" name="grosor_carton" id="grosor_carton" tabindex="5" required>
-
+            </div>
+            <!--G Cajon-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Grosor Cajón: </label>
+                <div class="col-sm-8">
+                    
+                    <select class="custom-select custom-select-sm" name="grosor_carton" id="grosor_carton" tabindex="6" required>
+                        
                         <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
+                        <?php
+                            foreach ($cartones as $carton) {
 
+                                $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+
+                                if ($expensive) {
+
+                                    ?>
+                                    <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                                    <?php
+                                }
+                            }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <!--G Carton-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Grosor Tapa: </label>
+                <div class="col-sm-8">
+                    
+                    <select class="custom-select custom-select-sm"name="grosor_tapa" id="grosor_tapa" tabindex="7" required>
+                        
+                        <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
                         <?php
                         foreach ($cartones as $carton) {
 
@@ -157,57 +144,20 @@
                     </select>
                 </div>
             </div>
-
-            <!-- Grosor Tapa -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <span>Grosor Tapa: </span>
-                </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <select class="cajas-input medidas-input" name="grosor_tapa" id="grosor_tapa" tabindex="5" required>
-
-                        <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
-
-                        <?php
-                        foreach ($cartones as $carton) {
-
-                            $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
-
-                            if ($expensive) {
-
-                                ?>
-                                <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
-                                <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Cantidad -->
-            <div class="input-group">
-
-                <div class="cajas-col-input t-left">
-
-                    <span>Cantidad: </span>
-                </div>
-
-                <div class="cajas-col-input t-right">
-
-                    <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="6" required="" value="<?= $aJson['tiraje']?>">
+            <!--Cantidad-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="qty" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Cantidad: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="number" class="form-control form-control-sm" name="qty" id="qty" placeholder="Cantidad" tabindex="8" value="<?= $aJson['tiraje']?>" min="1">
                 </div>
             </div>
         </div>
     </div>
-
     <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
         
-        <button type="button" id="btnabrecierres" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#cierres" >Añadir Cierres <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+        <button type="button" id="btnabrecierres" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#cierres" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Cierre</button>
 
         <div id="ListaCierres" class="">
 
@@ -218,7 +168,7 @@
         </div>
 
 
-        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary chkSize btn-sm" data-toggle="modal" data-target="#accesorios" >Añadir Accesorios <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+        <button type="button" id="btnabreaccesorios" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#accesorios" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Accesorio</button>
 
         <div id="ListaAccesoriosEmp" class="">
 
@@ -229,7 +179,7 @@
             </table>
         </div>
 
-        <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary chkSize  btn-sm" data-toggle="modal" data-target="#bancoemp">Añadir Banco <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+        <button id="btnabrebancoemp" type="button" class="btn btn-block btn-outline-primary chkSize  btn-sm text-left" data-toggle="modal" data-target="#bancoemp"><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px"> Banco</button>
 
         <div id="ListaBancoEmp" class="">
             <table class="table" id="banTable">
@@ -237,56 +187,9 @@
                     <!-- contenido seleccionado -->
                 </tbody>
             </table>
-        </div>    
+        </div>
     </div>
 </div>
-
-<!-- Resumen -->
-    <div id="resumentodocaja" style="display: none;">
-
-        <button type="button" style="text-align: end; border: none; background: none; width: 100%;" id="btnQuitarResumen"><img border="0" src="<?=URL ;?>public/img/eliminar.png" style="width: 2%;">
-        </button>
-
-        <table class="table tableresumenn" id="ResumenCostos">
-
-            <thead class="thead-dark">
-
-                <tr>
-                    <th style="width: 20%"></th>
-                    <th>Adiciones</th>
-                    <th>Subtotal</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-
-            <thead id="resumenHead"></thead>
-
-            <tbody id="resumenPapeles"></tbody>
-
-            <tbody id="resumenEC"></tbody>
-
-            <tbody id="resumenFC"></tbody>
-
-            <tbody id="resumenET"></tbody>
-
-            <tbody id="resumenFT"></tbody>
-
-            <tbody id="resumenEncuadernacion"></tbody>
-
-            <tbody id="resumenMensajeria"></tbody>
-
-            <tbody id="resumenEmpaque"></tbody>
-
-            <tbody id="resumenBancos"></tbody>
-
-            <tbody id="resumenCierres"></tbody>
-
-            <tbody id="resumenAccesorios"></tbody>
-
-            <tbody id="resumenOtros"></tbody>
-        </table>
-        <img border="0" src="<?=URL ;?>public/img/henpp.png" style="width: 7%; margin: 2%"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
-    </div>
 
 <?php require "application/views/templates/cotizador/acabados.php"?>
 <?php require "application/views/templates/cotizador/extras.php"?>
@@ -294,384 +197,51 @@
 
 <!--
 
-    Al parecer se debe de hacer los require primero y despues el script que
+    Se debe de hacer los require primero y despues el script que
     se hace referencia al modelo de caja.
 -->
-<script type="text/javascript" src="<?= URL ?>public/js/cotizador/regalo.js"></script>
+<script src="<?=URL?>public/js/cotizador/cajas.js"></script>
+<script src="<?=URL?>public/js/cotizador/regalo.js"></script>
 
 <script type="text/javascript">
 
-    var a = [<?php echo json_encode($aJson) ?>];
+    var option = "";
+    var papeles = <?php echo json_encode($papers);?>;
 
-    console.log(a);
-</script>
+    papeles.forEach( function(papel){
 
-<script type="text/javascript">
-    
+        option += '<option value="' + papel.id_papel + '" data-nombre="' + papel.nombre + '">' + papel.nombre + '</option>';
+    });
 
-    var idCarton = parseInt("<?= $aJson['costo_grosor_carton']['id_cajon']?>");
-    var idTapa = parseInt("<?= $aJson['costo_grosor_tapa']['id_cajon']?>");
+    var baseImg = "<?=BASE_URL?>public/images/regalo/";
 
-    $("#grosor_carton option[data-id=" + idCarton +"]").attr("selected", true);
+    var seccion = [
+        { titulo: 'Empalme Cajón', img: baseImg+'regalo.png', option: 'optEC', siglas: 'EC', chk: true, aAcb: [], aImp: [], 'siglasP': 'Emp' },
+        { titulo: 'Forro Cajón', img: baseImg+'regalo.png', option: 'optFC', siglas: 'FC', chk: false, aAcb: [], aImp: [], 'siglasP': 'FCaj' },
+        { titulo: 'Empalme Tapa', img: baseImg+'regalo.png', option: 'optET', siglas: 'ET', chk: false, aAcb: [], aImp: [], 'siglasP': 'EmpTap' },
+        { titulo: 'Forro Tapa', img: baseImg+'regalo.png', option: 'optFT', siglas: 'FT', chk: false, aAcb: [], aImp: [], 'siglasP': 'FTap' }
+    ]
 
-    $("#grosor_tapa option[data-id=" + idTapa +"]").attr("selected", true);
+    let caja = new Regalo( {secciones: seccion, papeles: option} );
 
-    var idEC = parseInt("<?= $aJson['id_papel_emp']?>");
-    var idFC = parseInt("<?= $aJson['id_papel_fcaj']?>");
-    var idET = parseInt("<?= $aJson['id_papel_emptap']?>");
-    var idFT = parseInt("<?= $aJson['id_papel_ftap']?>");
-
-    //muestra los papeles elegidos
-    $("#divDerecho").empty();
-    divSeccionesA("Empalme Cajón", "optEC" , "EC", "<?=URL ?>/public/images/regalo/regalo.png", idEC);
-    divSeccionesA("Forro Cajón", "optFC" , "FC", "<?=URL ?>/public/images/regalo/regalo.png", idFC);
-    divSeccionesA("Empalme Tapa", "optET" , "ET", "<?=URL ?>/public/images/regalo/regalo.png", idET);
-    divSeccionesA("Forro Tapa", "optFT" , "FT", "<?=URL ?>/public/images/regalo/regalo.png", idFT);
-    /*$("#optEC option[value='" + idEC +"']").prop("selected",true);
-    $("#optFC option[value='" + idFC +"']").prop("selected",true);
-    $("#optET option[value='" + idET +"']").prop("selected",true);
-    $("#optFT option[value='" + idFT +"']").prop("selected",true);*/
-</script>
-
-<script type="text/javascript">
-
-
-    //checkDimensions();
     var contenidoIzquierdo = $("#divIzquierdo-slave").contents();
-    //var contenidoDerecho = $("#divDerecho-slave").contents();
     $("#divIzquierdo").empty();
     $("#divIzquierdo").append(contenidoIzquierdo);
+    $("#divDerecho").empty();
 
-    //$("#divDerecho").append(contenidoDerecho);
-    
-    var cliente = getIdClient();
+    caja.url="<?= URL ?>";
     //eligira a donde se enviara la informacion
-    changeData("<?=URL?>regalo/saveCaja");
-    setClient( cliente );
-    setURL("<?= URL ?>");
-
-    var trEC   = '<tr><td><b>Empalme Cajón</b></td><td></td><td></td><td></td></tr>';
-    var trFC    = '<tr><td><b>Forro Cajón</b></td><td></td><td></td><td></td></tr>';
-    var trET  = '<tr><td><b>Empalme Tapa</b></td><td></td><td></td><td></td></tr>';
-    var trFT    = '<tr><td><b>Forro Tapa</b></td><td></td><td></td><td></td></tr>';
-
-    var trMensajeria = '<tr><td><b>Costo Mensajería</b></td><td></td><td></td><td></td></tr>';
-    var trEmpaque = '<tr><td><b>Costo Empaque</b></td><td></td><td></td><td></td></tr>';
-    var trEncuadernacion = '<tr><td><b>Encuadernación</b></td><td></td><td></td><td></td></tr>';
-
-    //imprime titulos para resumen
-    $('#resumenEC').append(trEC);
-    $('#resumenFC').append(trFC);
-    $('#resumenET').append(trET);
-    $('#resumenFT').append(trFT);
-
-    $('#resumenMensajeria').append(trMensajeria);
-    $('#resumenEmpaque').append(trEmpaque);
-    $('#resumenEncuadernacion').append(trEncuadernacion);
+    caja.changeData("regalo/saveCaja");
+    $("#box-model").val("4");
+    history.forward();
 
     var AGlobal = <?php echo json_encode($aJson)?>;
-
-    descuento = AGlobal['descuento_pctje'];
-
-    appndPapeles( AGlobal, "papel_Emp");
-    appndPapeles( AGlobal, "papel_FCaj");
-    appndPapeles( AGlobal, "papel_EmpTap");
-    appndPapeles( AGlobal, "papel_FTap");
-
-    /*appndPapelCarton( AGlobal, AGlobal['costo_grosor_carton'], "Cartón Cajón" );
-    appndPapelCarton( AGlobal, AGlobal['papel_Emp'], "Empalme Cajón" );
-    appndPapelCarton( AGlobal, AGlobal['papel_FCaj'], "Forro Cajón" );
-    appndPapelCarton( AGlobal, AGlobal['costo_grosor_tapa'], "Cartón Tapa" );
-    appndPapelCarton( AGlobal, AGlobal['papel_EmpTap'], "Empalme Tapa" );
-    appndPapelCarton( AGlobal, AGlobal['papel_FTap'], "Forro Tapa" );*/
-
-    var aImpEC1 = <?php echo json_encode($aJson['aImpempcaj']) ?>;
-    var aImpFC1 = <?php echo json_encode($aJson['aImpfcaj']) ?>;
-    var aImpET1 = <?php echo json_encode($aJson['aImpemptap']) ?>;
-    var aImpFT1 = <?php echo json_encode($aJson['aImpftap']) ?>;
-
-    appndImpMod(aImpEC1,"EC", aImpEC);
-    appndImpMod( aImpFC1, "FC", aImpFC );
-    appndImpMod( aImpET1, "ET", aImpET );
-    appndImpMod( aImpFT1, "FT", aImpFT );
-
-    var aAcbEC1 = <?php echo json_encode($aJson['aAcbecaj']) ?>;
-    var aAcbFC1 = <?php echo json_encode($aJson['aAcbfcaj']) ?>;
-    var aAcbET1 = <?php echo json_encode($aJson['aAcbemptap']) ?>;
-    var aAcbFT1 = <?php echo json_encode($aJson['aAcbftap']) ?>;
-
-    appndAcbMod( aAcbEC1,"EC", aAcbEC);
-    appndAcbMod( aAcbFC1, "FC", aAcbFC );
-    appndAcbMod( aAcbET1, "ET", aAcbET );
-    appndAcbMod( aAcbFT1, "FT", aAcbFT );
-
-    var cierres    = <?php echo json_encode($aJson['Cierres'])?>;
-    var accesorios = <?php echo json_encode($aJson['Accesorios'])?>;
-    var bancos     = <?php echo json_encode($aJson['Bancos'])?>;
-
-    if( cierres !== undefined && cierres !== null ){
-
-        for (var i = 0; i < cierres.length; i++) {
-
-            var tr ="";
-            var opCie = cierres[i]['Tipo_cierre'];
-            switch(opCie){
-
-                case "Iman":
-
-                    var numpares = cierres[i]['numpares'];
-
-                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
-                    aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-                break;
-                case "Liston":
-
-                    var LarListon = cierres[i]['largo'];
-                    var AnchListon = cierres[i]['ancho'];
-                    var tipoListon = cierres[i]['tipo'];
-                    var colorListon = cierres[i]['color'];
-                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td style="display: none">'+ LarListon +'</td><td style="display: none">'+ AnchListon +'</td><td style="display: none">'+ tipoListon +'</td><td style="display: none">'+ colorListon +'</td><td class="listcierres img_delete"></td></tr>';
-                    aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon});
-
-                break;
-                case "Marialuisa":
-
-                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="listcierres img_delete"></td></tr>';
-                    aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-                break;
-                case "Suaje calado":
-
-                    var LarSuajCal = cierres[i]['largo'];
-                    var AnchSuajCal = cierres[i]['ancho'];
-                    var tipoSuajCal = cierres[i]['tipo'];
-                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td style="display: none">'+ LarSuajCal +'</td><td style="display: none">'+ AnchSuajCal +'</td><td style="display: none">'+ tipoSuajCal +'</td><td class="listcierres img_delete"></td></tr>';
-                    aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null});
-
-                break;
-                case "Velcro":
-
-                    var numpares = cierres[i]['numpares'];
-                    tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
-                    aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
-
-                break;
-            }
-            $('#listcierres').append(tr);
-        }
-    }
-
-    if( accesorios !== undefined && accesorios !== null ){
-
-        for (var i = 0; i < accesorios.length; i++) {
-
-            var tr ="";
-            var nombreAccesorio = accesorios[i]['Tipo_accesorio'];
-            switch(nombreAccesorio){
-
-                case "Lengueta de Liston":
-
-                    var largo = accesorios[i]['Largo'];
-                    var ancho = accesorios[i]['Ancho'];
-                    var color = accesorios[i]['Color'];
-                    var precio = accesorios[i]['costo_unit_accesorio'];
-
-                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-                break;
-                case "Herraje":
-
-                    var herraje = accesorios[i]['Tipo'];
-                    var precio = accesorios[i]['costo_unit_accesorio'];
-                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + herraje + '</span></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
-
-                break;
-                case "Ojillos":
-
-                    var precio = accesorios[i]['costo_unit_accesorio'];
-                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td style=""></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
-
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
-
-                break;
-                case "Resorte":
-
-                    var largo = accesorios[i]['Largo'];
-                    var ancho = accesorios[i]['Ancho'];
-                    var color = accesorios[i]['Color'];
-                    var precio = accesorios[i]['costo_unit_accesorio'];
-                    tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">' + precio + '</td><td class="listaccesorios img_delete"></td></tr>';
-
-                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
-
-                break;
-            }
-            $('#listaccesorios').append(tr);
-        }
-    }
-
-    if( bancos !== undefined && bancos !== null ){
-
-        for (var i = 0; i < bancos.length; i++) {
-
-            var opBan = bancos[i]['Tipo_banco'];
-            var tr = "";
-            if( opBan === 'Carton' || opBan === 'Eva' || opBan === 'Espuma' || opBan === 'Empalme Banco' ){
-
-                var LargoMBanco = bancos[i]['largo'];
-                var AnchoMBanco = bancos[i]['ancho'];
-                var ProfundidadMBanco = bancos[i]['profundidad'];
-                var LLevaSuajeM = bancos[i]['Suaje'];
-                tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td style="display: none">'+ LLevaSuajeM +'</td><td class="listbancoemp img_delete"></td></tr>';
-                aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM});
-            }else if( opBan === 'Cartulina Suajada' ){
-
-                var LargoMBanco = bancos[i]['largo'];
-                var AnchoMBanco = bancos[i]['ancho'];
-                var ProfundidadMBanco = bancos[i]['profundidad'];
-                tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td class="listbancoemp img_delete"></td></tr>';
-                aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null});
-            }
-            $('#listbancoemp').append(tr);
-        }
-    }
+    caja.printCotizacion(AGlobal);
+    console.log(AGlobal);
 
     //Boton Guardar
     $("#btnGrabarC").click( function() {
 
-        var precio;
-        var papel;
-
-        var odt               = $("#odt").val();
-        var base              = $("#base").val();
-        var alto              = $("#alto").val();
-        var profundidad_cajon = $("#profundidad_cajon").val();
-        var profundidad_tapa  = $("#profundidad_tapa").val();
-        var grosor_carton      = $("#grosor_carton").val();
-        var grosor_tapa       = $("#grosor_tapa").val();
-        var cantidad          = $("#qty").val();
-
-        if( revisarPropiedades(odt,"ODT") == false ) return false;
-
-        if( revisarPropiedades(base,"base") == false ) return false;
-        
-        if( revisarPropiedades(alto,"alto") == false ) return false;
-        
-        if( revisarPropiedades(profundidad_cajon,"Profundidad Cajón") == false ) return false;
-
-        if( revisarPropiedades(profundidad_tapa,"Profundidad Tapa") == false ) return false;
-        
-        if( revisarPropiedades(grosor_carton,"Grosor Cartón") == false ) return false;
-
-        if( revisarPropiedades(grosor_tapa,"Grosor Tapa") == false ) return false;
-
-        if( revisarPropiedades(cantidad,"Cantidad") == false ) return false;
-        //if( revisarImpAcb() == false ) return false;
-
-        var grabar = "SI";
-        var optEC  = $("#optEC").val();
-        var optFC  = $("#optFC").val();
-        var optET  = $("#optET").val();
-        var optFT  = $("#optFT").val();
-
-        if (typeof formData !== 'undefined' && formData.length > 0) {
-
-            formData = [];
-        }
-        showLoading();
-        var formData      = $("#dataForm").serializeArray();
-
-        // impresion
-        var aImpEC_tmp  = JSON.stringify(aImpEC, null, 4);
-        var aImpFC_tmp  = JSON.stringify(aImpFC, null, 4);
-        var aImpET_tmp = JSON.stringify(aImpET, null, 4);
-        var aImpFT_tmp  = JSON.stringify(aImpFT, null, 4);
-
-        // acabados
-        var aAcbEC_tmp  = JSON.stringify(aAcbEC, null, 4);
-        var aAcbFC_tmp  = JSON.stringify(aAcbFC, null, 4);
-        var aAcbET_tmp = JSON.stringify(aAcbET, null, 4);
-        var aAcbFT_tmp  = JSON.stringify(aAcbFT, null, 4);
-
-        // cierres
-        var aCierres_tmp = JSON.stringify(aCierres, null, 4);
-
-
-        // bancos
-        var aBancos_tmp = JSON.stringify(aBancos, null, 4);
-
-
-        // accesorios
-        var aAccesorios_tmp = JSON.stringify(aAccesorios, null, 4);
-
-        var id_cliente_tmp = JSON.stringify(cliente, null, 4);
-        
-        formData.push({name: 'id_cliente', value: id_cliente_tmp});
-        
-        formData.push({name: 'aImpEC', value: aImpEC_tmp});
-        formData.push({name: 'aImpFC', value: aImpFC_tmp});
-        formData.push({name: 'aImpET', value: aImpET_tmp});
-        formData.push({name: 'aImpFT', value: aImpFT_tmp});
-
-        formData.push({name: 'aAcbEC', value: aAcbEC_tmp});
-        formData.push({name: 'aAcbFC', value: aAcbFC_tmp});
-        formData.push({name: 'aAcbET', value: aAcbET_tmp});
-        formData.push({name: 'aAcbFT', value: aAcbFT_tmp});
-
-        formData.push({name: 'aCierres', value: aCierres_tmp});
-        formData.push({name: 'aBancos', value: aBancos_tmp});
-        formData.push({name: 'aAccesorios', value: aAccesorios_tmp});
-        formData.push({name: 'descuento_pctje', value: descuento});
-        formData.push({name: 'grabar', value: grabar});
-
-        var modificar_odt = "SI";
-
-        formData.push({name: 'modificar', value: modificar_odt});
-
-        var id_odt = "<?=$aJson['id_odt']?>";
-
-        formData.push({name: 'id_odt_ant', value: id_odt});
-
-        $.ajax({
-            type:"POST",
-            //dataType: "json",
-            url: $('#dataForm').attr('action'),
-            data: formData,
-        })
-        .done(function(response) {
-            hideLoading();
-            console.log("(1876) response: ");
-            console.log(response);
-
-            try {
-
-                var respuesta = JSON.parse( response );
-
-                if (!respuesta.hasOwnProperty("error")) {
-
-                    var error = respuesta.error;
-                    showModError("");
-                    $("#txtContenido").html("(1887) " + error);
-                } else {
-
-                    showModCorrecto("Los datos han sido actualizados correctamente...");
-                }
-            } catch( e ) {
-
-                showModError("");
-                $("#txtContenido").html("(1895) Error..." + e);
-            }
-        })
-        .fail(function(response) {
-
-            console.log('(1900) Hubo un Error inesperado. Por favor llame a sistemas.');
-
-            desactivarBtn();
-        });
+        caja.saveCotizacion("SI");
     });
-
-    history.forward();
-    $("#box-model").val("4");
 </script>

@@ -259,8 +259,8 @@
 		<div id="idHotStamping" style="display: none;">
 
 			<button id="btnHotH" name="btnHotH" class="boton2" onclick="switchForm('Hot Stamping H','formHS','H')">H</button>
-			<button id="btnHotH1" name="btnHotH1" class="boton2" onclick="switchForm('Hot Stamping H1','formHS','HG1')">HG1</button>
-			<button id="btnHotH2" name="btnHotH2" class="boton2" onclick="switchForm('Hot Stamping H2','formHS','HG2')">HG2</button>
+			<button id="btnHotH1" name="btnHotH1" class="boton2" onclick="switchForm('Hot Stamping H1','formHS','H1')">HG1</button>
+			<button id="btnHotH2" name="btnHotH2" class="boton2" onclick="switchForm('Hot Stamping H2','formHS','H2')">HG2</button>
 		</div>
 		<button class="boton" onclick="show('idGrabado')">Grabado</button>
 		<div id="idGrabado" style="display: none;">
@@ -289,8 +289,10 @@
 			<form id="formAction" class="fmCompleto container" action="" method="POST">
 				<div id="formulario" class="formulario">
 					<mensaje></mensaje>
-					<div id="contenidoF" style="display: none;">
-						
+					<div id="contenidoF">
+						<label onclick="imprimir()" style="cursor: pointer;">
+						<img src="<?=URL?>public/img/impresion-white.png">
+							</label>
 					</div>
 				</div>
 				<input type="text" id="tipoProceso" name="tipoProceso" style="display: none">
@@ -324,12 +326,12 @@
 			<div class="btnPrinc">
 				
 			</div>
-			<div class="btnPrinc">
+			<!--<div class="btnPrinc">
 				<span class="codigo">
-					<button id="btnImpresion" style="border:none; background: #fff;">
+					<button id="btnImpresion1" style="border:none; background: #fff;">
 					<img src="<?=URL?>public/img/impresion.png"></button>
 				</span>
-			</div>
+			</div>-->
 			<div class="btnPrinc">
 				
 			</div>
@@ -517,7 +519,7 @@
 						<h4 id="lblRanSer" style="text-align: center;">Rango</h4>
 					</th>
 					<th align="center">
-						<h4 id="lblPreSer" style="text-align: center;">Precio</h4>
+						<h4 id="lblPreSer" style="text-align: center;">Precio C/100</h4>
 					</th>
 				</tr>
 				<tr>
@@ -1468,60 +1470,65 @@
 							<input type="text" id="txtIdPB2" name="txtIdPB2">
 						</td>
 					</tr>
-
 					<tr>
-						<td align="center">
-							<h4>Despunte de esquinas para Cajón</h4>
+						<th align="center" colspan="3">
+							<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Despunte de esquinas para Cajón</p>
+						</th>
+					</tr>
+					<tr>
+						
+						<td align="center" colspan="2">
+							<h4>Costo Unitario:</h4>
 						</td>
-						<td align="center">
-							<h4>C. Unitario:</h4>
-						</td>
-						<td align="center">
+						<td align="center" class="text-left">
 							<input style="width: 60px;" onkeyup="asignaNum();" type="text" id="txtCosDEC" name="txtCosDEC" placeholder="Costo Unitario"><label> MXN</label>
 						</td>
 						<td style="display: none;">
 							<input type="text" id="txtIdDEC" name="txtIdDEC">
 						</td>
 					</tr>
-
 					<tr>
-						<td align="center">
-							<h4>Arreglo de Forrado de Cajón</h4>
+						<th align="center" colspan="3">
+							<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Arreglo de Forrado de Cajón</p>
+						</th>
+					</tr>
+					<tr>
+						<td align="center" colspan="2">
+							<h4>Costo Unitario:</h4>
 						</td>
-						<td align="center">
-							<h4>C. Unitario:</h4>
-						</td>
-						<td align="center">
+						<td align="center" class="text-left">
 							<input style="width: 60px;" onkeyup="asignaNum();" type="text" id="txtCosAFC" name="txtCosAFC" placeholder="Costo Unitario"><label> MXN</label>
 						</td>
 						<td style="display: none;">
 							<input type="text" id="txtIdAFC" name="txtIdAFC">
 						</td>
 					</tr>
-
 					<tr>
-						<td align="center">
-							<h4>Encajada</h4>
+						<th align="center" colspan="3">
+							<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Encajada</p>
+						</th>
+					</tr>
+					<tr>
+						<td align="center" colspan="2">
+							<h4>Costo Unitario:</h4>
 						</td>
-						<td align="center">
-							<h4>C. Unitario:</h4>
-						</td>
-						<td align="center">
+						<td align="center" class="text-left">
 							<input style="width: 60px;" onkeyup="asignaNum();" type="text" id="txtCosEn" name="txtCosEn" placeholder="Costo Unitario"><label> MXN</label>
 						</td>
 						<td style="display: none;">
 							<input type="text" id="txtIdEn" name="txtIdEn">
 						</td>
 					</tr>
-
 					<tr>
-						<td align="center">
-							<h4>Domi</h4>
+						<th align="center" colspan="3">
+							<p style="text-align: center; margin-top: 0px; margin-bottom: 0px;">Domi</p>
+						</th>
+					</tr>
+					<tr>
+						<td align="center" colspan="2">
+							<h4>Costo Unitario:</h4>
 						</td>
-						<td align="center">
-							<h4>C. Unitario:</h4>
-						</td>
-						<td align="center">
+						<td align="center" class="text-left">
 							<input style="width: 60px;" onkeyup="asignaNum();" type="text" id="txtCosD" name="txtCosD" placeholder="Costo Unitario"><label> MXN</label>
 						</td>
 						<td style="display: none;">
@@ -2277,11 +2284,17 @@
 	     return false;        
 	}
 
-	$("#btnImpresion").click( function(){
+	$("#btnImpresion1").click( function(){
 
 		var ventana = window.open("<?=URL?>modificaprocesos/imprProcesos", "Impresion", "width=600, height=600");
 		return true;
 	});
+
+	function imprimir(){
+
+		var ventana = window.open("<?=URL?>modificaprocesos/imprProcesos", "Impresion", "width=600, height=600");
+		return true;
+	}
 
 
 	Vue.component('mensaje', {

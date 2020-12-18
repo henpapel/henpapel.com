@@ -286,15 +286,12 @@ class Circular extends Controller {
 
             require 'application/views/templates/head.php';
             require 'application/views/templates/top_menu.php';
-            require 'application/views/cotizador/cajas.php';
-
-            // plantilla
-            echo "<script>$('#form_modelo_0').hide();</script>";
-
-            require 'application/views/cotizador/cajas_circular.php';
-
-            echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-
+            require 'application/views/templates/cotizador/plantilla.php';
+            echo "<script>$('#divDerecho').empty()</script>";
+            echo "<script>$('#divIzquierdo').empty()</script>";
+            echo "<script>$('#divDerecho').hide()</script>";
+            require 'application/views/cotizador/circular/nueva_cotizacion.php';
+            echo "<script>$('#divDerecho').show('slow')</script>";
             require 'application/views/templates/footer.php';
         } else {
 
@@ -1037,7 +1034,7 @@ class Circular extends Controller {
         $id_grosor_carton = $_POST['grosor_carton'];
         $id_grosor_carton = floatval($id_grosor_carton);
 
-        $grosor_caj = self::getPapelCarton("grosor_carton", $id_grosor_carton);
+        $grosor_caj = self::getPapelCarton("grosor_carton", $id_grosor_carton, $options_model);
 
         $c_ancho = floatval($grosor_caj['ancho_papel']);
         $c_largo = floatval($grosor_caj['largo_papel']);

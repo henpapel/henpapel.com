@@ -5878,6 +5878,7 @@ if ($aJson) { ?>
 
         formData.push({name: 'modificar', value: modificar_odt});
         desactivarBtn();
+        $("#modLoading").show();
         $.ajax({                                    // GRABAR
 
             type:"POST",
@@ -5889,6 +5890,7 @@ if ($aJson) { ?>
         })
         .done(function( response ) {
 
+            $("#modLoading").hide();
             console.log("(5813) response: ");
 
             console.log(response);

@@ -13,24 +13,38 @@ class OptionsModel {
         }
     }
 
-    public function getBoxModelById($idModel) {
 
-        $idModel = intval($idModel);
-        $sql = "SELECT * FROM modelos_cajas where status = 'A'and id_modelo = ".$idModel;
+    public function checaODT($odt) {
 
-        $query = $this->db->prepare($sql);
-        $query->execute();
+        if (!isset($_SESSION)) {
 
-        $result = array();
+            session_start();
+        }
 
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $odt = strval($odt);
 
-            $result[] = $row;
-        };
+        $sql = "SELECT * FROM cot_odt where num_odt = '$odt'";
 
-        return $result;
+        try {
+
+            $query = $this->db->prepare($sql);
+
+            $query->execute();
+
+            if ( $query->rowCount() == 0 ) {
+
+                return false;
+            } else {
+
+                return true;
+            }
+        } catch (Exception $ex) {
+
+            return false;
+        }
     }
-    
+
+
     // obtiene el tipo de modelo de cajas
     public function getBoxModels() {
 
@@ -47,22 +61,6 @@ class OptionsModel {
         };
 
         return $result;
-    }
-
-    public function getCartonIdPapel($id) {
-
-        $id_temp = intval($id);
-
-        $sql = "SELECT numcarton FROM papeles where status = 'A' and id_papel = " . $id_temp . " limit 1";
-
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-        $row = floatval($row['numcarton']);
-
-        return $row;
-
     }
 
 
@@ -350,6 +348,23 @@ class OptionsModel {
     }
 
 
+    public function getCartonIdPapel($id) {
+
+        $id_temp = intval($id);
+
+        $sql = "SELECT numcarton FROM papeles where status = 'A' and id_papel = " . $id_temp . " limit 1";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        $row = floatval($row['numcarton']);
+
+        return $row;
+
+    }
+
+
     public function getPapelId($id) {
 
         $id_temp = intval($id);
@@ -396,6 +411,7 @@ class OptionsModel {
 
         return $row;
     }
+
 
     // igual a getCartonById() ???
     public function getMaxCostoCartonId($number) {
@@ -780,6 +796,29 @@ class OptionsModel {
         }
 
         return $result;
+    }
+
+
+    // Checa si existe la ODT
+    public function checkODT($odt) {
+
+        $totalRows = -1;
+
+        $sql = "SELECT * from cajas_calculadas WHERE status = 'A' and odt like '" . $odt . "%'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
+        }
+
+        $totalRows = count($result);
+        
+        return $totalRows;
     }
 
 
@@ -1503,7 +1542,12 @@ class OptionsModel {
 
     public function archiemprCons() {
 
-        $sql = "SELECT * FROM archiempr WHERE status = 'A' ORDER BY fecha DESC";
+        //$sql = "SELECT * FROM archiempr WHERE status = 'A' ORDER BY fecha DESC";
+
+        $tienda = intval($_SESSION['user']['id_tienda']);
+
+        $sql = "SELECT * FROM archiempr WHERE status = 'A' and tienda = " . $tienda . " ORDER BY fecha DESC";
+
 
         $query = $this->db->prepare($sql);
 
@@ -1942,7 +1986,7 @@ class OptionsModel {
 
     public function UpdateProcOff() {
 
-        $proceso        = strval($_POST['tipoProceso']);
+        $boton        = strval($_POST['tipoProcesoOff']);
         $tirajeMinimo = intval($_POST['txtTirMinOff']);
         $tirajeMaximo = intval($_POST['txtTirMaxOff']);
         $costoLam     = floatval($_POST['txtCosOffLam']);
@@ -1965,10 +2009,9 @@ class OptionsModel {
         $idTir2       = intval($_POST['txtIdTirOffset2']);
         $idTir3       = intval($_POST['txtIdTirOffset3']);
         $idTir4       = intval($_POST['txtIdTirOffset4']);
+        switch ($boton) {
 
-        switch ($proceso) {
-
-            case 'N':
+            case 'btnOffNormal':
 
                 try{
 
@@ -1993,13 +2036,12 @@ class OptionsModel {
                     }
                 }catch(Exception $ex){
 
-                    print_r($ex);
                     $this->db->rollBack();
                     return false;
                 }
             break;
 
-            case 'P':
+            case 'btnOffPantone':
 
                 try{
 
@@ -2025,13 +2067,12 @@ class OptionsModel {
 
                 }catch(Exception $ex){
 
-                    print_r($ex);
                     $this->db->rollBack();
                     return false;
                 }
             break;
 
-            case 'M':
+            case 'btnOffMaquila':
 
                 try{
 
@@ -2067,7 +2108,7 @@ class OptionsModel {
                 }
             break;
 
-            case 'MP':
+            case 'btnOffMaquilaPantone':
 
                 try{
 
@@ -2108,7 +2149,7 @@ class OptionsModel {
 
     public function UpdateProcSer() {
 
-        $proceso    = strval($_POST['tipoProceso']);
+        $boton    = strval($_POST['tipoProcesoSer']);
         $costoArr = floatval($_POST['txtCosSerArr']);
         $rango11  = intval($_POST['txtRangSer11']);
         $rango12  = intval($_POST['txtRangSer12']);
@@ -2129,9 +2170,9 @@ class OptionsModel {
         $idTir2   = intval($_POST['txtIdTirSerigrafia2']);
         $idTir3   = intval($_POST['txtIdTirSerigrafia3']);
         $idTir4   = intval($_POST['txtIdTirSerigrafia4']);
-        switch ($proceso) {
+        switch ($boton) {
 
-            case 'N':
+            case 'btnSerNormal':
 
                 try{
 
@@ -2166,7 +2207,7 @@ class OptionsModel {
                     return false;
                 }
             break;
-            case 'P':
+            case 'btnSerPantone':
 
                 try{
 
@@ -2426,7 +2467,7 @@ class OptionsModel {
 
     public function UpdateProcHotStam() {
 
-        $proceso          = strval($_POST['tipoProceso']);
+        $boton          = strval($_POST['tipoProceso']);
         $precioPelicula = floatval($_POST['txtCosHotPel']);
         $precioPlaca    = floatval($_POST['txtCosHotPlac']);
         $precioArreglo  = floatval($_POST['txtCosHotArr']);
@@ -2449,7 +2490,7 @@ class OptionsModel {
         $idTiro2        = intval($_POST['txtIdTirHS2']);
         $idTiro3        = intval($_POST['txtIdTirHS3']);
 
-        switch ($proceso) {
+        switch ($boton) {
 
             case 'H':
 
@@ -2488,7 +2529,7 @@ class OptionsModel {
                     return false;
                 }
                 break;
-            case 'HG1':
+            case 'H1':
 
                 try{
 
@@ -2525,7 +2566,7 @@ class OptionsModel {
                     return false;
                 }
                 break;
-            case 'HG2':
+                case 'H2':
 
                 try{
 
@@ -2568,7 +2609,7 @@ class OptionsModel {
 
     public function UpdateProcGra() {
 
-        $proceso         = strval($_POST['tipoProceso']);
+        $boton         = strval($_POST['tipoProceso']);
         $precioPlaca   = floatval($_POST['txtCosGraPlac']);
         $precioArreglo = floatval($_POST['txtCosGraArr']);
         $min1          = intval($_POST['txtMinGra1']);
@@ -2589,7 +2630,7 @@ class OptionsModel {
         $idTiro2       = intval($_POST['txtIdTirG2']);
         $idTiro3       = intval($_POST['txtIdTirG3']);
 
-        switch ($proceso) {
+        switch ($boton) {
 
             case 'G1':
 
@@ -2874,43 +2915,6 @@ class OptionsModel {
         return $result;
     }
 
-
-    // es vista; reemplazar por queries
-    public function getPaperExtCaj($idBox) {
-
-        $sql = "SELECT * FROM vistaPapelExteriorCajon where ID = $idBox";
-        $query = $this->db->prepare($sql);
-
-        $query->execute();
-
-        $result = array();
-
-        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[] = $row['papelExteriorCajon'];
-        }
-
-        return $result;
-    }
-
-
-    public function getHerraje(){
-
-        $sql = "SELECT * FROM proc_herraje where status = 'A'";
-
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        $result = array();
-
-        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[] = $row;
-        }
-
-        return $result;
-    }
-
     public function getProcEncuadernacion(){
 
         $sql = "SELECT * FROM proc_encuadernacion where status = 'A'";
@@ -3145,6 +3149,43 @@ class OptionsModel {
             $this->db->rollBack();
             return false;
         }
+    }
+
+
+    // es vista; reemplazar por queries
+    public function getPaperExtCaj($idBox) {
+
+        $sql = "SELECT * FROM vistaPapelExteriorCajon where ID = $idBox";
+        $query = $this->db->prepare($sql);
+
+        $query->execute();
+
+        $result = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[] = $row['papelExteriorCajon'];
+        }
+
+        return $result;
+    }
+
+
+    public function getHerraje(){
+
+        $sql = "SELECT * FROM proc_herraje where status = 'A'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
+        }
+
+        return $result;
     }
 
 }
