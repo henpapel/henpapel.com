@@ -230,9 +230,11 @@
     $("#divDerecho").empty();
 
     caja.url="<?= URL ?>";
+
     //eligira a donde se enviara la informacion
     caja.changeData("regalo/saveCaja");
-    $("#box-model").val("4");
+
+    $("#box-model").hide()
     history.forward();
 
     var AGlobal = <?php echo json_encode($aJson)?>;

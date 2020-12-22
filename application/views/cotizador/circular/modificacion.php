@@ -729,5 +729,5 @@
             console.log('(3315) Bug! Revisa...');
         });
     });
-    $("#box-model").val("2");
+    $("#box-model").hide();
 </script>

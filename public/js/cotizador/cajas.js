@@ -255,7 +255,6 @@ class Cajas {
         if (opImp == 'Digital') {
 
             var tipo   = $("#SelectImpDigital option:selected").text();
-
             var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="' + tabla +' img_delete delete" data-tabla="' + tabla + '"></td></tr>';
             arrpapeles.push({"Tipo_impresion": opImp});
 

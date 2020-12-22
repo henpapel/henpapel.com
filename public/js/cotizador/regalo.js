@@ -1100,7 +1100,8 @@ class Regalo extends Cajas{
                 $("#txtContenido").html("(3668) Hubo un error al cotizar la caja.");
                 this.appndMsgError(error);
             }catch {
-
+            	console.log(response);
+            	console.log(e);
                 this.showModError("");
                 $("#txtContenido").html("(3674) Hubo un error al cotizar la caja.");
             } finally{

@@ -24,7 +24,6 @@
 
         display: block; text-align: center; width: 100%;
     }
-    
 </style>
 
 <div id="divIzquierdo-slave" class="div-izquierdo" style="display: none; height: 98%; margin: 0px;">
@@ -212,26 +211,31 @@
     var baseImg = "<?=BASE_URL?>public/images/regalo/";
 
     var seccion = [
-        { titulo: 'Empalme Cajón', img: baseImg+'regalo.png', option: 'optEC', siglas: 'EC', chk: true, aAcb: [], aImp: [], 'siglasP': 'Emp' },
-        { titulo: 'Forro Cajón', img: baseImg+'regalo.png', option: 'optFC', siglas: 'FC', chk: false, aAcb: [], aImp: [], 'siglasP': 'FCaj' },
-        { titulo: 'Empalme Tapa', img: baseImg+'regalo.png', option: 'optET', siglas: 'ET', chk: false, aAcb: [], aImp: [], 'siglasP': 'EmpTap' },
-        { titulo: 'Forro Tapa', img: baseImg+'regalo.png', option: 'optFT', siglas: 'FT', chk: false, aAcb: [], aImp: [], 'siglasP': 'FTap' },
+        { titulo: 'Empalme Cajón', img: baseImg+'regalo.png', option: 'optEC', siglas: 'EC', aAcb: [], aImp: [], 'siglasP': 'Emp' },
+        { titulo: 'Forro Cajón', img: baseImg+'regalo.png', option: 'optFC', siglas: 'FC', aAcb: [], aImp: [], 'siglasP': 'FCaj' },
+        { titulo: 'Empalme Tapa', img: baseImg+'regalo.png', option: 'optET', siglas: 'ET', aAcb: [], aImp: [], 'siglasP': 'EmpTap' },
+        { titulo: 'Forro Tapa', img: baseImg+'regalo.png', option: 'optFT', siglas: 'FT', aAcb: [], aImp: [], 'siglasP': 'FTap' },
+        /*{ titulo: 'Prueba', img: baseImg+'regalo.png', option: 'optP', siglas: 'P', aAcb: [], aImp: [], 'siglasP': 'pt' },*/
         
-    ]
+    ];
 
-    let caja = new Regalo( {secciones: seccion, papeles: option} );
+    let caja = new Regalo( {secciones: seccion, papeles: option, url: "<?=URL?>"} );
 
     var contenidoIzquierdo = $("#divIzquierdo-slave").contents();
     $("#divIzquierdo").empty();
     $("#divIzquierdo").append(contenidoIzquierdo);
     $("#divDerecho").empty();
 
-    caja.url="<?= URL ?>";
     //eligira a donde se enviara la informacion
-
     caja.changeData("regalo/saveCaja");
+
+    //construye las secciones respecto a las divisiones que se ha declarado en la variable seccion
     caja.constructSec();
+
+    //se asigna en que modelo esta para el select
     $("#box-model").val("4");
+
+    //olvida el historial
     history.forward();
 
     //Boton Guardar

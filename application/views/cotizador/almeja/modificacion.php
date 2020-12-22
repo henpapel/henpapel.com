@@ -7507,5 +7507,5 @@ if ($aJson) { ?>
     history.forward();
 
     $(".medidas-input").addClass("not-empty");
-    $("#box-model").val("1");
+    $("#box-model").hide();
 </script>
