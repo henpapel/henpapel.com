@@ -1,42 +1,18 @@
-  
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<!-- timepicker -->
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.es-es.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="<?=URL?>public/css/cotizador.css">
+<!-- timepicker -->
 
 <link rel="stylesheet" type="text/css" href="<?=URL?>public/css/style.css">
+<link rel="stylesheet" type="text/css" href="<?=URL?>public/css/cotizador.css">
 
-<style type="text/css">
-
-    #divSelect2{
-
-        height: 200px;
-        background-color: white;
-        text-align: left;
-        overflow: auto;
-    }
-
-    .lista{
-
-        cursor: pointer;
-        -moz-user-select: none; 
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        color: black;
-        margin-left: 5px;
-    }
-
-    .lista:hover{
-
-        background-color: #315BB2;
-        color: white;
-    }
-
-</style>
+<!-- Chosen -->
+<link rel="stylesheet" type="text/css" href="<?=URL?>public/css/chosen/chosen.css">
+<script src="<?=URL?>public/js/chosen/chosen.jquery.js"></script>
+<script src="<?=URL?>public/js/chosen/chosen.proto.js"></script>
+<!-- Chosen -->
 
 <div class="table-section">
 
@@ -48,14 +24,14 @@
 
         <label>
             
-            <button class="btn btn-primary btn-sm" id="btnNvaCot">+ Nueva Cotizacion</button>
+            <button class="btn btn-primary btn-sm" id="btnNvaCot" data-toggle="modal" data-target="#modalClientes">+ Nueva Cotizacion</button>
             <input type="text" style="width: 110px;" id="txtSearchODT" onkeyup="buscarODT()" name="txtSearchODT" placeholder="Buscar ODT">
         </label>
         <label>
 
             <div class="gj-margin-top-10">
 
-                <input id="datepicker" width="155" onchange="buscarFecha()" placeholder="YYYY/MM/DD" />
+                <input id="datepicker" style="width: 150px;" onchange="buscarFecha()" placeholder="YYYY/MM/DD" />
             </div>
         </label>
 
@@ -96,7 +72,7 @@
                             <td ><?= $row['num_odt'];?></td>
                             <td ><?= $row['nombre_caja'];?></td>
                             <td ><?= $row['nombre_cliente'] ?></td>
-                            <td ><?= $row['cantidad'];?></td>
+                            <td ><?= $row['tiraje'];?></td>
                             <td ><?= $row['fecha_odt'];?></td>
                             <td>
 
@@ -188,58 +164,36 @@
         
     <div class="modal-dialog modal-dialog-centered" role="document">
 
-        <div class="modal-content" style="height: 400px !important">
+        <div class="modal-content" style="height: 300px !important">
 
             <div class="modal-header azulWhi">
 
                 <h5 class="modal-title" id="txtTitModCorrecto">SELECCIONA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    <span aria-hidden="true" style="color: #fff">&times;</span>
+                </button>
             </div>
     
             <div class="modal-body">
 
-
-                <div id="accordion" style="width: 90%; display: block; margin-left: auto; margin-right: auto;">
-                    
-                    <div class="card" style="border: none;">
-                        
-                        <div class="card-header" id="headingOne" style="padding: 0px; width: 100%; height: 40px; border: none; margin: 0px">
-
-                            <input class="form-group" placeholder="Ingrese un cliente" onkeyup="searchClient();" type="text" name="txtSearch" id="txtSearch" autofocus="focus" style="width: 93%; height: 100%; border: 1px gray solid; border-bottom: none; outline: none;" autofocus="" />
+                <select class="chosen-select" name="optCliente" id="optCliente" required>
+                    <option selected disabled>Elija un cliente para continuar</option>
+                    <?php
+                        foreach ($clientes as $cliente) { ?>
                             
-                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" style="height: 100%; float: right; width: 7%; background-color: rgb(0, 45, 98);" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                        </div>
-                        
-
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion" style=" margin: 0px; width: 100%;">
-                            <div class="card-body" id="divSelect2" style=" border: 1px rgb(0,0,0,0.5) solid; padding: 0px; border-top: none;">
-
-                                <script type="text/javascript">
-                                    for (var i = 0; i < nombreCliente.length; i++) {
-
-                                        var cliente = nombreCliente[i];
-                                        var appnd = '<li style="list-style:none;" class="lista" data-id="' + idCliente[i] + '" onclick="enviar('+idCliente[i]+')">' + cliente +'</li>';
-                                        $("#divSelect2").append(appnd);
-                                    }    
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+                            <option value="<?=$cliente['id_cliente']?>"><?=$cliente['nombre']?></option>
+                    <?php } ?>
+                </select>
             </div>
             <div class="modal-footer">
                 
-                <button style="display: none;" class="btn btn-success" id="btnCliente">Agregar Cliente</button>
-                <button class="btn azulWhi" data-dismiss="modal">Cerrar</button>
+                <button style="display: none; transition: background-color .6s;" class="btn btn-outline-success" id="btnCliente">+ Cliente</button>
+                <button id="btnContinuar" class="btn btn-outline-primary " onclick="enviar()" style="transition: background-color .6s; display: none;">Continuar</button>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <!-- modal error-->
 <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalError" aria-hidden="true">
@@ -268,20 +222,14 @@
 
 <script type="text/javascript">
 
-    var id;
+    $("#optCliente").chosen({width: "95%",no_results_text: "Ups! No hay resultados para."});
 
+    var id;
     function getId(id){
 
         this.id = parseInt(id);
 
         console.log(id);
-    }
-
-    function evaluar(){
-
-        var cliente = $("#optCliente option:selected").data("id");
-
-        location.href = '<?php echo URL; ?>cotizador/cajas/?cliente=' + cliente + '&tipo=caja';
     }
 
     $("#btnEliminar").click( function() {
@@ -339,9 +287,6 @@
             break;
             case"Vino":
             break;
-
-
-
         }
         
     }
@@ -410,57 +355,33 @@
         }
     }
 
-    $("#btnNvaCot").click(function(){
+    $("#btnCliente").click( function(){
 
-        $("#modalClientes").modal("show");
+        location.href = "<?= URL ?>cotizador/nuevo_cliente";
     });
 
-    function searchClient(){
+    function enviar(){
 
-        $("#collapseOne").show();
-        var texto  = $("#txtSearch").val();
-        var filtro = texto.toUpperCase();
-        var ul     = document.getElementById("divSelect2");
-        var li     = ul.getElementsByTagName("li");
-        var len    = li.length;
-        for (i = 0; i < len; i++) {
+        let id = parseInt($("#optCliente").val())
 
-            var li1 = li[i];
-            if (li1) {
+        location.href = '<?php echo URL; ?>cotizador/cajas/?cliente=' + id;
+    }
 
-                txtValue = li1.innerText;
 
-                if (txtValue.toUpperCase().indexOf(filtro) > -1) {
+    $("#optCliente").chosen().change( function(){
 
-                    $(li[i]).show();
-                } else {
+        $("#btnContinuar").show();
+    });
 
-                    $(li[i]).hide();
-                }
-            }
-        }
-        var primerValor=$("#divSelect2 li:visible:eq(0)").html();
-        console.log(primerValor);
-
-        var cont = $("#divSelect2 li:visible").length;
-
-        if( cont == 0){
+    $(document).on('keyup', '.chosen-search input', function (e) {
+        
+        let noResult = $('.chosen-results li').hasClass('no-results')
+        if ( noResult == true ){
 
             $("#btnCliente").show("normal");
         }else{
 
             $("#btnCliente").hide("normal");
         }
-    }
-
-    $("#btnCliente").click( function(){
-
-        location.href = "<?= URL ?>cotizador/nuevo_cliente";
     });
-
-    function enviar(id){
-        
-        location.href = '<?php echo URL; ?>cotizador/cajas/?cliente=' + id + '&tipo=caja';
-    }
-
 </script>

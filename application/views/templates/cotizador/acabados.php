@@ -205,10 +205,10 @@
                         <br>
                         <table class="table" style="text-align: left;">
                             <tbody>
-                                <tr>
+                                <!--<tr>
                                     <td>Largo: <input type="number" id="LargoLaser1" value="1" style="width: 70px;" min="1">cm</td>
                                     <td>Ancho: <input type="number" id="AnchoLaser1" value="1" style="width: 70px;" min="1">cm</td>
-                                </tr>
+                                </tr>-->
                                 <tr>
                                     <td colspan="2">
                                         <select  id="SelectLaserEmp" class="SelectTSM">

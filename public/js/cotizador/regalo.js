@@ -596,24 +596,22 @@ class Regalo extends Cajas{
 
 	            var nombre = "Corte Laser";
 	            var tipo   = laser[i]['tipo_grabado'];
-	            var largo  = laser[i]['largo'];
-	            var ancho  = laser[i]['ancho'];
 	            var cUnitario  = laser[i]['costo_unitario'];
 	            var total  = laser[i]['costo_tot_proceso'];
 	            var opAcb = "Corte Laser";
-	            var acb = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipo + ', Medidas: ' + largo + 'x' +  ancho + '</span></td><td class="img_delete delete"></td></tr>';
+	            var acb = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="img_delete delete"></td></tr>';
 
-	            arrPrincipal.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "LargoLaser": largo, "AnchoLaser": ancho});
+	            arrPrincipal.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo});
 
 	            $('#' + tabla).append(acb);
 
-	            var tr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ titulo +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ tipo +'</td><td>Tamaño: '+ largo + 'x' + ancho +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ cUnitario +'</td><td>$'+ total +'<input type="hidden" class="prices" value="'+ cUnitario +'"></td></tr><tr><td colspan="2"></td></tr>';
+	            var tr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ titulo +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ tipo +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ cUnitario +'</td><td>$'+ total +'<input type="hidden" class="prices" value="'+ cUnitario +'"></td></tr><tr><td colspan="2"></td></tr>';
 	            
 	            $('#table_proc_Laser').append(tr);
 
 	            $('#proceso_laser_M1').show();
 
-	            var trResumen = '<tr><td></td><td>Acabado Corte Laser</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
+	            var trResumen = '<tr><td></td><td>Acabado Corte Laser</td><td>$'+ total +'</td><td></td></tr>';
 
 	            $('#resumen'+lblaAcb).append(trResumen);
 	        }
@@ -1099,7 +1097,7 @@ class Regalo extends Cajas{
                 this.showModError("");
                 $("#txtContenido").html("(3668) Hubo un error al cotizar la caja.");
                 this.appndMsgError(error);
-            }catch {
+            }catch(ex) {
             	console.log(response);
             	console.log(e);
                 this.showModError("");
@@ -1380,7 +1378,6 @@ class Regalo extends Cajas{
 //Boton Calcular
 $("#btnCalcularC").click( function() {
 
-	var formData          = $("#dataForm").serializeArray();
     caja.calculateCotizacion();
 });
 

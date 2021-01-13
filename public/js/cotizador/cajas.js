@@ -422,8 +422,6 @@ class Cajas {
 
                 var tipo   = $("#SelectLaserEmp option:selected").text();
                 var idTipo = $("#SelectHSEmp option:selected").data('id');
-                var largo  = parseInt(document.getElementById('LargoLaser1').value,10);
-                var ancho  = parseInt(document.getElementById('AnchoLaser1').value,10);
                 var nulo1  = document.getElementById('SelectLaserEmp').value;
 
                 if (nulo1 == 'selected')  {
@@ -436,7 +434,7 @@ class Cajas {
 
                     var tr = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipo + ', Medidas: ' + largo + 'x' +  ancho + '</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
-                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "LargoLaser": largo, "AnchoLaser": ancho});
+                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo});
 
                     $('#acabados').modal('hide');
 
@@ -671,7 +669,7 @@ class Cajas {
             </div>`;
 
         $("#divDerecho").append(divSeccion);
-        jQuery214(".chosen").chosen();
+        $(".chosen").chosen({width: "100%",no_results_text: "Ups! No hay resultados para."});
     }
 
     divSeccionesA(titulo, idOpt, seccion, imagen,activa, idPapel){
@@ -726,7 +724,7 @@ class Cajas {
 
         $("#divDerecho").append(divSeccion);
         $("#" + idOpt + " option[value='" + idPapel +"']").prop("selected",true);
-        jQuery214(".chosen").chosen();
+        $(".chosen").chosen({width: "100%",no_results_text: "Ups! No hay resultados para."});
     }
 
     appendResumen(tableresumen){

@@ -9,6 +9,12 @@
 <link rel="stylesheet" href="<?= URL; ?>public/css/cotizador.css">
 <link rel="stylesheet" type="text/css" href="<?=URL?>public/css/style.css">
 
+
+<!-- Chosen -->
+<link rel="stylesheet" type="text/css" href="<?=URL?>public/css/chosen/chosen.css">
+<script src="<?=URL?>public/js/chosen/chosen.jquery.js"></script>
+<script src="<?=URL?>public/js/chosen/chosen.proto.js"></script>
+<!-- Chosen -->
 <style type="text/css">
     
     #modLoading{

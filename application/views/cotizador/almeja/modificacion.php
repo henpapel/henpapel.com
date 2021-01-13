@@ -1252,10 +1252,10 @@
                     <br>
                     <table class="table" style="text-align: left;">
                         <tbody>
-                            <tr>
+                            <!--<tr>
                                 <td>Largo: <input type="number" id="LargoLaser1" value="1" style="width: 70px;" min="1">cm</td>
                                 <td>Ancho: <input type="number" id="AnchoLaser1" value="1" style="width: 70px;" min="1">cm</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td colspan="2">
                                     <select  id="SelectLaserEmp" class="SelectTSM">
@@ -2603,20 +2603,18 @@ if ($aJson) { ?>
                         var LargoLaser_s = arrAcb[i]['Largo'];
                         var AnchoLaser_s = arrAcb[i]['Ancho'];
                         var tipoLaser    = arrAcb[i]['tipo_grabado'];
-                        var LargoLaser   = parseInt(LargoLaser_s, 10);
-                        var AnchoLaser   = parseInt(AnchoLaser_s, 10);
                         var idtipoLaser  = 1;
                         var costo        = parseFloat(arrAcb[i]['costo_unitario']);
                         var costoT       = parseFloat(arrAcb[i]['costo_tot_proceso']);
-                        var acb = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'<input type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + ', Medidas: ' + LargoLaser + 'x' +  AnchoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input type="hidden" value="' + idtipoLaser + '"></td><td class="LargoLaser" style="display: none;">' + LargoLaser + '<input type="hidden" value="' + LargoLaser + '"></td><td class="AnchoLaser" style="display: none;">' + AnchoLaser + '<input type="hidden" value="' + AnchoLaser + '"></td><td class="' + tabla + ' img_delete"></td></tr>';
+                        var acb = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'<input type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input type="hidden" value="' + idtipoLaser + '"></td><td class="' + tabla + ' img_delete"></td></tr>';
 
-                        arrAcbO.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
+                        arrAcbO.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
                         $('#' + tablaO).modal('hide');
                         $('#' + tabla).append(acb);
                         parteresumen = '<tr><td></td><td>Acabado Corte Laser</td><td>$'+ costo +'<input type="hidden" class="pricesresumenempalme" value="'+ costo +'"></td><td></td></tr>';
                         $('#' + tablaR).append(parteresumen);
 
-                        var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ seccion +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ tipoLaser +'</td><td>Tamaño: '+ LargoLaser + 'x' + AnchoLaser +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ costo +'</td><td>$'+ costoT +'<input type="hidden" class="prices" value="'+ costo +'"></td></tr><tr><td colspan="2"></td></tr>';
+                        var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ seccion +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ tipoLaser +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ costo +'</td><td>$'+ costoT +'<input type="hidden" class="prices" value="'+ costo +'"></td></tr><tr><td colspan="2"></td></tr>';
 
                             $('#table_proc_Laser').append(acabadoTr);
 
@@ -2934,130 +2932,8 @@ if ($aJson) { ?>
 
 <script>
 
-    /* variables globales */
-    /*var descuento = 0;
-    var model;
-    var costo_papel;
-    var costo_carton;
-    var costo_final;
-    var ancho_almeja;
-    var alto_almeja;
-    var grosor_cajon_almeja;
-    var grosor_cartera_almeja;
-    var t_cortes;
-
-
-    var ancho_cartera;
-    var largo_cartera;
-    var a_forro_ext_cartera;
-    var l_forro_ext_cartera;
-    var a_forro_int_cartera;
-    var l_forro_int_cartera;
-    var l_forro_ext_cajon;
-    var a_forro_ext_cajon;
-
-
-    var largo_cajon;
-    var ancho_cajon;
-    var precio_forros;
-
-
-    var costos_papeles = {guarda_cajon:0, forro_cajon:0, forro_cartera:0, guarda:0, cajon:0, cartera:0}
-
-    var ancho_lados;
-    var largo_lados;
-    var ancho_frentes;
-    var largo_frentes;
-    var ancho_tapas;
-    var largo_tapas;
-    var d1;
-    var d2;
-    var d_inicial                    = '';
-    var valida_impresiones           = 0;
-
-
-    var forro_cajon_offset           = true;
-    var forro_cajon_digital          = true;
-    var forro_guarda_cajon_offset    = true;
-    var forro_guarda_cajon_digital   = true;
-    var forro_cartera_offset         = true;
-    var forro_cartera_digital        = true;
-    var forro_guarda_cartera_offset  = true;
-    var forro_guarda_cartera_digital = true;
-
-    var cantidad_minima_offset      = 0;
-    var cantidad_minima_digital     = 0;
-    var cantidad_minima_serigrafia  = 0;
-    var cantidad_minima_hotstamping = 0;
-    var cantidad_minima_laminado    = 0;
-    var cantidad_minima_barniz      = 0;
-    var cantidad_minima_suaje       = 0;
-    var cantidad_minima_forrado     = 0;
-    var cantidad_minima_grabado     = 0;
-
-    var parte_texto         = "";
-    var cantidad_print      = 0;
-    var papel               = "";
-    var costo_final_print   = 0;
-    var p_largo             = 0;
-    var p_ancho             = 0;
-    var corte_largo         = 0;
-    var corte_ancho         = 0;
-    var cortes_final        = 0;
-    var total_Pliegos_print = 0;
-    var total_costo_print   = 0;*/
-
-
-    // variable del boton de impresiones (modal)
-    var ImpOffset = "";
-
-    var aCalculos = {};
-    var aCortes   = {};
-    var aTr3      = [];
-
-    /*var j = 0;
-    var data_offset;
-    var data_digital;
-    var data_laminado;
-    var row_listimpresiones;
-    var row_listimpresionesfcajon;
-    var row_listimpresionesfcartera;
-    var row_listimpresionesguarda;*/
-
-
-    /*
-     * variables globales de merma
-    */
-    /*var cantidad_minima;
-    var c_4colores;
-    var por_cada_x;
-    var adicional_4colores;
-    var qty_adic;
-    var adic;
-    var merma_exc;
-
-    var cantidad;
-    var adicional;
-
-    var merma_offset           = 0;
-    var merma_offset_adic      = 0;
-    var merma_digital          = 0;
-    var merma_digital_adic     = 0;
-    var merma_serigrafia       = 0;
-    var merma_serigrafia_adic  = 0;
-    var merma_HotStamping      = 0;
-    var merma_HotStamping_adic = 0;
-    var merma_Laminado         = 0;
-    var merma_Laminado_adic    = 0;
-    var merma_Barniz           = 0;
-    var merma_Barniz_adic      = 0;
-    var merma_Suaje            = 0;
-    var merma_Suaje_adic       = 0;
-    var merma_Forrado          = 0;
-    var merma_Forrado_adic     = 0;
-    var merma_Grabado          = 0;
-    var merma_Grabado_adic     = 0;*/
-
+    var descuento = 0;
+    
     jQuery214(".chosen").chosen();
 
 
@@ -6259,10 +6135,6 @@ if ($aJson) { ?>
         //para laser
         var tipoLaser   = $("#SelectLaserEmp option:selected").text();
         var idtipoLaser = $("#SelectHSEmp option:selected").data('id');
-        var LargoLaser_s  = document.getElementById('LargoLaser1').value;
-
-        var AnchoLaser_s  = document.getElementById('AnchoLaser1').value;
-
 
         //para barnizuv
         var tipoBarnizUV   = $("#SelectBarnizUVEmp option:selected").text();
@@ -6397,9 +6269,7 @@ if ($aJson) { ?>
 
                 document.getElementById('alerterror').innerHTML = "";
 
-                var LargoLaser = parseInt(LargoLaser_s, 10);
-                var AnchoLaser = parseInt(AnchoLaser_s, 10);
-                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + ', Medidas: ' + LargoLaser + 'x' +  AnchoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="LargoLaser" style="display: none;">' + LargoLaser + '<input id="LargoLaser" name="LargoLaser" type="hidden" value="' + LargoLaser + '"></td><td class="AnchoLaser" style="display: none;">' + AnchoLaser + '<input id="AnchoLaser" name="AnchoLaser" type="hidden" value="' + AnchoLaser + '"></td><td class="' + tabla + ' img_delete"></td></tr>';
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="' + tabla + ' img_delete"></td></tr>';
 
                 arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
 

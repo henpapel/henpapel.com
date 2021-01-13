@@ -216,7 +216,6 @@
         { titulo: 'Empalme Tapa', img: baseImg+'regalo.png', option: 'optET', siglas: 'ET', aAcb: [], aImp: [], 'siglasP': 'EmpTap' },
         { titulo: 'Forro Tapa', img: baseImg+'regalo.png', option: 'optFT', siglas: 'FT', aAcb: [], aImp: [], 'siglasP': 'FTap' },
         /*{ titulo: 'Prueba', img: baseImg+'regalo.png', option: 'optP', siglas: 'P', aAcb: [], aImp: [], 'siglasP': 'pt' },*/
-        
     ];
 
     let caja = new Regalo( {secciones: seccion, papeles: option, url: "<?=URL?>"} );

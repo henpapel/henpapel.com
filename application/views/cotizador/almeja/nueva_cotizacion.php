@@ -1619,10 +1619,10 @@
                     <br>
                     <table class="table" style="text-align: left;">
                         <tbody>
-                            <tr>
+                            <!--<tr>
                                 <td>Largo: <input type="number" id="LargoLaser1" value="1" style="width: 70px;" min="1">cm</td>
                                 <td>Ancho: <input type="number" id="AnchoLaser1" value="1" style="width: 70px;" min="1">cm</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td colspan="2">
                                     <select  id="SelectLaserEmp" class="SelectTSM">
@@ -1850,10 +1850,10 @@
                     <br>
                     <table class="table" style="text-align: left;">
                         <tbody>
-                            <tr>
+                            <!--<tr>
                                 <td>Largo: <input type="number" id="LargoLaser_fcajon" value="1" style="width: 70px;" min="1">cm</td>
                                 <td>Ancho: <input type="number" id="AnchoLaser_fcajon" value="1" style="width: 70px;" min="1">cm</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td colspan="2">
                                     <select  id="SelectLaserFcajon" class="SelectTSM">
@@ -2080,10 +2080,10 @@
                     <br>
                     <table class="table" style="text-align: left;">
                         <tbody>
-                            <tr>
+                            <!--<tr>
                                 <td>Largo: <input type="number" id="LargoLaser_fcartera" value="1" style="width: 70px;" min="1">cm</td>
                                 <td>Ancho: <input type="number" id="AnchoLaser_fcartera" value="1" style="width: 70px;" min="1">cm</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td colspan="2">
                                     <select  id="SelectLaserFcartera" class="SelectTSM">
@@ -2311,10 +2311,10 @@
                     <br>
                     <table class="table" style="text-align: left;">
                         <tbody>
-                            <tr>
+                            <!--<tr>
                                 <td>Largo: <input type="number" id="LargoLaser_guarda" name="LargoLaser_guarda" value="1" style="width: 70px;" min="1">cm</td>
                                 <td>Ancho: <input type="number" id="AnchoLaser_guarda" name="AnchoLaser_guarda" value="1" style="width: 70px;" min="1">cm</td>
-                            </tr>
+                            </tr>-->
                             <tr>
                                 <td colspan="2">
                                     <select  id="SelectLaserGuarda" class="SelectTSM">
@@ -5391,8 +5391,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
                             if (c === 'Laser' || c === 'LaserFcaj' || c === 'LaserFcar' || c === 'LaserG') {
 
                                 var js_tipoGrabadoLaser = js_respuesta[c][a]['tipo_grabado'];
-                                var js_LargoLaser       = js_respuesta[c][a]['Largo'];
-                                var js_AnchoLaser       = js_respuesta[c][a]['Ancho'];
 
                                 var js_costo_unitario_Laser_emp = js_respuesta[c][a]['costo_unitario'];
 
@@ -5412,7 +5410,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                                 } else {
 
-                                    var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoLaser +'</td><td>Tamaño: '+ js_LargoLaser + 'x' + js_AnchoLaser +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ js_costo_unitario_Laser_emp +'</td><td>$'+ js_costo_Laser_emp +'<input type="hidden" class="prices" value="'+ js_costo_unitario_Laser_emp +'"></td></tr><tr><td colspan="2"></td></tr>';
+                                    var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoLaser +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ js_costo_unitario_Laser_emp +'</td><td>$'+ js_costo_Laser_emp +'<input type="hidden" class="prices" value="'+ js_costo_unitario_Laser_emp +'"></td></tr><tr><td colspan="2"></td></tr>';
                                     //pendienteeeeeeeeee eliminar o vaciar la tabla para uv y laser
                                     jQuery214('#table_proc_Laser').append(acabadoTr);
 
@@ -7443,9 +7441,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para laser
         var tipoLaser   = $("#SelectLaserEmp option:selected").text();
         var idtipoLaser = $("#SelectHSEmp option:selected").data('id');
-        var LargoLaser_s  = document.getElementById('LargoLaser1').value;
-        var AnchoLaser_s  = document.getElementById('AnchoLaser1').value;
-
 
         //para barnizuv
         var tipoBarnizUV   = $("#SelectBarnizUVEmp option:selected").text();
@@ -7581,10 +7576,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror').innerHTML = "";
 
-                var LargoLaser = parseInt(LargoLaser_s, 10);
-                var AnchoLaser = parseInt(AnchoLaser_s, 10);
-
-                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + ', Medidas: ' + LargoLaser + 'x' +  AnchoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="LargoLaser" style="display: none;">' + LargoLaser + '<input id="LargoLaser" name="LargoLaser" type="hidden" value="' + LargoLaser + '"></td><td class="AnchoLaser" style="display: none;">' + AnchoLaser + '<input id="AnchoLaser" name="AnchoLaser" type="hidden" value="' + AnchoLaser + '"></td><td class="listacabadosemp img_delete"></td></tr>';
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosemp img_delete"></td></tr>';
 
                 aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
 
@@ -7702,9 +7694,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para laser
         var tipoLaser   = $("#SelectLaserFcajon option:selected").text();
         var idtipoLaser = $("#SelectHSFcajon option:selected").data('id');
-        var LargoLaser  = document.getElementById('LargoLaser_fcajon').value;
-        var AnchoLaser  = document.getElementById('AnchoLaser_fcajon').value;
-
 
         var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
@@ -7869,10 +7858,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror').innerHTML = "";
 
-                var LargoLaser = parseInt(LargoLaser, 10);
-                var AnchoLaser = parseInt(AnchoLaser, 10);
-
-                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + ', Medidas: ' + LargoLaser + 'x' +  AnchoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="LargoLaser" style="display: none;">' + LargoLaser + '<input id="LargoLaser" name="LargoLaser" type="hidden" value="' + LargoLaser + '"></td><td class="AnchoLaser" style="display: none;">' + AnchoLaser + '<input id="AnchoLaser" name="AnchoLaser" type="hidden" value="' + AnchoLaser + '"></td><td class="listacabadosfcajon img_delete"></td></tr>';
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosfcajon img_delete"></td></tr>';
 
                 aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
 
@@ -7926,8 +7912,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para laser
         var tipoLaser   = $("#SelectLaserFcartera option:selected").text();
         var idtipoLaser = $("#SelectHSFcartera option:selected").data('id');
-        var LargoLaser  = document.getElementById('LargoLaser_fcartera').value;
-        var AnchoLaser  = document.getElementById('AnchoLaser_fcartera').value;
 
         var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
@@ -8094,10 +8078,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror').innerHTML = "";
 
-                var LargoLaser = parseInt(LargoLaser, 10);
-                var AnchoLaser = parseInt(AnchoLaser, 10);
-
-                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + ', Medidas: ' + LargoLaser + 'x' +  AnchoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="LargoLaser" style="display: none;">' + LargoLaser + '<input id="LargoLaser" name="LargoLaser" type="hidden" value="' + LargoLaser + '"></td><td class="AnchoLaser" style="display: none;">' + AnchoLaser + '<input id="AnchoLaser" name="AnchoLaser" type="hidden" value="' + AnchoLaser + '"></td><td class="listacabadosfcartera img_delete"></td></tr>';
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosfcartera img_delete"></td></tr>';
 
                 aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
 
@@ -8151,8 +8132,6 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para laser
         var tipoLaser   = $("#SelectLaserGuarda option:selected").text();
         var idtipoLaser = $("#SelectHSGuarda option:selected").data('id');
-        var LargoLaser  = document.getElementById('LargoLaser_guarda').value;
-        var AnchoLaser  = document.getElementById('AnchoLaser_guarda').value;
 
         var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 
@@ -8316,10 +8295,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror').innerHTML = "";
 
-                var LargoLaser = parseInt(LargoLaser, 10);
-                var AnchoLaser = parseInt(AnchoLaser, 10);
-
-                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + ', Medidas: ' + LargoLaser + 'x' +  AnchoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="LargoLaser" style="display: none;">' + LargoLaser + '<input id="LargoLaser" name="LargoLaser" type="hidden" value="' + LargoLaser + '"></td><td class="AnchoLaser" style="display: none;">' + AnchoLaser + '<input id="AnchoLaser" name="AnchoLaser" type="hidden" value="' + AnchoLaser + '"></td><td class="listacabadosguarda img_delete"></td></tr>';
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosguarda img_delete"></td></tr>';
 
                 aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
 
