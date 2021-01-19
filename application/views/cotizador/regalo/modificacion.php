@@ -45,7 +45,7 @@
 
     <!-- formulario de la caja circular -->
     <div id="divContentI" class="form-content medidas" style="height: 50%; width: 100%; overflow: auto;">
-        <div style="min-width: 100px; width: 92%;">
+        <div style="min-width: 120px; width: 92%;">
 
             <input type="hidden" name="modelo" id="modelo" value="<?=$id_modelo?>">
             <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
@@ -55,7 +55,7 @@
                 <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ODT: </label>
                 <div class="col-sm-8">
                     
-                    <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="ODT" tabindex="1" value="<?= $aJson['num_odt']?>">
+                    <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="ODT" tabindex="1" onkeyup="caja.desactivarBtn()" value="<?= $aJson['num_odt']?>">
                 </div>
             </div>
             <!--Base-->
@@ -64,7 +64,7 @@
                 <label for="base" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Base: </label>
                 <div class="col-sm-8">
                     
-                    <input type="number" class="form-control form-control-sm" name="base" id="base" placeholder="cm" tabindex="2" value="<?= $aJson['base']?>" min="1">
+                    <input type="number" class="form-control form-control-sm" name="base" id="base" placeholder="cm" tabindex="2" onkeyup="caja.desactivarBtn()" value="<?= $aJson['base']?>" min="1">
                 </div>
             </div>
             <!--Alto-->
@@ -73,7 +73,7 @@
                 <label for="alto" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Alto: </label>
                 <div class="col-sm-8">
                     
-                    <input type="number" class="form-control form-control-sm" name="alto" id="alto" placeholder="cm" tabindex="3" value="<?= $aJson['alto']?>" min="1">
+                    <input type="number" class="form-control form-control-sm" name="alto" id="alto" placeholder="cm" tabindex="3" onkeyup="caja.desactivarBtn()" value="<?= $aJson['alto']?>" min="1">
                 </div>
             </div>
             <!--Prof Cajon-->
@@ -82,7 +82,7 @@
                 <label for="profundidad_cajon" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Prof Cajón: </label>
                 <div class="col-sm-8">
                     
-                    <input type="number" class="form-control form-control-sm" name="profundidad_cajon" id="profundidad_cajon" placeholder="cm" tabindex="4" value="<?= $aJson['profundidad_cajon']?>" min="1">
+                    <input type="number" class="form-control form-control-sm" name="profundidad_cajon" id="profundidad_cajon" placeholder="cm" tabindex="4" onkeyup="caja.desactivarBtn()" value="<?= $aJson['profundidad_cajon']?>" min="1">
                 </div>
             </div>
             <!--Prof Tapa-->
@@ -91,7 +91,7 @@
                 <label for="profundidad_tapa" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Prof Tapa: </label>
                 <div class="col-sm-8">
                     
-                    <input type="number" class="form-control form-control-sm" name="profundidad_tapa" id="profundidad_tapa" placeholder="cm" tabindex="5" value="<?= $aJson['profundidad_tapa']?>" min="1">
+                    <input type="number" class="form-control form-control-sm" name="profundidad_tapa" id="profundidad_tapa" placeholder="cm" tabindex="5" onkeyup="caja.desactivarBtn()" value="<?= $aJson['profundidad_tapa']?>" min="1">
                 </div>
             </div>
             <!--G Cajon-->
@@ -100,7 +100,7 @@
                 <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Grosor Cajón: </label>
                 <div class="col-sm-8">
                     
-                    <select class="custom-select custom-select-sm" name="grosor_carton" id="grosor_carton" tabindex="6" required>
+                    <select class="custom-select custom-select-sm" name="grosor_carton" id="grosor_carton" tabindex="6" required onchange="caja.desactivarBtn();">
                         
                         <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
                         <?php
@@ -125,7 +125,7 @@
                 <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Grosor Tapa: </label>
                 <div class="col-sm-8">
                     
-                    <select class="custom-select custom-select-sm"name="grosor_tapa" id="grosor_tapa" tabindex="7" required>
+                    <select class="custom-select custom-select-sm"name="grosor_tapa" id="grosor_tapa" tabindex="7" required onchange="caja.desactivarBtn();">
                         
                         <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
                         <?php
@@ -150,7 +150,7 @@
                 <label for="qty" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Cantidad: </label>
                 <div class="col-sm-8">
                     
-                    <input type="number" class="form-control form-control-sm" name="qty" id="qty" placeholder="Cantidad" tabindex="8" value="<?= $aJson['tiraje']?>" min="1">
+                    <input type="number" class="form-control form-control-sm" name="qty" id="qty" placeholder="Cantidad" tabindex="8" value="<?= $aJson['tiraje']?>" min="1" onkeyup="caja.desactivarBtn();">
                 </div>
             </div>
         </div>
@@ -247,4 +247,5 @@
         // sus argumentos son: grabar, modificar
         caja.saveCotizacion("NO",'SI');
     });
+    $("#btnActG").html("MODIFICAR");
 </script>

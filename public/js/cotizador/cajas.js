@@ -198,6 +198,7 @@ class Cajas {
             if( sec['siglas'].indexOf(nva) == 0 ){
 
                 caja.saveBtnImpresiones(sec['aImp'],"listImp"+sec['siglas']);
+                caja.desactivarBtn();
                 return true;
             }
         });
@@ -212,6 +213,7 @@ class Cajas {
 	    	if( sec['siglas'].indexOf(nva) == 0 ){
 	    			
 	    		caja.saveBtnAcabados(sec['aAcb'],"listAcb"+sec['siglas']);
+                caja.desactivarBtn();
 	    		return true;
 	    	}
 	    });
@@ -223,7 +225,7 @@ class Cajas {
         var opImp    = $("#miSelect option:selected").text();
         var precio   = $("#miSelect option:selected").data('precio'); //precio unitario
         var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Atencion!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-        var imgInfo = '<img style="width: 20px; height: 20px;" src="'+ this._url +'public/img/info-warning-icon.png" />'
+
         if (opImp == 'Offset') {
 
             var tipo   = $("#SelectImpTipoOff option:selected").text();
@@ -240,7 +242,7 @@ class Cajas {
 
                 document.getElementById('alerterrorimp').innerHTML = "";
 
-                var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="' + tabla +' img_delete delete"></td></tr>';
+                var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="' + tabla +' img_delete delete"></td></tr>';
                 
                 arrpapeles.push({"Tipo_impresion": opImp, "tintas": tintas, "tipo_offset": tipo});
 
@@ -255,7 +257,7 @@ class Cajas {
         if (opImp == 'Digital') {
 
             var tipo   = $("#SelectImpDigital option:selected").text();
-            var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Se agregó una impresión digital</span></td><td class="' + tabla +' img_delete delete"></td></tr>';
+            var imp  = '<tr><td class="textImp">' + opImp + '</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Se agregó una impresión digital</span></td><td class="' + tabla +' img_delete delete"></td></tr>';
             arrpapeles.push({"Tipo_impresion": opImp});
 
             $('#Impresiones').modal('hide');
@@ -280,7 +282,7 @@ class Cajas {
 
                 document.getElementById('alerterrorimp').innerHTML = "";
 
-                var imp  = '<tr><td class="textImp">' + opImp +'</td></td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="' + tabla +' img_delete delete"></td></tr>';
+                var imp  = '<tr><td class="textImp">' + opImp +'</td></td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="' + tabla +' img_delete delete"></td></tr>';
 
                 arrpapeles.push({"Tipo_impresion": opImp,  "tintas": tintas, "tipo_offset": tipo});
 
@@ -300,7 +302,7 @@ class Cajas {
         var opAcb    = $("#SelectAcEmp option:selected").text();
 
         var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Atencion!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-        var imgInfo = '<img style="width: 20px; height: 20px;" src="'+ this._url +'public/img/info-warning-icon.png" />'
+
         switch(opAcb){
 
             case "Laminado":
@@ -317,7 +319,7 @@ class Cajas {
 
                     document.getElementById('alerterror').innerHTML = "";
 
-                    var tr  = '<tr><td style="text-align: left;" class="textAcbEmp">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                    var tr  = '<tr><td style="text-align: left;" class="textAcbEmp">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                     arrPapeles.push({"Tipo_acabado": opAcb, "tipo": tipo});
 
@@ -348,7 +350,7 @@ class Cajas {
 
                     document.getElementById('alerterror').innerHTML = "";
 
-                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Color: '+ color +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Color: '+ color +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                     arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "ColorHS": color, "LargoHS": largo, "AnchoHS": ancho});
 
@@ -378,7 +380,7 @@ class Cajas {
 
                     document.getElementById('alerterror').innerHTML = "";
 
-                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +', Ubicacion: '+ ubicacion +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +', Ubicacion: '+ ubicacion +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                     arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho, "ubicacion": ubicacion});
 
@@ -406,7 +408,7 @@ class Cajas {
 
                     document.getElementById('alerterror').innerHTML = "";
 
-                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                    var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                     arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "LargoSuaje": largo, "AnchoSuaje": ancho});
 
@@ -432,7 +434,7 @@ class Cajas {
 
                     document.getElementById('alerterror').innerHTML = "";
 
-                    var tr = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                    var tr = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                     arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo});
 
@@ -462,12 +464,12 @@ class Cajas {
 
                     if(tipo == "Registro Mate" || tipo == "Registro Brillante") {
 
-                        var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: ' +  tipo + ', Medidas: ' + largo + 'x' + ancho +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                        var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: ' +  tipo + ', Medidas: ' + largo + 'x' + ancho +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                         arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho});
                     } else {
 
-                        var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: ' +  tipo + '</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                        var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: ' +  tipo + '</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                         arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "Largo": null, "Ancho": null});
                     }
@@ -494,7 +496,7 @@ class Cajas {
 
                     document.getElementById('alerterror').innerHTML = "";
 
-                    var acb  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipoEspeciales +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
+                    var acb  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ tipoEspeciales +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
                     $('#acabados').modal('hide');
 
@@ -508,6 +510,7 @@ class Cajas {
 
 	delBtnSec(tabla,index){
 
+        this.desactivarBtn();
 		var impAcb = tabla.slice('4','7');
 		var seccion = tabla.slice('7','9');
 
@@ -523,16 +526,19 @@ class Cajas {
 
     delBtnAcc(index){
 
+        this.desactivarBtn();
         this._accesorios.splice(index,1);
     }
 
     delBtnBan(index){
 
+        this.desactivarBtn();
         this._bancos.splice(index,1);
     }
 
     delBtnCie(index){
 
+        this.desactivarBtn();
         this._cierres.splice(index,1);
     }
 
@@ -615,6 +621,7 @@ class Cajas {
         var direccion = this._url + url;
         $("#dataForm").prop("action","");
         $("#dataForm").prop("action", direccion);
+        this.imgInfo= `<img style="width: 20px; height: 20px;" src="${this._url}public/img/info-warning-icon.png" />`;
     }
 
     divSecciones(titulo, idOpt, seccion, imagen, activa){
@@ -797,7 +804,6 @@ class Cajas {
 
         if( cierres !== undefined && cierres !== null ){
 
-            var imgInfo = '<img style="width: 20px; height: 20px;" src="'+ this._url +'public/img/info-warning-icon.png" />'
             for (var i = 0; i < cierres.length; i++) {
 
                 var tr ="";
@@ -808,7 +814,7 @@ class Cajas {
 
                         var numpares = cierres[i]['numpares'];
 
-                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td class="img_delete delCie"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td class="img_delete delCie"></td></tr>';
                         this._cierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
                     break;
                     case "Liston":
@@ -817,13 +823,13 @@ class Cajas {
                         var AnchListon = cierres[i]['ancho'];
                         var tipoListon = cierres[i]['tipo'];
                         var colorListon = cierres[i]['color'];
-                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td class="img_delete delCie"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td class="img_delete delCie"></td></tr>';
                         this._cierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon});
 
                     break;
                     case "Marialuisa":
 
-                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="img_delete delCie"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="img_delete delCie"></td></tr>';
                         this._cierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
 
                     break;
@@ -832,14 +838,14 @@ class Cajas {
                         var LarSuajCal = cierres[i]['largo'];
                         var AnchSuajCal = cierres[i]['ancho'];
                         var tipoSuajCal = cierres[i]['tipo'];
-                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td class="img_delete delCie"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td class="img_delete delCie"></td></tr>';
                         this._cierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null});
 
                     break;
                     case "Velcro":
 
                         var numpares = cierres[i]['numpares'];
-                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td class="img_delete delCie"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td class="img_delete delCie"></td></tr>';
                         this._cierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
 
                     break;
@@ -853,7 +859,6 @@ class Cajas {
 
         if( accesorios !== undefined && accesorios !== null ){
 
-            var imgInfo = '<img style="width: 20px; height: 20px;" src="'+ this._url +'public/img/info-warning-icon.png" />'
             for (var i = 0; i < accesorios.length; i++) {
 
                 var tr ="";
@@ -866,15 +871,15 @@ class Cajas {
                         var ancho = accesorios[i]['Ancho'];
                         var color = accesorios[i]['Color'];
                         var precio = accesorios[i]['costo_unit_accesorio'];
-
-                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td class="img_delete delAcc"></td></tr>';
+                        
+                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td class="img_delete delAcc"></td></tr>';
                         this._accesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
                     break;
                     case "Herraje":
 
                         var herraje = accesorios[i]['Tipo'];
                         var precio = accesorios[i]['costo_unit_accesorio'];
-                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Herraje: ' + herraje + '</span></td><td class="img_delete delAcc"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Herraje: ' + herraje + '</span></td><td class="img_delete delAcc"></td></tr>';
 
                         this._accesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
 
@@ -882,7 +887,7 @@ class Cajas {
                     case "Ojillos":
 
                         var precio = accesorios[i]['costo_unit_accesorio'];
-                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Se agrego un accesorio Ojillo.</span></td><td class="img_delete delAcc"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Se agrego un accesorio Ojillo.</span></td><td class="img_delete delAcc"></td></tr>';
 
                         this._accesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
 
@@ -893,7 +898,7 @@ class Cajas {
                         var ancho = accesorios[i]['Ancho'];
                         var color = accesorios[i]['Color'];
                         var precio = accesorios[i]['costo_unit_accesorio'];
-                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td class="img_delete delAcc"></td></tr>';
+                        tr = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td class="img_delete delAcc"></td></tr>';
 
                         this._accesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
 
@@ -908,7 +913,6 @@ class Cajas {
 
         if( bancos !== undefined && bancos !== null ){
 
-            var imgInfo = '<img style="width: 20px; height: 20px;" src="'+ this._url +'public/img/info-warning-icon.png" />'
             for (var i = 0; i < bancos.length; i++) {
 
                 var opBan = bancos[i]['Tipo_banco'];
@@ -920,14 +924,14 @@ class Cajas {
                     var AnchoMBanco = bancos[i]['ancho'];
                     var ProfundidadMBanco = bancos[i]['profundidad'];
                     var LLevaSuajeM = bancos[i]['Suaje'];
-                    tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td class="img_delete delBan"></td></tr>';
+                    tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td class="img_delete delBan"></td></tr>';
                     this._bancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM});
                 }else if( opBan === 'Cartulina Suajada' ){
 
                     var LargoMBanco = bancos[i]['largo'];
                     var AnchoMBanco = bancos[i]['ancho'];
                     var ProfundidadMBanco = bancos[i]['profundidad'];
-                    tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td class="img_delete delBan"></td></tr>';
+                    tr  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td class="img_delete delBan"></td></tr>';
                     this._bancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null});
                 }
                 $('#listbancoemp').append(tr);

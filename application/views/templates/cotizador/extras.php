@@ -1046,6 +1046,7 @@
                 
                 break;
         }
+        caja.desactivarBtn();
     });
 
     //Banco
@@ -1097,6 +1098,7 @@
 
             vacioModalBancos();
         }
+        caja.desactivarBtn();
     });
 
     //Cierres
@@ -1132,7 +1134,7 @@
 
             $('#cierres').modal('hide');
 
-            jQuery214('#listcierres').append(cie);
+            $('#listcierres').append(cie);
 
 
             //vacioModalCierres();
@@ -1149,7 +1151,7 @@
             caja.cierre = push;
             $('#cierres').modal('hide');
 
-            jQuery214('#listcierres').append(cie);
+            $('#listcierres').append(cie);
 
             //vacioModalCierres();
         }
@@ -1176,7 +1178,7 @@
 
                 $('#cierres').modal('hide');
 
-                jQuery214('#listcierres').append(cie);
+                $('#listcierres').append(cie);
 
                 //vacioModalCierres();
             }
@@ -1202,11 +1204,12 @@
                 caja.cierre = push;
                 $('#cierres').modal('hide');
 
-                jQuery214('#listcierres').append(cie);
+                $('#listcierres').append(cie);
 
                 //vacioModalCierres();
             }
         }
+        caja.desactivarBtn();
     });
 
     //boton Correcto
@@ -1217,7 +1220,7 @@
 
     jQuery214(document).on("click", "#btnDeleteDescuento", function (){
         
-        jQuery214('#DescuentoDrop').html("$0.00");
+        $('#DescuentoDrop').html("$0.00");
 
         $('#descuentos').find("input:checked").prop("checked", false);
 

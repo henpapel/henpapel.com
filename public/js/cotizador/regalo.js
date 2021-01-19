@@ -1410,6 +1410,20 @@ class Regalo extends Cajas{
 	    this.prinCie(cierres);
 	    this.prinBan(bancos);
 	    this.prinAcc(accesorios);
+
+	    $("#tdSubtotalCaja").html("$" + AGlobal['costo_subtotal']);
+        $("#UtilidadDrop").html("$" + AGlobal['Utilidad']);
+        $("#Totalplus").html("$" + AGlobal['costo_odt']);
+        $("#IVADrop").html("$" + AGlobal['iva']);
+        $("#ComisionesDrop").html("$" + AGlobal['comisiones']);
+        $("#IndirectoDrop").html("$" + AGlobal['indirecto']);
+        $("#VentasDrop").html("$" + AGlobal['ventas']);
+        $("#ISRDrop").html("$" + AGlobal['ISR']);
+        $("#DescuentoDrop").html("$" + AGlobal['descuento']);
+
+        let descuento = parseInt(AGlobal['descuento']);
+        
+        if( descuento !== 0 ) $(".d-check[value=" + descuento +"]").prop('checked',true);
 	}
 }
 
@@ -1431,4 +1445,16 @@ $("#btnCalculadora").click( function(){
 
     var ventana = window.open(caja._url +"regalo/printBoxCalculate");
     return true;
+});
+
+$(document).on('click', '.active-result', function (e) {
+        
+    caja.desactivarBtn();
+});
+$(document).on('keyup', '.chosen-container', function (e) {
+        
+    var code = (e.keyCode ? e.keyCode : e.which);
+    if(code==13){
+        desactivarBtn();
+    }
 });

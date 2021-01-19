@@ -83,7 +83,7 @@
 
                             <div class="cajas-col-input t-right">
 
-                                <input class="cajas-input medidas-input" name="odt"id="odt-1" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus required style="text-transform: uppercase;">
+                                <input class="cajas-input medidas-input" name="odt"id="odt-1" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus required style="text-transform: uppercase;" onkeyup="desactivarBtn();">
                             </div>
                         </div>
 
@@ -100,7 +100,7 @@
                                 <!--
                                 <input class="cajas-input medidas-input" name="alto" id="corte_largo" type="number" step="any" min="0.1" tabindex="2" placeholder="cm" required="">
                                 -->
-                                <input class="cajas-input medidas-input" name="base" id="corte_largo" type="number" step="any" min="0.01" tabindex="2" placeholder="cm" required>
+                                <input class="cajas-input medidas-input" name="base" id="corte_largo" type="number" step="any" min="0.01" tabindex="2" placeholder="cm" required onkeyup="desactivarBtn();">
                             </div>
                         </div>
 
@@ -114,7 +114,7 @@
 
                             <div class="cajas-col-input t-right">
 
-                                <input class="cajas-input medidas-input" name="alto" id="corte_ancho" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required>
+                                <input class="cajas-input medidas-input" name="alto" id="corte_ancho" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required onkeyup="desactivarBtn();">
                             </div>
                         </div>
 
@@ -128,7 +128,7 @@
 
                             <div class="cajas-col-input t-right">
 
-                                <input class="cajas-input medidas-input" name="profundidad" id="profundidad_1" type="number" step="any" min="0.01" placeholder="cm" tabindex="4" required="">
+                                <input class="cajas-input medidas-input" name="profundidad" id="profundidad_1" type="number" step="any" min="0.01" placeholder="cm" tabindex="4" required="" onkeyup="desactivarBtn();">
                             </div>
                         </div>
 
@@ -142,7 +142,7 @@
 
                             <div class="cajas-col-input t-right">
 
-                                <select class="cajas-input medidas-input" name="grosor-cajon" id="grosor_cajon_1" tabindex="5" required>
+                                <select class="cajas-input medidas-input" name="grosor-cajon" id="grosor_cajon_1" tabindex="5" required onchange="desactivarBtn()">
 
                                     <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
 
@@ -173,7 +173,7 @@
 
                             <div class="cajas-col-input t-right">
 
-                                <select class="cajas-input medidas-input" name="grosor-cartera" id="grosor_cartera_1" tabindex="6" required>
+                                <select class="cajas-input medidas-input" name="grosor-cartera" id="grosor_cartera_1" tabindex="6" required onchange="desactivarBtn()">
 
                                     <option data-price="40" data-ancho="90" data-largo="130" selected="" disabled="">Elige</option>
 
@@ -207,7 +207,7 @@
                                 <!--
                                 <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required onclick="PrimeroInputs()">
                                 -->
-                                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required="">
+                                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required="" onkeyup="desactivarBtn()">
                             </div>
                         </div>
                     </div>
@@ -6170,6 +6170,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImp.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
+        desactivarBtn();
     });
 
 
@@ -6213,6 +6214,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImpFCaj.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
+        desactivarBtn();
     });
 
 
@@ -6253,6 +6255,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImpFCar.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
+        desactivarBtn();
     });
 
 
@@ -6296,13 +6299,14 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aImpG.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
             }
         });
+        desactivarBtn();
     });
 
 
     jQuery214(document).on("click", ".delete", function () {
 
         $(this).closest('tr').remove();
-
+        
     });
 
 </script>
@@ -6497,6 +6501,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalImpresiones();
             }
         }
+        desactivarBtn();
     });
 
 
@@ -6608,6 +6613,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalImpresiones();
             }
         }
+        desactivarBtn();
     });
 
 
@@ -6719,6 +6725,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalImpresiones();
             }
         }
+        desactivarBtn();
     });
 
 
@@ -6830,6 +6837,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     vacioModalImpresiones();
                 }
         }
+        desactivarBtn();
     });
 </script>
 
@@ -7654,6 +7662,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
+        desactivarBtn();
     });
 
 
@@ -7873,6 +7882,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
+        desactivarBtn();
     });
 
 
@@ -8093,6 +8103,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
+        desactivarBtn();
     });
 
 
@@ -8310,6 +8321,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 vacioModalAcabados();
             }
         }
+        desactivarBtn();
     });
 
     jQuery214(document).on("click", ".listacabadosemp", function () {
@@ -8431,6 +8443,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
             }
 
         });
+        desactivarBtn();
     });
 
 
@@ -8549,6 +8562,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoLaser": Largo, "AnchoLaser": Ancho});
             }
         });
+        desactivarBtn();
     });
 
     jQuery214(document).on("click", ".listacabadosfcartera", function () {
@@ -8667,6 +8681,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoLaser": Largo, "AnchoLaser": Ancho});
             }
         });
+        desactivarBtn();
     });
 
     jQuery214(document).on("click", ".listacabadosguarda", function () {
@@ -8784,6 +8799,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoLaser": Largo, "AnchoLaser": Ancho});
             }
         });
+        desactivarBtn();
     });
 </script>
 
@@ -8869,6 +8885,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
             }
         });
+        desactivarBtn();
     });
 </script>
 
@@ -8954,6 +8971,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": null});
             }
         });
+        desactivarBtn();
     });
 </script>
 
@@ -9007,6 +9025,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     break;
             }
         });
+        desactivarBtn();
     });
 </script>
 
@@ -9076,6 +9095,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
             vacioModalBancos();
         }
+        desactivarBtn();
     });
 
 
@@ -9231,6 +9251,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 //vacioModalCierres();
             }
         }
+        desactivarBtn();
     });
 
 
@@ -9357,7 +9378,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 break;
         }
-
+        desactivarBtn();
     });
 
 
@@ -9467,5 +9488,18 @@ foreach ($Porcentajes as $porcentaje) { ?>
     });
 
     $("#box-model").val("1");
+
+    $(document).on('click', '.active-result', function (e) {
+        
+        desactivarBtn();
+    });
+
+    $(document).on('keyup', '.chosen-container', function (e) {
+        
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if(code==13){
+            desactivarBtn();
+        }
+    });
 
 </script>
