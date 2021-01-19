@@ -3,9 +3,9 @@
 <script type="text/javascript">
 
     //esto es para sacar solo el arreglo dentro de la super matriz, no me deja obtener todas las variables por alguna razon ->
-    var a = [<?php echo json_encode($aJson) ?>];
+    var aJson = <?php echo json_encode($aJson) ?>;
 
-    console.log(a);
+    console.log(aJson);
 </script>
 <style type="text/css">
     
@@ -548,13 +548,15 @@
 
                     <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
-                    <button id="btnImprimir" class="btn btn-info" style="font-size: 10px; border: none;" href="<?=URL ;?>cajas/impre_cajas" target="_blank">IMPRIMIR</button>
+                    <button type="button" id="btnCalculadora" disabled="" class="btn btn-warning" style="font-size: 10px;">CALCULADORA</button>
+
+                    <button type="button" id="btnImprimir" class="btn btn-info" style="font-size: 10px;" disabled="">Imprimir</button>
                     <br>
 
                     <!--<div style="float: left; font-size: 18px; text-align: right; margin-right: 375px;">Cantidad: <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required></div>-->
 
                     <!-- Suma de la ODT(Total)  -->
-                    <div class="btn-group dropup" style="width: 100%;">
+                    <div class="btn-group dropup" style="width: 100%; max-width: 400px;">
 
                         <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
                             <label style="font-size: 25px; margin-right: 100px;">Total: </label>
@@ -5649,6 +5651,7 @@ if ($aJson) { ?>
                     jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
                     activarBtn();
+                    localStorage.setItem('js_respuesta',aJson_stringify);
             })
             .fail(function(response) {
 
@@ -6019,6 +6022,7 @@ if ($aJson) { ?>
 
         $("#btnImprimir").prop("disabled",false);
         $("#subForm").prop("disabled",false);
+        $("#btnCalculadora").prop("disabled",false);
     }
 
 
@@ -6026,6 +6030,7 @@ if ($aJson) { ?>
 
         $("#btnImprimir").prop("disabled",true);
         $("#subForm").prop("disabled",true);
+        $("#btnCalculadora").prop("disabled",true);
     }
 
     var divisionesImps="";
@@ -7371,6 +7376,18 @@ if ($aJson) { ?>
             $('#form_modelo_3').hide();
             $('#form_modelo_3_derecho').hide();
             $('#resumentodocaja').hide();
+    });
+
+    $("#btnImprimir").click( function(){
+            
+        var ventana = window.open(`<?=URL?>cotizador/imprCaja/?model=${aJson['modelo']}`, `Impresion`, `width=600, height=600`);
+        return true;
+    });
+
+    $("#btnCalculadora").click( function(){
+            
+        var ventana = window.open("<?=URL?>cotizador/printBoxCalculate");
+        return true;
     });
 
 

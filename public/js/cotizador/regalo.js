@@ -183,6 +183,7 @@ class Regalo extends Cajas{
 	    
 		var titulo = "";
 		var tabla  = "";
+		var imgInfo = '<img style="width: 20px; height: 20px;" src="'+ this._url +'public/img/info-warning-icon.png" />'
 	    this._secciones.find( function(sec){
 
 	    	if( sec['siglas'].indexOf(lblaImp) == 0 ){
@@ -215,7 +216,7 @@ class Regalo extends Cajas{
 	                id =0;
 	            }
 	            
-	            var imp  = '<tr><td class="textImp">Offset</td><td style="display: none">'+ id +'<input name="IDopImpSerEmp" style="display:none" type="hidden" value="'+ id +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
+	            var imp  = '<tr><td class="textImp">Offset</td><td style="display: none">'+ id +'<input name="IDopImpSerEmp" style="display:none" type="hidden" value="'+ id +'"></td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_impresion": "Offset", "tintas": tintas, "tipo_offset": tipo, "IDopImp": id, "idtipoOff": id});
 
@@ -248,7 +249,7 @@ class Regalo extends Cajas{
 	                var cTArr     = offsetMaquila[i]['arreglo_costo'];
 	                var total     = parseFloat(offsetMaquila[i]['costo_tot_proceso']);
 
-	                var imp  = '<tr><td class="textImp">Offset</td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
+	                var imp  = '<tr><td class="textImp">Offset</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
 
 	                arrPrincipal.push({"Tipo_impresion": "Offset", "tintas": tintas, "tipo_offset": tipo, "IDopImp": id, "idtipoOff": id});
 
@@ -285,7 +286,7 @@ class Regalo extends Cajas{
 	                id = 0;
 	            }
 
-	            var imp  = '<tr><td class="textImp">Digital</td><td class="CellWithComment" >...<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="img_delete delete"></td></tr>';
+	            var imp  = '<tr><td class="textImp">Digital</td><td class="CellWithComment" >' + imgInfo + '<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_impresion": "Digital", "tipo_digital": tipo, "idtipoDig": id});
 
@@ -332,7 +333,7 @@ class Regalo extends Cajas{
 	                id       = 0;
 	            }
 
-	            var imp  = '<tr><td class="textImp">Serigrafia</td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
+	            var imp  = '<tr><td class="textImp">Serigrafia</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Numero de Tintas: '+ tintas +', Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_impresion": "Serigrafia",  "tintas": tintas, "tipo_offset": tipo, "IDopImp": id, "idtipoSeri": id});
 	            $("#"+tabla).append(imp);
@@ -542,6 +543,7 @@ class Regalo extends Cajas{
 	    var suaje       = aAcb['Suaje'];
 	    var titulo = "";
 		var tabla  = "";
+		var imgInfo = '<img style="width: 20px; height: 20px;" src="'+ this._url +'public/img/info-warning-icon.png" />'
 	    this._secciones.find( function(sec){
 
 	    	if( sec['siglas'].indexOf(lblaAcb) == 0 ){
@@ -566,12 +568,12 @@ class Regalo extends Cajas{
 
 	            if(tipo == "Registro Mate" || tipo == "Registro Brillante") {
 
-	                var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipo + ', Medidas: ' + largo + 'x' + ancho +'</span></td><td class="img_delete delete"></td></tr>';
+	                var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: ' +  tipo + ', Medidas: ' + largo + 'x' + ancho +'</span></td><td class="img_delete delete"></td></tr>';
 
 	                arrPrincipal.push({"Tipo_acabado": nombre, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho});
 	            } else {
 
-	                var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipo + '</span></td><td class="img_delete delete"></td></tr>';
+	                var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: ' +  tipo + '</span></td><td class="img_delete delete"></td></tr>';
 
 	                arrPrincipal.push({"Tipo_acabado": nombre, "tipoGrabado": tipo, "Largo": null, "Ancho": null});
 	            }
@@ -599,7 +601,7 @@ class Regalo extends Cajas{
 	            var cUnitario  = laser[i]['costo_unitario'];
 	            var total  = laser[i]['costo_tot_proceso'];
 	            var opAcb = "Corte Laser";
-	            var acb = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="img_delete delete"></td></tr>';
+	            var acb = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: ' + tipo + '</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo});
 
@@ -634,7 +636,7 @@ class Regalo extends Cajas{
 	            var cUTir     = grabado[i]['costo_unitario'];
 	            var cTTir     = grabado[i]['costo_tiro'];
 
-	            var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +', Ubicacion: '+ ubicacion +'</span></td><td class="img_delete delete"></td></tr>';
+	            var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +', Ubicacion: '+ ubicacion +'</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_acabado": nombre, "tipoGrabado": tipo, "Largo": largo, "Ancho": ancho, "ubicacion": ubicacion});
 
@@ -671,7 +673,7 @@ class Regalo extends Cajas{
 	            var cTTir     = hotStamping[i]['costo_tiro'];
 	            var opAcb     = "HotStamping";
 
-	            var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Color: '+ color +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="img_delete delete"></td></tr>';
+	            var tr  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Color: '+ color +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo, "ColorHS": color, "LargoHS": largo, "AnchoHS": ancho});
 
@@ -700,7 +702,7 @@ class Regalo extends Cajas{
 	            var total     = laminado[i]['costo_tot_proceso'];
 	            var costo     = laminado[i]['costo_unitario'];
 
-	            var tr  = '<tr><td style="text-align: left;" class="textAcbEmp">' + nombre +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
+	            var tr  = '<tr><td style="text-align: left;" class="textAcbEmp">' + nombre +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_acabado": nombre, "tipo": tipo});
 
@@ -733,7 +735,7 @@ class Regalo extends Cajas{
 	            var cUTir     = suaje[i]['tiro_costo_unitario'];
 	            var cTTir     = suaje[i]['costo_tiro'];
 
-	            var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="img_delete delete"></td></tr>';
+	            var tr  = '<tr><td style="text-align: left;" class="textAcb">' + nombre +'</td><td class="CellWithComment">' + imgInfo + '<span class="CellComment">Tipo: '+ tipo +', Medidas: '+ largo +'x'+ ancho +'</span></td><td class="img_delete delete"></td></tr>';
 
 	            arrPrincipal.push({"Tipo_acabado": nombre, "tipoGrabado": tipo, "LargoSuaje": largo, "AnchoSuaje": ancho});
 
@@ -824,7 +826,7 @@ class Regalo extends Cajas{
 	    $('#resumen' + tabla ).append(trResumen);
 	}
 
-	//apendizacion de procesos por default. Se utiliza al cotizar una caja - ajax
+	//Apendizacion de procesos por default. Se utiliza al cotizar una caja - ajax
 	appndPD(aGlobal){
 
 	    if( aGlobal == undefined || aGlobal == null ) return false;
@@ -876,6 +878,7 @@ class Regalo extends Cajas{
 	        $("#table_adicionales_tr").append(tr);
 	}
 
+	//El nombre lo dice todo. solo sirve para la cotizacion de una caja pues despues de esta no se utiliza mas
 	postAjax(response){
         
         this.hideLoading();
@@ -1087,21 +1090,30 @@ class Regalo extends Cajas{
                 $('#resumenOtros').append(parteresumen); //imprime para el resumen
 
                 this.activarBtn();
+
+                localStorage.setItem('js_respuesta',resp);
         }catch(e) {
         	
+        	/*
+        		Intenta capturar el error del controlador.
+        		Entra aqui cuando no se pudo parsear la variable retornada del controlador,
+        		en dado caso de que no funcione entonces solo muestra un error de cotizacion de caja.
+        	*/
+
         	try{
         		
                 var error = response.split("<br />");
                 error = error[1].split("<b>").join("");
                 error = error.split("</b>").join("");
                 this.showModError("");
-                $("#txtContenido").html("(3668) Hubo un error al cotizar la caja.");
+                $("#txtContenido").html("(3668) Hubo un error en la cotizacion.");
                 this.appndMsgError(error);
             }catch(ex) {
             	console.log(response);
             	console.log(e);
+            	console.log('puede que este en modo debug');
                 this.showModError("");
-                $("#txtContenido").html("(3674) Hubo un error al cotizar la caja.");
+                $("#txtContenido").html("(1114) Hubo un error en la cotizacion.");
             } finally{
 
                 return false;    
@@ -1109,7 +1121,8 @@ class Regalo extends Cajas{
         }
 	}
 
-	checkDatosI(grabar){
+	//Checa los datos ingresados en la interfaz que se le presenta al usuario. avalando los campos y arrojando un mensaje de error.
+	checkDatosI(grabar, modificar){
 
 		var formData          = $("#dataForm").serializeArray();
 		var odt               = $("#odt").val();
@@ -1209,7 +1222,7 @@ class Regalo extends Cajas{
 	    var aAccesorios_tmp = JSON.stringify(this._accesorios, null, 4);
 
 	    var id_cliente_tmp = JSON.stringify(this._idCliente, null, 4);
-	    var modificar_odt = "NO";
+	    var modificar_odt = modificar;
 
 	    formData.push(
 	    	{name: 'id_cliente', value: id_cliente_tmp},
@@ -1225,9 +1238,10 @@ class Regalo extends Cajas{
 	    return formData;
 	}
 
+	//Calula la cotizacion
 	calculateCotizacion(){
 
-	    var formData = this.checkDatosI("NO");
+	    var formData = this.checkDatosI("NO",'NO');
 
 	    if( formData == false ){
 
@@ -1252,9 +1266,15 @@ class Regalo extends Cajas{
 	    });
 	}
 
-	saveCotizacion(modificar){
+	/*
+		hace el guardado por medio de ajax, le entregamos 2 argumentos que es guardar y actualizar
+		para el controlador pues asi esta planteado con variables.
+		grabar = SI => graba la cotizacion
+		modificar = SI => modifica la cotizacion
+	*/
+	saveCotizacion(grabar, modificar){
 
-		var formData = this.checkDatosI("SI");
+		var formData = this.checkDatosI(grabar, modificar);
 
 	    if( formData == false ){
 
@@ -1293,8 +1313,27 @@ class Regalo extends Cajas{
 	            }
 	        } catch( e ) {
 
-	            caja.showModError("");
-	            $("#txtContenido").html("(3310) Error..." + e);
+	            /*
+		    		Intenta capturar el error del controlador.
+		    		Entra aqui cuando no se pudo parsear la variable retornada del controlador,
+		    		en dado caso de que no funcione entonces solo muestra un error de cotizacion de caja.
+		    	*/
+
+		    	try{
+		    		
+		            var error = response.split("<br />");
+		            error = error[1].split("<b>").join("");
+		            error = error.split("</b>").join("");
+		            this.showModError("");
+		            $("#txtContenido").html("(1326) Hubo un error al guardar la cotizacion.");
+		            this.appndMsgError(error);
+		        }catch(ex) {
+		        	console.log(response);
+		        	console.log(e);
+		        	console.log('puede que este en modo debug');
+		            caja.showModError("");
+		            $("#txtContenido").html("(1333) Hubo un error al guardar la cotizacion.");
+		        }
 	        }
 	    })
 	    .fail(function(response) {
@@ -1305,6 +1344,7 @@ class Regalo extends Cajas{
 	    });
 	}
 
+	//Se utiliza en modificacion caja regalo. Muestra toda la cotizacion guardada
 	printCotizacion(AGlobal){
 
 		var idCarton = parseInt(AGlobal['costo_grosor_carton']['id_cajon']);
@@ -1383,6 +1423,12 @@ $("#btnCalcularC").click( function() {
 
 $("#btnImprimir").click( function(){
 
-    var ventana = window.open(url +"cotizador/imprCaja", "Impresion", "width=600, height=600");
+    var ventana = window.open(caja._url +"cotizador/imprCaja/?model=4", "Impresion", "width=600, height=600");
+    return true;
+});
+
+$("#btnCalculadora").click( function(){
+
+    var ventana = window.open(caja._url +"regalo/printBoxCalculate");
     return true;
 });

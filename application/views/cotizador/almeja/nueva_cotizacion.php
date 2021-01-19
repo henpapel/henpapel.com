@@ -532,13 +532,15 @@
 
                     <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
+                    <button type="button" id="btnCalculadora" disabled="" class="btn btn-warning" style="font-size: 10px;">CALCULADORA</button>
+
                     <button type="button" id="btnImprimir" class="btn btn-info" style="font-size: 10px;" disabled="">Imprimir</button>
                     <br>
 
                     <!--<div style="float: left; font-size: 18px; text-align: right; margin-right: 375px;">Cantidad: <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required></div>-->
 
                     <!-- Suma de la ODT(Total)  -->
-                    <div class="btn-group dropup" style="width: 100%;">
+                    <div class="btn-group dropup" style="width: 100%; max-width: 400px;">
 
                         <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;">
                             <label style="font-size: 25px; margin-right: 100px;">Total: </label>
@@ -5983,6 +5985,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                     jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
                     activarBtn();
+                
+                localStorage.setItem('js_respuesta',aJson_stringify);
             })
             .fail(function(response) {
 
@@ -7578,7 +7582,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosemp img_delete"></td></tr>';
 
-                aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
+                aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
 
                 $('#acabados').modal('hide');
 
@@ -7860,7 +7864,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosfcajon img_delete"></td></tr>';
 
-                aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
+                aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
 
                 $('#acabados_fcajon').modal('hide');
 
@@ -8080,7 +8084,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosfcartera img_delete"></td></tr>';
 
-                aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
+                aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
 
                 $('#acabados_fcartera').modal('hide');
 
@@ -8297,7 +8301,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosguarda img_delete"></td></tr>';
 
-                aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser, "LargoLaser": LargoLaser, "AnchoLaser": AnchoLaser});
+                aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
 
                 $('#acabados_guarda').modal('hide');
 
@@ -9452,9 +9456,16 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
     $("#btnImprimir").click( function(){
             
-        var ventana = window.open("<?=URL?>cotizador/imprCaja", "Impresion", "width=600, height=600");
+        var ventana = window.open("<?=URL?>cotizador/imprCaja/?model=1", "Impresion", "width=600, height=600");
         return true;
     });
+
+    $("#btnCalculadora").click( function(){
+            
+        var ventana = window.open("<?=URL?>cotizador/printBoxCalculate");
+        return true;
+    });
+
     $("#box-model").val("1");
 
 </script>

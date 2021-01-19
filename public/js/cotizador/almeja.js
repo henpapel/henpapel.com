@@ -100,6 +100,7 @@ function activarBtn() {
 
     $("#subForm").prop("disabled",false);
     $("#btnImprimir").prop("disabled",false);
+    $("#btnCalculadora").prop("disabled",false);
 }
 
 
@@ -107,6 +108,7 @@ function desactivarBtn() {
 
     $("#subForm").prop("disabled",true);
     $("#btnImprimir").prop("disabled",true);
+    $("#btnCalculadora").prop("disabled",true);
 }
 
 function vacioModalBancos() {
@@ -230,14 +232,6 @@ function vacioModalAcabados() {
     document.getElementById('opAcBarUVFcajon').style.display    = "none";
     document.getElementById('opAcBarUVFcartera').style.display  = "none";
 
-    document.getElementById('LargoLaser_guarda').value   = "1";
-    document.getElementById('AnchoLaser_guarda').value   = "1";
-    document.getElementById('LargoLaser_fcajon').value   = "1";
-    document.getElementById('AnchoLaser_fcajon').value   = "1";
-    document.getElementById('LargoLaser_fcartera').value = "1";
-    document.getElementById('AnchoLaser_fcartera').value = "1";
-    document.getElementById('LargoLaser1').value         = "1";
-    document.getElementById('AnchoLaser1').value         = "1";
 }
 function showModError(proceso) {
 

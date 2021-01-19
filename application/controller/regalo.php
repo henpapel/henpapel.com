@@ -682,6 +682,9 @@ class Regalo extends Controller {
 
         $aCalculadora = self::regaloCalc($base, $alto, $profundidad_cajon, $profundidad_tapa, $grosor_carton, $grosor_tapa);
 
+        //Funcion extra para dejar en sesion el calculo
+        
+        self::saveBoxCalculate($odt, $aCalculadora);
 
         $NombProcesos = "";
 
@@ -4507,6 +4510,77 @@ class Regalo extends Controller {
             echo json_encode($aJson);
         }
     }
-}
-
 /****************** Termina la funcion saveCaja() **********************/
+
+    public function saveBoxCalculate($odt, $calculadora) {
+
+        $_SESSION['calculadora'] = $calculadora;
+        $_SESSION['calculadora']['odt'] = $odt;
+    }
+
+    public function printBoxCalculate(){
+
+        session_start();
+
+        $login = $this->loadController('login');
+
+        if($login->isLoged()){
+
+            if (!empty($_SESSION['calculadora'])) {
+
+                $odt = (isset($_SESSION['calculadora']['odt']))? $_SESSION['calculadora']['odt']: '--';
+                
+                $g = $_SESSION['calculadora']['g'];
+                $G = $_SESSION['calculadora']['G'];
+                $b = $_SESSION['calculadora']['b'];
+                $h = $_SESSION['calculadora']['h'];
+                $p = $_SESSION['calculadora']['p'];
+                $T = $_SESSION['calculadora']['T'];
+
+                $e = $_SESSION['calculadora']['e'];
+                $E = $_SESSION['calculadora']['E'];
+
+                $b1  = $_SESSION['calculadora']['b1'];
+                $h1  = $_SESSION['calculadora']['h1'];
+                $p1  = $_SESSION['calculadora']['p1'];
+                $x   = $_SESSION['calculadora']['x'];
+                $y   = $_SESSION['calculadora']['y'];
+                $x1  = $_SESSION['calculadora']['x1'];
+                $y1  = $_SESSION['calculadora']['y1'];
+                $x11 = $_SESSION['calculadora']['x11'];
+                $y11 = $_SESSION['calculadora']['y11'];
+                $b11 = $_SESSION['calculadora']['b11'];
+                $h11 = $_SESSION['calculadora']['h11'];
+                $f   = $_SESSION['calculadora']['f'];
+                $k   = $_SESSION['calculadora']['k'];
+
+                //tapa
+                $B   = $_SESSION['calculadora']['B'];
+                $H   = $_SESSION['calculadora']['H'];
+                $B1  = $_SESSION['calculadora']['B1'];
+                $H1  = $_SESSION['calculadora']['H1'];
+                
+                $X   = $_SESSION['calculadora']['X'];
+                $Y   = $_SESSION['calculadora']['Y'];
+                $X1  = $_SESSION['calculadora']['X1'];
+                $Y1  = $_SESSION['calculadora']['Y1'];
+                $X11 = $_SESSION['calculadora']['X11'];
+                $Y11 = $_SESSION['calculadora']['Y11'];
+                $B11 = $_SESSION['calculadora']['B11'];
+                $H11 = $_SESSION['calculadora']['H11'];
+                $F   = $_SESSION['calculadora']['F'];
+                $K   = $_SESSION['calculadora']['K'];
+
+                require 'application/views/templates/head.php';
+                require 'application/views/calculadora/regalo3.php';
+                require 'application/views/templates/footer.php';
+            } else {
+
+                header("Location:" . URL . 'cotizador/get/Cotizaciones');
+            }
+        } else {
+
+            header("Location:" . URL . 'login/');
+        }
+    }
+}

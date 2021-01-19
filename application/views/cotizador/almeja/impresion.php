@@ -188,10 +188,15 @@
 			</div>
 
 			<div id="imagen_caja" class="imagen_caja"></div>
+			<div style="margin: 0px; padding:0px;">
+
+				<div id="medidas" style="margin:0px; padding:0px;margin-left: 100px;"></div>
+			</div>
 		</div>
 	</div>
 
 	<footer>
+		<br>
 		<p>
 			Puede cambiar SIN PREVIO AVISO debido a la volatilidad del dolar
 		</p>
@@ -231,7 +236,7 @@
 
 		$("#detCaja").append('<p>Producto</p>');
 
-		appndPapel(aJson['Papel_Empalme']);
+		appndPapel(aJson['Papel_Empalme'],'interior del cajon');
 		appndImpresion(aJson['OffEmp'],'offset');
 		appndImpresion(aJson['DigEmp'],'digital');
 		appndImpresion(aJson['SerEmp'],'serigrafia');
@@ -242,7 +247,7 @@
 		appndAcabado(aJson['Laminado'],'laminado');
 		appndAcabado(aJson['Suaje'],'suaje');
 
-		appndPapel(aJson['Papel_FCaj']);
+		appndPapel(aJson['Papel_FCaj'],'exterior del cajon');
 		appndImpresion(aJson['OffFCaj'],'offset');
 		appndImpresion(aJson['DigFCaj'],'digital');
 		appndImpresion(aJson['SerFCaj'],'serigrafia');
@@ -253,7 +258,7 @@
 		appndAcabado(aJson['LaminadoFcaj'],'laminado');
 		appndAcabado(aJson['SuajeFcaj'],'suaje');
 
-		appndPapel(aJson['Papel_FCar']);
+		appndPapel(aJson['Papel_FCar'],'exterior de la tapa');
 		appndImpresion(aJson['OffFCar'],'offset');
 		appndImpresion(aJson['DigFCar'],'digital');
 		appndImpresion(aJson['SerFCar'],'serigrafia');
@@ -264,7 +269,7 @@
 		appndAcabado(aJson['LaminadoFcar'],'laminado');
 		appndAcabado(aJson['SuajeFcar'],'suaje');
 
-		appndPapel(aJson['Papel_Guarda']);
+		appndPapel(aJson['Papel_Guarda'],'interior de la tapa');
 		appndImpresion(aJson['OffG'],'offset');
 		appndImpresion(aJson['DigG'],'digital');
 		appndImpresion(aJson['SerG'],'serigrafia');
@@ -324,13 +329,13 @@
 			}
 		}
 
-		$("#detCaja").append(`<p>Caja: ${nombModelo(aJson.modelo)}.</p>`);
+		$("#medidas").append(`<p>Tipo: ${nombModelo(aJson.modelo)}.</p>`);
 
-		$("#detCaja").append(`<p class="f-negrita" style="margin-bottom: 20px;">Tamaño: ${aJson.base} x ${aJson.alto} x ${aJson.profundidad}</p>`);
+		$("#medidas").append(`<p style="margin-bottom: 20px;">Tamaño: ${aJson.base} x ${aJson.alto} x ${aJson.profundidad}</p>`);
 
-		function appndPapel( arrPapel ){
+		function appndPapel( arrPapel, texto ){
 
-			var tr = '<p class="f-negrita">Papel interior del cajón forrado en: ' +arrPapel['nombre_papel'] + '</p>';
+			var tr = `<p class="f-negrita">Papel ${texto} forrado en: ${arrPapel.nombre_papel}</p>;`
 			$("#detCaja").append(tr);
 		}
 

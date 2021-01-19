@@ -244,6 +244,7 @@
     //Boton Guardar
     $("#btnGrabarC").click( function() {
 
-        caja.saveCotizacion("SI");
+        // sus argumentos son: grabar, modificar
+        caja.saveCotizacion("NO",'SI');
     });
 </script>

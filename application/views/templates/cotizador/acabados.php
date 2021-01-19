@@ -366,8 +366,6 @@
         document.getElementById('opAcSuajeEmp').style.display       = "none";
         document.getElementById('opAcLaserEmp').style.display       = "none";
         document.getElementById('opAcBarUVEmp').style.display       = "none";
-        document.getElementById('LargoLaser1').value                = "1";
-        document.getElementById('AnchoLaser1').value                = "1";
         document.getElementById('LargoGrab').value                  = "1";
         document.getElementById('AnchoGrab').value                  = "1";
         document.getElementById('LargoHS_ver').value                = "1";

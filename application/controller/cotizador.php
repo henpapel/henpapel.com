@@ -1128,6 +1128,8 @@ class Cotizador extends Controller {
     // Calculadora
         $aCalculos = self::almejaCalc($base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
 
+    //Funcion extra para dejar en sesion el calculo
+        self::saveBoxCalculate($odt, $aCalculos);
 
     // aJson
         // crea el array principal
@@ -7389,5 +7391,111 @@ class Cotizador extends Controller {
         if( $upload ) $result        = true;
 
         echo json_encode($result);
+    }
+
+    public function imprCaja(){
+
+        session_start();
+
+        $login = $this->loadController('login');
+
+        if( $login->isLoged() ) {
+
+            $model = intval($_GET['model']);
+            require_once 'application/views/templates/head.php';
+            if( $model ){
+
+                switch ($model) {
+                    case 1:
+                        require_once 'application/views/cotizador/almeja/impresion.php';
+                    break;
+
+                    case 2:
+                        require_once 'application/views/cotizador/circular/impresion.php';
+                    break;
+
+                    case 3:
+                        require_once 'application/views/cotizador/libro/impresion.php';
+                    break;
+                    
+                    case 4:
+                        require_once 'application/views/cotizador/regalo/impresion.php';
+                    break;
+                }    
+            }
+            
+            
+        } else {
+
+            header("Location:" . URL . 'login/');
+        }
+    }
+
+    public function saveBoxCalculate($odt, $calculadora) {
+
+        $_SESSION['calculadora'] = $calculadora;
+        $_SESSION['calculadora']['odt'] = $odt;
+    }
+
+    public function printBoxCalculate(){
+
+        session_start();
+
+        $login = $this->loadController('login');
+
+        if($login->isLoged()){
+
+            if (!empty($_SESSION['calculadora'])) {
+
+                $odt = (isset($_SESSION['calculadora']['odt']))? $_SESSION['calculadora']['odt']: '--';
+                
+                $b = $_SESSION['calculadora']['base'];
+                $h = $_SESSION['calculadora']['alto'];
+                $p = $_SESSION['calculadora']['profundidad'];
+                $g = $_SESSION['calculadora']['grosor_cajon'];
+                $G = $_SESSION['calculadora']['grosor_cartera'];
+
+                $e = $_SESSION['calculadora']['e'];
+                $E = $_SESSION['calculadora']['E'];
+
+                /* Diseño */
+                $b1  = $_SESSION['calculadora']['b1'];
+                $h1  = $_SESSION['calculadora']['h1'];
+                $p1  = $_SESSION['calculadora']['p1'];
+                $x   = $_SESSION['calculadora']['x'];
+                $y   = $_SESSION['calculadora']['y'];
+                $x1  = $_SESSION['calculadora']['x1'];
+                $y1  = $_SESSION['calculadora']['y1'];
+                $x11 = $_SESSION['calculadora']['x11'];
+                $y11 = $_SESSION['calculadora']['y11'];
+
+                //forro
+                $b11 = $_SESSION['calculadora']['b11'];
+                $h11 = $_SESSION['calculadora']['h11'];
+                $f   = $_SESSION['calculadora']['f'];
+                $k   = $_SESSION['calculadora']['k'];
+
+                //cartera
+                $B   = $_SESSION['calculadora']['B'];
+                $H   = $_SESSION['calculadora']['H'];
+                $P   = $_SESSION['calculadora']['P'];
+                $Y   = $_SESSION['calculadora']['Y'];
+                $B1  = $_SESSION['calculadora']['B1'];
+                $Y1  = $_SESSION['calculadora']['Y1'];
+                $B11 = $_SESSION['calculadora']['B11'];
+                $Y11 = $_SESSION['calculadora']['Y11'];
+
+
+                require 'application/views/templates/head.php';
+                require 'application/views/calculadora/almeja3.php';
+                require 'application/views/templates/footer.php';
+            } else {
+
+                header("Location:" . URL . 'cotizador/get/Cotizaciones');
+            }
+        } else {
+
+            header("Location:" . URL . 'login/');
+        }
     }
 }

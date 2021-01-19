@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 <link rel="stylesheet" href="<?= URL; ?>public/css/cotizador.css">
 <link rel="stylesheet" type="text/css" href="<?=URL?>public/css/style.css">
 <link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap-theme.min.css">
@@ -158,7 +158,10 @@
 
             <button class="btn btn-warning btn-sm" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
+            <button id="btnCalculadora" disabled="" class="btn btn-warning btn-sm" style="font-size: 10px;">CALCULADORA</button>
+
             <button type="button" id="btnImprimir" disabled="" class="btn btn-info btn-sm" style="font-size: 10px;">IMPRIMIR</button>
+
             <br>
 
             <div class="div-total mt-2 rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

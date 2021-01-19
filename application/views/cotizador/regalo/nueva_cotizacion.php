@@ -240,7 +240,7 @@
     //Boton Guardar
     $("#btnGrabarC").click( function() {
 
-        //El 'NO' especificado en la funcion sirve para decir si se modificara la odt. Esto sirve cuando se hace la modificacion de la caja. vease en modificacion caja regalo
-        caja.saveCotizacion("NO");
+        // sus argumentos son: grabar, modificar. busque la funcion para entender como funciona
+        caja.saveCotizacion("SI",'NO');
     });
 </script>
