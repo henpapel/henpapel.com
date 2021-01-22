@@ -8,7 +8,15 @@
 <script src="<?=URL?>public/js/chosen/chosen.jquery.js"></script>
 <script src="<?=URL?>public/js/chosen/chosen.proto.js"></script>
 <!-- Chosen -->
+
+<!-- iconos -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<!-- iconos -->
+
 <style type="text/css">
+
+    /*se importan los iconos*/
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
     
     #modLoading{
         color: #fff;
@@ -122,7 +130,7 @@
             Cargando...
         </div>
 
-        <div id="topCotizador" style="width: 100%; height: 5%;">
+        <div id="topCotizador" style="width: 100%; height: 4%;">
             <select  id="box-model" class="seleccionModelo">
 
                 <option selected disabled>Seleccione Modelo de Caja</option>
@@ -150,17 +158,17 @@
     <div id="divFooter" class="mx-1" style="position:fixed; right:0%; top:85%;">
         <div id="groupButton1">
 
-            <button id="btnCalcularC" class="btn btn-primary btn-sm" style="font-size: 10px;">CALCULAR</button>
+            <button id="btnCalcularC" class="btn btn-primary btn-sm" style="font-size: 10px;"><i class="bi bi-calculator-fill" style="color: #000"></i> CALCULAR</button>
 
-            <button id="btnActG" class="btn btn-success btn-sm" style="font-size: 10px;" data-toggle="modal" data-target="#modalSaveAll" disabled="">GUARDAR</button>
+            <button id="btnActG" class="btn btn-success btn-sm" style="font-size: 10px;" data-toggle="modal" data-target="#modalSaveAll" disabled=""><i class="bi bi-save"></i> GUARDAR</button>
 
-            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;">TABLAS</button>
+            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#procesosModal" style="font-size: 10px;"><i class="bi bi-table"></i> TABLAS</button>
 
-            <button class="btn btn-warning btn-sm" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
+            <button class="btn btn-warning btn-sm" id="btnResumen" style="font-size: 10px;"><i class="bi bi-file-earmark"></i>RESUMEN</button>
 
-            <button id="btnCalculadora" disabled="" class="btn btn-warning btn-sm" style="font-size: 10px;">CALCULADORA</button>
+            <button id="btnCalculadora" disabled="" class="btn btn-warning btn-sm" style="font-size: 10px;"><i class="bi bi-calculator"></i> CALCULADORA</button>
 
-            <button type="button" id="btnImprimir" disabled="" class="btn btn-info btn-sm" style="font-size: 10px;">IMPRIMIR</button>
+            <button type="button" id="btnImprimir" disabled="" class="btn btn-info btn-sm" style="font-size: 10px;"><i class="bi bi-printer"></i> IMPRIMIR</button>
 
             <br>
 

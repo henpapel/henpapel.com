@@ -139,28 +139,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    
-    var nombreCliente = [];
-    var idCliente = [];
-</script>
-<?php
 
-    for ($i=0; $i < count($clientes) ; $i++) {
-
-        $nombre = $clientes[$i]['nombre'];
-        $id = $clientes[$i]['id_cliente'];
-?>
-
-        <script type="text/javascript">
-            
-            nombreCliente[<?=$i?>] = "<?= $nombre ?>";
-            idCliente[<?=$i?>] = "<?= $id ?>";
-        </script>
-<?php
-
-    }
-?>
 <!-- modal muestra clientes para cotizacion-->
 <div class="modal fade" id="modalClientes" tabindex="-1" role="dialog" aria-labelledby="modalClientes" aria-hidden="true">
         
@@ -200,23 +179,24 @@
 <!-- modal error-->
 <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalError" aria-hidden="true">
     
-<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
 
-    <div class="modal-content">
+        <div class="modal-content">
 
-        <div class="modal-header azulWhi" style="background-color: #E53333; color: white;">
+            <div class="modal-header azulWhi" style="background-color: #E53333; color: white;">
 
-            <h5 class="modal-title" id="txtTituloModal">Error</h5>
-        </div>
+                <h5 class="modal-title" id="txtTituloModal">Error</h5>
+            </div>
 
-        <div class="modal-body">
+            <div class="modal-body">
 
-            <p id="txtContenido" style="color: black; font-size: 1.1em"></p>
-        </div>
+                <p id="txtContenido" style="color: black; font-size: 1.1em"></p>
+            </div>
 
-        <div class="modal-footer">
+            <div class="modal-footer">
 
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
 </div>
@@ -271,17 +251,19 @@
 
             case"Almeja":
 
-                location.href = "<?php echo URL; ?>cotizador/modCajaAlmeja/?num_odt=" + num_odt + "&caja=" +caja;
+                location.href = "<?= URL ?>cotizador/modCajaAlmeja/?num_odt=" + num_odt + "&caja=" +caja;
             break;
             case"Circular":
 
-                location.href = "<?php echo URL; ?>circular/modCajaCircular/?num_odt=" + num_odt + "&caja=" +caja;
+                location.href = "<?= URL ?>circular/modCajaCircular/?num_odt=" + num_odt + "&caja=" +caja;
             break;
             case"Libro":
+
+
             break;
             case"Regalo":
 
-                location.href = "<?php echo URL; ?>regalo/modCajaRegalo/?num_odt=" + num_odt + "&caja=" +caja;
+                location.href = "<?= URL ?>regalo/modCajaRegalo/?num_odt=" + num_odt + "&caja=" +caja;
             break;
             case"Marco":
             break;

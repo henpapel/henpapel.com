@@ -869,8 +869,8 @@ class Regalo extends Cajas{
 	        }
 	    //Encuadernacion
 	        var enc        = aGlobal['encuadernacion'];
-	        var cUDespunte = enc['despunte_costo_unitario'];
-	        var cTDespunte = enc['despunte_costo_tot'];
+	        var cUDespunte = aGlobal['despunte_esquinas_emptap']['costo_unitario_esquinas'];
+	        var cTDespunte = aGlobal['despunte_esquinas_emptap']['costo_tot_proceso'];
 	        var cUEncajada = enc['encajada_costo_unitario'];
 	        var cTEncajada = enc['encajada_costo_tot'];
 	        var total      = enc['costo_tot_proceso'];
@@ -1451,10 +1451,11 @@ $(document).on('click', '.active-result', function (e) {
         
     caja.desactivarBtn();
 });
+
 $(document).on('keyup', '.chosen-container', function (e) {
         
     var code = (e.keyCode ? e.keyCode : e.which);
     if(code==13){
-        desactivarBtn();
+        caja.desactivarBtn();
     }
 });

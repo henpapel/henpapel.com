@@ -83,8 +83,7 @@ class RegaloModel extends Controller {
         if ($modificar == "SI") {
 
             $l_modificar_odt = true;
-
-            $id_odt_ant = intval($_POST['id_odt_ant']);
+            $id_odt_ant      = intval($_POST['id_odt_ant']);
         }
 
         try {
@@ -136,6 +135,41 @@ class RegaloModel extends Controller {
 
                     $l_inserted = false;
                 }
+            }
+
+
+        // cot_procesos
+            $l_procesos = true;
+
+            $papel          = $aJson['costo_papeles'];
+            $cartones       = $aJson['costo_cartones'];
+            $costos_fijos   = $aJson['costos_fijos'];
+            $Imp_EmpCaj     = $aJson['Imp_EmpCaj'];
+            $Imp_EmpCaj_maq = $aJson['Imp_EmpCaj_maq'];
+            $Imp_FCaj       = $aJson['Imp_FCaj'];
+            $Imp_FCaj_maq   = $aJson['Imp_FCaj_maq'];
+            $Imp_EmpTap     = $aJson['Imp_EmpTap'];
+            $Imp_EmpTap_maq = $aJson['Imp_EmpTap_maq'];
+            $Imp_FTap       = $aJson['Imp_FTap'];
+            $Imp_FTap_maq   = $aJson['Imp_FTap_maq'];
+
+            $Acb_EmpFCaj    = $aJson['Acb_EmpFCaj'];
+            $Acb_FCaj       = $aJson['Acb_FCaj'];
+            $Acb_EmpTap     = $aJson['Acb_EmpTap'];
+            $Acb_FTap       = $aJson['Acb_FTap'];
+
+            $sql_procesos = "INSERT INTO cot_reg_procesos(id_modelo, id_odt, papel, carton, costos_fijos, imp_emp, imp_emp_maq, imp_fcaj, imp_fcaj_maq, imp_emptap, imp_emptap_maq, imp_ftap, imp_ftap_maq, acb_emp, acb_fcaj, acb_emptap, acb_ftap, fecha_odt)
+                VALUES($id_modelo, $id_caja_odt, $papel, $cartones, $costos_fijos, $Imp_EmpCaj, $Imp_EmpCaj_maq, $Imp_FCaj, $Imp_FCaj_maq, $Imp_EmpTap, $Imp_EmpTap_maq, $Imp_FTap, $Imp_FTap_maq, $Acb_EmpFCaj, $Acb_FCaj, $Acb_EmpTap, $Acb_FTap, '$d_fecha')";
+
+            $query_procesos = $this->db->prepare($sql_procesos);
+
+            $l_procesos = $query_procesos->execute();
+
+            if (!$l_procesos) {
+
+                self::mError($aJson, $mensaje, $error .  "procesos;");
+
+                $l_procesos = false;
             }
 
 
@@ -479,7 +513,7 @@ class RegaloModel extends Controller {
 
             $encuad_encajada_costo_unitario         = round(floatval($aEncuadernacion['encajada_costo_unitario']), 2);
             $encuad_encajada                        = round(floatval($aEncuadernacion['encajada_costo_tot']), 2);
-            $arreglo_forrado_cajon_costo_unitario   = round(floatval($aJson['encuadernacion']['arreglo_forrado_cajon_costo_unitario']), 2);
+            $arreglo_forrado_cajon_costo_unitario   = round(floatval($aJson['encuadernacion']['arreglo_costo_unitario']), 2);
             $arreglo_forrado_cajon_costo_tot        = round(floatval($aJson['encuadernacion']['arreglo_forrado_cajon_costo']), 2);
             $forrado_cajon_costo_unitario           = round(floatval($aJson['encuadernacion']['forrado_cajon_costo_unitario']), 2);
             $forrado_cajon_costo                    = round(floatval($aJson['encuadernacion']['forrado_cajon_costo']), 2);
@@ -511,9 +545,8 @@ class RegaloModel extends Controller {
 
             $empalme_cajon_costo_unitario = $aJson['encuadernacion_fcaj']['empalme_cajon_costo_unitario'];
             $empalme_de_cajon = $aJson['encuadernacion_fcaj']['empalme_de_cajon'];
-            
-            $arreglo_de_forrado_de_cajon = $aJson['encuadernacion_fcaj']['arreglo_de_forrado_de_cajon'];
-            $arreglo_de_forrado_de_cajon = $aJson['encuadernacion_fcaj']['arreglo_de_forrado_de_cajon'];
+
+            $arreglo_de_forrado_de_cajon = $aJson['encuadernacion_fcaj']['arreglo_costo'];
 
             $costo_tot_proceso = $aJson['encuadernacion_fcaj']['costo_tot_proceso'];
 
@@ -540,9 +573,9 @@ class RegaloModel extends Controller {
             // Elaboracion forro del Cajon
             $l_elab_fcaj = true;
 
-            $forro_costo_unit       = round(floatval($aJson['elab_FCaj']['costo_unit_forrado_cajon']), 2);
-            $forro_cajon            = round(floatval($aJson['elab_FCaj']['forrado_de_cajon']), 2);
-            $arreglo                = round(floatval($aJson['elab_FCaj']['arreglo']), 2);
+            $forro_costo_unit       = round(floatval($aJson['elab_FCaj']['forrado_cajon_costo_unitario']), 2);
+            $forro_cajon            = round(floatval($aJson['elab_FCaj']['forrado_cajon']), 2);
+            $arreglo                = round(floatval($aJson['elab_FCaj']['arreglo_forrado_cajon']), 2);
             $empalme_costo_unitario = round(floatval($aJson['elab_FCaj']['empalme_cajon_costo_unitario']), 2);
             $empalme_de_cajon       = round(floatval($aJson['elab_FCaj']['empalme_de_cajon']), 2);
             $enc_encajada_costo_unit = round(floatval($aJson['elab_FCaj']['enc_encajada_costo_unitario']), 2);
@@ -571,9 +604,9 @@ class RegaloModel extends Controller {
             // Encuadernacion forro de la Tapa
             $l_elab_ftap = true;
 
-            $forro_costo_unit       = round(floatval($aJson['elab_FTap']['costo_unit_forrado_cajon']), 2);
-            $forro_cajon            = round(floatval($aJson['elab_FTap']['forrado_de_cajon']), 2);
-            $arreglo                = round(floatval($aJson['elab_FTap']['arreglo']), 2);
+            $forro_costo_unit       = round(floatval($aJson['elab_FTap']['forrado_cajon_costo_unitario']), 2);
+            $forro_cajon            = round(floatval($aJson['elab_FTap']['forrado_cajon']), 2);
+            $arreglo                = round(floatval($aJson['elab_FTap']['arreglo_forrado_cajon']), 2);
             $empalme_costo_unitario = round(floatval($aJson['elab_FTap']['empalme_cajon_costo_unitario']), 2);
             $empalme_de_cajon       = round(floatval($aJson['elab_FTap']['empalme_de_cajon']), 2);
             $enc_encajada_costo_unit = round(floatval($aJson['elab_FTap']['enc_encajada_costo_unitario']), 2);
@@ -598,9 +631,6 @@ class RegaloModel extends Controller {
             }
 
 
-//// aqui me quede...
-
-            
             // corte carton
             $l_corte_carton_empcaj  = true;
 
@@ -1888,15 +1918,13 @@ class RegaloModel extends Controller {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
-                        $Largo                   = round(floatval($row['Largo']), 2);
-                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        $sql_laser_empcaj = "INSERT INTO cot_reg_laserempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $sql_laser_empcaj = "INSERT INTO cot_reg_laserempcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                         $query_laser_empcaj = $this->db->prepare($sql_laser_empcaj);
 
@@ -2166,15 +2194,13 @@ class RegaloModel extends Controller {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
-                        $Largo                   = round(floatval($row['Largo']), 2);
-                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        $sql_laser_fcaj = "INSERT INTO cot_reg_laserfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $sql_laser_fcaj = "INSERT INTO cot_reg_laserfcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                         $query_laser_fcaj = $this->db->prepare($sql_laser_fcaj);
 
@@ -2445,15 +2471,13 @@ class RegaloModel extends Controller {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
-                        $Largo                   = round(floatval($row['Largo']), 2);
-                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        $sql_laser_emptap = "INSERT INTO cot_reg_laseremptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $sql_laser_emptap = "INSERT INTO cot_reg_laseremptap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                         $query_laser_emptap = $this->db->prepare($sql_laser_emptap);
 
@@ -2723,15 +2747,13 @@ class RegaloModel extends Controller {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = self::strip_slashes_recursive($row['tipo_grabado']);
-                        $Largo                   = round(floatval($row['Largo']), 2);
-                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['merma_min']);
                         $merma_tot               = intval($row['merma_tot']);
 
-                        $sql_laser_ftap = "INSERT INTO cot_reg_laserftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                        $sql_laser_ftap = "INSERT INTO cot_reg_laserftap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                         $query_laser_ftap = $this->db->prepare($sql_laser_ftap);
 
@@ -3140,7 +3162,7 @@ class RegaloModel extends Controller {
 
             // variables booleanas
             if (
-                ($l_inserted and $l_calculadora)
+                ($l_inserted and $l_procesos and $l_calculadora)
                 and ($inserted_papel_empcaj and $inserted_papel_fcaj)
                 and ($inserted_papel_emptap and $inserted_papel_ftap)
 

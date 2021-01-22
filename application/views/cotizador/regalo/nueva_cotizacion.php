@@ -43,8 +43,8 @@
     </div>
 
     <!-- formulario de la caja circular -->
-    <div id="divContentI" class="form-content medidas" style="height: 50%; width: 100%; overflow: auto;">
-        <div style="min-width: 120px; width: 92%;">
+    <div id="divContentI" class="form-content medidas" style="">
+        <div class="scroll-plantilla" style="min-width: 120px; width: 92%;">
 
             <input type="hidden" name="modelo" id="modelo" value="<?=$id_modelo?>">
             <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">

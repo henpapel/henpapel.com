@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
                 
-    <link rel="shortcut icon" type="image/x-icon" href="http://10.51.28.114/henpapel.com/public/img/hep.png">
-    <link href="http://10.51.28.114/henpapel.com/public/css/style.css?v=6.9" rel="stylesheet">
-    <link rel="stylesheet" href="http://10.51.28.114/henpapel.com/public/css/choosen.css">
+    <link rel="shortcut icon" type="image/x-icon" href="<?= URL ?>public/img/hep.png">
+    <link href="<?= URL ?>public/css/style.css?v=6.9" rel="stylesheet">
+    <link rel="stylesheet" href="<?= URL ?>public/css/choosen.css">
     
     <!-- Bootstrap -->
     
@@ -31,8 +31,8 @@
     <script src="http://10.51.28.114/henpapel.com/public/js/libs/jquery-ui.min.js"></script>
     <script src="http://10.51.28.114/henpapel.com/public/js/mi.jquery.tools.min.js"></script>
     -->
-    <script src="http://10.51.28.114/henpapel.com/public/js/choosen.js"></script>
-    <script src="http://10.51.28.114/henpapel.com/public/js/calculadora.js"></script>
+    <script src="<?= URL ?>public/js/choosen.js"></script>
+    <script src="<?= URL ?>public/js/calculadora.js"></script>
 
     <script>
         var jQuery214 = $.noConflict(true);

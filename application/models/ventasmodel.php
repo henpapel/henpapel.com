@@ -14,6 +14,52 @@ class VentasModel extends Controller {
     }
 
 
+    public function getCartonIdPapel($id) {
+
+        $id_temp = intval($id);
+
+        $sql = "SELECT numcarton FROM papeles where status = 'A' and id_papel = " . $id_temp . " limit 1";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        $row = floatval($row['numcarton']);
+
+        return $row;
+
+    }
+
+
+    public function getCartonById($num_carton) {
+
+        $sql = "SELECT * FROM papeles WHERE status = 'A' and numcarton = " . $num_carton . " ORDER BY costo_unitario desc limit 1";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $row;
+    }
+
+
+    public function getDatos($id) {
+
+        $sql   = "SELECT * FROM papeles WHERE status = 'A' and id_papel = $id";
+
+        $query = $this->db->prepare($sql);
+
+        $query->execute();
+
+        $result = array();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $row;
+    }
+
+
     // Obtiene los datos de merma de un proceso
     public function merma_acabados($proceso) {
 
@@ -241,8 +287,8 @@ class VentasModel extends Controller {
             $result[$iii]['id_odt']            = intval($row['id_odt']);
             $result[$iii]['id_modelo']         = intval($row['id_modelo']);
             $result[$iii]['tipo_grabado']      = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']             = floatval($row['largo']);
-            $result[$iii]['ancho']             = floatval($row['ancho']);
+            //$result[$iii]['largo']             = floatval($row['largo']);
+            //$result[$iii]['ancho']             = floatval($row['ancho']);
             $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
             $result[$iii]['tiempo_requerido']  = floatval($row['tiempo_requerido']);
             $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);

@@ -16,6 +16,9 @@ class AlmejaModel extends Controller {
 
     public function insertCaja_Almeja(&$aJson, $id_modelo) {
 
+        $starttime  = microtime(true);
+
+
         $id_cliente     = 0;
         //$nombre_cliente = "";
         $odt            = "";
@@ -66,6 +69,7 @@ class AlmejaModel extends Controller {
         $costo_total_odt   = round(floatval($aJson['costo_odt']), 2);
         $subtotal          = round(floatval($aJson['costo_subtotal']), 2);
         $utilidad          = round(floatval($aJson['Utilidad']), 2);
+        $utilidad_pctje    = round(floatval($aJson['utilidad_pctje']), 2);
         $iva               = round(floatval($aJson['iva']), 2);
         $ISR               = round(floatval($aJson['ISR']), 2);
         $comisiones        = round(floatval($aJson['comisiones']), 2);
@@ -78,7 +82,7 @@ class AlmejaModel extends Controller {
 
 
     // calculos
-        $aCalculos = $aJson['aCalculos'];
+        $aCalculos = $aJson['Calculadora'];
 
         // datos de la calculadora
         $h       = round(floatval($aCalculos['h']), 3);
@@ -135,15 +139,24 @@ class AlmejaModel extends Controller {
         $aCar_Caj = $aJson['CartonCaj'];
         $aCar_Car = $aJson['CartonCar'];
 
-        $aElab_car            = $aJson['elab_car'];
-        $aElab_guarda         = $aJson['elab_guarda'];
-        $aRanurado            = $aJson['ranurado'];
-        $aRanurado_Fcar       = $aJson['ranurado_Fcar'];
-        $aEncuadernacion      = $aJson['encuadernacion'];
-        $aEncuadernacion_Fcaj = $aJson['encuadernacion_Fcaj'];
+        $aEncuadernacion      = $aJson['Encuadernacion_emp'];
+        $aEncuadernacion_Fcaj = $aJson['Encuadernacion_FCaj'];
+
+        $suaje_Fcaj_fijo           = $aJson['suaje_Fcaj_fijo'];
+        $aElab_car                 = $aJson['Elab_Car'];
+        $aElab_guarda              = $aJson['elab_guarda'];
+        //$aRanurado                 = $aJson['ranurado'];
+        //$aRanurado_Fcar            = $aJson['ranurado_Fcar'];
+        $arreglo_ranurado_hor_emp  = $aJson['arreglo_ranurado_hor_emp'];
+        $arreglo_ranurado_ver_emp  = $aJson['arreglo_ranurado_ver_emp'];
+        $arreglo_ranurado_hor_fcar = $aJson['arreglo_ranurado_hor_fcar'];
+        //$encajada_fcar             = $aJson['encajada_fcar'];
+        $despunte_esquinas         = $aJson['despunte_esquinas'];
+        $pegado_guarda             = $aJson['pegado_guarda'];
+        $armado_caja_final         = $aJson['armado_caja_final'];
 
 
-    // Empalme
+    // Papel Empalme
         $id_papel_empalme            = intval($aPap_emp['id_papel']);
         $nombre_papel_emp            = utf8_decode(self::strip_slashes_recursive($aPap_emp['nombre_papel']));
         $ancho_papel_emp             = intval($aPap_emp['ancho_papel']);
@@ -160,7 +173,7 @@ class AlmejaModel extends Controller {
 
 
 
-    // Forro del Cajon
+    // Papel Forro del Cajon
         $id_papel_Fcajon       = intval($aPap_fcaj['id_papel']);
         $nombre_papel_fcaj     = utf8_decode(self::strip_slashes_recursive($aPap_fcaj['nombre_papel']));
         $ancho_papel_fcaj      = intval($aPap_fcaj['ancho_papel']);
@@ -178,7 +191,7 @@ class AlmejaModel extends Controller {
 
 
 
-    // forro de la cartera
+    // Papepel forro de la cartera
         $id_papel_Fcartera     = intval($aPap_fcar['id_papel']);
         $nombre_papel_fcar     = utf8_decode(self::strip_slashes_recursive($aPap_fcar['nombre_papel']));
         $ancho_papel_fcar      = intval($aPap_fcar['ancho_papel']);
@@ -195,7 +208,7 @@ class AlmejaModel extends Controller {
         unset($aPap_fcar);
 
 
-    // Guarda
+    // Papel Guarda
         $id_papel_guarda    = intval($aPap_g['id_papel']);
         $nombre_papel_g     = utf8_decode(self::strip_slashes_recursive($aPap_g['nombre_papel']));
         $ancho_papel_g      = intval($aPap_g['ancho_papel']);
@@ -248,67 +261,73 @@ class AlmejaModel extends Controller {
 
 
     // elab_car
-        $elab_car_costo_unit  = round(floatval($aElab_car['forro_costo_unit']), 2);
-        $elab_car_forro_car   = round(floatval($aElab_car['forro_car']), 2);
-        $elab_car_costo_total = round(floatval($aElab_car['forro_car']), 2);
+        $elab_car_costo_unit  = round(floatval($aElab_car['costo_unit']), 2);
+        $elab_car_forro_car   = round(floatval($aElab_car['forro_costo_tot']), 2);
+        $elab_car_costo_total = round(floatval($aElab_car['forro_costo_tot']), 2);
 
 
         unset($aElab_car);
 
 
     // elab_guarda
-        $elab_guarda_costo_unit = round(floatval($aElab_guarda['guarda_costo_unit']), 2);
-        $elab_guarda_costo_tot  = round(floatval($aElab_guarda['guarda']), 2);
+        $elab_guarda_costo_unit = round(floatval($aElab_guarda['costo_unit']), 2);
+        $elab_guarda_costo_tot  = round(floatval($aElab_guarda['forro_costo_tot']), 2);
 
 
         unset($aElab_guarda);
 
 
-    // Ranurado
-        $ranurado_arreglo               = round(floatval($aRanurado['arreglo']), 2);
-        $ranurado_costo_unit_por_ranura = round(floatval($aRanurado['costo_unit_por_ranura']), 2);
-        $ranurado_costo_por_ranura      = round(floatval($aRanurado['costo_por_ranura']), 2);
-        $ranurado_costo_tot_ranurado    = round(floatval($aRanurado['costo_tot_ranurado']), 2);
+    // Ranurado hor_emp
+        $ranurado_arreglo               = round(floatval($arreglo_ranurado_hor_emp['arreglo']), 2);
+        $ranurado_costo_unit_por_ranura = round(floatval($arreglo_ranurado_hor_emp['costo_unit_por_ranura']), 2);
+        $ranurado_costo_por_ranura      = round(floatval($arreglo_ranurado_hor_emp['costo_por_ranura']), 2);
+        $ranurado_costo_tot_ranurado    = round(floatval($arreglo_ranurado_hor_emp['costo_tot_proceso']), 2);
 
-
-        unset($aRanurado);
+        unset($arreglo_ranurado_hor_emp);
 
 
 
     // Ranurado_Fcar
-        $ranurado_fcar_costo_unit_por_ranura = round(floatval($aRanurado_Fcar['costo_unit_por_ranura']), 2);
-        $ranurado_fcar_costo_por_ranura      = round(floatval($aRanurado_Fcar['costo_por_ranura']), 2);
+        $ranurado_fcar_costo_unit_por_ranura = round(floatval($arreglo_ranurado_hor_fcar['costo_unit_por_ranura']), 2);
+        $ranurado_fcar_costo_por_ranura      = round(floatval($arreglo_ranurado_hor_fcar['costo_por_ranura']), 2);
+        $ranurado_fcar_costo_tot_ranurado = round(floatval($arreglo_ranurado_hor_fcar['costo_tot_proceso']), 2);
 
-        unset($aRanurado_Fcar);
+        unset($arreglo_ranurado_hor_fcar);
 
 
 
-    // Encuadernacion
-        $perf_iman_costo_unitario               = round(floatval($aEncuadernacion['perf_iman_costo_unitario']), 2);
-        $perf_iman_y_puesta                     = round(floatval($aEncuadernacion['perf_iman_costo_tot']), 2);
-        $encuad_encajada_costo_unitario         = round(floatval($aEncuadernacion['encajada_costo_unitario']), 2);
-        $encuad_encajada                        = round(floatval($aEncuadernacion['encajada_costo_tot']), 2);
-        $arreglo_forrado_cajon_costo_unitario   = round(floatval($aEncuadernacion['arreglo_forrado_cajon_costo_unitario']), 2);
-        $arreglo_forrado_cajon_costo_tot        = round(floatval($aEncuadernacion['arreglo_forrado_cajon_costo']), 2);
-        $forrado_cajon_costo_unitario           = round(floatval($aEncuadernacion['forrado_cajon_costo_unitario']), 2);
-        $forrado_cajon_costo                    = round(floatval($aEncuadernacion['forrado_cajon_costo']), 2);
-        $encuad_costo_tot_proceso               = round(floatval($aEncuadernacion['costo_tot_proceso']), 2);
+    // Encuadernacion empalme
+        $perf_iman_costo_unitario               = round(floatval($aJson['Encuadernacion_emp']['perforado_iman_costo_unitario']), 2);
+        $perf_iman_y_puesta                     = round(floatval($aJson['Encuadernacion_emp']['perforado_iman_costo_tot_proceso']), 2);
+        $encuad_encajada_costo_unitario         = round(floatval($aJson['Encuadernacion_emp']['encajada_costo_unitario']), 2);
+        $encuad_encajada                        = round(floatval($aJson['Encuadernacion_emp']['encajada_costo_tot_proceso']), 2);
+        $arreglo_forrado_cajon_costo_unitario   = round(floatval($aJson['Encuadernacion_emp']['arreglo_costo_unitario']), 2);
+        $arreglo_forrado_cajon_costo_tot        = round(floatval($aJson['Encuadernacion_emp']['arreglo_forrado_cajon_costo']), 2);
+        $forrado_cajon_costo_unitario           = round(floatval($aJson['Encuadernacion_emp']['forrado_cajon_costo_unitario']), 2);
+        $forrado_cajon_costo                    = round(floatval($aJson['Encuadernacion_emp']['forrado_cajon_costo']), 2);
+
+        $encuad_costo_tot_proceso               = round(floatval($aJson['Encuadernacion_emp']['costo_tot_proceso']), 2);
 
 
         unset($aEncuadernacion);
 
 
     // Encuadernacion_fcaj
-        $encuad_fcaj_costo_unit_forrado_cajon     = round(floatval($aEncuadernacion_Fcaj['forrado_cajon_costo_unit']), 2);
-        $encuad_fcaj_forrado_de_cajon             = round(floatval($aEncuadernacion_Fcaj['forrado_de_cajon']), 2);
-        $encuad_fcaj_empalme_cajon_costo_unitario = round(floatval($aEncuadernacion_Fcaj['empalme_cajon_costo_unitario']), 2);
-        $encuad_fcaj_empalme_de_cajon             = round(floatval($aEncuadernacion_Fcaj['empalme_de_cajon']), 2);
-        $encuad_fcaj_arreglo_de_forrado_de_cajon  = round(floatval($aEncuadernacion_Fcaj['arreglo_de_forrado_de_cajon']), 2);
-        $encuad_fcaj_costo_tot_proceso            = round(floatval($aEncuadernacion_Fcaj['costo_tot_proceso']), 2);
+        $encuad_fcaj_costo_unit_forrado_cajon     = round(floatval($aJson['Encuadernacion_FCaj']['forrado_cajon_costo_unit']), 2);
+        $encuad_fcaj_forrado_de_cajon             = round(floatval($aJson['Encuadernacion_FCaj']['forrado_de_cajon']), 2);
+        $encuad_fcaj_empalme_cajon_costo_unitario = round(floatval($aJson['Encuadernacion_FCaj']['empalme_cajon_costo_unitario']), 2);
+        $encuad_fcaj_empalme_de_cajon             = round(floatval($aJson['Encuadernacion_FCaj']['empalme_de_cajon']), 2);
+        $encuad_fcaj_arreglo_de_forrado_de_cajon  = round(floatval($aJson['Encuadernacion_FCaj']['arreglo_costo']), 2);
+        $encuad_fcaj_costo_tot_proceso            = round(floatval($aJson['Encuadernacion_FCaj']['costo_tot_proceso']), 2);
 
         unset($aEncuadernacion_Fcaj);
 
-        //$aJsonGrab = array_keys($aJson);        // $aJsonGrab[18];
+
+//// aqui me quede...
+
+
+
+        //$aJsonGrab = array_keys($aJson);
 
         //$s_miArrayJson = json_encode($aJsonGrab);
 
@@ -484,6 +503,43 @@ class AlmejaModel extends Controller {
             }
 
 
+            $l_procesos = true;
+
+            $costos_fijos   = round(floatval($aJson['costos_fijos']), 2);
+            $imp_emp        = round(floatval($aJson['Imp_Emp']), 2);
+            $imp_emp_maq    = round(floatval($aJson['Imp_Emp_maq']), 2);
+            $imp_fcaj       = round(floatval($aJson['Imp_FCaj']), 2);
+            $imp_fcaj_maq   = round(floatval($aJson['Imp_FCaj_maq']), 2);
+            $imp_fcar       = round(floatval($aJson['Imp_FCar']), 2);
+            $imp_fcar_maq   = round(floatval($aJson['Imp_FCar_maq']), 2);
+            $imp_guarda     = round(floatval($aJson['Imp_Guarda']), 2);
+            $imp_guarda_maq = round(floatval($aJson['Imp_Guarda_maq']), 2);
+            $acb_emp        = round(floatval($aJson['Acb_Empalme']), 2);
+            $acb_fcaj       = round(floatval($aJson['Acb_FCaj']), 2);
+            $acb_fcar       = round(floatval($aJson['Acb_FCar']), 2);
+            $acb_guarda     = round(floatval($aJson['Acb_Guarda']), 2);
+
+            $costo_papeles  = round(floatval($aJson['costo_papeles']), 2);
+            $costo_cartones = round(floatval($aJson['costo_cartones']), 2);
+
+        // procesos
+            $sql_procesos = "INSERT INTO cot_alm_procesos
+                (id_modelo, id_odt, papel, carton, costos_fijos, imp_emp, imp_emp_maq, imp_fcaj, imp_fcaj_maq, imp_fcar, imp_fcar_maq, imp_guarda, imp_guarda_maq, acb_emp, acb_fcaj, acb_fcar, acb_guarda, fecha_odt)
+            VALUES
+                ($id_modelo, $id_caja_odt, $costo_papeles, $costo_cartones, $costos_fijos, $imp_emp, $imp_emp_maq, $imp_fcaj, $imp_fcaj_maq, $imp_fcar, $imp_fcar_maq, $imp_guarda, $imp_guarda_maq, $acb_emp, $acb_fcaj, $acb_fcar, $acb_guarda, '$d_fecha')";
+
+            $query_procesos = $this->db->prepare($sql_procesos);
+
+            $l_procesos = $query_procesos->execute();
+
+            if (!$l_procesos) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "procesos;" . " " . $sql_procesos . ";";
+
+                $l_procesos = false;
+            }
+
+
         // calculadora
             $sql_calc = "INSERT INTO cot_alm_calculadora
                 (id_modelo, id_odt, b, h, p, g_cajon, g_cartera, e, e_may, b1, h1, p1, x, y, x1, y1, x11, y11, b11, h11, f, k, b_may, h_may, p_may, y_may, b1_may, y1_may, b11_may, y11_may, fecha_odt, hora_odt)
@@ -583,18 +639,16 @@ class AlmejaModel extends Controller {
 
 
         // corte
-
             // empalme
-            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_emp']['costo_unitario_corte_papel']), 2);
-            $cortes_pliego        = intval($aJson['costo_corte_papel_emp']['cortes_pliego']);
-            $tot_pliegos          = intval($aJson['costo_corte_papel_emp']['tot_pliegos']);
-            $millares             = intval($aJson['costo_corte_papel_emp']['millares']);
-            $costo_corte          = round(floatval($aJson['costo_corte_papel_emp']['tot_costo_corte']), 2);
+            $corte_costo_unitario = round(floatval($aJson['Papel_Empalme']['costo_unit_papel']), 2);
+            $cortes_pliego        = intval($aJson['Papel_Empalme']['corte']);
+            $tot_pliegos          = intval($aJson['Papel_Empalme']['tot_pliegos']);
+            $costo_corte          = round(floatval($aJson['Papel_Empalme']['tot_costo']), 2);
 
             $sql_corte_emp = "INSERT INTO cot_alm_corte_emp
-                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, costo_corte, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $costo_corte, '$d_fecha')";
 
 
             $query_corte_emp = $this->db->prepare($sql_corte_emp);
@@ -611,16 +665,15 @@ class AlmejaModel extends Controller {
 
 
             // forro cajon
-            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_fcaj']['costo_unitario_corte_papel']), 2);
-            $cortes_pliego        = intval($aJson['costo_corte_papel_fcaj']['cortes_pliego']);
-            $tot_pliegos          = intval($aJson['costo_corte_papel_fcaj']['tot_pliegos']);
-            $millares             = intval($aJson['costo_corte_papel_fcaj']['millares']);
-            $costo_corte          = round(floatval($aJson['costo_corte_papel_fcaj']['tot_costo_corte']), 2);
+            $corte_costo_unitario = round(floatval($aJson['Papel_FCaj']['costo_unit_papel']), 2);
+            $cortes_pliego        = intval($aJson['Papel_FCaj']['corte']);
+            $tot_pliegos          = intval($aJson['Papel_FCaj']['tot_pliegos']);
+            $costo_corte          = round(floatval($aJson['Papel_FCaj']['tot_costo']), 2);
 
             $sql_corte_fcaj = "INSERT INTO cot_alm_corte_fcaj
-                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, costo_corte, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $costo_corte, '$d_fecha')";
 
 
             $query_corte_fcaj = $this->db->prepare($sql_corte_fcaj);
@@ -637,16 +690,15 @@ class AlmejaModel extends Controller {
 
 
             // corte forro cartera
-            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_fcar']['costo_unitario_corte_papel']), 2);
-            $cortes_pliego        = intval($aJson['costo_corte_papel_fcar']['cortes_pliego']);
-            $tot_pliegos          = intval($aJson['costo_corte_papel_fcar']['tot_pliegos']);
-            $millares             = intval($aJson['costo_corte_papel_fcar']['millares']);
-            $costo_corte          = round(floatval($aJson['costo_corte_papel_fcar']['tot_costo_corte']), 2);
+            $corte_costo_unitario = round(floatval($aJson['Papel_FCar']['costo_unit_papel']), 2);
+            $cortes_pliego        = intval($aJson['Papel_FCar']['corte']);
+            $tot_pliegos          = intval($aJson['Papel_FCar']['tot_pliegos']);
+            $costo_corte          = round(floatval($aJson['Papel_FCar']['tot_costo']), 2);
 
             $sql_corte_fcar = "INSERT INTO cot_alm_corte_fcar
-                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, costo_corte, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $costo_corte, '$d_fecha')";
 
 
             $query_corte_fcar = $this->db->prepare($sql_corte_fcar);
@@ -663,16 +715,15 @@ class AlmejaModel extends Controller {
 
 
             // forro guarda
-            $corte_costo_unitario = round(floatval($aJson['costo_corte_papel_guarda']['costo_unitario_corte_papel']), 2);
-            $cortes_pliego        = intval($aJson['costo_corte_papel_guarda']['cortes_pliego']);
-            $tot_pliegos          = intval($aJson['costo_corte_papel_guarda']['tot_pliegos']);
-            $millares             = intval($aJson['costo_corte_papel_guarda']['millares']);
-            $costo_corte          = round(floatval($aJson['costo_corte_papel_guarda']['tot_costo_corte']), 2);
+            $corte_costo_unitario = round(floatval($aJson['Papel_Guarda']['costo_unit_papel']), 2);
+            $cortes_pliego        = intval($aJson['Papel_Guarda']['corte']);
+            $tot_pliegos          = intval($aJson['Papel_Guarda']['tot_pliegos']);
+            $costo_corte          = round(floatval($aJson['Papel_Guarda']['tot_costo']), 2);
 
             $sql_corte_guarda = "INSERT INTO cot_alm_corte_guarda
-                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, costo_corte, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $costo_corte, '$d_fecha')";
 
 
             $query_corte_guarda = $this->db->prepare($sql_corte_guarda);
@@ -689,16 +740,15 @@ class AlmejaModel extends Controller {
 
 
             // corte carton
-            $corte_costo_unitario = round(floatval($aJson['costo_corte_carton']['costo_unitario_corte_papel']), 2);
-            $cortes_pliego        = intval($aJson['costo_corte_carton']['cortes_pliego']);
-            $tot_pliegos          = intval($aJson['costo_corte_carton']['tot_pliegos']);
-            $millares             = intval($aJson['costo_corte_carton']['millares']);
-            $costo_corte          = round(floatval($aJson['costo_corte_carton']['tot_costo_corte']), 2);
+            $corte_costo_unitario = round(floatval($aJson['CartonCaj']['costo_unit_papel']), 2);
+            $cortes_pliego        = intval($aJson['CartonCaj']['corte']);
+            $tot_pliegos          = intval($aJson['CartonCaj']['tot_pliegos']);
+            $costo_corte          = round(floatval($aJson['CartonCaj']['tot_costo']), 2);
 
             $sql_corte_carton = "INSERT INTO cot_alm_corte_carton_emp
-                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, costo_corte, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $costo_corte, '$d_fecha')";
 
 
             $query_corte_carton = $this->db->prepare($sql_corte_carton);
@@ -715,16 +765,15 @@ class AlmejaModel extends Controller {
 
 
             // corte cartera
-            $corte_costo_unitario = round(floatval($aJson['costo_corte_cartera']['costo_unitario_corte_papel']), 2);
-            $cortes_pliego        = intval($aJson['costo_corte_cartera']['cortes_pliego']);
-            $tot_pliegos          = intval($aJson['costo_corte_cartera']['tot_pliegos']);
-            $millares             = intval($aJson['costo_corte_cartera']['millares']);
-            $costo_corte          = round(floatval($aJson['costo_corte_cartera']['tot_costo_corte']), 2);
+            $corte_costo_unitario = round(floatval($aJson['CartonCar']['costo_unit_papel']), 2);
+            $cortes_pliego        = intval($aJson['CartonCar']['corte']);
+            $tot_pliegos          = intval($aJson['CartonCar']['tot_pliegos']);
+            $costo_corte          = round(floatval($aJson['CartonCar']['tot_costo']), 2);
 
             $sql_corte_carton_fcar = "INSERT INTO cot_alm_corte_carton_fcar
-                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, millares, costo_corte, fecha)
+                (id_odt, id_modelo, tiraje, corte_costo_unitario, cortes_pliego, tot_pliegos, costo_corte, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $millares, $costo_corte, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $corte_costo_unitario, $cortes_pliego, $tot_pliegos, $costo_corte, '$d_fecha')";
 
 
             $query_corte_carton_fcar = $this->db->prepare($sql_corte_carton_fcar);
@@ -863,7 +912,7 @@ class AlmejaModel extends Controller {
             $costo_unit_arreglo = round(floatval($aJson['arreglo_ranurado_hor_emp']['arreglo']), 2);
             $costo_unit_ranura  = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_unit_por_ranura']), 2);
             $costo_ranurado     = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_por_ranura']), 2);
-            $costo_tot_ranurado = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_tot_ranurado']), 2);
+            $costo_tot_ranurado = round(floatval($aJson['arreglo_ranurado_hor_emp']['costo_tot_proceso']), 2);
 
             $sql_ranurado_arreglo_ran_hor = "INSERT INTO cot_alm_arreglo_ranurado_hor_emp
                 (id_odt, id_modelo, tiraje, costo_unit_arreglo, costo_unit_ranura, costo_ranurado, costo_tot_arreglo_ranurado, fecha)
@@ -891,7 +940,7 @@ class AlmejaModel extends Controller {
                 $costo_unit_arreglo = round(floatval($aJson['arreglo_ranurado_ver_emp']['arreglo']), 2);
                 $costo_unit_ranura  = round(floatval($aJson['arreglo_ranurado_ver_emp']['costo_unit_por_ranura']), 2);
                 $costo_ranurado     = round(floatval($aJson['arreglo_ranurado_ver_emp']['costo_por_ranura']), 2);
-                $costo_tot_ranurado = round(floatval($aJson['arreglo_ranurado_ver_emp']['costo_tot_ranurado']), 2);
+                $costo_tot_ranurado = round(floatval($aJson['arreglo_ranurado_ver_emp']['costo_tot_proceso']), 2);
 
                 if ($costo_tot_ranurado > 0) {
 
@@ -915,13 +964,23 @@ class AlmejaModel extends Controller {
 
 
         // arreglo ranurado forro de la cartera
-            $costo_unit = $aJson['cot_alm_arreglo_ranurado_fcar'];
+            $costo_unit = $aJson['arreglo_ranurado_hor_fcar']['costo_unit_por_ranura'];
             $costo_unit = round(floatval($costo_unit), 2);
 
+            $costo_ranurado = $aJson['arreglo_ranurado_hor_fcar']['costo_por_ranura'];
+            $costo_ranurado = round(floatval($costo_ranurado), 2);
+
+            $arreglo_ranurado = $aJson['arreglo_ranurado_hor_fcar']['arreglo'];
+            $arreglo_ranurado = round(floatval($arreglo_ranurado), 2);
+
+            $costo_tot_ranurado = $aJson['arreglo_ranurado_hor_fcar']['costo_tot_proceso'];
+            $costo_tot_ranurado = round(floatval($costo_tot_ranurado), 2);
+
+
             $sql_ranurado_arreglo_ran_fcar = "INSERT INTO cot_alm_arreglo_ranurado_fcar
-                (id_odt, id_modelo, tiraje, costo_unit, costo_tot_ranurado, fecha)
+                (id_odt, id_modelo, tiraje, costo_unit, costo_ranura, arreglo, costo_tot_ranurado, fecha)
             VALUES
-                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_unit, '$d_fecha')";
+                ($id_caja_odt, $id_modelo, $tiraje, $costo_unit, $costo_ranurado, $arreglo_ranurado, $costo_tot_ranurado, '$d_fecha')";
 
             $query_arreglo_ranurado_fcar = $this->db->prepare($sql_ranurado_arreglo_ran_fcar);
 
@@ -937,8 +996,8 @@ class AlmejaModel extends Controller {
 
 
         // Encuadernacion
-        $forrado_cajon_costo            = round(floatval($aJson['encuadernacion']['forrado_cajon_costo']), 2);
-        $encuad_costo_tot_proceso       = round(floatval($aJson['encuadernacion']['costo_tot_proceso']), 2);
+        $forrado_cajon_costo      = round(floatval($aJson['Encuadernacion_emp']['forrado_cajon_costo']), 2);
+        $encuad_costo_tot_proceso = round(floatval($aJson['Encuadernacion_emp']['costo_tot_proceso']), 2);
 
             $sql_encuadernacion = "INSERT INTO cot_alm_encuadernacion
                 (id_modelo, id_odt, tiraje, costo_unit_iman, perforado_iman_y_puesta, encajada_costo_unit, encajada_costo_tot, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, costo_tot_proceso, fecha)
@@ -956,6 +1015,7 @@ class AlmejaModel extends Controller {
 
                 $inserted_encuadernacion = false;
             }
+
 
         // Encuadernacion_Fcaj
             $sql_encuadernacion_fcaj = "INSERT INTO cot_alm_encuadernacion_fcaj
@@ -977,8 +1037,8 @@ class AlmejaModel extends Controller {
 
 
         // despunte de esquinas empalme
-            $costo_unit         = round(floatval($aJson['despunte_esquinas']['costo_unit']), 2);
-            $costo_tot_despunte = round(floatval($aJson['despunte_esquinas']['costo_tot_despunte']), 2);
+            $costo_unit         = round(floatval($aJson['despunte_esquinas']['costo_unitario_esquinas']), 2);
+            $costo_tot_despunte = round(floatval($aJson['despunte_esquinas']['costo_tot_proceso']), 2);
 
             $sql_despunte_emp = "INSERT INTO cot_alm_despunte_esquinas_emp(id_modelo, id_odt, tiraje, costo_unit, costo_tot_despunte, fecha)
             VALUES
@@ -1040,7 +1100,10 @@ class AlmejaModel extends Controller {
                 $l_armado_caja_final = false;
             }
 
+
+
     /*************** Termina costos fijos **********************/
+
 
         /************* Accesorios *********************/
 
@@ -1214,7 +1277,6 @@ class AlmejaModel extends Controller {
 
 
         /*********** Offset Empalme **************/
-
 
             if (array_key_exists("OffEmp", $aJson)) {
 
@@ -1648,7 +1710,7 @@ class AlmejaModel extends Controller {
 
                 $cuantos_v_DigEmp = count($v_DigEmp);
 
-                $cortes_por_pliego = intval($aJson['Cortes']['guarda_cajon']);
+                $cortes_por_pliego = intval($aJson['Cortes']['guarda']);
 
                 for ($k = 0; $k < $cuantos_v_DigEmp; $k++) {
 
@@ -2293,8 +2355,6 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
-                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
-                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
@@ -2302,9 +2362,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LaserEmp = "INSERT INTO cot_alm_laseremp
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
 
 
                     $query_LaserEmp = $this->db->prepare($sql_LaserEmp);
@@ -2337,8 +2397,6 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
-                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
-                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
@@ -2346,9 +2404,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LaserFcaj = "INSERT INTO cot_alm_laserfcaj
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
 
 
                     $query_LaserFcaj = $this->db->prepare($sql_LaserFcaj);
@@ -2381,8 +2439,6 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
-                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
-                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
@@ -2390,9 +2446,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LaserFcar = "INSERT INTO cot_alm_laserfcar
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
 
 
                     $query_LaserFcar = $this->db->prepare($sql_LaserFcar);
@@ -2424,8 +2480,6 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipo_grabado']);
-                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
-                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
@@ -2433,9 +2487,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LaserG = "INSERT INTO cot_alm_laserguarda
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, '$d_fecha')";
 
 
                     $query_LaserG = $this->db->prepare($sql_LaserG);
@@ -3364,7 +3418,7 @@ class AlmejaModel extends Controller {
 
             //and ($inserted_cliem and $inserted_clied)
             if (
-                ($inserted and $inserted_mod and $inserted_calc)
+                ($inserted and $inserted_mod and $l_procesos and $inserted_calc)
 
                 and ($inserted_papel_emp and $inserted_papel_fcaj and $inserted_papel_fcar and $inserted_papel_g)
 
@@ -3417,6 +3471,11 @@ class AlmejaModel extends Controller {
                ) {
 
                 $this->db->commit();
+
+                $endtime  = microtime(true);
+                $timediff = $endtime - $starttime;
+
+                $aJson['tiempo_transcurrido'] = $timediff;
 
                 return $aJson;
             } else {

@@ -785,17 +785,17 @@ class Circular extends Cajas{
             }
         });
 
-        switch( parte ){
+        /*switch( parte ){
 
-            case "Cartón Cajón":
+            case "Base Cajón":
                 trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
             break;
-            case "Empalme Cajón":
+            case "Circunferencia Cajón":
                 var precioEnc = arrPrincipal['encuadernacion']['costo_tot_proceso'];
                 var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
                 $('#resumen'+tabla).append(trEnc);
             break;
-            case "Forro Cajón":
+            case "Forro Exterior Cajón":
                 var precioElab = arrPrincipal['elab_FCaj']['costo_tot_proceso'];
                 var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
                 $('#resumen'+tabla).append(trElab);
@@ -808,12 +808,12 @@ class Circular extends Cajas{
                 var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
                 $('#resumen'+tabla).append(trEnc);
             break;
-            case "Empalme Tapa":
+            case "Pompa Cajón":
             break;
-            case "Carton Tapa":
+            case "Forro Interior Cajón":
                 trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
             break;
-            case "Forro Tapa":
+            case "Base Tapa":
                 var precioElab = arrPrincipal['elab_FTap']['costo_tot_proceso'];
                 var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
                 $('#resumen'+tabla).append(trElab);
@@ -822,7 +822,14 @@ class Circular extends Cajas{
                 var trRan = "<tr><td></td><td>Ranurado</td><td>$" + precioRanurado + "</td><td></td></tr>";
                 $('#resumen'+tabla).append(trRan);
             break;
-        }
+            case "Circunferencia Tapa":
+            break;
+            case "Forro Exterior Tapa":
+            break;
+            case "Forro Interior Tapa":
+            break;
+        }*/
+
         $('#resumen' + tabla ).append(trResumen);
     }
 

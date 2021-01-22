@@ -335,7 +335,7 @@
 
                 <div class="modal-header azulWhi" style="background: red">
 
-                    <h5 class="modal-title" id="txtTituloModal">Error</h5>
+                    <h5 class="modal-title" id="txtTituloModal"><i class="bi bi-exclamation-triangle"></i> Atencion!</h5>
                     
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 
