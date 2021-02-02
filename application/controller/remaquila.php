@@ -4,8 +4,12 @@
 
 class remaquila extends Controller
 {
-    public function index(){
-        session_start();
+    public function index() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
 
@@ -14,38 +18,44 @@ class remaquila extends Controller
 
         $rows = $remaquilamodel->getmaquila();
        
-if($login->isLoged()){
+        if($login->isLoged()){
     
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/remaquila/maquila.php';
-    require 'application/views/templates/footer.php';
-    
-    }else{
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/remaquila/maquila.php';
+            require_once 'application/views/templates/footer.php';
+        }else{
 
-        header("Location:".URL.'login/');
-
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:".URL.'login/');
+        }
     }
 
-    }
+    
+    public function registrar(){
+    
+        if (!isset($_SESSION)) {
 
-  public function registrar(){
             session_start();
+        }
+
         $remaquilamodel=$this->loadModel('RemaquilaModel');
         $register = $remaquilamodel->getRegistrar($_POST);
 
         if ($register) {
-    ?>       
-<script>   
-        alert('Se han registrado');
-       window.location= '<?php echo URL?>remaquila/reg'
-</script>
-<?php 
-      }else 
-      echo "El registro fallo";
-      {
-   }                                                                                         
-}
+
+            ?>       
+            <script>   
+                alert('Se han registrado');
+                window.location= '<?php echo URL?>remaquila/reg'
+            </script>
+            <?php 
+        }else { 
+            echo "El registro fallo";
+        }
+    }
 
 
  public function ConectId(){
@@ -120,8 +130,12 @@ public function modificar(){
 
 
 
-  public function reg(){
-         session_start();
+    public function reg() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
       
         $login= $this->loadController('login');
         $remaquilamodel =$this->loadModel('RemaquilaModel');
@@ -131,19 +145,27 @@ public function modificar(){
        if($login->isLoged()){
       $rows=$options_model->getAllProcesos();
       $rows2=$options_model->getPersonal();
-       require 'application/views/templates/head.php';
-       require 'application/views/templates/top_menu.php';
-       require 'application/views/remaquila/documento.php';
-       require 'application/views/templates/footer.php';
+       require_once 'application/views/templates/head.php';
+       require_once 'application/views/templates/top_menu.php';
+       require_once 'application/views/remaquila/documento.php';
+       require_once 'application/views/templates/footer.php';
   
     }else{
-        header("Location:".URL.'login/');
+        
+        echo '<script language="javascript">';
+        echo 'window.location.href="' . URL . 'login/"';
+        echo '</script>';
+        //header("Location:".URL.'login/');
     }
   }
 
 
-  public function mod(){
-         session_start();
+  public function mod() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
       
       $login=$this->loadController('login');
       $remaquilamodel=$this->loadModel('RemaquilaModel');
@@ -154,19 +176,27 @@ public function modificar(){
 
       $id=$_GET['id'];
       $datos = $remaquilamodel->getadjust($id);
-      require 'application/views/templates/head.php';
-      require 'application/views/templates/top_menu.php';
-      require 'application/views/remaquila/modificar.php';
-      require 'application/views/templates/footer.php';
+      require_once 'application/views/templates/head.php';
+      require_once 'application/views/templates/top_menu.php';
+      require_once 'application/views/remaquila/modificar.php';
+      require_once 'application/views/templates/footer.php';
     }else{
-        header("Location:".URL.'login/');
+        
+        echo '<script language="javascript">';
+        echo 'window.location.href="' . URL . 'login/"';
+        echo '</script>';
+        //header("Location:".URL.'login/');
     }
   }
 
 
 
     public function documento(){
-  session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
       
       $login=$this->loadController('login');
       $remaquilamodel=$this->loadModel('RemaquilaModel');
@@ -176,22 +206,27 @@ public function modificar(){
        
 if($login->isLoged()){
   
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/remaquila/conexion.php';
-    require 'application/views/templates/footer.php';
+    require_once 'application/views/templates/head.php';
+    require_once 'application/views/templates/top_menu.php';
+    require_once 'application/views/remaquila/conexion.php';
+    require_once 'application/views/templates/footer.php';
   
     }else{
 
-        header("Location:".URL.'login/');
-
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+        //header("Location:".URL.'login/');
     }
-
     }
 
 
     public function reporte(){
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         $remaquilamodel=$this->loadModel('RemaquilaModel');
@@ -199,22 +234,19 @@ if($login->isLoged()){
        
 if($login->isLoged()){
     
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/remaquila/reporte.php';
-    require 'application/views/templates/footer.php';
+    require_once 'application/views/templates/head.php';
+    require_once 'application/views/templates/top_menu.php';
+    require_once 'application/views/remaquila/reporte.php';
+    require_once 'application/views/templates/footer.php';
     
     }else{
 
-        header("Location:".URL.'login/');
-
+        echo '<script language="javascript">';
+        echo 'window.location.href="' . URL . 'login/"';
+        echo '</script>';
+        //header("Location:".URL.'login/');
     }
-
     }
-
-
-
-
 }
 
 ?>

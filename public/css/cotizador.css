@@ -353,3 +353,15 @@
     background-color: #C4C4C4;
     border-radius: 20px;
 }
+
+.divCliente::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 4px;
+    height: 4px;
+}
+
+.divCliente::-webkit-scrollbar-thumb {
+    
+    background-color: #C4C4C4;
+    border-radius: 20px;
+}

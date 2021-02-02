@@ -385,7 +385,10 @@ class Regalo extends Controller {
 
         for ($i = 0; $i < $num_procesos; $i++) {
 
-            $nombre_tabla_tmp   = self::strip_slashes_recursive($tabla_procesos[$i]);
+            $nombre_tabla_tmp = self::strip_slashes_recursive($tabla_procesos[$i]);
+
+            $aOffset_tmp     = "";
+            $aOffset_tmp_len = 0;
 
             if ($nombre_tabla_tmp == "cot_accesorios" or $nombre_tabla_tmp == "cot_bancos" or $nombre_tabla_tmp == "cot_cierres") {
 
@@ -397,15 +400,17 @@ class Regalo extends Controller {
                 $proceso            = substr($nombre_tabla_tmp, $len_prefijo, 3);
             }
 
-
-            $aOffset_tmp     = "";
-            $aOffset_tmp_len = 0;
-
             switch ($proceso) {
 
                 case 'off':
 
-                    $nombre_seccion_tmp = substr($nombreProcesoTabla, strlen("offset"));
+                    if (strlen($nombre_tabla_tmp) <= 20) {
+
+                        $nombre_seccion_tmp = substr($nombreProcesoTabla, strlen("offset"));
+                    } else {
+
+                        $nombre_seccion_tmp = substr($nombreProcesoTabla, strlen("offset"));
+                    }
 
                     $grupo_seccion = 'aImp' . $nombre_seccion_tmp;
 
@@ -1283,15 +1288,6 @@ class Regalo extends Controller {
         $aJson['encuadernacion'] = self::calculoEncuadernacion($tiraje, $enc_cortes_emp, $id_papel_emp, $ventas_model);
 
 
-        // encajada
-        $encajada = self::calculoEncajada($tiraje, $ventas_model);
-
-        $aJson['encuadernacion']['encajada_costo_unitario']      = $encajada['costo_unitario'];
-        $aJson['encuadernacion']['encajada_costo_tot']           = $encajada['costo_tot_proceso'];
-
-        $aJson['encuadernacion']['costo_tot_proceso'] = round(floatval($aJson['encuadernacion']['costo_tot_proceso'] + $encajada['costo_tot_proceso']), 2);
-
-
         $temp = floatval($aJson['encuadernacion']['costo_tot_proceso']);
 
         if ($temp <= 0) {
@@ -1300,8 +1296,7 @@ class Regalo extends Controller {
         }
 
 
-        $aJson['costos_fijos'] += floatval($aJson['encuadernacion']['costo_tot_proceso']);
-        $subtotal              += floatval($aJson['encuadernacion']['costo_tot_proceso']);
+        $subtotal += floatval($aJson['encuadernacion']['costo_tot_proceso']);
 
 
     /********************* encuadernacion cajon ******************************/
@@ -1326,6 +1321,21 @@ class Regalo extends Controller {
         $subtotal              += floatval($aJson['encuadernacion_fcaj']['costo_tot_proceso']);
 
 
+        // encajada cajon
+        $aJson['encajada'] = self::calculoEncajada($tiraje, $ventas_model);
+
+        $temp = 0;
+        $temp = floatval($aJson['encajada']['costo_tot_proceso']);
+
+        if ($temp <= 0) {
+
+            self::mError($aJson, $mensaje, $error , "encajada;");
+        }
+
+        $aJson['costos_fijos'] += floatval($aJson['encajada']['costo_tot_proceso']);
+        $subtotal              += floatval($aJson['encajada']['costo_tot_proceso']);
+
+
     /******* despunte de esquinas empalme tapa ******/
 
         $desp_tmp = self::calculoDespunteEsquinasCajon($tiraje, $ventas_model);
@@ -1341,8 +1351,8 @@ class Regalo extends Controller {
         $subtotal              += $desp_tmp['costo_tot_proceso'];
 
 
-    /************ forro exterior del cajon  ******************/
 
+    /************ forro exterior del cajon  ******************/
 
         $aJson['elab_FCaj'] = self::calculoForradoCajon($tiraje, $aJson['cortes']['papel_FCaj'], $id_papel_FCaj, $ventas_model);
 
@@ -1400,6 +1410,20 @@ class Regalo extends Controller {
         $aJson['costos_fijos'] += $aJson['suaje_ftap_fijo']['costo_tot_proceso'];
         $subtotal              += $aJson['suaje_ftap_fijo']['costo_tot_proceso'];
 
+
+        // encajada forro tapa
+        $aJson['encajada_ftap'] = self::calculoEncajada($tiraje, $ventas_model);
+
+        $temp = 0;
+        $temp = floatval($aJson['encajada_ftap']['costo_tot_proceso']);
+
+        if ($temp <= 0) {
+
+            self::mError($aJson, $mensaje, $error , "encajada forro tapa;");
+        }
+
+        $aJson['costos_fijos'] += floatval($aJson['encajada_ftap']['costo_tot_proceso']);
+        $subtotal              += floatval($aJson['encajada_ftap']['costo_tot_proceso']);
 
 
     /************ Elaboración Forro de la Tapa  ******************/
@@ -4618,6 +4642,7 @@ class Regalo extends Controller {
                 $K   = $_SESSION['calculadora']['K'];
 
                 require 'application/views/templates/head.php';
+                require 'application/views/templates/top_menu.php';
                 require 'application/views/calculadora/regalo3.php';
                 require 'application/views/templates/footer.php';
             } else {

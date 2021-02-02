@@ -4,41 +4,43 @@
 class Disenio extends Controller
 {
     
-    public function index(){
-        session_start();
+    public function index() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
-        $login= $this->loadController('login');
-        
-        $login_model = $this->loadModel('LoginModel');
+        $login         = $this->loadController('login');
+        $login_model   = $this->loadModel('LoginModel');
+        $options_model = $this->loadModel('OptionsModel');
+        $models        = $options_model->getBoxModels();
+
+        if($login->isLoged()) {
+    
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/disenio/index.php';
+            require_once 'application/views/templates/footer.php';
+          
+        } else {
+
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:".URL.'login/');
+        }
+    }
+
+
+    public function getForm() {
 
         $options_model = $this->loadModel('OptionsModel');
-        $models=$options_model->getBoxModels();
-if($login->isLoged()){
-    
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/disenio/index.php';
-    require 'application/views/templates/footer.php';
-  
-    }else{
+        $model         =$_POST['model'];
 
-        header("Location:".URL.'login/');
-
-    }
-
-
-
-    }
-
-    public function getForm(){
-
-    $options_model = $this->loadModel('OptionsModel');
-
-    $model=$_POST['model'];
-
-    $html='';
-    $i=1;
-    $options=$options_model->getOptionsByModel($model);
+        $html='';
+        $i=1;
+        $options=$options_model->getOptionsByModel($model);
     
     
 

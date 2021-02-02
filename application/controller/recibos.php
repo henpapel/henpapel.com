@@ -4,7 +4,11 @@ class Recibos extends Controller
 {
     
  public function index(){
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -14,10 +18,10 @@ class Recibos extends Controller
 
        
 if($login->isLoged()){
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/recibos/altas.php';
-    require 'application/views/templates/footer.php';
+    require_once 'application/views/templates/head.php';
+    require_once 'application/views/templates/top_menu.php';
+    require_once 'application/views/recibos/altas.php';
+    require_once 'application/views/templates/footer.php';
   
     }else{
 
@@ -29,7 +33,11 @@ if($login->isLoged()){
 
  public function detallesRecibo() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -42,10 +50,10 @@ if($login->isLoged()){
 
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/addticket.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/addticket.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
@@ -55,7 +63,11 @@ if($login->isLoged()){
 
     public function facturacion() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -66,10 +78,10 @@ if($login->isLoged()){
 
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/facturarcheck.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/facturarcheck.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
@@ -79,7 +91,11 @@ if($login->isLoged()){
 
     public function facturar() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -92,10 +108,10 @@ if($login->isLoged()){
 
           $inserted = $ventas_model->getFacturar($_POST['factura'],$_POST['total'],$_POST['porvalidar'], $_POST['totalrecibos']);
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/facturadas.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/facturadas.php';
+            require_once 'application/views/templates/footer.php';
         
         } else {
 
@@ -104,7 +120,11 @@ if($login->isLoged()){
     }
 
  public function uploadFiles(){
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -122,10 +142,10 @@ if($login->isLoged()){
 
         if($login->isLoged()){
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/altas.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/altas.php';
+            require_once 'application/views/templates/footer.php';
                 
   
     }else{
@@ -138,7 +158,11 @@ if($login->isLoged()){
 
 
     public function altas(){
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -149,10 +173,10 @@ if($login->isLoged()){
 if($login->isLoged()){
         
     
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/recibos/altas.php';
-    require 'application/views/templates/footer.php';
+    require_once 'application/views/templates/head.php';
+    require_once 'application/views/templates/top_menu.php';
+    require_once 'application/views/recibos/altas.php';
+    require_once 'application/views/templates/footer.php';
   
     }else{
 
@@ -162,7 +186,11 @@ if($login->isLoged()){
  }
 
  public function revisadas(){
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -173,10 +201,10 @@ if($login->isLoged()){
 if($login->isLoged()){
         
     
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/recibos/revisadas.php';
-    require 'application/views/templates/footer.php';
+    require_once 'application/views/templates/head.php';
+    require_once 'application/views/templates/top_menu.php';
+    require_once 'application/views/recibos/revisadas.php';
+    require_once 'application/views/templates/footer.php';
   
     }else{
 
@@ -185,7 +213,11 @@ if($login->isLoged()){
     }
  }
  public function facturadas(){
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -196,10 +228,10 @@ if($login->isLoged()){
 if($login->isLoged()){
         
     
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/recibos/facturadas.php';
-    require 'application/views/templates/footer.php';
+    require_once 'application/views/templates/head.php';
+    require_once 'application/views/templates/top_menu.php';
+    require_once 'application/views/recibos/facturadas.php';
+    require_once 'application/views/templates/footer.php';
   
     }else{
 
@@ -210,7 +242,11 @@ if($login->isLoged()){
 
  public function factura() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -223,10 +259,10 @@ if($login->isLoged()){
 
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/factura.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/factura.php';
+            require_once 'application/views/templates/footer.php';
         
         } else {
 
@@ -236,7 +272,11 @@ if($login->isLoged()){
 
      public function BuscarFechas() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -249,10 +289,10 @@ if($login->isLoged()){
 
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/facturarCheck.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/facturarCheck.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
@@ -263,7 +303,11 @@ if($login->isLoged()){
 
 public function detallesFactura() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -276,10 +320,10 @@ public function detallesFactura() {
 
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/modificarfactura.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/modificarfactura.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
@@ -289,7 +333,11 @@ public function detallesFactura() {
 
 public function actualizarFactura() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -302,10 +350,10 @@ public function actualizarFactura() {
 
           $inserted = $ventas_model->getActualizaFactura();
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/facturadas.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/facturadas.php';
+            require_once 'application/views/templates/footer.php';
         
         } else {
 
@@ -315,7 +363,11 @@ public function actualizarFactura() {
 
     public function eliminarElemento() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -328,10 +380,10 @@ public function actualizarFactura() {
 
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/modfactura1.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/modfactura1.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
@@ -342,7 +394,11 @@ public function actualizarFactura() {
 
     public function eliminarBFac() {
 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -356,10 +412,10 @@ public function actualizarFactura() {
           $inserted = $ventas_model->getFacturaMod2();
           $inserted2 = $ventas_model->getFacturaMod3();
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/recibos/facturadas.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/recibos/facturadas.php';
+            require_once 'application/views/templates/footer.php';
         
         } else {
 

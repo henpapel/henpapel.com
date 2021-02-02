@@ -47,7 +47,7 @@ class Inicio extends Controller {
 
                 $sessions_model->putMemberOnTiro($sessionId);
 
-                require 'application/views/tiro/userInterface.php';
+                require_once 'application/views/tiro/userInterface.php';
             } else {
 
                 echo "<p style='padding:30px;color:red;'>No se pudo guardar la informacion por favor hablale a los de sistemas</p>";
@@ -115,7 +115,7 @@ class Inicio extends Controller {
                         $_SESSION['teamSession'][$_POST['user']]['memberProcessID'] = $processID;
                         $sessions_model->putMemberOnTiro($sessionId);
 
-                        require 'application/views/tiro/userInterface.php';
+                        require_once 'application/views/tiro/userInterface.php';
                     } else {
 
                         echo "<p style='padding:30px;color:red;'>No se pudo guardar la informacion por favor hablale a los de sistemas</p>";
@@ -148,7 +148,7 @@ class Inicio extends Controller {
             }
         }
 
-        require 'application/views/inicio/odt.php';
+        require_once 'application/views/inicio/odt.php';
     }
 
 
@@ -163,7 +163,7 @@ class Inicio extends Controller {
 
         $stations = $process_model->getProcesByUser($_POST['user']);
 
-        require 'application/views/inicio/options.php';
+        require_once 'application/views/inicio/options.php';
     }
 
 
@@ -208,7 +208,7 @@ class Inicio extends Controller {
 
         $login_model = $this->loadModel('LoginModel');
 
-        require 'application/views/inicio/ODT.php';
+        require_once 'application/views/inicio/ODT.php';
     }
 
 }

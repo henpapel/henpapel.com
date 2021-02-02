@@ -19,10 +19,10 @@ class Crud_i extends Controller {
         $rows = $optionsmodel->getPapers();
        
         if($login->isLoged()){
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/crud_i/index.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/crud_i/index.php';
+            require_once 'application/views/templates/footer.php';
         }else{
 
             header("Location:".URL.'login/');

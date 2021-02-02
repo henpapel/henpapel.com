@@ -19,10 +19,10 @@ class Crud extends Controller {
        
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/crud/index.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/crud/index.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
             header("Location:".URL.'login/');
@@ -94,10 +94,10 @@ class Crud extends Controller {
             $id = $_GET['id'];
             $datos = $optionsmodel->getDatos($id);
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/crud/modificar.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/crud/modificar.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
             header("Location:".URL.'login/');
@@ -116,10 +116,10 @@ class Crud extends Controller {
        
         if($login->isLoged()) {
     
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/crud/agregar.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/crud/agregar.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
             header("Location:".URL.'login/');

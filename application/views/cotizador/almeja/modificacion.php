@@ -1218,7 +1218,7 @@
                                         <option selected value="selected" disabled>Elige un tipo</option>
                                         <?php
                                         foreach ($ABarnizUV as $aBarniz) {   ?>
-                                        <option id="aBar" value="<?=$aBarniz['nombre']?>" data-precio="<?=$aBarniz['precio']?>"><?=$aBarniz['nombre']?></option>
+                                        <option value="<?=$aBarniz['nombre']?>" data-precio="<?=$aBarniz['precio']?>"><?=$aBarniz['nombre']?></option>
                                         <?php
                                         } ?>
                                     </select>
@@ -3158,6 +3158,28 @@ if ($aJson) { ?>
         var forro_cartera = $("#exterior_cartera").val();   // forro cartera
         var guarda        = $("#interior_cartera").val();   // guarda
 
+        var odt         = $("#odt-1").val();
+        var base        = $("#corte_largo").val();
+        var altura      = $("#corte_ancho").val();
+        var profundidad = $("#profundidad_1").val();
+        var gCajon      = $("#grosor_cajon_1").val();
+        var gCartera      = $("#grosor_cartera_1").val();
+        var cantidad    = $("#qty").val();
+
+        if( revisarPropiedades(odt,"ODT") == false ) return false;
+
+        if( revisarPropiedades(base,"base") == false ) return false;
+
+        if( revisarPropiedades(altura,"altura") == false ) return false;
+
+        if( revisarPropiedades(profundidad,"profundidad") == false ) return false;
+
+        if( revisarPropiedades(gCajon,"grosor cajon") == false ) return false;
+
+        if( revisarPropiedades(gCartera,"grosor cartera") == false ) return false;
+
+        if( revisarPropiedades(cantidad,"cantidad") == false ) return false;
+
         if( empalme == null || forro_cajon == null || forro_cartera == null || guarda == null ){
 
             var cadena = "";
@@ -3433,7 +3455,7 @@ if ($aJson) { ?>
                             var js_encuadernacionranurado_tiraje = js_respuesta.Encuadernacion_emp['tiraje'];
 
 
-                            var js_encuadernacion_encajada_costo_unitario = js_respuesta.Encuadernacion_emp['encajada_costo_unitario'];
+                            var js_encuadernacion_encajada_costo_unitario = js_respuesta['encajada']['costo_unitario'];
 
 
                             if (js_encuadernacion_encajada_costo_unitario <= 0) {
@@ -3443,7 +3465,7 @@ if ($aJson) { ?>
 
 
 
-                            var js_encuadernacion_Encajada = js_respuesta.Encuadernacion_emp['encajada_costo_tot_proceso'];
+                            var js_encuadernacion_Encajada = js_respuesta['encajada']['costo_tot_proceso'];
 
                             var js_encuadernacion_costo_tot_proceso = js_respuesta.Encuadernacion_emp['costo_tot_proceso'];
 
@@ -3641,9 +3663,9 @@ if ($aJson) { ?>
                                     var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maq'];
 
                                     //*** otros datos ****
-                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad_maq'];
+                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad'];
                                     var js_tipo_emp       = js_variable_extra1_1[a_a]['Tipo'];
-                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas_maq'];
+                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas'];
 
                                     var js_total_offset_emp = js_costo_tot_laminas_emp + js_costo_tot_arreglo_emp + js_costo_tot_maquila;
 
@@ -3817,7 +3839,7 @@ if ($aJson) { ?>
                                     var js_total_offset_emp = js_variable_extra4[a]['costo_tot_proceso'];
 
                                     // imprime en la tabla de procesos añadidos Offset
-                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro del Cajón</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ js_costo_unitario_laminas_emp +'</td><td>'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_costo_unitario_arreglo_emp +'</td><td>'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Tiro</td><td>'+ js_costo_unitario_tiro_emp +'</td><td>'+ js_costo_tot_tiro_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro del Cajón</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ js_costo_unitario_laminas_emp +'</td><td>$'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_costo_unitario_arreglo_emp +'</td><td>$'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Tiro</td><td>$'+ js_costo_unitario_tiro_emp +'</td><td>$'+ js_costo_tot_tiro_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                                     jQuery214('#table_proc_offset').append(processoffset);
 
@@ -3834,7 +3856,7 @@ if ($aJson) { ?>
 
                                 for ( a_a in js_variable_extra1_1 ) {
 
-                                    var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas_maq'];
+                                    var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas'];
 
 
                                     if (js_costo_unitario_laminas_emp <= 0) {
@@ -3843,10 +3865,10 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas_maq'];
+                                    var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas'];
 
 
-                                    var js_costo_unitario_arreglo_emp = js_variable_extra1_1[a_a]['costo_unitario_arreglo_maq'];
+                                    var js_costo_unitario_arreglo_emp = js_variable_extra1_1[a_a]['arreglo_costo_unitario'];
 
 
                                     if (js_costo_unitario_arreglo_emp <= 0) {
@@ -3855,7 +3877,7 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_arreglo_emp = js_variable_extra1_1[a_a]['costo_arreglo_maq'];
+                                    var js_costo_tot_arreglo_emp = js_variable_extra1_1[a_a]['arreglo_costo'];
 
 
                                     var js_costo_unitario_maquila = js_variable_extra1_1[a_a]['costo_unitario_maq'];
@@ -3867,17 +3889,17 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maquila'];
+                                    var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maq'];
 
                                     //*** otros datos ****
-                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad_maq'];
+                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad'];
                                     var js_tipo_emp       = js_variable_extra1_1[a_a]['Tipo'];
-                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas_maq'];
+                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas'];
 
-                                    var js_total_offset_emp = js_costo_tot_laminas_emp + js_costo_tot_arreglo_emp + js_costo_tot_maquila;
+                                    var js_total_offset_emp = js_variable_extra1_1[a_a]['costo_tot_proceso'];
 
                                     // imprime en la tabla de procesos añadidos Offset
-                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro del Cajón</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ js_costo_unitario_laminas_emp +'</td><td>'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_costo_unitario_arreglo_emp +'</td><td>'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>'+ js_costo_unitario_maquila +'</td><td>'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro del Cajón</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ js_costo_unitario_laminas_emp +'</td><td>$'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_costo_unitario_arreglo_emp +'</td><td>$'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>$'+ js_costo_unitario_maquila +'</td><td>$'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                                     //$('#table_proc_offset').empty();
 
@@ -4040,7 +4062,7 @@ if ($aJson) { ?>
 
 
                                     // imprime en la tabla de procesos añadidos Offset
-                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro de la Cartera</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ js_costo_unitario_laminas_emp +'</td><td>'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_costo_unitario_arreglo_emp +'</td><td>'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Tiro</td><td>'+ js_costo_unitario_tiro_emp +'</td><td>'+ js_costo_tot_tiro_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro de la Cartera</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ js_costo_unitario_laminas_emp +'</td><td>$'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_costo_unitario_arreglo_emp +'</td><td>$'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Tiro</td><td>$'+ js_costo_unitario_tiro_emp +'</td><td>$'+ js_costo_tot_tiro_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                                     jQuery214('#table_proc_offset').append(processoffset);
 
@@ -4056,7 +4078,7 @@ if ($aJson) { ?>
 
                                 for ( a_a in js_variable_extra1_1 ) {
 
-                                    var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas_maq'];
+                                    var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas'];
 
 
                                     if (js_costo_unitario_laminas_emp <= 0) {
@@ -4065,10 +4087,10 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas_maq'];
+                                    var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas'];
 
 
-                                    var js_costo_unitario_arreglo_emp = js_variable_extra1_1[a_a]['costo_unitario_arreglo_maq'];
+                                    var js_costo_unitario_arreglo_emp = js_variable_extra1_1[a_a]['arreglo_costo_unitario'];
 
 
                                     if (js_costo_unitario_arreglo_emp <= 0) {
@@ -4077,7 +4099,7 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_arreglo_emp = js_variable_extra1_1[a_a]['costo_arreglo_maq'];
+                                    var js_costo_tot_arreglo_emp = js_variable_extra1_1[a_a]['arreglo_costo'];
 
 
                                     var js_costo_unitario_maquila = js_variable_extra1_1[a_a]['costo_unitario_maq'];
@@ -4089,17 +4111,17 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maquila'];
+                                    var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maq'];
 
                                     //*** otros datos ****
-                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad_maq'];
+                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad'];
                                     var js_tipo_emp       = js_variable_extra1_1[a_a]['Tipo'];
-                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas_maq'];
+                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas'];
 
-                                    var js_total_offset_emp = js_costo_tot_laminas_emp + js_costo_tot_arreglo_emp + js_costo_tot_maquila;
+                                    var js_total_offset_emp = js_variable_extra1_1[a_a]['costo_tot_proceso'];
 
                                     // imprime en la tabla de procesos añadidos Offset
-                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro de la Cartera</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ js_costo_unitario_laminas_emp +'</td><td>'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_costo_unitario_arreglo_emp +'</td><td>'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>'+ js_costo_unitario_maquila +'</td><td>'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Forro de la Cartera</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ js_costo_unitario_laminas_emp +'</td><td>$'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_costo_unitario_arreglo_emp +'</td><td>$'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>$'+ js_costo_unitario_maquila +'</td><td>$'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                                     //$('#table_proc_offset').empty();
 
@@ -4258,7 +4280,7 @@ if ($aJson) { ?>
 
 
                                     // imprime en la tabla de procesos añadidos Offset
-                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Guarda</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ js_costo_unitario_laminas_emp +'</td><td>'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_costo_unitario_arreglo_emp +'</td><td>'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Tiro</td><td>'+ js_costo_unitario_tiro_emp +'</td><td>'+ js_costo_tot_tiro_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Guarda</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ js_costo_unitario_laminas_emp +'</td><td>$'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_costo_unitario_arreglo_emp +'</td><td>$'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Tiro</td><td>$'+ js_costo_unitario_tiro_emp +'</td><td>$'+ js_costo_tot_tiro_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                                     jQuery214('#table_proc_offset').append(processoffset);
 
@@ -4274,7 +4296,7 @@ if ($aJson) { ?>
 
                                 for ( a_a in js_variable_extra1_1 ) {
 
-                                    var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas_maq'];
+                                    var js_costo_unitario_laminas_emp = js_variable_extra1_1[a_a]['costo_unitario_laminas'];
 
 
                                     if (js_costo_unitario_laminas_emp <= 0) {
@@ -4283,10 +4305,10 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas_maq'];
+                                    var js_costo_tot_laminas_emp = js_variable_extra1_1[a_a]['costo_laminas'];
 
 
-                                    var js_costo_unitario_arreglo_emp = js_variable_extra1_1[a_a]['costo_unitario_arreglo_maq'];
+                                    var js_costo_unitario_arreglo_emp = js_variable_extra1_1[a_a]['arreglo_costo_unitario'];
 
 
                                     if (js_costo_unitario_arreglo_emp <= 0) {
@@ -4295,7 +4317,7 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_arreglo_emp = js_variable_extra1_1[a_a]['costo_arreglo_maq'];
+                                    var js_costo_tot_arreglo_emp = js_variable_extra1_1[a_a]['arreglo_costo'];
 
 
                                     var js_costo_unitario_maquila = js_variable_extra1_1[a_a]['costo_unitario_maq'];
@@ -4307,17 +4329,17 @@ if ($aJson) { ?>
                                     }
 
 
-                                    var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maquila'];
+                                    var js_costo_tot_maquila = js_variable_extra1_1[a_a]['costo_tot_maq'];
 
                                     //*** otros datos ****
-                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad_maq'];
+                                    var js_cantidad_emp   = js_variable_extra1_1[a_a]['cantidad'];
                                     var js_tipo_emp       = js_variable_extra1_1[a_a]['Tipo'];
-                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas_maq'];
+                                    var js_num_tintas_emp = js_variable_extra1_1[a_a]['num_tintas'];
 
                                     var js_total_offset_emp = js_costo_tot_laminas_emp + js_costo_tot_arreglo_emp + js_costo_tot_maquila;
 
                                     // imprime en la tabla de procesos añadidos Offset
-                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Guardado</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ js_costo_unitario_laminas_emp +'</td><td>'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_costo_unitario_arreglo_emp +'</td><td>'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>'+ js_costo_unitario_maquila +'</td><td>'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                    var processoffset = '<tr><td colspan="3" style="background: steelblue;color: white;">Guardado</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ js_cantidad_emp +'</td><td>Tipo: '+ js_tipo_emp +'</td><td>Tintas: '+ js_num_tintas_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ js_costo_unitario_laminas_emp +'</td><td>$'+ js_costo_tot_laminas_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_costo_unitario_arreglo_emp +'</td><td>$'+ js_costo_tot_arreglo_emp +'</td></tr><tr><td>Maquila</td><td>$'+ js_costo_unitario_maquila +'</td><td>$'+ js_costo_tot_maquila +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_total_offset_emp +'<input type="hidden" class="prices" value="'+ js_total_offset_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
                                     //$('#table_proc_offset').empty();
 
@@ -4435,6 +4457,9 @@ if ($aJson) { ?>
 
                             $('#table_proc_Lam').empty();
 
+                            //aqui me quede 
+                            $('#proceso_laser_M1').empty();
+
                             $('#table_proc_HS').empty();
 
                             $('#table_proc_Grab').empty();
@@ -4443,8 +4468,6 @@ if ($aJson) { ?>
                             $('#table_proc_Laser').empty();
                             $('#table_proc_BarnizUV').empty();
 
-
-                            $('#table_proc_BarnizUV').empty();
                             $('#proceso_barnizuv_M1').hide();
 
 
@@ -4724,7 +4747,7 @@ if ($aJson) { ?>
 
                                         } else {
 
-                                            var acabadoTr = '<tr><td colspan="3" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoGrab_emp +'</td><td>Tamaño: '+ js_LargoGrab_emp +'x'+ js_AnchoGrab_emp +'</td><td>Ubicacion: '+ js_Ubicacion_grab_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Placa</td><td>'+ js_placa_costo_unitario_grab_emp +'</td><td>'+ js_placa_costo_grab_emp +'</td></tr><tr><td>Arreglo</td><td>'+ js_arreglo_costo_unitario_grab_emp +'</td><td>'+ js_arreglo_costo_grab_emp +'</td></tr><tr><td>Tiro</td><td>'+ js_estampado_costo_unitario_grab_emp +'</td><td>'+ js_estampado_costo_tiro_grab_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_costo_acabado_grab_emp +'<input type="hidden" class="prices" value="'+ js_costo_acabado_grab_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                            var acabadoTr = '<tr><td colspan="3" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoGrab_emp +'</td><td>Tamaño: '+ js_LargoGrab_emp +'x'+ js_AnchoGrab_emp +'</td><td>Ubicacion: '+ js_Ubicacion_grab_emp +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Placa</td><td>$'+ js_placa_costo_unitario_grab_emp +'</td><td>$'+ js_placa_costo_grab_emp +'</td></tr><tr><td>Arreglo</td><td>$'+ js_arreglo_costo_unitario_grab_emp +'</td><td>$'+ js_arreglo_costo_grab_emp +'</td></tr><tr><td>Tiro</td><td>$'+ js_estampado_costo_unitario_grab_emp +'</td><td>$'+ js_estampado_costo_tiro_grab_emp +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_costo_acabado_grab_emp +'<input type="hidden" class="prices" value="'+ js_costo_acabado_grab_emp +'"></td></tr><tr><td colspan="3"></td></tr>';
 
 
                                             jQuery214('#table_proc_Grab').append(acabadoTr);
@@ -4809,7 +4832,7 @@ if ($aJson) { ?>
                                             $("#txtContenido").html("Hay una variable indefinida.");
                                         } else {
 
-                                            var acabadoTr = '<tr><td colspan="3" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td colspan="2">Tipo: '+ js_tipoGrabadoSuaje +'</td><td>Tamaño: '+ js_LargoSuaje +'x'+ js_AnchoSuaje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Arreglo</td><td>'+ js_arreglo_costo_unitario_suaje +'</td><td>'+ js_arreglo_costo_suaje +'</td></tr><tr><td>Tiro</td><td>'+ js_estampado_costo_unitario_suaje +'</td><td>'+ js_estampado_costo_tiro_suaje +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_costo_acabado_suaje +'<input type="hidden" class="prices" value="'+ js_costo_acabado_suaje +'"></td></tr><tr><td colspan="3"></td></tr>';
+                                            var acabadoTr = '<tr><td colspan="3" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td colspan="2">Tipo: '+ js_tipoGrabadoSuaje +'</td><td>Tamaño: '+ js_LargoSuaje +'x'+ js_AnchoSuaje +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Arreglo</td><td>$'+ js_arreglo_costo_unitario_suaje +'</td><td>$'+ js_arreglo_costo_suaje +'</td></tr><tr><td>Tiro</td><td>$'+ js_estampado_costo_unitario_suaje +'</td><td>$'+ js_estampado_costo_tiro_suaje +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ js_costo_acabado_suaje +'<input type="hidden" class="prices" value="'+ js_costo_acabado_suaje +'"></td></tr><tr><td colspan="3"></td></tr>';
 
 
                                             jQuery214('#table_proc_Suaje').append(acabadoTr);
@@ -5545,6 +5568,7 @@ if ($aJson) { ?>
 
                             $("#txtContenido").html("(5965) Hubo un error al cotizar la caja.");
                             appndMsgError(error);
+                            console.log(e);
                         }catch {
                             
                             try{
@@ -5552,6 +5576,7 @@ if ($aJson) { ?>
                                 showModError("");
                                 $("#txtContenido").html("(5965) Hubo un error al cotizar la caja.");
                                 appndMsgError(e);
+                                console.log(e);
                             }catch {
                                 
                                 showModError("");
@@ -5567,10 +5592,10 @@ if ($aJson) { ?>
 
                     showModError("");
 
-                    $("#txtContenido").html("(3685) Hubo un error al cotizar la caja.");
+                    $("#txtContenido").html("(5981) Hubo un error al cotizar la caja.");
                     appndMsgError("Favor de llamar a sistemas");
-                    return false;
                     desactivarBtn();
+                    return false;
                 }
             })
             .fail(function(response) {
@@ -5597,10 +5622,6 @@ if ($aJson) { ?>
         var grabar = "SI";
 
         var formData = $("#caja-form").serializeArray();
-
-        var aCalculos_tmp = JSON.stringify(aCalculos, null, 4);
-        var aCortes_tmp   = JSON.stringify(aCortes, null, 4);
-        var aTr3_tmp      = JSON.stringify(aTr3, null, 4);
 
         // impresion
         var aImp_tmp     = JSON.stringify(aImp, null, 4);
@@ -5632,10 +5653,6 @@ if ($aJson) { ?>
 
         formData.push({name: 'id_cliente', value: id_cliente_tmp});
 
-        formData.push({name: 'aCalculos', value: aCalculos_tmp});   // calculadora
-        formData.push({name: 'aCortes', value: aCortes_tmp});
-        formData.push({name: 'aTr3', value: aTr3_tmp});             // mermas
-
         formData.push({name: 'aImp', value: aImp_tmp});
         formData.push({name: 'aImpFCaj', value: aImpFCaj_tmp});
         formData.push({name: 'aImpFCar', value: aImpFCar_tmp});
@@ -5653,21 +5670,6 @@ if ($aJson) { ?>
         // descuento
         formData.push({name: 'descuento_pctje', value: descuento});
         formData.push({name: 'grabar', value: grabar});
-
-
-        //$("#subForm").prop("disabled", true);
-
-        //formData.push({name: 'odt_anterior', value: "<?= $aJson['num_odt'] ?>"});
-
-        //$("#subForm").prop("disabled", true);
-
-        //var odt1 = $("#odt-1").val();
-
-        //var odtval = [];
-
-        //odtval.push({name: 'odt', value: odt1});
-
-        //formData.push({name: 'odt_nueva', value: odt1});
 
         var id_odt_anterior = $("#id_odt_anterior").val();
 
@@ -7352,6 +7354,56 @@ if ($aJson) { ?>
         return true;
     });
 
+    $("#imgEC").mouseover( function(){
+
+        $("#imgEC").find("img").prop("src", "<?=URL?>public/img/almeja-EC.gif");
+    });
+
+    $("#imgEC").mouseout( function(){
+
+        $("#imgEC").find("img").prop("src", "<?=URL?>public/img/banco.png");
+    });
+
+    $("#imgFCaj").mouseover( function(){
+
+        $("#imgFCaj").find("img").prop("src", "<?=URL?>public/img/almeja-FCaj.gif");
+    });
+
+    $("#imgFCaj").mouseout( function(){
+
+        $("#imgFCaj").find("img").prop("src", "<?=URL?>public/img/banco2.png");
+    });
+
+    $("#imgFCar").mouseover( function(){
+
+        $("#imgFCar").find("img").prop("src", "<?=URL?>public/img/almeja-G.gif");
+    });
+
+    $("#imgFCar").mouseout( function(){
+
+        $("#imgFCar").find("img").prop("src", "<?=URL?>public/img/banco.png");
+    });
+
+    $("#imgG").mouseover( function(){
+
+        $("#imgG").find("img").prop("src", "<?=URL?>public/img/almeja-FCar.gif");
+    });
+
+    $("#imgG").mouseout( function(){
+
+        $("#imgG").find("img").prop("src", "<?=URL?>public/img/banco2.png");
+    });
+
+    function revisarPropiedades(variable, texto){
+
+        if( variable == null || variable == "" || variable == undefined ){
+
+            showModError("");
+            $("#txtContenido").html();
+            $("#txtContenido").html("Ingrese " + texto);
+            return false;
+        }
+    }
 
     history.forward();
 

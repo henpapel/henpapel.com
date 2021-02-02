@@ -14,9 +14,9 @@ class Prueba extends Controller
 
        
 if($login->isLoged()){
-    require 'application/views/templates/head.php';
-    require 'application/views/prueba/index.php';
-    require 'application/views/templates/footer.php';
+    require_once 'application/views/templates/head.php';
+    require_once 'application/views/prueba/index.php';
+    require_once 'application/views/templates/footer.php';
   
     }else{
 

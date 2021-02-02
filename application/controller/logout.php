@@ -6,18 +6,17 @@ class Logout extends Controller
     
     public function index()
     { 
-        session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
+
         session_destroy();
-        header("Location:".URL);
-        
+
+        echo '<script language="javascript">';
+        echo 'window.location.href="' . URL . '"';
+        echo '</script>';
+        //header("Location:" . URL);
     }
-
-    
- 
-    
-
-
-
-    
-
 }

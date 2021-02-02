@@ -225,7 +225,7 @@
     $("#divIzquierdo").append(contenidoIzquierdo);
     $("#divDerecho").empty();
 
-    //eligira a donde se enviara la informacion
+    //eligira a donde se enviara la información
     caja.changeData("regalo/saveCaja");
 
     //construye las secciones respecto a las divisiones que se ha declarado en la variable seccion

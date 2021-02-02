@@ -18,7 +18,7 @@ class LoginModel
     }
 
     
-    // Valida las credenciales del usuario (parece que no existe el campo 'usuario')
+    // Valida las credenciales del usuario (No existe el campo 'usuario'!!!)
     public function signIn($user, $password) {
 
         $sql = "SELECT * FROM usuarios WHERE status = 'A' and password = '$password' AND usuario LIKE '$user' ";
@@ -28,7 +28,11 @@ class LoginModel
 
         if ($query->rowCount() > 0) {
             
-            session_start();
+            if (!isset($_SESSION)) {
+
+                session_start();
+            }
+
             $_SESSION['logged'] = 'true';
             
             return true;

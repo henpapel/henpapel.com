@@ -86,6 +86,61 @@ class RegaloModel extends Controller {
             $id_odt_ant      = intval($_POST['id_odt_ant']);
         }
 
+
+        $is_maquila = 0;
+
+        if (array_key_exists("aImpEmp", $aJson)) {
+
+                $aImp_tmp = [];
+
+                $aImp_tmp = $aJson['aImpEmp'];
+
+                if (array_key_exists("Maquila", $aImp_tmp)) {
+
+                    $is_maquila = 1;
+                }
+        }
+
+
+        if (array_key_exists("aImpFCaj", $aJson)) {
+
+                $aImp_tmp = [];
+
+                $aImp_tmp = $aJson['aImpFCaj'];
+
+                if (array_key_exists("Maquila", $aImp_tmp)) {
+
+                    $is_maquila = 1;
+                }
+        }
+
+
+        if (array_key_exists("aImpEmpTap", $aJson)) {
+
+                $aImp_tmp = [];
+
+                $aImp_tmp = $aJson['aImpEmpTap'];
+
+                if (array_key_exists("Maquila", $aImp_tmp)) {
+
+                    $is_maquila = 1;
+                }
+        }
+
+
+        if (array_key_exists("aImpFTap", $aJson)) {
+
+                $aImp_tmp = [];
+
+                $aImp_tmp = $aJson['aImpFTap'];
+
+                if (array_key_exists("Maquila", $aImp_tmp)) {
+
+                    $is_maquila = 1;
+                }
+        }
+
+
         try {
 
             $this->db->beginTransaction();
@@ -93,15 +148,15 @@ class RegaloModel extends Controller {
             if ($l_modificar_odt) {
 
                 $sql = "INSERT INTO cot_odt
-                    (id_usuario, id_modelo, num_odt, id_cliente, tiraje, base, alto, profundidad_cajon, profundidad_tapa, id_vendedor, id_tienda,  costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, id_odt_ant, fecha_odt, hora_odt)
+                    (id_usuario, id_modelo, num_odt, id_cliente, is_maquila, tiraje, base, alto, profundidad_cajon, profundidad_tapa, id_vendedor, id_tienda,  costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, id_odt_ant, fecha_odt, hora_odt)
                 VALUES
-                    ($id_usuario, $id_modelo, '$nomb_odt', $id_cliente, $tiraje, $base, $alto, $profundidad_cajon, $profundidad_tapa, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', $id_odt_ant, '$d_fecha', '$time')";
+                    ($id_usuario, $id_modelo, '$nomb_odt', $id_cliente, $is_maquila, $tiraje, $base, $alto, $profundidad_cajon, $profundidad_tapa, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', $id_odt_ant, '$d_fecha', '$time')";
             } else {
 
                 $sql = "INSERT INTO cot_odt
-                    (id_usuario, id_modelo, num_odt, id_cliente, tiraje, base, alto, profundidad_cajon, profundidad_tapa, id_vendedor, id_tienda,  costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, fecha_odt, hora_odt)
+                    (id_usuario, id_modelo, num_odt, id_cliente, is_maquila, tiraje, base, alto, profundidad_cajon, profundidad_tapa, id_vendedor, id_tienda,  costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, fecha_odt, hora_odt)
                 VALUES
-                    ($id_usuario, $id_modelo, '$nomb_odt', $id_cliente, $tiraje, $base, $alto, $profundidad_cajon, $profundidad_tapa, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', '$d_fecha', '$time')";
+                    ($id_usuario, $id_modelo, '$nomb_odt', $id_cliente, $is_maquila, $tiraje, $base, $alto, $profundidad_cajon, $profundidad_tapa, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', '$d_fecha', '$time')";
             }
 
             $query_odt = $this->db->prepare($sql);
@@ -509,23 +564,17 @@ class RegaloModel extends Controller {
         // encuadernacion
             $l_encuadernacion = true;
 
-            $aEncuadernacion = $aJson['encuadernacion'];
-
-            $encuad_encajada_costo_unitario         = round(floatval($aEncuadernacion['encajada_costo_unitario']), 2);
-            $encuad_encajada                        = round(floatval($aEncuadernacion['encajada_costo_tot']), 2);
             $arreglo_forrado_cajon_costo_unitario   = round(floatval($aJson['encuadernacion']['arreglo_costo_unitario']), 2);
             $arreglo_forrado_cajon_costo_tot        = round(floatval($aJson['encuadernacion']['arreglo_forrado_cajon_costo']), 2);
             $forrado_cajon_costo_unitario           = round(floatval($aJson['encuadernacion']['forrado_cajon_costo_unitario']), 2);
             $forrado_cajon_costo                    = round(floatval($aJson['encuadernacion']['forrado_cajon_costo']), 2);
-            $encuad_costo_tot_proceso               = round(floatval($aEncuadernacion['costo_tot_proceso']), 2);
+            $encuad_costo_tot_proceso               = round(floatval($aJson['encuadernacion']['costo_tot_proceso']), 2);
 
-
-            unset($aEncuadernacion);
 
             $sql_encuadernacion = "INSERT INTO cot_reg_encuadernacion
-                (id_modelo, id_odt, tiraje, encajada_costo_unit, encajada_costo_tot, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, costo_tot_proceso, fecha)
+                (id_modelo, id_odt, tiraje, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, costo_tot_proceso, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $encuad_encajada_costo_unitario, $encuad_encajada, $arreglo_forrado_cajon_costo_unitario, $arreglo_forrado_cajon_costo_tot, $forrado_cajon_costo_unitario, $forrado_cajon_costo, $encuad_costo_tot_proceso, '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $arreglo_forrado_cajon_costo_unitario, $arreglo_forrado_cajon_costo_tot, $forrado_cajon_costo_unitario, $forrado_cajon_costo, $encuad_costo_tot_proceso, '$d_fecha')";
 
 
             $query_encuadernacion = $this->db->prepare($sql_encuadernacion);
@@ -537,6 +586,29 @@ class RegaloModel extends Controller {
                 self::mError($aJson, $mensaje, $error . "encuadernacion;");
 
                 $l_encuadernacion = false;
+            }
+
+
+            // encajada
+            $l_encajada = true;
+
+            $costo_unit        = floatval($aJson['encajada']['costo_unitario']);
+            $costo_tot_proceso = floatval($aJson['encajada']['costo_tot_proceso']);
+
+            $sql_encajada = "INSERT INTO cot_reg_encajadafcaj
+                (id_modelo, id_odt, tiraje, costo_unit, costo_tot_proceso, fecha)
+            VALUES
+                ($id_modelo, $id_caja_odt, $tiraje, $costo_unit, $costo_tot_proceso,'$d_fecha')";
+
+            $query_encajada = $this->db->prepare($sql_encajada);
+
+            $l_encajada = $query_encajada->execute();
+
+            if (!$l_encajada) {
+
+                self::mError($aJson, $mensaje, $error . "encajada;");
+
+                $l_encajada = false;
             }
 
 
@@ -570,6 +642,29 @@ class RegaloModel extends Controller {
             }
 
 
+            // encajada forro tapa
+            $l_encajada_ftap = true;
+
+            $costo_unit        = floatval($aJson['encajada']['costo_unitario']);
+            $costo_tot_proceso = floatval($aJson['encajada']['costo_tot_proceso']);
+
+            $sql_encajada_ftap = "INSERT INTO cot_reg_encajadaftap
+                (id_modelo, id_odt, tiraje, costo_unit, costo_tot_proceso, fecha)
+            VALUES
+                ($id_modelo, $id_caja_odt, $tiraje, $costo_unit, $costo_tot_proceso,'$d_fecha')";
+
+            $query_encajada = $this->db->prepare($sql_encajada_ftap);
+
+            $l_encajada_ftap = $query_encajada->execute();
+
+            if (!$l_encajada_ftap) {
+
+                self::mError($aJson, $mensaje, $error . "encajada forro tapa;");
+
+                $l_encajada_ftap = false;
+            }
+
+
             // Elaboracion forro del Cajon
             $l_elab_fcaj = true;
 
@@ -578,15 +673,13 @@ class RegaloModel extends Controller {
             $arreglo                = round(floatval($aJson['elab_FCaj']['arreglo_forrado_cajon']), 2);
             $empalme_costo_unitario = round(floatval($aJson['elab_FCaj']['empalme_cajon_costo_unitario']), 2);
             $empalme_de_cajon       = round(floatval($aJson['elab_FCaj']['empalme_de_cajon']), 2);
-            $enc_encajada_costo_unit = round(floatval($aJson['elab_FCaj']['enc_encajada_costo_unitario']), 2);
-            $enc_encajada_costo_tot       = round(floatval($aJson['elab_FCaj']['enc_encajada_costo_tot']), 2);
             $costo_total            = round(floatval($aJson['elab_FCaj']['costo_tot_proceso']), 2);
 
 
             $sql_elabfcaj = "INSERT INTO cot_reg_elab_fcaj
-                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, enc_encajada_costo_unit, enc_encajada_costo_tot, costo_total, fecha)
+                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, costo_total, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $enc_encajada_costo_unit, $enc_encajada_costo_tot, $costo_total,  '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $costo_total, '$d_fecha')";
 
 
             $query_elabfcaj = $this->db->prepare($sql_elabfcaj);
@@ -609,14 +702,12 @@ class RegaloModel extends Controller {
             $arreglo                = round(floatval($aJson['elab_FTap']['arreglo_forrado_cajon']), 2);
             $empalme_costo_unitario = round(floatval($aJson['elab_FTap']['empalme_cajon_costo_unitario']), 2);
             $empalme_de_cajon       = round(floatval($aJson['elab_FTap']['empalme_de_cajon']), 2);
-            $enc_encajada_costo_unit = round(floatval($aJson['elab_FTap']['enc_encajada_costo_unitario']), 2);
-            $enc_encajada_costo_tot       = round(floatval($aJson['elab_FTap']['enc_encajada_costo_tot']), 2);
             $costo_total            = round(floatval($aJson['elab_FTap']['costo_tot_proceso']), 2);
 
             $sql_elab_ftap = "INSERT INTO cot_reg_elab_ftap
-                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, enc_encajada_costo_unit, enc_encajada_costo_tot, costo_total, fecha)
+                (id_modelo, id_odt, tiraje, forro_costo_unit, forro_cajon, arreglo, empalme_costo_unitario, empalme_de_cajon, costo_total, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $enc_encajada_costo_unit, $enc_encajada_costo_tot, $costo_total,  '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $forro_costo_unit, $forro_cajon, $arreglo, $empalme_costo_unitario, $empalme_de_cajon, $costo_total, '$d_fecha')";
 
 
             $query_elab_ftap = $this->db->prepare($sql_elab_ftap);
@@ -1140,7 +1231,7 @@ class RegaloModel extends Controller {
                         $costo_tot_maq          = round(floatval($row['costo_tot_maq']), 2);
                         $costo_tot_proceso      = round(floatval($row['costo_tot_proceso']), 2);
 
-                        $sql_offset_maq_empcaj = "INSERT INTO cot_reg_offset_maq_empcaj(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
+                        $sql_offset_maq_empcaj = "INSERT INTO cot_reg_offset_maq_empcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
                         $query_offset_maq_empcaj = $this->db->prepare($sql_offset_maq_empcaj);
 
@@ -1336,7 +1427,7 @@ class RegaloModel extends Controller {
 
                         if ( $costo_tot_proceso > 0 and $arreglo_costo_unitario > 0 and $arreglo_costo > 0 and $costo_unitario_laminas > 0 and $costo_laminas > 0 and $costo_unitario_maq > 0 and $costo_tot_maq > 0 ) {
 
-                            $sql_offset_maq_fcaj = "INSERT INTO cot_reg_offset_maq_fcaj(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
+                            $sql_offset_maq_fcaj = "INSERT INTO cot_reg_offset_maq_fcaj(id_odt, id_modelo, tipo, tiraje, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
                             $query_offset_maq_fcaj = $this->db->prepare($sql_offset_maq_fcaj);
 
@@ -1544,7 +1635,7 @@ class RegaloModel extends Controller {
                         $costo_tot_maq          = round(floatval($row['costo_tot_maq']), 2);
                         $costo_tot_proceso      = round(floatval($row['costo_tot_proceso']), 2);
 
-                        $sql_offset_maq_emptap = "INSERT INTO cot_reg_offset_maq_emptap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
+                        $sql_offset_maq_emptap = "INSERT INTO cot_reg_offset_maq_emptap(id_odt, id_modelo, tipo, tiraje, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
                         $query_offset_maq_emptap = $this->db->prepare($sql_offset_maq_emptap);
 
@@ -1737,7 +1828,7 @@ class RegaloModel extends Controller {
                         $costo_tot_maq          = round(floatval($row['costo_tot_maq']), 2);
                         $costo_tot_proceso      = round(floatval($row['costo_tot_proceso']), 2);
 
-                        $sql_offset_maq_ftap = "INSERT INTO cot_reg_offset_maq_ftap(id_odt, id_modelo, tipo, cantidad, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
+                        $sql_offset_maq_ftap = "INSERT INTO cot_reg_offset_maq_ftap(id_odt, id_modelo, tipo, tiraje, num_tintas, arreglo_costo_unitario, arreglo_costo, costo_unitario_laminas, costo_laminas, costo_unitario, costo_tot, costo_tot_proceso, fecha) VALUES($id_caja_odt, $id_modelo, '$Tipo', $tiraje, $num_tintas, $arreglo_costo_unitario, $arreglo_costo, $costo_unitario_laminas, $costo_laminas, $costo_unitario_maq, $costo_tot_maq, $costo_tot_proceso, '$d_fecha')";
 
                         $query_offset_maq_ftap = $this->db->prepare($sql_offset_maq_ftap);
 
@@ -3168,11 +3259,14 @@ class RegaloModel extends Controller {
 
                 and ($inserted_papel_car and $inserted_papel_cartap)
 
-                and ($l_ranurado and $l_ranurado_tap and $l_encuadernacion)
+                and ($l_ranurado and $l_ranurado_tap)
+                and ($l_encuadernacion and $l_encuadernacionfcaj)
+
+                and ($l_encajada and $l_encajada_ftap)
 
                 and ($l_Suaje_fcaj_fijo and $l_Suaje_ftap_fijo and $l_despunte_esquinas and $l_corte_refine_emp)
 
-                and ($l_encuadernacionfcaj and $l_elab_fcaj and $l_elab_ftap)
+                and ($l_elab_fcaj and $l_elab_ftap)
 
                 and ($l_corte_carton_empcaj and $l_corte_carton_emptap)
 

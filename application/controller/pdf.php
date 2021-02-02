@@ -18,7 +18,7 @@ class PDF extends Controller
 
                 $cotizaciones = $modeloCotizacion->getUltimateCotizacion($_GET['cotizacion']);
                 ob_start();
-                require "application/views/cotizaciones/plantillaPDF.php";
+                require_once "application/views/cotizaciones/plantillaPDF.php";
                 $html = ob_get_clean();
 
                 // instantiate and use the dompdf class
@@ -36,7 +36,7 @@ class PDF extends Controller
                 exit;
             }else{
 
-                header("Location:" . URL);
+                return false;
             }
         }else{
 

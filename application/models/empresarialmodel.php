@@ -19,7 +19,7 @@ class EmpresarialModel
         $store=$_SESSION['user']['id_tienda'];
         $time=date("H:i:s", time());
 
-        $sql = "INSERT INTO archiempr (odt, categoria, archivo, tienda) VALUES ('$odt','$catego','$filename', '$store')";
+        $sql = "INSERT INTO archiempr (odt, categoria, archivo) VALUES ('$odt','$catego','$filename')";
 
         $query = $this->db->prepare($sql);
         $inserted=$query->execute();

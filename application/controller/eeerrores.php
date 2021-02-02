@@ -4,35 +4,42 @@
 
 class eeerrores extends Controller
 {
-    public function index(){
-        session_start();
+    public function index() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
-
-
         $optionsmodel =$this->loadModel('OptionsModel');
         $login_model = $this->loadModel('LoginModel');
 
         $rows = $optionsmodel->geterror();
        
-if($login->isLoged()){
-    require 'application/views/templates/head.php';
-    require 'application/views/templates/top_menu.php';
-    require 'application/views/eeerrores/index.php';
-    require 'application/views/templates/footer.php';
-  
-    }else{
+        if($login->isLoged()){
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/eeerrores/index.php';
+            require_once 'application/views/templates/footer.php';
+          
+            }else{
 
-        header("Location:".URL.'login/');
+                    echo '<script language="javascript">';
+                    echo 'window.location.href="' . URL . 'login/"';
+                    echo '</script>';
+                //header("Location:".URL.'login/');
+            }
+      }
 
-    }
-
-    }
 
 
+  public function registrar() {
 
-  public function registrar(){
+        if (!isset($_SESSION)) {
+
             session_start();
+        }
 
         $optionsmodel=$this->loadModel('OptionsModel');
         $register = $optionsmodel->getReerrores($_POST);
@@ -83,8 +90,12 @@ public function modificar(){
 }
 
 
-  public function mod(){
-         session_start();
+  public function mod() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
       
       $login=$this->loadController('login');
       $optionsmodel=$this->loadModel('OptionsModel');
@@ -95,18 +106,26 @@ public function modificar(){
 
       $id=$_GET['id'];
       $datos = $optionsmodel->getadjust($id);
-      require 'application/views/templates/head.php';
-      require 'application/views/templates/top_menu.php';
-      require 'application/views/eeerrores/modificar.php';
-      require 'application/views/templates/footer.php';
+      require_once 'application/views/templates/head.php';
+      require_once 'application/views/templates/top_menu.php';
+      require_once 'application/views/eeerrores/modificar.php';
+      require_once 'application/views/templates/footer.php';
     }else{
-        header("Location:".URL.'login/');
+        
+        echo '<script language="javascript">';
+        echo 'window.location.href="' . URL . 'login/"';
+        echo '</script>';
+        //header("Location:".URL.'login/');
     }
   }
 
 
-  public function geterror(){
-        session_start();
+  public function geterror() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');        
         $login_model = $this->loadModel('LoginModel');
@@ -137,7 +156,11 @@ public function modificar(){
 
 
       public function reg(){
-          session_start();
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
       
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -146,13 +169,17 @@ public function modificar(){
           
        if($login->isLoged()){
  
-       require 'application/views/templates/head.php';
-       require 'application/views/templates/top_menu.php';
-       require 'application/views/eeerrores/documento.php';
-       require 'application/views/templates/footer.php';
+       require_once 'application/views/templates/head.php';
+       require_once 'application/views/templates/top_menu.php';
+       require_once 'application/views/eeerrores/documento.php';
+       require_once 'application/views/templates/footer.php';
   
     }else{
-        header("Location:".URL.'login/');
+        
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+        //header("Location:".URL.'login/');
     }
   }
 

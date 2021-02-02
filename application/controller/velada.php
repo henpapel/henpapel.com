@@ -1,12 +1,13 @@
 <?php 
 
-
-
 class Velada extends Controller {
 
 	public function index() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
 
@@ -15,14 +16,17 @@ class Velada extends Controller {
        
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/index.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/index.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
@@ -54,7 +58,10 @@ class Velada extends Controller {
 
     public function reporte() {
   
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
       
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -62,21 +69,27 @@ class Velada extends Controller {
 
         if($login->isLoged()){
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/reporte.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/reporte.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function editar() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -84,21 +97,27 @@ class Velada extends Controller {
    
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/editar.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/editar.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
     
 
     public function detalles() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -106,21 +125,27 @@ class Velada extends Controller {
        
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/detalles.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/detalles.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function detalles2() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -128,21 +153,27 @@ class Velada extends Controller {
        
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/detalles2.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/detalles2.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function envio() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -153,20 +184,26 @@ class Velada extends Controller {
             $id    = $_GET['id'];
             $datos = $optionsmodel->getDatospersonal($id);
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/modificar.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/modificar.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
-            header("Location:" . URL .'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL .'login/');
         }
     }
 
 
     public function envio2() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -178,20 +215,26 @@ class Velada extends Controller {
 
             $datos = $optionsmodel->getDatosorden($id);
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/modificarorden.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/modificarorden.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function envio3() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -202,20 +245,26 @@ class Velada extends Controller {
             $id    = $_GET['id'];
             $datos = $optionsmodel->getDatosgasto($id);
             
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/modificargastos.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/modificargastos.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function envio4() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -226,13 +275,16 @@ class Velada extends Controller {
             $id    = $_GET['id'];
             $datos = $optionsmodel->getDatosvelada($id);
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/modificarvelada.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/modificarvelada.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 

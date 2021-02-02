@@ -58,6 +58,16 @@
                     <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="ODT" tabindex="1" onkeyup="caja.desactivarBtn()" value="<?= $aJson['num_odt']?>">
                 </div>
             </div>
+            <!--ODT ID-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ID: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="text" class="form-control form-control-sm" name="id_odt_anterior" id="id_odt_anterior" placeholder="ODT" tabindex="1" value="<?= $aJson['id_odt']?>" disabled>
+                </div>
+            </div>
+            
             <!--Base-->
             <div class="form-group row mt-2 ml-0">
                 
@@ -245,7 +255,7 @@
     $("#btnGrabarC").click( function() {
 
         // sus argumentos son: grabar, modificar
-        caja.saveCotizacion("NO",'SI');
+        caja.saveCotizacion("SI",'SI');
     });
     $("#btnActG").html("MODIFICAR");
 </script>

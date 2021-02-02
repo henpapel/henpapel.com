@@ -154,15 +154,15 @@ class VentasModel extends Controller {
             $result[$iii]['tipo']                   = utf8_encode(trim(strval($row['tipo'])));
             $result[$iii]['tiraje']                 = intval($row['tiraje']);
             $result[$iii]['num_tintas']             = intval($row['num_tintas']);
-            $result[$iii]['corte_costo_unitario']   = floatval($row['corte_costo_unitario']);
-            $result[$iii]['corte_por_millar']       = intval($row['corte_por_millar']);
-            $result[$iii]['costo_corte']            = floatval($row['costo_corte']);
-            $result[$iii]['costo_unitario_laminas'] = floatval($row['costo_unitario_laminas']);
-            $result[$iii]['costo_tot_laminas']      = floatval($row['costo_tot_laminas']);
-            $result[$iii]['costo_unitario_arreglo'] = floatval($row['costo_unitario_arreglo']);
-            $result[$iii]['costo_tot_arreglo']      = floatval($row['costo_tot_arreglo']);
-            $result[$iii]['costo_unitario_tiro']    = floatval($row['costo_unitario_tiro']);
-            $result[$iii]['costo_tot_tiro']         = floatval($row['costo_tot_tiro']);
+            //$result[$iii]['corte_costo_unitario']   = floatval($row['corte_costo_unitario']);
+            //$result[$iii]['corte_por_millar']       = intval($row['corte_por_millar']);
+            //$result[$iii]['costo_corte']            = floatval($row['costo_corte']);
+            //$result[$iii]['costo_unitario_laminas'] = floatval($row['costo_unitario_laminas']);
+            //$result[$iii]['costo_tot_laminas']      = floatval($row['costo_tot_laminas']);
+            //$result[$iii]['costo_unitario_arreglo'] = floatval($row['costo_unitario_arreglo']);
+            //$result[$iii]['costo_tot_arreglo']      = floatval($row['costo_tot_arreglo']);
+            //$result[$iii]['costo_unitario_tiro']    = floatval($row['costo_unitario_tiro']);
+            //$result[$iii]['costo_tot_tiro']         = floatval($row['costo_tot_tiro']);
             $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
 
             $iii++;
@@ -171,6 +171,42 @@ class VentasModel extends Controller {
         return $result;
     }
 
+
+    // Tablas Offset
+    public function getOffsetTablaMaq($id, $tabla) {
+
+        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
+
+        $query_odt = $this->db->prepare($sql_odt);
+        $query_odt->execute();
+
+        $result = [];
+
+        $iii = 0;
+        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[$iii] = $row;
+            /*
+            $result[$iii]['id']                     = intval($row['id']);
+            $result[$iii]['id_odt']                 = intval($row['id_odt']);
+            $result[$iii]['id_modelo']              = intval($row['id_modelo']);
+            $result[$iii]['tiraje']                 = intval($row['tiraje']);
+            $result[$iii]['tipo']                   = strval($row['tipo']);
+            $result[$iii]['num_tintas']             = intval($row['num_tintas']);
+            $result[$iii]['arreglo_costo_unitario'] = floatval($row['arreglo_costo_unitario']);
+            $result[$iii]['arreglo_costo']          = intval($row['arreglo_costo']);
+            $result[$iii]['costo_unitario_laminas'] = floatval($row['costo_unitario_laminas']);
+            $result[$iii]['costo_laminas']          = floatval($row['costo_laminas']);
+            $result[$iii]['costo_unitario']         = floatval($row['costo_unitario']);
+            $result[$iii]['costo_tot']              = floatval($row['costo_tot']);
+            $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
+            */
+
+            $iii++;
+        }
+
+        return $result;
+    }
 
     // Tablas Digital
     public function getDigitalTabla($id, $tabla) {

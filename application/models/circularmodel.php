@@ -11,324 +11,6 @@ class CircularModel {
     }
 
 
-
-    // Tablas Offset
-    public function getOffsetTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                     = intval($row['id']);
-            $result[$iii]['id_odt']                 = intval($row['id_odt']);
-            $result[$iii]['id_modelo']              = intval($row['id_modelo']);
-            $result[$iii]['tipo']                   = utf8_encode(trim(strval($row['tipo'])));
-            $result[$iii]['tiraje']                 = intval($row['tiraje']);
-            $result[$iii]['num_tintas']             = intval($row['num_tintas']);
-            $result[$iii]['costo_unitario_laminas'] = floatval($row['costo_unitario_laminas']);
-            $result[$iii]['costo_laminas']          = floatval($row['costo_laminas']);
-            $result[$iii]['arreglo_costo']          = floatval($row['arreglo_costo']);
-            $result[$iii]['arreglo_costo_unitario'] = floatval($row['arreglo_costo_unitario']);
-            $result[$iii]['costo_unitario']         = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tot']              = floatval($row['costo_tot']);
-            $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas Digital
-    public function getDigitalTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                = intval($row['id']);
-            $result[$iii]['id_odt']            = intval($row['id_odt']);
-            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
-            $result[$iii]['cabe_digital']      = trim(strval($row['cabe_digital']));
-            $result[$iii]['tiraje']            = intval($row['tiraje']);
-            $result[$iii]['corte_ancho']       = floatval($row['corte_ancho']);
-            $result[$iii]['corte_largo']       = floatval($row['corte_largo']);
-            $result[$iii]['imp_ancho']         = floatval($row['imp_ancho']);
-            $result[$iii]['imp_largo']         = floatval($row['imp_largo']);
-            $result[$iii]['impresion']         = trim(strval($row['impresion']));
-            $result[$iii]['costo_unitario ']   = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-    // Tablas serigrafia
-    public function getSerigrafiaTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                 = intval($row['id']);
-            $result[$iii]['id_odt']             = intval($row['id_odt']);
-            $result[$iii]['id_modelo']          = intval($row['id_modelo']);
-            $result[$iii]['tipo']               = utf8_encode(trim(strval($row['tipo'])));
-            $result[$iii]['tiraje']             = intval($row['tiraje']);
-            $result[$iii]['num_tintas']         = intval($row['num_tintas']);
-            $result[$iii]['cortes_por_pliego']  = intval($row['cortes_por_pliego']);
-            $result[$iii]['costo_unit_arreglo'] = floatval($row['costo_unit_arreglo']);
-            $result[$iii]['costo_arreglo']      = intval($row['costo_arreglo']);
-            $result[$iii]['costo_unit_tiro']    = floatval($row['costo_unit_tiro']);
-            $result[$iii]['costo_tiro']         = floatval($row['costo_tiro']);
-            $result[$iii]['costo_tot_proceso']  = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas barnizuv
-    public function getBarnizuvTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                 = intval($row['id']);
-            $result[$iii]['id_odt']             = intval($row['id_odt']);
-            $result[$iii]['id_modelo']          = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']       = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']             = floatval($row['largo']);
-            $result[$iii]['ancho']             = floatval($row['ancho']);
-            $result[$iii]['area']              = floatval($row['area']);
-            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-            $result[$iii]['cortes_por_pliego'] = intval($row['cortes_por_pliego']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas corte laser
-    public function getLaserTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                = intval($row['id']);
-            $result[$iii]['id_odt']            = intval($row['id_odt']);
-            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']      = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']             = floatval($row['largo']);
-            $result[$iii]['ancho']             = floatval($row['ancho']);
-            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
-            $result[$iii]['tiempo_requerido']  = floatval($row['tiempo_requerido']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas grabado
-    public function getGrabadoTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                     = intval($row['id']);
-            $result[$iii]['id_odt']                 = intval($row['id_odt']);
-            $result[$iii]['id_modelo']              = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']           = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']                  = floatval($row['largo']);
-            $result[$iii]['ancho']                  = floatval($row['ancho']);
-            $result[$iii]['ubicacion']              = trim(strval($row['ubicacion']));
-            $result[$iii]['placa_area']             = floatval($row['placa_area']);
-            $result[$iii]['placa_costo_unitario']   = floatval($row['placa_costo_unitario']);
-            $result[$iii]['placa_costo']            = floatval($row['placa_costo']);
-            $result[$iii]['arreglo_costo_unitario'] = floatval($row['arreglo_costo_unitario']);
-            $result[$iii]['arreglo_costo']          = floatval($row['arreglo_costo']);
-            $result[$iii]['costo_unitario']         = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tiro']             = floatval($row['costo_tiro']);
-            $result[$iii]['costo_tot_proceso']      = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas HotStamping
-    public function getHotStampingTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                      = intval($row['id']);
-            $result[$iii]['id_odt']                  = intval($row['id_odt']);
-            $result[$iii]['id_modelo']               = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']            = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']                   = floatval($row['largo']);
-            $result[$iii]['ancho']                   = floatval($row['ancho']);
-            $result[$iii]['color']                   = trim(strval($row['color']));
-            $result[$iii]['placa_area']              = floatval($row['placa_area']);
-            $result[$iii]['placa_costo_unitario']    = floatval($row['placa_costo_unitario']);
-            $result[$iii]['placa_costo']             = floatval($row['placa_costo']);
-            $result[$iii]['pelicula_largo']          = intval($row['pelicula_largo']);
-            $result[$iii]['pelicula_ancho']          = intval($row['pelicula_ancho']);
-            $result[$iii]['pelicula_area']           = floatval($row['pelicula_area']);
-            $result[$iii]['pelicula_costo_unitario'] = floatval($row['pelicula_costo_unitario']);
-            $result[$iii]['pelicula_costo']          = floatval($row['pelicula_costo']);
-            $result[$iii]['arreglo_costo_unitario']  = floatval($row['arreglo_costo_unitario']);
-            $result[$iii]['arreglo_costo']           = floatval($row['arreglo_costo']);
-            $result[$iii]['costo_unitario']          = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tiro']              = floatval($row['costo_tiro']);
-            $result[$iii]['costo_tot_proceso']       = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas Suaje
-    public function getSuajeTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                      = intval($row['id']);
-            $result[$iii]['id_odt']                  = intval($row['id_odt']);
-            $result[$iii]['id_modelo']               = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']            = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']                   = floatval($row['largo']);
-            $result[$iii]['ancho']                   = floatval($row['ancho']);
-            $result[$iii]['perimetro']              = intval($row['perimetro']);
-            $result[$iii]['tabla_suaje']    = floatval($row['tabla_suaje']);
-            $result[$iii]['arreglo_costo_unitario']    = floatval($row['arreglo_costo_unitario']);
-            $result[$iii]['tiro_costo_unitario']             = floatval($row['tiro_costo_unitario']);
-            $result[$iii]['costo_tiro']          = intval($row['costo_tiro']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    // Tablas Laminado
-    public function getLaminadoTabla($id, $tabla) {
-
-        $sql_odt = "SELECT * from " . $tabla . " where id_odt = " . $id;
-
-        $query_odt = $this->db->prepare($sql_odt);
-        $query_odt->execute();
-
-        $result = array();
-
-        $iii = 0;
-        while ($row = $query_odt->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[$iii]['id']                = intval($row['id']);
-            $result[$iii]['id_odt']            = intval($row['id_odt']);
-            $result[$iii]['id_modelo']         = intval($row['id_modelo']);
-            $result[$iii]['tipo_grabado']      = utf8_encode(trim(strval($row['tipo_grabado'])));
-            $result[$iii]['largo']             = floatval($row['largo']);
-            $result[$iii]['ancho']             = floatval($row['ancho']);
-            $result[$iii]['area']              = floatval($row['area']);
-            $result[$iii]['costo_unitario']    = floatval($row['costo_unitario']);
-            $result[$iii]['costo_tot_proceso'] = floatval($row['costo_tot_proceso']);
-
-            $iii++;
-        }
-
-        return $result;
-    }
-
-
-    public function readODT($num_odt) {
-
-        $sql = "SELECT * from cot_odt where status = 'A' and num_odt = '" . $num_odt . "'";
-
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        $result = array();
-
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[] = $row;
-        }
-
-        return $result;
-    }
-
-
     public function insertCircular(&$aJson, $ventas_model) {
 
         $fecha = TODAY;
@@ -3351,8 +3033,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -3361,7 +3041,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_bcaj = "INSERT INTO cot_cir_laserbcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_bcaj = "INSERT INTO cot_cir_laserbcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_bcaj = $this->db->prepare($sql_laser_bcaj);
 
@@ -3380,7 +3060,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_bcaj) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserbcaj";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser base del cajon";
 
                             $l_Corte_Laser_bcaj = false;
 
@@ -3680,8 +3360,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -3690,7 +3368,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_circaj = "INSERT INTO cot_cir_lasercircaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_circaj = "INSERT INTO cot_cir_lasercircaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_circaj = $this->db->prepare($sql_laser_circaj);
 
@@ -3709,7 +3387,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_circaj) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_lasercircaj";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser circunferencia del cajon";
 
                             $l_Corte_Laser_bcaj = false;
 
@@ -4009,8 +3687,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -4019,7 +3695,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_fextcaj = "INSERT INTO cot_cir_laserfextcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_fextcaj = "INSERT INTO cot_cir_laserfextcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_fextcaj = $this->db->prepare($sql_laser_fextcaj);
 
@@ -4038,7 +3714,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_fextcaj) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserfextcaj";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser forro exterior del cajon";
 
                             $l_Corte_Laser_bcaj = false;
 
@@ -4338,8 +4014,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -4348,7 +4022,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_pomcaj = "INSERT INTO cot_cir_laserpomcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_pomcaj = "INSERT INTO cot_cir_laserpomcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_pomcaj = $this->db->prepare($sql_laser_pomcaj);
 
@@ -4367,7 +4041,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_pomcaj) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserpomcaj";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser pompa del cajon";
 
                             $l_Corte_Laser_pomcaj = false;
 
@@ -4669,8 +4343,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -4679,7 +4351,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_fintcaj = "INSERT INTO cot_cir_laserfintcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_fintcaj = "INSERT INTO cot_cir_laserfintcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_fintcaj = $this->db->prepare($sql_laser_fintcaj);
 
@@ -4698,7 +4370,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_fintcaj) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserfintcaj";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser forro interior del cajon";
 
                             $l_Corte_Laser_bcaj = false;
 
@@ -5000,8 +4672,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -5010,7 +4680,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_bastap = "INSERT INTO cot_cir_laserbastap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_bastap = "INSERT INTO cot_cir_laserbastap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_bastap = $this->db->prepare($sql_laser_bastap);
 
@@ -5029,7 +4699,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_bastap) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserbastap";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser base de la tapa";
 
                             $l_Corte_Laser_bastap = false;
 
@@ -5330,8 +5000,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -5340,7 +5008,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_cirtap = "INSERT INTO cot_cir_lasercirtap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_cirtap = "INSERT INTO cot_cir_lasercirtap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_cirtap = $this->db->prepare($sql_laser_cirtap);
 
@@ -5359,7 +5027,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_cirtap) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_lasercirtap";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser circunferencia de la tapa";
 
                             $l_Corte_Laser_cirtap = false;
 
@@ -5661,8 +5329,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -5671,7 +5337,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_fortap = "INSERT INTO cot_cir_laserfortap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_fortap = "INSERT INTO cot_cir_laserfortap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_fortap = $this->db->prepare($sql_laser_fortap);
 
@@ -5690,7 +5356,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_fortap) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserfortap";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser forro de la tapa";
 
                             $l_Corte_Laser_fortap = false;
 
@@ -6016,8 +5682,6 @@ class CircularModel {
                     foreach($aCorte_Laser as $row) {
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -6026,7 +5690,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_fextap = "INSERT INTO cot_cir_laserfexttap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_fextap = "INSERT INTO cot_cir_laserfexttap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_fextap = $this->db->prepare($sql_laser_fextap);
 
@@ -6045,7 +5709,7 @@ class CircularModel {
                         if (!$l_Corte_Laser_fextap) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserfexttap";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser forro exterior de la tapa";
 
                             $l_Corte_Laser_fextap = false;
 
@@ -6372,8 +6036,6 @@ class CircularModel {
                         $costo_unitario    = 0;
 
                         $tipo_grabado            = trim(strval($row['tipo_grabado']));
-                        $Largo                   = floatval($row['Largo']);
-                        $Ancho                   = floatval($row['Ancho']);
                         $costo_unitario          = floatval($row['costo_unitario']);
                         $tiempo_requerido        = floatval($row['tiempo_requerido']);
                         $costo_tot_proceso       = floatval($row['costo_tot_proceso']);
@@ -6382,7 +6044,7 @@ class CircularModel {
 
                         if ($costo_unitario > 0 and $costo_tot_proceso > 0) {
 
-                            $sql_laser_fintap = "INSERT INTO cot_cir_laserfinttap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $Largo, $Ancho, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
+                            $sql_laser_fintap = "INSERT INTO cot_cir_laserfinttap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
                             $query_laser_fintap = $this->db->prepare($sql_laser_fintap);
 
@@ -6401,7 +6063,8 @@ class CircularModel {
                         if (!$l_Corte_Laser_fintap) {
 
                             $aJson['mensaje'] = "ERROR";
-                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla cot_cir_laserfinttap";
+                            $aJson['error']   = $aJson['error'] . "; Error al grabar en la tabla laser
+                             forro interior de la tapa";
 
                             $l_Corte_Laser_fintap = false;
 

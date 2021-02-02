@@ -5,7 +5,10 @@ class Cajasedit extends Controller {
     
     public function index() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login        = $this->loadController('login');
         $login_model  = $this->loadModel('LoginModel');
@@ -15,21 +18,27 @@ class Cajasedit extends Controller {
         
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/cajasedit/editalmeja.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/cajasedit/editalmeja.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function detalles() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login        = $this->loadController('login');
         $optionsmodel = $this->loadModel('OptionsModel');
@@ -48,16 +57,17 @@ class Cajasedit extends Controller {
 
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/cajasedit/' . $nomb_modelo . '.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/cajasedit/' . $nomb_modelo . '.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
-
-
 }

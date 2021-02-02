@@ -297,10 +297,6 @@ class AlmejaModel extends Controller {
 
 
     // Encuadernacion empalme
-        $perf_iman_costo_unitario               = round(floatval($aJson['Encuadernacion_emp']['perforado_iman_costo_unitario']), 2);
-        $perf_iman_y_puesta                     = round(floatval($aJson['Encuadernacion_emp']['perforado_iman_costo_tot_proceso']), 2);
-        $encuad_encajada_costo_unitario         = round(floatval($aJson['Encuadernacion_emp']['encajada_costo_unitario']), 2);
-        $encuad_encajada                        = round(floatval($aJson['Encuadernacion_emp']['encajada_costo_tot_proceso']), 2);
         $arreglo_forrado_cajon_costo_unitario   = round(floatval($aJson['Encuadernacion_emp']['arreglo_costo_unitario']), 2);
         $arreglo_forrado_cajon_costo_tot        = round(floatval($aJson['Encuadernacion_emp']['arreglo_forrado_cajon_costo']), 2);
         $forrado_cajon_costo_unitario           = round(floatval($aJson['Encuadernacion_emp']['forrado_cajon_costo_unitario']), 2);
@@ -448,6 +444,18 @@ class AlmejaModel extends Controller {
 
         $msg_error = " Error al grabar en ";
 
+        $is_maquila = 0;
+
+        if(array_key_exists("Off_maq_Emp", $aJson)
+         or array_key_exists("Off_maq_FCaj", $aJson)
+         or array_key_exists("Off_maq_FCar", $aJson)
+         or array_key_exists("Off_maq_G", $aJson)
+        ) {
+
+            $is_maquila = 1;
+        }
+
+
         // inserta en las tablas
         try {
 
@@ -458,15 +466,15 @@ class AlmejaModel extends Controller {
             if ($l_modificar_odt) {
 
                 $sql = "INSERT INTO cot_odt
-                    (id_usuario, id_modelo, num_odt, id_cliente, tiraje, base, alto, profundidad, id_vendedor, id_tienda, costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, id_odt_ant, fecha_odt, hora_odt)
+                    (id_usuario, id_modelo, num_odt, id_cliente, is_maquila, tiraje, base, alto, profundidad, id_vendedor, id_tienda, costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, id_odt_ant, fecha_odt, hora_odt)
                 VALUES
-                    ($id_usuario, $id_modelo, '$odt', $id_cliente, $tiraje, $base, $alto, $profundidad, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', $id_odt_anterior, '$d_fecha', '$time')";
+                    ($id_usuario, $id_modelo, '$odt', $id_cliente, $is_maquila, $tiraje, $base, $alto, $profundidad, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', $id_odt_anterior, '$d_fecha', '$time')";
             } else {
 
                 $sql = "INSERT INTO cot_odt
-                    (id_usuario, id_modelo, num_odt, id_cliente, tiraje, base, alto, profundidad, id_vendedor, id_tienda, costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, fecha_odt, hora_odt)
+                    (id_usuario, id_modelo, num_odt, id_cliente, is_maquila, tiraje, base, alto, profundidad, id_vendedor, id_tienda, costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, fecha_odt, hora_odt)
                 VALUES
-                    ($id_usuario, $id_modelo, '$odt', $id_cliente, $tiraje, $base, $alto, $profundidad, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', '$d_fecha', '$time')";
+                    ($id_usuario, $id_modelo, '$odt', $id_cliente, $is_maquila, $tiraje, $base, $alto, $profundidad, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', '$d_fecha', '$time')";
             }
 
             $query_odt = $this->db->prepare($sql);
@@ -1000,9 +1008,9 @@ class AlmejaModel extends Controller {
         $encuad_costo_tot_proceso = round(floatval($aJson['Encuadernacion_emp']['costo_tot_proceso']), 2);
 
             $sql_encuadernacion = "INSERT INTO cot_alm_encuadernacion
-                (id_modelo, id_odt, tiraje, costo_unit_iman, perforado_iman_y_puesta, encajada_costo_unit, encajada_costo_tot, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, costo_tot_proceso, fecha)
+                (id_modelo, id_odt, tiraje, arreglo_forrado_cajon_costo_unitario, arreglo_forrado_cajon_costo_tot, forrado_cajon_costo_unitario, forrado_cajon_costo, costo_tot_proceso, fecha)
             VALUES
-                ($id_modelo, $id_caja_odt, $tiraje, $perf_iman_costo_unitario, $perf_iman_y_puesta, $encuad_encajada_costo_unitario, $encuad_encajada, $arreglo_forrado_cajon_costo_unitario, $arreglo_forrado_cajon_costo_tot, $forrado_cajon_costo_unitario, $forrado_cajon_costo, $encuad_costo_tot_proceso, '$d_fecha')";
+                ($id_modelo, $id_caja_odt, $tiraje, $arreglo_forrado_cajon_costo_unitario, $arreglo_forrado_cajon_costo_tot, $forrado_cajon_costo_unitario, $forrado_cajon_costo, $encuad_costo_tot_proceso, '$d_fecha')";
 
             $query_encuadernacion = $this->db->prepare($sql_encuadernacion);
 
@@ -1015,6 +1023,31 @@ class AlmejaModel extends Controller {
 
                 $inserted_encuadernacion = false;
             }
+
+
+            // encajada
+            $l_encajada = true;
+
+            $costo_unit        = $aJson['encajada']['costo_unitario'];
+            $costo_tot_proceso = $aJson['encajada']['costo_tot_proceso'];
+
+            $sql_encajada = "INSERT INTO cot_alm_encajadafcaj
+                (id_modelo, id_odt, tiraje, costo_unit, costo_tot_proceso, fecha)
+            VALUES
+                ($id_modelo, $id_caja_odt, $tiraje, $costo_unit, $costo_tot_proceso, '$d_fecha')";
+
+            $query_encajada = $this->db->prepare($sql_encajada);
+
+            $l_encajada = $query_encajada->execute();
+
+
+            if (!$l_encajada) {
+
+                $aJson['error'] = $aJson['error'] . $msg_error . "encajada;";
+
+                $l_encajada = false;
+            }
+
 
 
         // Encuadernacion_Fcaj
@@ -3433,7 +3466,7 @@ class AlmejaModel extends Controller {
 
                 and ($l_arr_ran_hor_emp and $l_arr_ran_vert_emp and $l_arreglo_ranurado_fcar)
 
-                and ($inserted_encuadernacion and $inserted_encuadernacion_fcaj)
+                and ($inserted_encuadernacion and $inserted_encuadernacion_fcaj and $l_encajada)
 
                 and ($l_despunte_esquinas and $l_pegado_guarda and $l_armado_caja_final)
 

@@ -1,9 +1,9 @@
 <?php
- class modificaprocesos extends Controller{
+ class modificaProcesos extends Controller{
 
     public function index() {
 
-        if (!isset($_SESSION)) session_start();
+        session_start();
         
         $login= $this->loadController('login');
 
@@ -12,60 +12,35 @@
        
         if($login->isLoged()) {
 
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/index.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/index.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            echo 'window.location="' . URL . 'login/";';
+            header("Location:" . URL . 'login/');
         }
     }
     
- 	public function cambioprocesos() {
+ 	public function cambioProcesos() {
 
         session_start();
-        if (!isset($_SESSION)) session_start();
-        
-        $login                  = $this->loadController('login');
-        $optionsmodel           = $this->loadModel('OptionsModel');
-        $login_model            = $this->loadModel('LoginModel');
-        $procesosOffset         = $optionsmodel->getProcOffset(); 
-        $procesosSerigrafia     = $optionsmodel->getProcSerigrafia();
-        $procesosDigital        = $optionsmodel->getProcDigital();
-        $procesosLaminado       = $optionsmodel->getProcLaminado();
-        $procesosHotStamping    = $optionsmodel->getProcHotStamping();
-        $procesosGrabado        = $optionsmodel->getProcGrabado();
-        $procesosSuaje          = $optionsmodel->getProcSuaje();
-        $procesosLaser          = $optionsmodel->getProcLaser();
-        $procesosEncuadernacion = $optionsmodel->getProcEncuadernacion();
-        $procesosRanurado       = $optionsmodel->getProcRanurado();
-
+        $login               = $this->loadController('login');
+        $optionsmodel        = $this->loadModel('OptionsModel');
+        $login_model         = $this->loadModel('LoginModel');
+        $procesosOffset      = $optionsmodel->getProcOffset(); 
+        $procesosSerigrafia  = $optionsmodel->getProcSerigrafia();
+        $procesosDigital     = $optionsmodel->getProcDigital();
+        $procesosLaminado    = $optionsmodel->getProcLaminado();
+        $procesosHotStamping = $optionsmodel->getProcHotStamping();
+        $procesosGrabado     = $optionsmodel->getProcGrabado();
+        $procesosSuaje       = $optionsmodel->getProcSuaje();
+        $procesosLaser       = $optionsmodel->getProcLaser();
         $i=1;
         $j=1;
         $k=1;
         $l=1;
-
-        foreach ( $procesosEncuadernacion as $enc ) {
-            
-            if( isset($enc['nombre'])  ){
-
-                $nombre=$enc['nombre'];
-                $procesosEncuadernacion["$nombre"]=$enc;
-            }
-        }
-
-        foreach ( $procesosRanurado as $ran ) {
-            
-            if( isset($ran['nombre'])  ){
-
-                $nombre=$ran['nombre'];
-                $procesosEncuadernacion["$nombre"]=$ran;
-            }
-        }
-        
-
         foreach ($procesosOffset as $offset) {
             $nombre=$offset['nombre'];
             if(isset($offset['tiraje_minimo'])){
@@ -79,8 +54,6 @@
                 $procesosOffset["$nombre"]=$offset;
             }
         }
-
-
         foreach ($procesosSerigrafia as $serigrafia) {
             $nombre=$serigrafia['nombre'];
             if(isset($serigrafia['tiraje_minimo'])){
@@ -132,14 +105,14 @@
             }
         }
         if($login->isLoged()) {
-
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/costoprocesos/costo_procesos.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/costoprocesos/costo_procesos.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
-            header( 'Location: ' . BASE_URL);
+
+            header("Location:" . URL . 'login/');
         }
     }
 
@@ -162,43 +135,22 @@
 
     public function imprProcesos() {
 
-        if (!isset($_SESSION)) session_start();
-        $login                  = $this->loadController('login');
-        $optionsmodel           = $this->loadModel('OptionsModel');
-        $login_model            = $this->loadModel('LoginModel');
-        $procesosOffset         = $optionsmodel->getProcOffset(); 
-        $procesosSerigrafia     = $optionsmodel->getProcSerigrafia();
-        $procesosDigital        = $optionsmodel->getProcDigital();
-        $procesosLaminado       = $optionsmodel->getProcLaminado();
-        $procesosHotStamping    = $optionsmodel->getProcHotStamping();
-        $procesosGrabado        = $optionsmodel->getProcGrabado();
-        $procesosSuaje          = $optionsmodel->getProcSuaje();
-        $procesosLaser          = $optionsmodel->getProcLaser();
-        $procesosEncuadernacion = $optionsmodel->getProcEncuadernacion();
-        $procesosRanurado       = $optionsmodel->getProcRanurado();
-        
+        session_start();
+        $login        = $this->loadController('login');
+        $optionsmodel = $this->loadModel('OptionsModel');
+        $login_model  = $this->loadModel('LoginModel');
+        $procesosOffset      = $optionsmodel->getProcOffset(); 
+        $procesosSerigrafia  = $optionsmodel->getProcSerigrafia();
+        $procesosDigital     = $optionsmodel->getProcDigital();
+        $procesosLaminado    = $optionsmodel->getProcLaminado();
+        $procesosHotStamping = $optionsmodel->getProcHotStamping();
+        $procesosGrabado     = $optionsmodel->getProcGrabado();
+        $procesosSuaje       = $optionsmodel->getProcSuaje();
+        $procesosLaser       = $optionsmodel->getProcLaser();
         $i=1;
         $j=1;
         $k=1;
         $l=1;
-
-        foreach ( $procesosEncuadernacion as $enc ) {
-            
-            if( isset($enc['nombre'])  ){
-
-                $nombre=$enc['nombre'];
-                $procesosEncuadernacion["$nombre"]=$enc;
-            }
-        }
-
-        foreach ( $procesosRanurado as $ran ) {
-            
-            if( isset($ran['nombre'])  ){
-
-                $nombre=$ran['nombre'];
-                $procesosEncuadernacion["$nombre"]=$ran;
-            }
-        }
         foreach ($procesosOffset as $offset) {
             $nombre=$offset['nombre'];
             if(isset($offset['tiraje_minimo'])){
@@ -225,9 +177,8 @@
 
         $carta = $procesosDigital['carta'];
         $dobleCarta = $procesosDigital['dobleCarta'];
-        $digital = array();
         unset($procesosDigital);
-
+        $digital = array();
         self::pDigital($carta, $digital, "Frente Carta", "Vuelta Carta");
         self::pDigital($dobleCarta, $digital, "Frente Doble Carta", "Vuelta Doble Carta");
 
@@ -263,263 +214,186 @@
         }
    
         if($login->isLoged()) {
-            $_SESSION['msg'] = false;
-            require 'application/views/templates/head.php';
-            require 'application/views/costoprocesos/impresion_procesos.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/costoprocesos/impresion_procesos.php';
+            require_once 'application/views/templates/footer.php';
 
         } else {
 
-            header( 'Location: ' . BASE_URL);
+            header("Location:" . URL . 'login/');
         }
-    }
-
-    function msgErrorP($error, $msg){
-
-        $_SESSION['error'] = $error;
-        $_SESSION['msg'] = $msg;
     }
 
 
     public function updateProcOff() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
-        
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->UpdateProcOff($_POST);
 
         if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/;"';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcSer() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->UpdateProcSer($_POST);
 
         if ($update) {
-
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcDig() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->UpdateProcDig($_POST);
 
         if ($update) {
-
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcCor() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->updateProcCor($_POST);
 
         if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcLam() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->updateProcLam($_POST);
 
         if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcHotStam() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->updateProcHotStam($_POST);
+
         if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcGra() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->updateProcGra($_POST);
 
         if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
-        } else {
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
+            } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcCorLas() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->updateProcCorLas($_POST);
 
         if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
 
     public function updateProcSua() {
 
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
         $optionsModel = $this->loadModel('OptionsModel');
         $update       = $optionsModel->updateProcSua($_POST);
 
         if ($update) {
             
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
+            //header("Location:" . URL . "modificaprocesos/cambioProcesos/");
         } else {
 
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
-        }
-    }
-
-    public function updateProcEnc() {
-
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
-        $optionsModel = $this->loadModel('OptionsModel');
-        $update       = $optionsModel->updateProcEnc();
-
-        if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
-        } else {
-
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
-        }
-    }
-
-    public function updateProcRan() {
-
-        session_start();
-        $login = $this->loadController('login');
-        if( !$login->isLoged() ) {
-
-             header( 'Location: ' . URL);
-        }
-        $optionsModel = $this->loadModel('OptionsModel');
-        $update       = $optionsModel->updateProcRan();
-        
-        if ($update) {
-            
-            self::msgErrorP(false,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
-        } else {
-
-            self::msgErrorP(true,true);
-            header("Location:" . URL . "modificaprocesos/cambioprocesos/");
+            echo '<script language="javascript">';
+            echo 'alert("No se pudo procesar modificacion");';
+            echo 'window.location="' . URL . 'modificaprocesos/cambioProcesos/";';
+            echo '</script>';
         }
     }
  }

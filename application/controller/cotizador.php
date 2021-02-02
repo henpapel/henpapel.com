@@ -1194,7 +1194,7 @@ class Cotizador extends Controller {
     // Calculadora
         $aJson['Calculadora'] = self::almejaCalc($base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
 
-        //Funcion extra para dejar en sesion el calculo
+    //Funcion extra para dejar en sesion el calculo
         self::saveBoxCalculate($odt, $aJson['Calculadora']);
 
 
@@ -1616,6 +1616,16 @@ class Cotizador extends Controller {
 
 
 
+    // ************ encajada ******************************
+
+        $aJson['encajada'] = self::calculoEncajada($tiraje, $ventas_model);
+
+
+        $aJson['costos_fijos'] += $aJson['encajada']['costo_tot_proceso'];
+
+        $aJson['costo_subtotal'] += $aJson['encajada']['costo_tot_proceso'];
+
+
     // ************ encuadernacion ******************************
 
         $aEncuadernacion_Fcaj = [];
@@ -1627,19 +1637,6 @@ class Cotizador extends Controller {
 
         $aJson['Encuadernacion_emp'] = self::calculoEncuadernacion($tiraje, $id_papel_exterior_cajon, $enc_cortes, $ventas_model);
 
-        $perf_iman = self::calculoPerforadoIman($tiraje, $ventas_model);
-
-        $aJson['Encuadernacion_emp']['perforado_iman_costo_unitario']    = $perf_iman['costo_unitario'];
-        $aJson['Encuadernacion_emp']['perforado_iman_costo_tot_proceso'] = $perf_iman['costo_tot_proceso'];
-
-        $aJson['Encuadernacion_emp']['costo_tot_proceso'] += $perf_iman['costo_tot_proceso'];
-
-        $encajada = self::calculoEncajada($tiraje, $ventas_model);
-
-        $aJson['Encuadernacion_emp']['encajada_costo_unitario']    = $encajada['costo_unitario'];
-        $aJson['Encuadernacion_emp']['encajada_costo_tot_proceso'] = $encajada['costo_tot_proceso'];
-
-        $aJson['Encuadernacion_emp']['costo_tot_proceso'] += $encajada['costo_tot_proceso'];
 
         if ($aJson['Encuadernacion_emp']['costo_tot_proceso'] <= 0) {
 
@@ -6393,44 +6390,6 @@ class Cotizador extends Controller {
         echo json_encode($result);
     }
 
-    public function imprCaja(){
-
-        session_start();
-
-        $login = $this->loadController('login');
-
-        if( $login->isLoged() ) {
-
-            $model = intval($_GET['model']);
-            require_once 'application/views/templates/head.php';
-            if( $model ){
-
-                switch ($model) {
-                    case 1:
-                        require_once 'application/views/cotizador/almeja/impresion.php';
-                    break;
-
-                    case 2:
-                        require_once 'application/views/cotizador/circular/impresion.php';
-                    break;
-
-                    case 3:
-                        require_once 'application/views/cotizador/libro/impresion.php';
-                    break;
-                    
-                    case 4:
-                        require_once 'application/views/cotizador/regalo/impresion.php';
-                    break;
-                }    
-            }
-            
-            
-        } else {
-
-            header("Location:" . URL . 'login/');
-        }
-    }
-
     public function printBoxCalculate(){
 
         session_start();
@@ -6481,12 +6440,51 @@ class Cotizador extends Controller {
 
 
                 require 'application/views/templates/head.php';
+                require 'application/views/templates/top_menu.php';
                 require 'application/views/calculadora/almeja3.php';
                 require 'application/views/templates/footer.php';
             } else {
 
                 header("Location:" . URL . 'cotizador/get/Cotizaciones');
             }
+        } else {
+
+            header("Location:" . URL . 'login/');
+        }
+    }
+
+    public function imprCaja(){
+
+        session_start();
+
+        $login = $this->loadController('login');
+
+        if( $login->isLoged() ) {
+
+            $model = intval($_GET['model']);
+            require_once 'application/views/templates/head.php';
+            if( $model ){
+
+                switch ($model) {
+                    case 1:
+                        require_once 'application/views/cotizador/almeja/impresion.php';
+                    break;
+
+                    case 2:
+                        require_once 'application/views/cotizador/circular/impresion.php';
+                    break;
+
+                    case 3:
+                        require_once 'application/views/cotizador/libro/impresion.php';
+                    break;
+                    
+                    case 4:
+                        require_once 'application/views/cotizador/regalo/impresion.php';
+                    break;
+                }    
+            }
+            
+            
         } else {
 
             header("Location:" . URL . 'login/');

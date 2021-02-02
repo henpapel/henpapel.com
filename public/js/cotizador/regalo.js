@@ -1222,6 +1222,7 @@ class Regalo extends Cajas{
 	    var aAccesorios_tmp = JSON.stringify(this._accesorios, null, 4);
 
 	    var id_cliente_tmp = JSON.stringify(this._idCliente, null, 4);
+	    var id_odt_anterior = $("#id_odt_anterior").val();
 	    var modificar_odt = modificar;
 
 	    formData.push(
@@ -1231,6 +1232,7 @@ class Regalo extends Cajas{
 	    	{name: 'aAccesorios', value: aAccesorios_tmp},
 	    	{name: 'descuento_pctje', value: this._descuento},
 	    	{name: 'grabar', value: grabar},
+	    	{name: 'id_odt_ant', value: id_odt_anterior},
 	    	{name: 'modificar', value: modificar_odt}
 	    );
 

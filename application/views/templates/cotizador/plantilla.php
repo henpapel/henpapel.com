@@ -51,7 +51,7 @@
         width: 80px;
         height: 80px;
     }
-    @media only screen and (max-width: 450px) {
+    @media only screen and (max-width: 660px) {
         #divFooter {
             
              min-width: 100px;

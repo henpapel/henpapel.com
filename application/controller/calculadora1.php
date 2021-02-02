@@ -4,14 +4,17 @@
 class Calculadora extends Controller {
     
     public function index() {
-    	echo "hola Tu";
-
+    	
+        echo "Clase Calculadora";
     }
 
     
     public function almeja() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login= $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
@@ -65,24 +68,33 @@ class Calculadora extends Controller {
                 $Y11 = $H+($P-0.5)+2.5;
 
 
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/almeja3.php';
-                require 'application/views/templates/footer.php';
+                require_once 'application/views/templates/head.php';
+                require_once 'application/views/templates/top_menu.php';
+                require_once 'application/views/calculadora/almeja3.php';
+                require_once 'application/views/templates/footer.php';
             } else {
 
-                header("Location:" . URL . 'cajas/');
+                echo '<script language="javascript">';
+                echo 'window.location.href="' . URL . 'cajas/"';
+                echo '</script>';
+                //header("Location:" . URL . 'cajas/');
             }
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function libro() {
         
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login = $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
@@ -136,24 +148,34 @@ class Calculadora extends Controller {
                 $B11 = $B-(1);
                 $Y11 = $H+$P+(2.5);
 
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/libro2.php';
-                require 'application/views/templates/footer.php';
+                require_once 'application/views/templates/head.php';
+                require_once 'application/views/templates/top_menu.php';
+                require_once 'application/views/calculadora/libro2.php';
+                require_once 'application/views/templates/footer.php';
             } else {
 
-                header("Location:" . URL . 'cajas/');
+                echo '<script language="javascript">';
+                echo 'window.location.href="' . URL . 'cajas/"';
+                echo '</script>';
+                //header("Location:" . URL . 'cajas/');
             }
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function circular() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
+        
         $login = $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
 
@@ -197,24 +219,33 @@ class Calculadora extends Controller {
                 $C_1   = $C+1;
                 $C_1_1 = $C+0.5;
 
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/circular2.php';
-                require 'application/views/templates/footer.php';
+                require_once 'application/views/templates/head.php';
+                require_once 'application/views/templates/top_menu.php';
+                require_once 'application/views/calculadora/circular2.php';
+                require_once 'application/views/templates/footer.php';
             } else {
 
-                header("Location:" . URL . 'cajas/');
+                echo '<script language="javascript">';
+                echo 'window.location.href="' . URL . 'cajas/"';
+                echo '</script>';
+                //header("Location:" . URL . 'cajas/');
             }
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            ///header("Location:" . URL . 'login/');
         }
     }
 
 
     public function regalo() {
         
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login = $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
@@ -266,24 +297,33 @@ class Calculadora extends Controller {
                 $F   = $B11+(1.5);
                 $K   = $H11+(1.5);
 
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/regalo2.php';
-                require 'application/views/templates/footer.php';
+                require_once 'application/views/templates/head.php';
+                require_once 'application/views/templates/top_menu.php';
+                require_once 'application/views/calculadora/regalo2.php';
+                require_once 'application/views/templates/footer.php';
             } else {
 
-                header("Location:" . URL . 'cajas/');
+                echo '<script language="javascript">';
+                echo 'window.location.href="' . URL . 'cajas/"';
+                echo '</script>';
+                //header("Location:" . URL . 'cajas/');
             }
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function marco() {
         
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login = $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
@@ -350,24 +390,33 @@ class Calculadora extends Controller {
                 $B11 = $B1 + 1.5;
                 $H11 = $H1 + 1.5;
 
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/marco1.php';
-                require 'application/views/templates/footer.php';
+                require_once 'application/views/templates/head.php';
+                require_once 'application/views/templates/top_menu.php';
+                require_once 'application/views/calculadora/marco1.php';
+                require_once 'application/views/templates/footer.php';
             } else {
 
-                header("Location:" . URL . 'cajas/');
+                echo '<script language="javascript">';
+                echo 'window.location.href="' . URL . 'cajas/"';
+                echo '</script>';
+                //header("Location:" . URL . 'cajas/');
             }
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function cerillera() {
         
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login = $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
@@ -421,24 +470,33 @@ class Calculadora extends Controller {
                 $Y1  = $Y + 1.5;
 
 
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/cerillera1.php';
-                require 'application/views/templates/footer.php';
+                require_once 'application/views/templates/head.php';
+                require_once 'application/views/templates/top_menu.php';
+                require_once 'application/views/calculadora/cerillera1.php';
+                require_once 'application/views/templates/footer.php';
             } else {
 
-                header("Location:" . URL . 'cajas/');
+                echo '<script language="javascript">';
+                echo 'window.location.href="' . URL . 'cajas/"';
+                echo '</script>';
+                //header("Location:" . URL . 'cajas/');
             }
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 
 
     public function vino() {
         
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login = $this->loadController('login');
         $options_model = $this->loadModel('OptionsModel');
@@ -484,17 +542,23 @@ class Calculadora extends Controller {
                 $X   = $b - 0.1;
                 $Y   = $h - 0.1;
 
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/vino1.php';
-                require 'application/views/templates/footer.php';
+                require_once 'application/views/templates/head.php';
+                require_once 'application/views/templates/top_menu.php';
+                require_once 'application/views/calculadora/vino1.php';
+                require_once 'application/views/templates/footer.php';
             } else {
 
-                header("Location:" . URL . 'cajas/');
+                echo '<script language="javascript">';
+                echo 'window.location.href="' . URL . 'cajas/"';
+                echo '</script>';
+                //header("Location:" . URL . 'cajas/');
             }
         } else {
 
-            header("Location:" . URL . 'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
         }
     }
 

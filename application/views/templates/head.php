@@ -27,9 +27,9 @@
     <script src="<?=URL?>/public/js/libs/jquery.min.js"></script>
     <!--Al cargar la pagina el archivo: '2.1.4.jquery.min.js' no se puede cargar debido a que busca un archivo dependiente llamado: 'jquery.min.map.js'. -->
     <!--
-    <script src="http://10.51.28.114/henpapel.com/public/js/libs/2.1.4.jquery.min.js"></script>
-    <script src="http://10.51.28.114/henpapel.com/public/js/libs/jquery-ui.min.js"></script>
-    <script src="http://10.51.28.114/henpapel.com/public/js/mi.jquery.tools.min.js"></script>
+    <script src="<?=URL?>/henpapel.com/public/js/libs/2.1.4.jquery.min.js"></script>
+    <script src="<?=URL?>/henpapel.com/public/js/libs/jquery-ui.min.js"></script>
+    <script src="<?=URL?>/henpapel.com/public/js/mi.jquery.tools.min.js"></script>
     -->
     <script src="<?= URL ?>public/js/choosen.js"></script>
     <script src="<?= URL ?>public/js/calculadora.js"></script>

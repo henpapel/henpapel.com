@@ -2,54 +2,58 @@
 
 
 class Login extends Controller {
-    
+
     public function index() {
-        
+
         session_start();
-        
+
         $logged = $this->isLoged();
-        
+
         if(!$logged) {
-          
-            require 'application/views/templates/head.php';
-            require 'application/views/login/index.php';
-            require 'application/views/templates/footer.php';
-        } else {      
-        
-            header("Location:" . URL . $_SESSION['area'].'/');  
+
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/login/index.php';
+            require_once 'application/views/templates/footer.php';
+        } else {
+
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . $_SESSION['area'] . '/"';
+            echo '</script>';
+            //header("Location:" . URL . $_SESSION['area'].'/');
         }
     }
 
-    
+
     public function isLoged() {
 
         if (isset($_SESSION['logged_in'])) {
-        
+
             return true;
         } else {
-        
+
             return false;
         }
-        
+
     }
 
-    
+
     public function signIn() {
-    
+
         $login_model = $this->loadModel('LoginModel');
-      
+
         $logged = $login_model->login($_POST);
-        
+
+        session_start();
+
         if (!$logged) {
 
-            session_start();
-            
             $_SESSION['session_messages'] = '<p class="small-error-message">Usuario o contraseña incorrectos';
 
-            header("Location:" . URL);
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . '"';
+            echo '</script>';
+            //header("Location:" . URL);
         } else {
-
-            session_start();
 
             $_SESSION['user']           = $logged;
             $_SESSION['logged_in']      = 'true';
@@ -62,11 +66,14 @@ class Login extends Controller {
 
             $_SESSION['cambios_pendientes'] = $login_model->getPendingCambios();
 
-            header("Location:" . URL . $logged['area'] . '/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . $logged['area'] . '/"';
+            echo '</script>';
+            //header("Location:" . URL . $logged['area'] . '/');
         }
     }
 
-  
+
     public function sessionMessage($type, $text) {
 
         $message = '<p>';

@@ -1572,14 +1572,6 @@ class Controller {
                 $aTam['imp_largo_dig'] = $imp_largo_dig;
                 $aTam['tipo_digital']  = "Frente Doble Carta";
                 $aTam['cabe_digital']  = "SI";
-            } elseif ( $ancho_fis > $corte_ancho_proceso and $largo_fis > $corte_largo_proceso ) {
-
-                $aTam[0]               = "T2C";
-                $aTam[1]               = 1;
-                $aTam['imp_ancho_dig'] = $ancho_fis;
-                $aTam['imp_largo_dig'] = $largo_fis;
-                $aTam['tipo_digital']  = "Frente extendido";
-                $aTam['cabe_digital']  = "SI";
             }
         } else {
 
@@ -3951,6 +3943,8 @@ class Controller {
     }
 
 
+//// esta función la lleva las tablas: cot_alm_encuadernacion y cot_reg_elab_ftap
+
     protected function calculoEncajada($tiraje, $ventas_model) {
 
         $calculo_tmp = [];
@@ -4189,21 +4183,14 @@ class Controller {
         $empalme_cajon_costo_tot  = $empalme_cajon_db['costo_tot'];
 
 
-        // encajada
-        $encajada_db = self::calculoEncajada($tiraje, $ventas_model);
 
-        $enc_encajada_costo_unitario = round(floatval($encajada_db['costo_unitario']), 2);
-        $enc_encajada_costo_tot      = round(floatval($enc_encajada_costo_unitario * $tiraje), 2);
-
-        $costo_tot_proceso = round(floatval($enc_costo_forrado_cajon + $enc_arreglo_forrado + $empalme_cajon_costo_tot + $enc_encajada_costo_tot), 2);
+        $costo_tot_proceso = round(floatval($enc_costo_forrado_cajon + $enc_arreglo_forrado + $empalme_cajon_costo_tot), 2);
 
 
         $calculo_tmp_Fcaj['arreglo_costo_unitario'] = $enc_arreglo_forrado;
         $calculo_tmp_Fcaj['arreglo_forrado_cajon']                = $enc_arreglo_forrado;
         $calculo_tmp_Fcaj['forrado_cajon_costo_unitario']         = round(floatval($enc_forrado_costo_unitario), 2);
         $calculo_tmp_Fcaj['forrado_cajon']                        = $enc_costo_forrado_cajon;
-        $calculo_tmp_Fcaj['enc_encajada_costo_unitario']          = $enc_encajada_costo_unitario;
-        $calculo_tmp_Fcaj['enc_encajada_costo_tot']               = $enc_encajada_costo_tot;
         $calculo_tmp_Fcaj['empalme_cajon_costo_unitario']         = $empalme_cajon_costo_unit;
         $calculo_tmp_Fcaj['empalme_de_cajon']                     = $empalme_cajon_costo_tot;
         $calculo_tmp_Fcaj['costo_tot_proceso']                    = $costo_tot_proceso;

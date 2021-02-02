@@ -15,10 +15,10 @@ class Product_x extends Controller {
 
        
     if($login->isLoged()){
-        require 'application/views/templates/head.php';
-        require 'application/views/templates/top_menu.php';
-        require 'application/views/crud_i/index.php';
-        require 'application/views/templates/footer.php';
+        require_once 'application/views/templates/head.php';
+        require_once 'application/views/templates/top_menu.php';
+        require_once 'application/views/crud_i/index.php';
+        require_once 'application/views/templates/footer.php';
       
         }else{
 
@@ -60,10 +60,10 @@ class Product_x extends Controller {
        
         if($login->isLoged()){
         
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/crud_i/index.php'; /* velada/reporte.php */
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/crud_i/index.php'; /* velada/reporte.php */
+            require_once 'application/views/templates/footer.php';
           
         } else {
 
@@ -83,10 +83,10 @@ class Product_x extends Controller {
        
         if($login->isLoged()){
   
-            require 'application/views/templates/head.php';
-            require 'application/views/templates/top_menu.php';
-            require 'application/views/velada/detalles.php';
-            require 'application/views/templates/footer.php';
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/velada/detalles.php';
+            require_once 'application/views/templates/footer.php';
         } else {
 
             header("Location:".URL.'login/');

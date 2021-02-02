@@ -5,7 +5,10 @@ class Empresarial extends Controller {
     
     public function index() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
         
         $login= $this->loadController('login');
         
@@ -19,13 +22,16 @@ class Empresarial extends Controller {
 
             $rows=$options_model->archiemprCons();
       
-          require 'application/views/templates/head.php';
-          require 'application/views/templates/top_menu.php';
-          require 'application/views/empresarial/index.php';
-          require 'application/views/templates/footer.php';
+          require_once 'application/views/templates/head.php';
+          require_once 'application/views/templates/top_menu.php';
+          require_once 'application/views/empresarial/index.php';
+          require_once 'application/views/templates/footer.php';
         } else {
 
-            header("Location:".URL.'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:".URL.'login/');
         }
 
     }
@@ -33,7 +39,10 @@ class Empresarial extends Controller {
 
     public function archivos() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login= $this->loadController('login');
 
@@ -44,20 +53,26 @@ class Empresarial extends Controller {
 
         if($login->isLoged()) {
 
-          require 'application/views/templates/head.php';
-          require 'application/views/templates/top_menu.php';
-          require 'application/views/empresarial/uparchivo.php';
-          require 'application/views/templates/footer.php';
+          require_once 'application/views/templates/head.php';
+          require_once 'application/views/templates/top_menu.php';
+          require_once 'application/views/empresarial/uparchivo.php';
+          require_once 'application/views/templates/footer.php';
         } else {
 
-          header("Location:".URL.'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+          //header("Location:".URL.'login/');
         }
       }
 
 
     public function uploadFiles() {
 
-        session_start();
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
 
         $login= $this->loadController('login');
         $login_model = $this->loadModel('LoginModel');
@@ -88,7 +103,10 @@ class Empresarial extends Controller {
 
                 $_SESSION['result'] = 'ERROR:';
 
-                    header("Location:".URL.'empresarial/archivos');
+                    echo '<script language="javascript">';
+                    echo 'window.location.href="' . URL . 'empresarial/archivos/"';
+                    echo '</script>';
+                    //header("Location:".URL.'empresarial/archivos');
             } else {
 
                 foreach ($_FILES["up-file"]["name"] as $key => $file) {
@@ -126,7 +144,10 @@ class Empresarial extends Controller {
                         $_SESSION['notification'] = 'fail';
                         $_SESSION['result']       = 'ERROR:';
 
-                        header("Location:".URL.'empresarial/archivos');
+                        echo '<script language="javascript">';
+                        echo 'window.location.href="' . URL . 'empresarial/archivos/"';
+                        echo '</script>';
+                        //header("Location:".URL.'empresarial/archivos');
                     } else {
 
 
@@ -152,7 +173,10 @@ class Empresarial extends Controller {
                                 $_SESSION['notification'] = 'success';
                                 $_SESSION['result']       = 'LISTO:';
                                 
-                                header("Location:".URL.'empresarial/archivos');
+                                echo '<script language="javascript">';
+                                echo 'window.location.href="' . URL . 'empresarial/archivos/"';
+                                echo '</script>';
+                                //header("Location:".URL.'empresarial/archivos');
                             } else {
 
                                 echo "Ocurrio un error a la hora de guardar.";
@@ -168,7 +192,10 @@ class Empresarial extends Controller {
             $_SESSION['messages']=$session_messages;
         } else {
 
-            header("Location:".URL.'login/');
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:".URL.'login/');
         }
     }
 
