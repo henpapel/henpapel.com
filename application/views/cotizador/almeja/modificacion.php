@@ -87,12 +87,12 @@
                             <div class="cajas-col-input t-left">
 
                                 <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $Nombre_cliente?>">
-                                <span>ODT: </span>
+                                <span>N° Cot: </span>
                             </div>
 
                             <div class="cajas-col-input t-right">
 
-                                <input class="cajas-input medidas-input" name="odt" id="odt-1" type="text" placeholder="ODT" tabindex="1" min="1" step="1" value="<?= $aJson['num_odt']?>" autofocus style="text-transform: uppercase;" onkeyup="desactivarBtn();">
+                                <input class="cajas-input medidas-input" name="odt" id="odt-1" type="text" placeholder="######" tabindex="1" min="1" step="1" value="<?= $aJson['num_odt']?>" autofocus style="text-transform: uppercase;" onkeyup="desactivarBtn();">
                             </div>
                         </div>
 
@@ -5608,12 +5608,12 @@ if ($aJson) { ?>
     });
 
 
-    $("#btnModCorrecto").click( function(){
+    /*$("#btnModCorrecto").click( function(){
 
         location.href="<?=URL?>cotizador/getCotizaciones/";
 
         //$("#subForm").prop("disabled", true);
-    });
+    });*/
 
 
     // graba en la Base de Datos

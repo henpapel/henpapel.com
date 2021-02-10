@@ -4731,6 +4731,56 @@ class VentasModel extends Controller {
     }
 
 
+    public function getOdtById($id_odt) {
+
+        $sql = "SELECT * FROM cot_odt where id_odt = " . $id_odt . " and (status = 'A' or status = 'M' or status = 'T' or status = 'P')";
+
+        $query = $this->db->prepare($sql);
+
+        $query->execute();
+
+        $result[] = array();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result = $row;
+        }
+
+        return $result;
+    }
+
+
+    public function getCalculadora($id_odt, $id_modelo) {
+
+        $id_modelo = intval($id_modelo);
+
+        switch ($id_modelo) {
+            case 1:
+                $sql = "SELECT * FROM cot_alm_calculadora where id_odt = " . $id_odt . " and status = 'A'";
+
+                break;
+
+            case 4:
+                $sql = "SELECT * FROM cot_reg_calculadora where id_odt = " . $id_odt . " and status = 'A'";
+
+                break;
+        }
+
+        $query = $this->db->prepare($sql);
+
+        $query->execute();
+
+        $result = array();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+
     public function getPrecioPapelById($id) {
 
         $id = intval($id);
@@ -4789,10 +4839,12 @@ class VentasModel extends Controller {
         $sql = "SELECT cot_odt.id_odt, cot_odt.num_odt, cot_odt.id_modelo, cot_odt.tiraje, cot_odt.fecha_odt
                 , cot_odt.hora_odt, modelos_cajas.nombre as nombre_caja
                 , clientes.nombre as nombre_cliente
+                , cot_tipo_costo.nombre as tipo_costo
                 FROM cot_odt
+                join cot_tipo_costo on cot_odt.tipo_costo = cot_tipo_costo.id
                 join modelos_cajas on cot_odt.id_modelo = modelos_cajas.id_modelo
                 join clientes on cot_odt.id_cliente = clientes.id_cliente
-                WHERE cot_odt.status = 'A' order by cot_odt.fecha_odt desc, cot_odt.hora_odt desc";
+                WHERE (cot_odt.status = 'A' or cot_odt.status = 'M' or cot_odt.status = 'T') order by cot_odt.fecha_odt desc, cot_odt.hora_odt desc";
 
         $query = $this->db->prepare($sql);
 

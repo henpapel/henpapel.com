@@ -4682,6 +4682,16 @@ class Controller {
     }
 
 
+    public function getLastChar($str, $char) {
+
+        $last_char = "";
+
+        $last_char = substr(strrchr($str, $char), 1);
+
+        return $last_char;
+    }
+
+
     public function strip_slashes_recursive($variable) {
 
         if (is_string($variable)) {
@@ -4709,9 +4719,46 @@ class Controller {
         return $variable ;
     }
 
-    public function saveBoxCalculate($odt, $calculadora) {
 
-        $_SESSION['calculadora'] = $calculadora;
-        $_SESSION['calculadora']['odt'] = $odt;
+    public function imprCaja(){
+
+        session_start();
+
+        $login = $this->loadController('login');
+
+        if( !$login->isLoged() ) {
+
+            header("Location:" . URL . 'login/');
+        }
+
+        $model = intval($_GET['model']);
+
+        require_once 'application/views/templates/head.php';
+
+        if( $model ){
+
+            switch ($model) {
+                case 1:
+                    require_once 'application/views/cotizador/almeja/impresion.php';
+
+                    break;
+
+                case 2:
+                    require_once 'application/views/cotizador/circular/impresion.php';
+
+                    break;
+
+                case 3:
+                    require_once 'application/views/cotizador/libro/impresion.php';
+
+                    break;
+
+                case 4:
+                    require_once 'application/views/cotizador/regalo/impresion.php';
+
+                    break;
+            }
+        }
     }
+
 }

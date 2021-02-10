@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 <link rel="stylesheet" href="<?= URL; ?>public/css/cotizador.css">
 <link rel="stylesheet" type="text/css" href="<?=URL?>public/css/style.css">
-<link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap-theme.min.css">
+<!--<link rel="stylesheet" href="<?= URL; ?>public/css/bootstrap-theme.min.css">-->
 
 <!-- Chosen -->
 <link rel="stylesheet" type="text/css" href="<?=URL?>public/css/chosen/chosen.css">
@@ -107,6 +107,7 @@
         display: block;
         position: absolute;
         padding: 0px;
+        transition: transform .5s
     }
     .div-total{
 
@@ -119,6 +120,10 @@
     .c-pointer{
 
         cursor: pointer;
+    }
+    .div-derecho {
+
+        z-index: 0
     }
 </style>
 <div class="div-principal user-select-none">
@@ -141,8 +146,10 @@
                       } ?>
             </select>
             <div class="divCliente text-center">
-                <div id="divCliente" class="mt-1">
-                    Cliente: <?= $nombrecliente; ?>    
+                <div id="divCliente">
+                    
+                    <!-- <label class="btn btn-sm btn-warning float-left";"><i class="bi bi-list"></i><input style="display: none;" type="checkbox" id="btnHamburguer"></label> -->
+                    <label class="mt-1"><?= $nombrecliente; ?></label>
                 </div>
             </div>
         </div>
@@ -166,9 +173,11 @@
 
             <button class="btn btn-warning btn-sm" id="btnResumen" style="font-size: 10px;"><i class="bi bi-file-earmark"></i>RESUMEN</button>
 
-            <button id="btnCalculadora" disabled="" class="btn btn-warning btn-sm" style="font-size: 10px;"><i class="bi bi-calculator"></i> CALCULADORA</button>
+            <!--<button id="btnCalculadora" disabled="" class="btn btn-warning btn-sm" style="font-size: 10px;"><i class="bi bi-calculator"></i> CALCULADORA</button>-->
 
             <button type="button" id="btnImprimir" disabled="" class="btn btn-info btn-sm" style="font-size: 10px;"><i class="bi bi-printer"></i> IMPRIMIR</button>
+
+            <button type="button" id="btnSalir" class="btn btn-danger btn-sm" style="font-size: 10px;"><i class="bi bi-door-open"></i> SALIR</button>
 
             <br>
 
@@ -224,6 +233,22 @@
 </div>
 
 <script>
+
+    /*$("#btnHamburguer").click(function() {
+        $(".div-derecho").css("transition","width .5s");
+        let large = parseInt($(".div-izquierdo").css("width"));
+        let check = $("#btnHamburguer").prop("checked");
+        
+        if( check == true ){
+
+            $(".div-izquierdo").css("transform",`translateX(-${large}px)`);
+            $(".div-derecho").css("width","100%");
+        }else{
+            
+            $(".div-izquierdo").css("transform","translateX(0px)");
+            $(".div-derecho").css("width","80%");
+        }   
+    });*/
 
     document.getElementById('box-model').onchange = function(event){
 

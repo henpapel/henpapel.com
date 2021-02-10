@@ -30,7 +30,7 @@ class Cotizador extends Controller {
     }
 
 
-    private function almejaCalc($base, $alto, $profundidad, $grosor_cajon, $grosor_cartera) {
+    private function almejaCalc($odt, $base, $alto, $profundidad, $grosor_cajon, $grosor_cartera) {
 
         $calculadora = array();
 
@@ -122,6 +122,12 @@ class Cotizador extends Controller {
         $calculadora["Y1"]  = $Y1;
         $calculadora["B11"] = $B11;
         $calculadora["Y11"] = $Y11;
+
+        $_SESSION['calculadora'] = [];
+
+        $_SESSION['calculadora']        = $calculadora;
+        $_SESSION['calculadora']['odt'] = $odt;
+
 
         return $calculadora;
     }
@@ -1005,6 +1011,8 @@ class Cotizador extends Controller {
         }
 
 
+        $starttime = microtime(true);
+
         $aJson   = [];
         $aCortes = [];
 
@@ -1018,15 +1026,22 @@ class Cotizador extends Controller {
         $odt = self::strip_slashes_recursive($odt);
 
 
-        //$l_existe = $ventas_model->chkODT();
-        $l_existe = $options_model->checaODT($odt);
+        $modificar = $_POST['modificar'];
+        if(isset($_POST['modificar']) and $_POST['modificar'] = "SI") {
 
-        if ($l_existe) {
+            $modificar == "SI";
 
-            self::msgError("Ya hay una ODT con el mismo nombre");
+            //$l_existe = $ventas_model->chkODT();
+            $l_existe = $options_model->checaODT($odt);
+
+            if ($l_existe) {
+
+                self::msgError("Ya hay una ODT con el mismo nombre");
+            }
+        } else {
+
+            $modificar = "NO";
         }
-
-        $starttime = microtime(true);
 
 
         $_POST['odt'] = $odt;
@@ -1192,10 +1207,7 @@ class Cotizador extends Controller {
 
 
     // Calculadora
-        $aJson['Calculadora'] = self::almejaCalc($base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
-
-    //Funcion extra para dejar en sesion el calculo
-        self::saveBoxCalculate($odt, $aJson['Calculadora']);
+        $aJson['Calculadora'] = self::almejaCalc($odt, $base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
 
 
         $id_papel_empalme       = intval($_POST['papel_interior_cajon']);
@@ -6357,8 +6369,8 @@ class Cotizador extends Controller {
 
         session_start();
 
-        $login         = $this->loadController('login');
-        $options_model = $this->loadModel('optionsmodel');
+        $login            = $this->loadController('login');
+        $options_model    = $this->loadModel('optionsmodel');
         $modeloCotizacion = $this->loadModel('CotizacionModel');
 
         $idCot  = intval($_GET['idCot']);
@@ -6390,104 +6402,141 @@ class Cotizador extends Controller {
         echo json_encode($result);
     }
 
+
+    public function printCalc() {
+
+        session_start();
+
+        $login        = $this->loadController('login');
+        $ventas_model = $this->loadModel('VentasModel');
+
+        if(!$login->isLoged()) {
+
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+        }
+
+        if (isset($_GET['id'])) {
+
+            $id_odt = intval($_GET['id']);
+        } else {
+
+            return;
+        }
+
+        $num_odt   = "";
+        $id_modelo = 0;
+
+        $cot_odt_db = $ventas_model->getOdtById($id_odt);
+
+        $odt = $cot_odt_db['num_odt'];
+        $odt = trim($odt);
+
+        $id_modelo = $cot_odt_db['id_modelo'];
+        $id_modelo = intval($id_modelo);
+
+        $calculadora = $ventas_model->getCalculadora($id_odt, $id_modelo);
+
+
+        foreach($calculadora as $row) {
+
+            $b         = $row['b'];
+            $d         = $row['d'];
+            $h         = $row['h'];
+            $p         = $row['p'];
+            $g         = $row['g_cajon'];
+            $G         = $row['g_cartera'];
+            $e         = $row['e'];
+            $E         = $row['e_may'];
+            $b1        = $row['b1'];
+            $h1        = $row['h1'];
+            $p1        = $row['p1'];
+            $x         = $row['x'];
+            $y         = $row['y'];
+            $x1        = $row['x1'];
+            $y1        = $row['y1'];
+            $x11       = $row['x11'];
+            $y11       = $row['y11'];
+            $b11       = $row['b11'];
+            $h11       = $row['h11'];
+            $f         = $row['f'];
+            $k         = $row['k'];
+            $B         = $row['b_may'];
+            $H         = $row['h_may'];
+            $P         = $row['p_may'];
+            $Y         = $row['y_may'];
+            $B1        = $row['b1_may'];
+            $Y1        = $row['y1_may'];
+            $B11       = $row['b11_may'];
+            $Y11       = $row['y11_may'];
+        }
+
+        require_once 'application/views/templates/head.php';
+        require_once 'application/views/templates/top_menu.php';
+        require_once 'application/views/calculadora/almeja3.php';
+        require_once 'application/views/templates/footer.php';
+    }
+
+
     public function printBoxCalculate(){
 
         session_start();
 
         $login = $this->loadController('login');
 
-        if($login->isLoged()){
-
-            if (!empty($_SESSION['calculadora'])) {
-
-                $odt = (isset($_SESSION['calculadora']['odt']))? $_SESSION['calculadora']['odt']: '--';
-                
-                $b = $_SESSION['calculadora']['base'];
-                $h = $_SESSION['calculadora']['alto'];
-                $p = $_SESSION['calculadora']['profundidad'];
-                $g = $_SESSION['calculadora']['grosor_cajon'];
-                $G = $_SESSION['calculadora']['grosor_cartera'];
-
-                $e = $_SESSION['calculadora']['e'];
-                $E = $_SESSION['calculadora']['E'];
-
-                /* Diseño */
-                $b1  = $_SESSION['calculadora']['b1'];
-                $h1  = $_SESSION['calculadora']['h1'];
-                $p1  = $_SESSION['calculadora']['p1'];
-                $x   = $_SESSION['calculadora']['x'];
-                $y   = $_SESSION['calculadora']['y'];
-                $x1  = $_SESSION['calculadora']['x1'];
-                $y1  = $_SESSION['calculadora']['y1'];
-                $x11 = $_SESSION['calculadora']['x11'];
-                $y11 = $_SESSION['calculadora']['y11'];
-
-                //forro
-                $b11 = $_SESSION['calculadora']['b11'];
-                $h11 = $_SESSION['calculadora']['h11'];
-                $f   = $_SESSION['calculadora']['f'];
-                $k   = $_SESSION['calculadora']['k'];
-
-                //cartera
-                $B   = $_SESSION['calculadora']['B'];
-                $H   = $_SESSION['calculadora']['H'];
-                $P   = $_SESSION['calculadora']['P'];
-                $Y   = $_SESSION['calculadora']['Y'];
-                $B1  = $_SESSION['calculadora']['B1'];
-                $Y1  = $_SESSION['calculadora']['Y1'];
-                $B11 = $_SESSION['calculadora']['B11'];
-                $Y11 = $_SESSION['calculadora']['Y11'];
-
-
-                require 'application/views/templates/head.php';
-                require 'application/views/templates/top_menu.php';
-                require 'application/views/calculadora/almeja3.php';
-                require 'application/views/templates/footer.php';
-            } else {
-
-                header("Location:" . URL . 'cotizador/get/Cotizaciones');
-            }
-        } else {
+        if(!$login->isLoged()){
 
             header("Location:" . URL . 'login/');
+
         }
-    }
 
-    public function imprCaja(){
+        if (empty($_SESSION['calculadora'])) {
 
-        session_start();
-
-        $login = $this->loadController('login');
-
-        if( $login->isLoged() ) {
-
-            $model = intval($_GET['model']);
-            require_once 'application/views/templates/head.php';
-            if( $model ){
-
-                switch ($model) {
-                    case 1:
-                        require_once 'application/views/cotizador/almeja/impresion.php';
-                    break;
-
-                    case 2:
-                        require_once 'application/views/cotizador/circular/impresion.php';
-                    break;
-
-                    case 3:
-                        require_once 'application/views/cotizador/libro/impresion.php';
-                    break;
-                    
-                    case 4:
-                        require_once 'application/views/cotizador/regalo/impresion.php';
-                    break;
-                }    
-            }
-            
-            
-        } else {
-
-            header("Location:" . URL . 'login/');
+            header("Location:" . URL . 'cotizador/getCotizaciones');
         }
+
+        $odt = $_SESSION['calculadora']['odt'];
+
+        $b = $_SESSION['calculadora']['base'];
+        $h = $_SESSION['calculadora']['alto'];
+        $p = $_SESSION['calculadora']['profundidad'];
+        $g = $_SESSION['calculadora']['grosor_cajon'];
+        $G = $_SESSION['calculadora']['grosor_cartera'];
+
+        $e = $_SESSION['calculadora']['e'];
+        $E = $_SESSION['calculadora']['E'];
+
+        /* Diseño */
+        $b1  = $_SESSION['calculadora']['b1'];
+        $h1  = $_SESSION['calculadora']['h1'];
+        $p1  = $_SESSION['calculadora']['p1'];
+        $x   = $_SESSION['calculadora']['x'];
+        $y   = $_SESSION['calculadora']['y'];
+        $x1  = $_SESSION['calculadora']['x1'];
+        $y1  = $_SESSION['calculadora']['y1'];
+        $x11 = $_SESSION['calculadora']['x11'];
+        $y11 = $_SESSION['calculadora']['y11'];
+
+        //forro
+        $b11 = $_SESSION['calculadora']['b11'];
+        $h11 = $_SESSION['calculadora']['h11'];
+        $f   = $_SESSION['calculadora']['f'];
+        $k   = $_SESSION['calculadora']['k'];
+
+        //cartera
+        $B   = $_SESSION['calculadora']['B'];
+        $H   = $_SESSION['calculadora']['H'];
+        $P   = $_SESSION['calculadora']['P'];
+        $Y   = $_SESSION['calculadora']['Y'];
+        $B1  = $_SESSION['calculadora']['B1'];
+        $Y1  = $_SESSION['calculadora']['Y1'];
+        $B11 = $_SESSION['calculadora']['B11'];
+        $Y11 = $_SESSION['calculadora']['Y11'];
+
+        require 'application/views/templates/head.php';
+        require 'application/views/templates/top_menu.php';
+        require 'application/views/calculadora/almeja3.php';
+        require 'application/views/templates/footer.php';
     }
 }

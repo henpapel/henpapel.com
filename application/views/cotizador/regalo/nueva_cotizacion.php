@@ -24,11 +24,34 @@
 
         display: block; text-align: center; width: 100%;
     }
+
+    #divContentI{
+
+        transition: width .2s        
+    }
+
+    .divImgC {
+
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        background-image: url(<?=URL ;?>public/img/worn_dots.png);
+        background-repeat: repeat;
+        height: 25%;
+    }
+
+    @media all and ( max-width: 580px ) {
+
+        .divImgC {
+
+            height: 100px;
+        }
+    }
 </style>
 
 <div id="divIzquierdo-slave" class="div-izquierdo" style="display: none; height: 98%; margin: 0px;">
 
-    <div style="width: 100%; text-align: center; display: inline-block; background-image: url(<?=URL ;?>public/img/worn_dots.png); background-repeat: repeat; height: 25%;">
+    <div class="divImgC">
         <!-- imagenes de circular -->
         <div class="img" id="image_2" style="background-image:url(<?=URL ?>/public/img/regalo2.png); position: relative; width: 100%;"></div>
 
@@ -43,18 +66,18 @@
     </div>
 
     <!-- formulario de la caja circular -->
-    <div id="divContentI" class="form-content medidas" style="">
+    <div id="divContentI" class="form-content medidas">
         <div class="scroll-plantilla" style="min-width: 120px; width: 92%;">
 
             <input type="hidden" name="modelo" id="modelo" value="<?=$id_modelo?>">
             <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
-            <!--ODT-->
+            <!--N° Cot-->
             <div class="form-group row mt-2 ml-0">
                 
-                <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ODT: </label>
+                <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">N° Cot: </label>
                 <div class="col-sm-8">
                     
-                    <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="ODT" tabindex="1" onkeyup="caja.desactivarBtn()">
+                    <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="######" tabindex="1" onkeyup="caja.desactivarBtn()">
                 </div>
             </div>
             <!--Base-->
@@ -243,4 +266,5 @@
         // sus argumentos son: grabar, modificar. busque la funcion para entender como funciona
         caja.saveCotizacion("SI",'NO');
     });
+
 </script>

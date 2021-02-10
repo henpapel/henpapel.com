@@ -1089,8 +1089,8 @@ class Regalo extends Cajas{
 
                 $('#resumenOtros').append(parteresumen); //imprime para el resumen
 
-                this.activarBtn();
-
+                $("#btnActG").prop("disabled",false);
+                
                 localStorage.setItem('js_respuesta',resp);
         }catch(e) {
         	
@@ -1311,7 +1311,7 @@ class Regalo extends Cajas{
 
 	            		caja.showModCorrecto("Los datos han sido actualizados correctamente...");
 	            	}
-	                
+	                caja.activarBtn();
 	            }
 	        } catch( e ) {
 

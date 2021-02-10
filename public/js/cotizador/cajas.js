@@ -622,6 +622,26 @@ class Cajas {
         $("#dataForm").prop("action","");
         $("#dataForm").prop("action", direccion);
         this.imgInfo= `<img style="width: 20px; height: 20px;" src="${this._url}public/img/info-warning-icon.png" />`;
+
+        /* Función para que se alargue el div de medidas. */
+        let width = parseFloat($(".div-izquierdo").css("width"))
+
+        if( width < 120 ){
+
+            $("#divContentI").css("z-index","9");
+            $(".div-izquierdo").css("width","45%");
+            $(".divImgC").css("width","45%");
+            $(".div-buttons").css("width","45%");
+            $("#divContentI").css("width","45%");
+
+            $("#divContentI").hover( function(){
+
+                $("#divContentI").css("width","100%");
+            }, function(){
+
+                $("#divContentI").css("width","45%");
+            });
+        }
     }
 
     divSecciones(titulo, idOpt, seccion, imagen, activa){

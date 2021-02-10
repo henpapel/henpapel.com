@@ -1436,6 +1436,7 @@ nav ul ul ul li {
   }
 li > a:after { content:  ' \25BE'; }
 li > a:only-child:after { content: ''; }
+/*1025px old*/
 @media all and (max-width : 768px) {
   .exitpc{
     display: none;

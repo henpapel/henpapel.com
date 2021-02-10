@@ -16,6 +16,8 @@ class AlmejaModel extends Controller {
 
     public function insertCaja_Almeja(&$aJson, $id_modelo) {
 
+        $ventas_model  = $this->loadModel('VentasModel');
+
         $starttime  = microtime(true);
 
 
@@ -319,10 +321,6 @@ class AlmejaModel extends Controller {
         unset($aEncuadernacion_Fcaj);
 
 
-//// aqui me quede...
-
-
-
         //$aJsonGrab = array_keys($aJson);
 
         //$s_miArrayJson = json_encode($aJsonGrab);
@@ -338,7 +336,7 @@ class AlmejaModel extends Controller {
         $modificar = $_POST['modificar'];
         $modificar = self::strip_slashes_recursive($modificar);
 
-        if ($modificar == "SI") {
+        if (isset($_POST['id_cot_odt_ant']) and $modificar == "SI") {
 
             $l_modificar_odt = true;
 
@@ -465,10 +463,15 @@ class AlmejaModel extends Controller {
 
             if ($l_modificar_odt) {
 
+                $row = $ventas_model->getOdtById($id_odt_anterior);
+
+                $id_odt_orig = $row['id_odt_orig'];
+                $id_odt_orig = intval($id_odt_orig);
+
                 $sql = "INSERT INTO cot_odt
-                    (id_usuario, id_modelo, num_odt, id_cliente, is_maquila, tiraje, base, alto, profundidad, id_vendedor, id_tienda, costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, id_odt_ant, fecha_odt, hora_odt)
+                    (id_usuario, id_modelo, num_odt, id_cliente, is_maquila, tiraje, base, alto, profundidad, id_vendedor, id_tienda, costo_total, subtotal, utilidad, iva, ISR, comisiones, indirecto, venta, descuento, descuento_pcte, empaque, mensajeria, procesos, id_odt_ant, id_odt_orig, fecha_odt, hora_odt)
                 VALUES
-                    ($id_usuario, $id_modelo, '$odt', $id_cliente, $is_maquila, $tiraje, $base, $alto, $profundidad, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', $id_odt_anterior, '$d_fecha', '$time')";
+                    ($id_usuario, $id_modelo, '$odt', $id_cliente, $is_maquila, $tiraje, $base, $alto, $profundidad, $id_usuario, $id_tienda, $costo_total_odt, $subtotal, $utilidad, $iva, $ISR, $comisiones, $indirecto, $ventas, $descuento, $descuento_pctje, $empaque, $mensajeria, '$keys', $id_odt_anterior, $id_odt_orig, '$d_fecha', '$time')";
             } else {
 
                 $sql = "INSERT INTO cot_odt
@@ -494,16 +497,15 @@ class AlmejaModel extends Controller {
             }
 
 
-            if ($l_modificar_odt) {
+            if (!$l_modificar_odt) {
 
-                //$sql_mod = "UPDATE cot_odt SET status = 'M', id_odt_ant = " . $id_caja_odt . " WHERE id_odt = " . $id_odt_anterior;
-                $sql_mod = "UPDATE cot_odt SET status = 'M' WHERE id_odt = " . $id_odt_anterior;
+                $sql_odt_orig = "UPDATE cot_odt SET id_odt_orig = " . $id_caja_odt . " WHERE id_odt = " . $id_caja_odt;
 
-                $query_mod_odt = $this->db->prepare($sql_mod);
+                $query_odt_orig = $this->db->prepare($sql_odt_orig);
 
-                $inserted_mod = $query_mod_odt->execute();
+                $inserted_odt_orig = $query_odt_orig->execute();
 
-                if (!$inserted_mod) {
+                if (!$inserted_odt_orig) {
 
                     $inserted     = false;
                     $inserted_mod = false;

@@ -49,13 +49,13 @@
 
             <input type="hidden" name="modelo" id="modelo" value="<?=$id_modelo?>">
             <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
-            <!--ODT-->
+            <!--N° Cot-->
             <div class="form-group row mt-2 ml-0">
                 
-                <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ODT: </label>
+                <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">N° Cot: </label>
                 <div class="col-sm-8">
                     
-                    <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="ODT" tabindex="1" onkeyup="caja.desactivarBtn()" value="<?= $aJson['num_odt']?>">
+                    <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="######" tabindex="1" onkeyup="caja.desactivarBtn()" value="<?= $aJson['num_odt']?>">
                 </div>
             </div>
             <!--ODT ID-->

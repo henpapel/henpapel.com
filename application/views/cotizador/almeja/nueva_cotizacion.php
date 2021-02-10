@@ -77,13 +77,13 @@
                             <div class="cajas-col-input t-left">
 
                                 <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= utf8_decode($nombrecliente);?>">
-                                <span>ODT: </span>
+                                <span>N° Cot: </span>
                             </div>
 
 
                             <div class="cajas-col-input t-right">
 
-                                <input class="cajas-input medidas-input" name="odt"id="odt-1" type="text" placeholder="ODT" tabindex="1" min="1" step="1" autofocus required style="text-transform: uppercase;" onkeyup="desactivarBtn();">
+                                <input class="cajas-input medidas-input" name="odt"id="odt-1" type="text" placeholder="######" tabindex="1" min="1" step="1" autofocus required style="text-transform: uppercase;" onkeyup="desactivarBtn();">
                             </div>
                         </div>
 
@@ -5908,7 +5908,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                             jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
-                            activarBtn();
+                            $("#subForm").prop("disabled",false);
                         
                         localStorage.setItem('js_respuesta',aJson_stringify);
                     } catch(e) {
@@ -5961,12 +5961,12 @@ foreach ($Porcentajes as $porcentaje) { ?>
         }
     });
 
-    $("#btnModCorrecto").click( function() {
+    /*$("#btnModCorrecto").click( function() {
 
         location.href="<?=URL?>cotizador/getCotizaciones/";
 
         $("#subForm").prop("disabled", true);
-    });
+    });*/
 
 
     // graba en la Base de Datos
@@ -6072,6 +6072,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                     showModCorrecto("Los datos han sido guardados correctamente...");
                 }
+                activarBtn();
             } catch(e) {
 
                 showModError("");

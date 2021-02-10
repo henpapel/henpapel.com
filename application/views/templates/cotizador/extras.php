@@ -1213,10 +1213,10 @@
     });
 
     //boton Correcto
-    $("#btnModCorrecto").click( function() {
+    /*$("#btnModCorrecto").click( function() {
 
         location.href= "<?=URL?>" + "cotizador/getCotizaciones/";
-    });
+    });*/
 
     jQuery214(document).on("click", "#btnDeleteDescuento", function (){
         
