@@ -89,7 +89,7 @@
     .div-principal{
 
         width: 100%;
-        height: 93%;
+        height: 95%;
         position: absolute;
         overflow-y: hidden;
     }
@@ -124,6 +124,12 @@
     .div-derecho {
 
         z-index: 0
+    }
+
+    body{
+
+        height: 100%;
+        overflow-y: hidden;
     }
 </style>
 <div class="div-principal user-select-none">
@@ -177,7 +183,7 @@
 
             <button type="button" id="btnImprimir" disabled="" class="btn btn-info btn-sm" style="font-size: 10px;"><i class="bi bi-printer"></i> IMPRIMIR</button>
 
-            <button type="button" id="btnSalir" class="btn btn-danger btn-sm" style="font-size: 10px;"><i class="bi bi-door-open"></i> SALIR</button>
+            <button type="button" id="btnSalir" data-toggle="modal" data-target="#modalSalida" class="btn btn-danger btn-sm" style="font-size: 10px;"><i class="bi bi-door-open"></i> SALIR</button>
 
             <br>
 
@@ -232,7 +238,36 @@
     </div>
 </div>
 
+<!-- Modal Salida -->
+<div class="modal fade" id="modalSalida" tabindex="-1" aria-labelledby="lblSalidaModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white" id="lblSalidaModal"><i class="bi bi-exclamation-triangle"></i> Advertencia</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Los cambios no guardados se perderan. <br>¿Desea continuar?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <a type="button" href="<?=URL?>cotizador/getCotizaciones" class="btn btn-danger">Salir</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    
+
+    const heightDisplay = parseFloat($(".div-principal").css("height"));
+    $(document).ready( () =>{
+
+        $("#resumentodocaja").css("transform","translateY(" + heightDisplay + "px)");
+        $("#resumentodocaja").css("display","block");
+    });
 
     /*$("#btnHamburguer").click(function() {
         $(".div-derecho").css("transition","width .5s");
@@ -249,6 +284,29 @@
             $(".div-derecho").css("width","80%");
         }   
     });*/
+
+    $("body").append(
+        `<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 1px; z-index: 10">
+            
+            <div id="toastPrincipal" class="toast fade hide" style="position: absolute; top: ${(heightDisplay-200)}px; right: 0;">
+                
+                <div class="toast-header bg-success text-white">
+                    <i class="bi bi-check2 mx-1"></i> 
+                    <strong class="mr-auto"> Exito!</strong>
+                    <small>1 minuto atras</small>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        
+                        <span aria-hidden="true" class="text-white">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="toast-body" id="lblToast">
+                    
+                    Los datos han sido guardados
+                </div>
+            </div>
+        </div>`)
+    $('.toast').toast({delay:5000})
 
     document.getElementById('box-model').onchange = function(event){
 
@@ -302,4 +360,5 @@
             break;
         }
     };
+
 </script>

@@ -494,6 +494,9 @@ class AlmejaModel extends Controller {
                 $aJson['error'] = $aJson['error'] . $msg_error . "ODT;" . " " . $sql . ";";
 
                 $inserted = false;
+            } else {
+
+                $aJson['id_odt_act'] = $id_caja_odt;
             }
 
 
@@ -510,6 +513,9 @@ class AlmejaModel extends Controller {
                     $inserted     = false;
                     $inserted_mod = false;
                 }
+            } else {
+
+                $aJson['id_odt_act'] = $id_caja_odt;
             }
 
 
@@ -2558,8 +2564,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -2616,8 +2622,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -2673,8 +2679,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -2730,8 +2736,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $ubicacion              = self::strip_slashes_recursive($v_tmp_R[$k]['ubicacion']);
                     $placa_area             = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario   = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -2789,8 +2795,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado            = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                   = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                   = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                   = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                   = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -2850,8 +2856,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado            = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                   = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                   = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                   = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                   = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -2912,8 +2918,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipoGrabado             = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                   = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                   = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                   = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                   = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $Color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -2972,8 +2978,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado            = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                   = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                   = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                   = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                   = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $color                   = self::strip_slashes_recursive($v_tmp_R[$k]['Color']);
                     $placa_area              = round(floatval($v_tmp_R[$k]['placa_area']), 2);
                     $placa_costo_unitario    = round(floatval($v_tmp_R[$k]['placa_costo_unitario']), 2);
@@ -3035,8 +3041,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo             = intval($v_tmp_R[$k]['Largo']);
-                    $ancho             = intval($v_tmp_R[$k]['Ancho']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
@@ -3085,8 +3091,8 @@ class AlmejaModel extends Controller {
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
 
-                    $largo             = intval($v_tmp_R[$k]['Largo']);
-                    $ancho             = intval($v_tmp_R[$k]['Ancho']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
@@ -3136,8 +3142,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo             = intval($v_tmp_R[$k]['Largo']);
-                    $ancho             = intval($v_tmp_R[$k]['Ancho']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = floatval($v_tmp_R[$k]['area']);
                     $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
                     $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
@@ -3186,8 +3192,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado      = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo             = intval($v_tmp_R[$k]['Largo']);
-                    $ancho             = intval($v_tmp_R[$k]['Ancho']);
+                    $largo             = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
@@ -3239,9 +3245,9 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
-                    $perimetro              = intval($v_tmp_R[$k]['perimetro']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
+                    $perimetro              = round(floatval($v_tmp_R[$k]['perimetro']), 2);
                     $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
                     $tabla_suaje            = round(floatval($v_tmp_R[$k]['tabla_suaje']), 2);
                     $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
@@ -3295,8 +3301,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
                     $tabla_suaje            = intval($v_tmp_R[$k]['tabla_suaje']);
                     $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
@@ -3350,8 +3356,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
                     $arreglo_costo_unitario = round(floatval($v_tmp_R[$k]['arreglo']), 2);
                     $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
@@ -3404,8 +3410,8 @@ class AlmejaModel extends Controller {
                     $costo_tot_proceso = 0;
 
                     $tipo_grabado           = self::strip_slashes_recursive($v_tmp_R[$k]['tipoGrabado']);
-                    $largo                  = intval($v_tmp_R[$k]['Largo']);
-                    $ancho                  = intval($v_tmp_R[$k]['Ancho']);
+                    $largo                  = round(floatval($v_tmp_R[$k]['Largo']), 2);
+                    $ancho                  = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $perimetro              = intval($v_tmp_R[$k]['perimetro']);
                     $costo_unit_tabla_suaje = round(floatval($v_tmp_R[$k]['costo_unit_tabla_suaje']), 2);
                     $tabla_suaje            = intval($v_tmp_R[$k]['tabla_suaje']);

@@ -333,7 +333,7 @@
 
             <div class="modal-content">
 
-                <div class="modal-header azulWhi" style="background: red">
+                <div class="modal-header bg-danger text-white">
 
                     <h5 class="modal-title" id="txtTituloModal"><i class="bi bi-exclamation-triangle"></i> Atencion!</h5>
                     
@@ -378,7 +378,7 @@
 
                 <div class="modal-footer">
 
-                    <button id="btnModCorrecto" type="button" class="btn btn-primary azulWhi" data-dismiss="modal">Cerrar</button>
+                    <button id="btnModCorrecto" type="button" class="btn btn-primary azulWhi" onclick="dsctSave()" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -1238,23 +1238,28 @@
     //resumen
     $(document).on('click', '#btnResumen', function(event) {
 
-        $('#divDerecho').hide();
+        /*$('#divDerecho').hide();
         $('#divIzquierdo').hide();
         $('#topCotizador').hide();
         $('#groupButton1').hide();
         $('#resumentodocaja').css("position","absolute");
-        $('#resumentodocaja').show();
-
+        $('#resumentodocaja').show();*/
+        $("#resumentodocaja").css("transform","translateY(0px)");
+        $("#divContentI").css("z-index","0");
     }); 
 
     $(document).on('click', '#btnQuitarResumen', function(event) {
 
-        $('#divDerecho').show("normal");
+        /*$('#divDerecho').show("normal");
         $('#divIzquierdo').show();
         $('#topCotizador').show();
         $('#resumentodocaja').css("position","none");
         $('#resumentodocaja').hide();
-        $('#groupButton1').show();
+        $('#groupButton1').show();*/
+        $("#resumentodocaja").css("transform","translateY(" + heightDisplay + "px)");
+        let showDivZ = () => $("#divContentI").css("z-index","9");
+
+        setTimeout(showDivZ, 500);
     });
 
     //boton eliminar. Es el que hace la magia ;)
@@ -1307,4 +1312,6 @@
         caja.delBtnBan(index);
         $(this).closest('tr').remove();
     });
+
+    let dsctSave = () => $("#btnActG").prop('disabled',true)
 </script>

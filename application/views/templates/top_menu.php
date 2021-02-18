@@ -41,11 +41,11 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
 
                         <a href="<?= URL; ?>cotizador/clientes">Clientes</a>
                     </li>
-                    <li class="sec-level <?= $produccion ?>">
+                    <li class="sec-level <?= $produccion ?> <?= $superadmin ?>">
 
                         <a href="<?= URL; ?>crud/index.php">Papeles</a>
                     </li>
-                    <li class="sec-level <?= $produccion ?>">
+                    <li class="sec-level <?= $produccion ?> <?= $superadmin ?>">
                         <a href="<?= BASE_URL; ?>modificaprocesos/cambioprocesos">Procesos</a>
                     </li>
                     <li class="sec-level <?= $superadmin ?>">
@@ -58,39 +58,7 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                     </li>
                 </ul>
             </li>
-            <?php }
-
-        $development = ($_SESSION['user']['nombre_usuario'] == 'developer') ? '' : 'style="display:none;"';
-
-        if ($_SESSION['area'] == 'ventas') {
-
-            if (isset($_SESSION['tienda'])) {
-
-                if ($_SESSION['tienda'] == 1) { ?>
-
-                    <li class="first-level secTop">
-
-                        <label for="drop-1" class="toggle">Mostrador +</label>
-                        <a href="#">Mostrador</a>
-                        <input type="checkbox" id="drop-1" />
-
-                        <ul id="sec-ul">
-                            <li class="sec-level">
-
-                                <a href="<?= BASE_URL; ?>ventas/">Punto de Venta</a>
-                            </li>
-                            <li class="sec-level" style="display: none;">
-
-                                <a href="<?= BASE_URL; ?>uploads/newProduct.php">Agregar Productos</a>
-                            </li>
-                            <li class="sec-level">
-
-                                <a href="<?= BASE_URL; ?>ventas/movimientos.php">Movimientos</a>
-                            </li>
-                        </ul>
-                    </li>
-            <?php }
-            } ?>
+            <?php } ?>
 
             <!-- Cotizaciones OK -->
             <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
@@ -119,10 +87,10 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                 </ul>
             </li>
 
-            <!-- Cambios -->
+            <!-- //Cambios -->
             <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
 
-                <!-- First Tier Drop Down -->
+                <!-- //First Tier Drop Down -->
                 <label for="drop-5" class="toggle">Cambios +</label>
 
                 <a href="#">Cambios
@@ -155,13 +123,111 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                     </li>
                 </ul>
             </li>
-        <?php  } elseif ($_SESSION['area'] == 'cajas') { ?>
+
+<!--
+        $development = ($_SESSION['user']['nombre_usuario'] == 'developer') ? '' : 'style="display:none;"';
+
+        if ($_SESSION['area'] == 'ventas') {
+
+            if (isset($_SESSION['tienda'])) {
+
+                if ($_SESSION['tienda'] == 1) { ?>
+
+                    <li class="first-level secTop">
+
+                        <label for="drop-1" class="toggle">Mostrador +</label>
+                        <a href="#">Mostrador</a>
+                        <input type="checkbox" id="drop-1" />
+
+                        <ul id="sec-ul">
+                            <li class="sec-level">
+
+                                <a href="<?= BASE_URL; ?>ventas/">Punto de Venta</a>
+                            </li>
+                            <li class="sec-level" style="display: none;">
+
+                                <a href="<?= BASE_URL; ?>uploads/newProduct.php">Agregar Productos</a>
+                            </li>
+                            <li class="sec-level">
+
+                                <a href="<?= BASE_URL; ?>ventas/movimientos.php">Movimientos</a>
+                            </li>
+                        </ul>
+                    </li>
+            <p }
+            }?>
+
+            //Cotizaciones OK
+            <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
+
+                <label for="drop-2" class="toggle">Cotizaciones +</label>
+                <a href="#">Cotizaciones</a>
+
+                <input type="checkbox" id="drop-2" />
+
+                <ul id="sec-ul">
+
+                    <li class="sec-level">
+
+                        <a href="<?= URL; ?>cotizador/getCotizaciones">Cajas</a>
+                    </li>
+                    <li class="sec-level">
+
+                        <a href="<?= URL; ?>cotizador/invitaciones">Invitaciones</a>
+                    </li>
+
+                    //para entregar
+                    <li class="sec-level">
+
+                        <a href="<?= URL; ?>cotizador/getCotizacion">Formato Cotizaciones</a>
+                    </li>
+                </ul>
+            </li>
+
+            //Cambios
+            <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
+
+                //First Tier Drop Down
+                <label for="drop-5" class="toggle">Cambios +</label>
+
+                <a href="#">Cambios
+
+                    <?p
+                    if (isset($_SESSION['cambios_pendientes']) && $_SESSION['cambios_pendientes'] > 0 && $_SESSION['user']['cambios_admin'] == 'true') { ?>
+
+                        <div class="small-notif"><?= $_SESSION['cambios_pendientes'] ?></div>
+                    <?p
+                    }
+                    ?>
+                </a>
+
+                <input type="checkbox" id="drop-5" />
+
+                <ul id="sec-ul">
+
+                    <li class="sec-level">
+
+                        <a href="<?= BASE_URL; ?>ventas/cambios_pendientes">Pendientes</a>
+                    </li>
+
+                    <li class="sec-level ">
+
+                        <a class="" href="<?= BASE_URL; ?>ventas/cambios_completados">Realizados</a>
+                    </li>
+                    <li class="sec-level">
+
+                        <a href="<?= URL; ?>ventas/archivos_cargados">Archivos</a>
+                    </li>
+                </ul>
+            </li>
+        <?p  } elseif ($_SESSION['area'] == 'cajas') { ?>
 
             <li class="first-level">
 
                 <a href="<?= BASE_URL; ?>cajas/guardados">Calculos guardados</a>
             </li>
-        <?php } ?>
+        <?p } ?>
+-->
 
         <?php if ($_SESSION['user']['cajas_calc'] == 'true') { ?>
 
@@ -255,7 +321,7 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
         if ($_SESSION['user']['nombre_usuario'] == 'developer' or $_SESSION['user']['nombre_usuario'] == 'developer-prueba' or $_SESSION['user']['nombre_usuario'] == 'developer2') { ?>
 
             <!-- Cajas -->
-            <li class="first-level secTop <?= $produccion ?>">
+            <li class="first-level secTop <?= $produccion ?> <?= $superadmin?>">
 
                 <label for="drop-11" class="toggle">Cajas +</label>
                 <a href="#">Cajas</a>

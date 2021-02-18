@@ -80,6 +80,17 @@
                     <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="######" tabindex="1" onkeyup="caja.desactivarBtn()">
                 </div>
             </div>
+
+            <!--ODT ID-->
+            <div class="form-group row mt-2 ml-0">
+                
+                <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ID: </label>
+                <div class="col-sm-8">
+                    
+                    <input type="text" class="form-control form-control-sm" name="id_odt_anterior" id="id_odt_anterior" placeholder="ID" tabindex="1" value="" disabled>
+                </div>
+            </div>
+
             <!--Base-->
             <div class="form-group row mt-2 ml-0">
                 

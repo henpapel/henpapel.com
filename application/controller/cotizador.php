@@ -1540,6 +1540,7 @@ class Cotizador extends Controller {
 
         $aElab_Car_tmp = [];
 
+
     // ************ Elaboracion de Guarda **********************
 
 
@@ -2838,15 +2839,14 @@ class Cotizador extends Controller {
 
 /************************ Inicia Empalme *******************************/
 
+
     $aAcb = json_decode($_POST['aAcb'], true);
 
     $cuantos_aAcb = count($aAcb);
 
     $papel_corte_ancho = floatval($aJson['Papel_Empalme']['calculadora']['corte_ancho']);
-
     $papel_corte_largo = floatval($aJson['Papel_Empalme']['calculadora']['corte_largo']);
-
-    $papel_costo_unit = floatval($aJson['Papel_Empalme']['costo_unit_papel']);
+    $papel_costo_unit  = floatval($aJson['Papel_Empalme']['costo_unit_papel']);
 
     $cortes = $aJson['Papel_Empalme']['corte'];
 
@@ -2870,13 +2870,13 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Barniz UV") {
 
-            $AnchoBarniz = 0;
-            $LargoBarniz = 0;
+            $AnchoBarniz = round(floatval($aJson['Papel_Empalme']['ancho_papel']), 2);
+            $LargoBarniz = round(floatval($aJson['Papel_Empalme']['largo_papel']), 2);
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
-                $AnchoBarniz = floatval($aAcb[$i]['Ancho']);
-                $LargoBarniz = floatval($aAcb[$i]['Largo']);
+                $AnchoBarniz = round(floatval($aAcb[$i]['Ancho']), 2);
+                $LargoBarniz = round(floatval($aAcb[$i]['Largo']), 2);
             }
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
@@ -2945,6 +2945,7 @@ class Cotizador extends Controller {
             }
         }
 
+
         if ($tipo_acabado == "Corte Laser") {
 
             $costo_laser_tmp = self::calculoLaser($tipoGrabado, $tiraje, $ventas_model);
@@ -2971,11 +2972,11 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Grabado") {
 
-            $LargoGrab     = $aAcb[$i]['Largo'];
-            $AnchoGrab     = $aAcb[$i]['Ancho'];
-            $ubicacionGrab = $aAcb[$i]['ubicacion'];
+            $LargoGrab     = round(floatval($aAcb[$i]['Largo']), 2);
+            $AnchoGrab     = round(floatval($aAcb[$i]['Ancho']),2);
+            $ubicacionGrab = trim($aAcb[$i]['ubicacion']);
 
-            $papel_seccion = intval($aJson['Papel_Empalme']['corte']);
+            $papel_seccion        = intval($aJson['Papel_Empalme']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_Empalme']['costo_unit_papel']);
 
 
@@ -3000,11 +3001,11 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "HotStamping") {
 
-            $LargoHS = intval($aAcb[$i]['LargoHS']);
-            $AnchoHS = intval($aAcb[$i]['AnchoHS']);
+            $LargoHS = round(floatval($aAcb[$i]['LargoHS']), 2);
+            $AnchoHS = round(floatval($aAcb[$i]['AnchoHS']), 2);
             $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['ColorHS']));
 
-            $papel_seccion = intval($aJson['Papel_Empalme']['corte']);
+            $papel_seccion        = intval($aJson['Papel_Empalme']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_Empalme']['costo_unit_papel']);
 
 
@@ -3058,12 +3059,11 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Suaje") {
 
-            $Largo = floatval($aAcb[$i]['LargoSuaje']);
-            $Ancho = floatval($aAcb[$i]['AnchoSuaje']);
-
             $papel_costo_unit = floatval($aJson['Papel_Empalme']['costo_unit_papel']);
+            $cortes           = intval($aJson['Papel_Empalme']['corte']);
 
-            $cortes = intval($aJson['Papel_Empalme']['corte']);
+            $Largo = round(floatval($aAcb[$i]['LargoSuaje']), 2);
+            $Ancho = round(floatval($aAcb[$i]['AnchoSuaje']), 2);
 
             $aAcbSuaje_tmp = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
 
@@ -3207,14 +3207,13 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Barniz UV") {
 
-            $AnchoBarniz = 0;
-            $LargoBarniz = 0;
+            $AnchoBarniz = round(floatval($aJson['Papel_FCaj']['ancho_papel']), 2);
+            $LargoBarniz = round(floatval($aJson['Papel_FCaj']['largo_papel']), 2);
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
-                $LargoBarniz = floatval($aAcbFCaj[$i]['Largo']);
-
-                $AnchoBarniz = floatval($aAcbFCaj[$i]['Ancho']);
+                $LargoBarniz = round(floatval($aAcbFCaj[$i]['Largo']), 2);
+                $AnchoBarniz = round(floatval($aAcbFCaj[$i]['Ancho']), 2);
             }
 
             $barniz_tmp = [];
@@ -3325,12 +3324,12 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Grabado") {
 
-            $LargoGrab     = $aAcbFCaj[$i]['Largo'];
-            $AnchoGrab     = $aAcbFCaj[$i]['Ancho'];
-            $ubicacionGrab = $aAcbFCaj[$i]['ubicacion'];
-
-            $papel_seccion = intval($aJson['Papel_FCaj']['corte']);
+            $papel_seccion        = intval($aJson['Papel_FCaj']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_FCaj']['costo_unit_papel']);
+
+            $LargoGrab     = round(floatval($aAcbFCaj[$i]['Largo']), 2);
+            $AnchoGrab     = round(floatval($aAcbFCaj[$i]['Ancho']), 2);
+            $ubicacionGrab = trim($aAcbFCaj[$i]['ubicacion']);
 
             $grabado_temp = [];
 
@@ -3360,12 +3359,12 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "HotStamping") {
 
-            $LargoHS = intval($aAcbFCaj[$i]['LargoHS']);
-            $AnchoHS = intval($aAcbFCaj[$i]['AnchoHS']);
-            $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcbFCaj[$i]['ColorHS']));
-
-            $papel_seccion = intval($aJson['Papel_FCaj']['corte']);
+            $papel_seccion        = intval($aJson['Papel_FCaj']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_FCaj']['costo_unit_papel']);
+
+            $LargoHS = round(floatval($aAcbFCaj[$i]['LargoHS']), 2);
+            $AnchoHS = round(floatval($aAcbFCaj[$i]['AnchoHS']), 2);
+            $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcbFCaj[$i]['ColorHS']));
 
             $grabado_HS_temp = [];
 
@@ -3429,12 +3428,11 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Suaje") {
 
-            $Largo = floatval($aAcbFCaj[$i]['LargoSuaje']);
-            $Ancho = floatval($aAcbFCaj[$i]['AnchoSuaje']);
-
             $papel_costo_unit = floatval($aJson['Papel_FCaj']['costo_unit_papel']);
+            $cortes           = intval($aJson['Papel_FCaj']['corte']);
 
-            $cortes = intval($aJson['Papel_FCaj']['corte']);
+            $Largo = round(floatval($aAcbFCaj[$i]['LargoSuaje']), 2);
+            $Ancho = round(floatval($aAcbFCaj[$i]['AnchoSuaje']), 2);
 
 
             $aAcbSuaje_tmp = [];
@@ -3584,14 +3582,13 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Barniz UV") {
 
-            $AnchoBarniz = 0;
-            $LargoBarniz = 0;
+            $AnchoBarniz = round(floatval($aJson['Papel_FCar']['ancho_papel']), 2);
+            $LargoBarniz = round(floatval($aJson['Papel_FCar']['largo_papel']), 2);
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
-                $LargoBarniz = floatval($aAcbFCar[$i]['Largo']);
-
-                $AnchoBarniz = floatval($aAcbFCar[$i]['Ancho']);
+                $LargoBarniz = round(floatval($aAcbFCar[$i]['Largo']), 2);
+                $AnchoBarniz = round(floatval($aAcbFCar[$i]['Ancho']), 2);
             }
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
@@ -3663,7 +3660,6 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Corte Laser") {
 
-
             $costo_laser_tmp = self::calculoLaser($tipoGrabado, $tiraje, $ventas_model);
 
             if ($costo_laser_tmp['costo_tot_proceso'] <= 0) {
@@ -3686,12 +3682,12 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Grabado") {
 
-            $LargoGrab     = $aAcbFCar[$i]['Largo'];
-            $AnchoGrab     = $aAcbFCar[$i]['Ancho'];
-            $ubicacionGrab = $aAcbFCar[$i]['ubicacion'];
-
-            $papel_seccion = intval($aJson['Papel_FCar']['corte']);
+            $papel_seccion        = intval($aJson['Papel_FCar']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_FCar']['costo_unit_papel']);
+
+            $LargoGrab     = round(floatval($aAcbFCar[$i]['Largo']), 2);
+            $AnchoGrab     = round(floatval($aAcbFCar[$i]['Ancho']), 2);
+            $ubicacionGrab = trim($aAcbFCar[$i]['ubicacion']);
 
 
             $grabado_temp = self::calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $papel_seccion, $papel_costo_unit_tmp, $ventas_model);
@@ -3715,12 +3711,12 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "HotStamping") {
 
-            $LargoHS = intval($aAcbFCar[$i]['LargoHS']);
-            $AnchoHS = intval($aAcbFCar[$i]['AnchoHS']);
-            $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcbFCar[$i]['ColorHS']));
-
-            $papel_seccion = intval($aJson['Papel_FCar']['corte']);
+            $papel_seccion        = intval($aJson['Papel_FCar']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_FCar']['costo_unit_papel']);
+
+            $LargoHS = round(floatval($aAcbFCar[$i]['LargoHS']), 2);
+            $AnchoHS = round(floatval($aAcbFCar[$i]['AnchoHS']), 2);
+            $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcbFCar[$i]['ColorHS']));
 
 
             $grabado_HS_temp = self::calculoHotStamping($tipoGrabado, $tiraje, $AnchoHS, $LargoHS, $ColorHS, $papel_seccion, $papel_costo_unit_tmp, $ventas_model);
@@ -3773,12 +3769,11 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Suaje") {
 
-            $Largo = floatval($aAcbFCar[$i]['LargoSuaje']);
-            $Ancho = floatval($aAcbFCar[$i]['AnchoSuaje']);
-
             $papel_costo_unit = floatval($aJson['Papel_FCar']['costo_unit_papel']);
+            $cortes           = intval($aJson['Papel_FCar']['corte']);
 
-            $cortes = intval($aJson['Papel_FCar']['corte']);
+            $Largo = round(floatval($aAcbFCar[$i]['LargoSuaje']), 2);
+            $Ancho = round(floatval($aAcbFCar[$i]['AnchoSuaje']), 2);
 
             $aAcbSuaje_tmp = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
 
@@ -3921,14 +3916,13 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Barniz UV") {
 
-            $AnchoBarniz = 0;
-            $LargoBarniz = 0;
+            $AnchoBarniz = round(floatval($aJson['Papel_Guarda']['ancho_papel']), 2);
+            $LargoBarniz = round(floatval($aJson['Papel_Guarda']['largo_papel']), 2);
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
-                $LargoBarniz = floatval($aAcbG[$i]['Largo']);
-
-                $AnchoBarniz = floatval($aAcbG[$i]['Ancho']);
+                $LargoBarniz = round(floatval($aAcbG[$i]['Largo']), 2);
+                $AnchoBarniz = round(floatval($aAcbG[$i]['Ancho']), 2);
             }
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
@@ -4022,12 +4016,12 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Grabado") {
 
-            $LargoGrab     = $aAcbG[$i]['Largo'];
-            $AnchoGrab     = $aAcbG[$i]['Ancho'];
-            $ubicacionGrab = $aAcbG[$i]['ubicacion'];
-
             $papel_seccion        = intval($aJson['Papel_Guarda']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_Guarda']['costo_unit_papel']);
+
+            $LargoGrab     = round(floatval($aAcbG[$i]['Largo']), 2);
+            $AnchoGrab     = round(floatval($aAcbG[$i]['Ancho']), 2);
+            $ubicacionGrab = trim($aAcbG[$i]['ubicacion']);
 
 
             $grabado_temp = self::calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $papel_seccion, $papel_costo_unit_tmp, $ventas_model);
@@ -4051,12 +4045,12 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "HotStamping") {
 
-            $LargoHS = intval($aAcbG[$i]['LargoHS']);
-            $AnchoHS = intval($aAcbG[$i]['AnchoHS']);
-            $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcbG[$i]['ColorHS']));
-
             $papel_seccion        = intval($aJson['Papel_Guarda']['corte']);
             $papel_costo_unit_tmp = floatval($aJson['Papel_Guarda']['costo_unit_papel']);
+
+            $LargoHS = round(floatval($aAcbG[$i]['LargoHS']), 2);
+            $AnchoHS = round(floatval($aAcbG[$i]['AnchoHS']), 2);
+            $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcbG[$i]['ColorHS']));
 
 
             $grabado_HS_temp = self::calculoHotStamping($tipoGrabado, $tiraje, $AnchoHS, $LargoHS, $ColorHS, $papel_seccion, $papel_costo_unit_tmp, $ventas_model);
@@ -4109,12 +4103,11 @@ class Cotizador extends Controller {
 
         if ($tipo_acabado == "Suaje") {
 
-            $Largo = floatval($aAcbG[$i]['LargoSuaje']);
-            $Ancho = floatval($aAcbG[$i]['AnchoSuaje']);
-
             $papel_costo_unit = floatval($aJson['Papel_Guarda']['costo_unit_papel']);
+            $cortes           = intval($aJson['Papel_Guarda']['corte']);
 
-            $cortes = intval($aJson['Papel_Guarda']['corte']);
+            $Largo = round(floatval($aAcbG[$i]['LargoSuaje']), 2);
+            $Ancho = round(floatval($aAcbG[$i]['AnchoSuaje']), 2);
 
             $aAcbSuaje_tmp = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
 
@@ -5521,8 +5514,8 @@ class Cotizador extends Controller {
 
             $aJson_tmp[$j]['id_odt']                 = intval($sql_tabla_temp_db[$j]['id_odt']);
             $aJson_tmp[$j]['tipoGrabado']            = utf8_encode(self::strip_slashes_recursive($sql_tabla_temp_db[$j]['tipo_grabado']));
-            $aJson_tmp[$j]['Largo']                  = intval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']                  = intval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['Largo']                  = floatval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']                  = floatval($sql_tabla_temp_db[$j]['ancho']);
             $aJson_tmp[$j]['ubicacion']              = self::strip_slashes_recursive($sql_tabla_temp_db[$j]['ubicacion']);
             $aJson_tmp[$j]['placa_area']             = floatval($sql_tabla_temp_db[$j]['placa_area']);
             $aJson_tmp[$j]['placa_costo_unitario']   = floatval($sql_tabla_temp_db[$j]['placa_costo_unitario']);
@@ -5614,8 +5607,8 @@ class Cotizador extends Controller {
             $aJson_tmp[$j]['id_odt']              = intval($sql_tabla_temp_db[$j]['id_odt']);
             $aJson_tmp[$j]['tiraje']              = intval($sql_tabla_temp_db[$j]['tiraje']);
             $aJson_tmp[$j]['tipoGrabado']         = utf8_encode(self::strip_slashes_recursive($sql_tabla_temp_db[$j]['tipo_grabado']));
-            $aJson_tmp[$j]['Largo']               = intval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['Ancho']               = intval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['Largo']               = floatval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['Ancho']               = floatval($sql_tabla_temp_db[$j]['ancho']);
             $aJson_tmp[$j]['perimetro']           = intval($sql_tabla_temp_db[$j]['perimetro']);
             $aJson_tmp[$j]['tabla_suaje']         = floatval($sql_tabla_temp_db[$j]['tabla_suaje']);
             $aJson_tmp[$j]['arreglo']             = floatval($sql_tabla_temp_db[$j]['arreglo_costo_unitario']);

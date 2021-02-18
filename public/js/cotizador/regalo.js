@@ -1304,12 +1304,19 @@ class Regalo extends Cajas{
 	                $("#txtContenido").html("(2277) " + error);
 
 	            } else {
+
+	            	let idAnt = respuesta.id_odt_act;
+	            	$("#id_odt_anterior").val(idAnt);
 	            	if( modificar == "NO" ){
 
-	            		caja.showModCorrecto("Los datos han sido guardados correctamente...");
+	            		//caja.showModCorrecto("Los datos han sido guardados correctamente...");
+	            		$('#toastPrincipal').toast('show')
+	            		$('#lblToast').html('Los datos han sido guardados!')
 	            	}else{
 
-	            		caja.showModCorrecto("Los datos han sido actualizados correctamente...");
+	            		//caja.showModCorrecto("Los datos han sido actualizados correctamente...");
+	            		$('#toastPrincipal').toast('show')
+	            		$('#lblToast').html('Los datos han sido actualizados!')
 	            	}
 	                caja.activarBtn();
 	            }

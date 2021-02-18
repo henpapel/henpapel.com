@@ -66,8 +66,8 @@
                         <table class="table" style="text-align: left;">
                             <tbody>
                                 <tr>
-                                    <td>Largo: <input type="number" id="LargoHS_ver" name="LargoHS_ver" value="1" style="width: 70px;" min="1">cm</td>
-                                    <td>Ancho: <input type="number" id="AnchoHS_ver" name="AnchoHS_ver" value="1" style="width: 70px;" min="1">cm</td>
+                                    <td>Largo: <input type="number" id="LargoHS_ver" name="LargoHS_ver" value="1.00" style="width: 70px;" min="1" step="0.01">cm</td>
+                                    <td>Ancho: <input type="number" id="AnchoHS_ver" name="AnchoHS_ver" step="0.01" value="1.00" style="width: 70px;" min="1">cm</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -102,8 +102,8 @@
                         <table class="table" style="text-align: left;">
                             <tbody>
                                 <tr>
-                                    <td>Largo: <input type="number" id="LargoGrab" value="1" style="width: 70px;" min="1">cm</td>
-                                    <td>Ancho: <input type="number" id="AnchoGrab" value="1" style="width: 70px;" min="1">cm</td>
+                                    <td>Largo: <input type="number" id="LargoGrab" value="1.00" step="0.01" style="width: 70px;" min="1.00">cm</td>
+                                    <td>Ancho: <input type="number" id="AnchoGrab" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -182,8 +182,8 @@
                         <table class="table" style="text-align: left;">
                             <tbody>
                                 <tr>
-                                    <td>Largo: <input type="number" id="LargoSuaje" value="1" style="width: 70px;" min="1">cm</td>
-                                    <td>Ancho: <input type="number" id="AnchoSuaje" value="1" style="width: 70px;" min="1">cm</td>
+                                    <td>Largo: <input type="number" id="LargoSuaje" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                    <td>Ancho: <input type="number" id="AnchoSuaje" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -230,8 +230,8 @@
                         <table class="table" style="text-align: left;">
                             <tbody>
                                 <tr>
-                                    <td>Largo: <input type="number" id="LargoBarUVEmp" value="1" style="width: 70px;" min="1">cm</td>
-                                    <td>Ancho: <input type="number" id="AnchoBarUVEmp" value="1" style="width: 70px;" min="1">cm</td>
+                                    <td>Largo: <input type="number" id="LargoBarUVEmp" value="1.00" step="0.01" style="width: 70px;" min="1.00">cm</td>
+                                    <td>Ancho: <input type="number" id="AnchoBarUVEmp" value="1.00" step="0.01" style="width: 70px;" min="1.00">cm</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -366,13 +366,13 @@
         document.getElementById('opAcSuajeEmp').style.display       = "none";
         document.getElementById('opAcLaserEmp').style.display       = "none";
         document.getElementById('opAcBarUVEmp').style.display       = "none";
-        document.getElementById('LargoGrab').value                  = "1";
-        document.getElementById('AnchoGrab').value                  = "1";
-        document.getElementById('LargoHS_ver').value                = "1";
-        document.getElementById('AnchoHS_ver').value                = "1";
-        document.getElementById('LargoSuaje').value                 = "1";
-        document.getElementById('AnchoSuaje').value                 = "1";
-        document.getElementById('LargoBarUVEmp').value              = "1";
-        document.getElementById('AnchoBarUVEmp').value              = "1";
+        document.getElementById('LargoGrab').value                  = "1.00";
+        document.getElementById('AnchoGrab').value                  = "1.00";
+        document.getElementById('LargoHS_ver').value                = "1.00";
+        document.getElementById('AnchoHS_ver').value                = "1.00";
+        document.getElementById('LargoSuaje').value                 = "1.00";
+        document.getElementById('AnchoSuaje').value                 = "1.00";
+        document.getElementById('LargoBarUVEmp').value              = "1.00";
+        document.getElementById('AnchoBarUVEmp').value              = "1.00";
     }
 </script>

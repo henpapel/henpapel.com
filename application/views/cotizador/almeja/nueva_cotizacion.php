@@ -87,6 +87,20 @@
                             </div>
                         </div>
 
+                        <!-- id_odt anterior -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>ID: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <input class="cajas-input medidas-input" name="id_odt_anterior" id="id_odt_anterior" value="" disabled>
+                            </div>
+                        </div>
+
                         <!-- Base Interior -->
                         <div class="input-group">
 
@@ -1482,8 +1496,8 @@
                         <table class="table" style="text-align: left;">
                             <tbody>
                                 <tr>
-                                    <td>Largo: <input type="number" id="LargoHS_ver" name="LargoHS_ver" value="1" style="width: 70px;" min="1">cm</td>
-                                    <td>Ancho: <input type="number" id="AnchoHS_ver" name="AnchoHS_ver" value="1" style="width: 70px;" min="1">cm</td>
+                                    <td>Largo: <input type="number" id="LargoHS_ver" name="LargoHS_ver" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                                    <td>Ancho: <input type="number" id="AnchoHS_ver" name="AnchoHS_ver" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -1518,8 +1532,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoGrab" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoGrab" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoGrab" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -1598,8 +1612,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoSuaje" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoSuaje" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoSuaje" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -1646,8 +1660,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoBarUVEmp" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoBarUVEmp" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoBarUVEmp" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVEmp" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1713,8 +1727,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoHS_fcajon" name="LargoHS_fcajon" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoHS_fcajon" name="AnchoHS_fcajon" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoHS_fcajon" name="LargoHS_fcajon" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoHS_fcajon" name="AnchoHS_fcajon" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -1749,8 +1763,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoGrab_fcajon" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoGrab_fcajon" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoGrab_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -1829,8 +1843,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoSuaje_fcajon" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoSuaje_fcajon" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoSuaje_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -1871,13 +1885,14 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div id="opAcBarUVFcajon" style="display: none;">
                     <br>
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoBarUVFcajon" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoBarUVFcajon" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoBarUVFcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVFcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1943,8 +1958,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoHS_fcartera" name="LargoHS_fcartera" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoHS_fcartera" name="AnchoHS_fcartera" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoHS_fcartera" name="LargoHS_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoHS_fcartera" name="AnchoHS_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -1979,8 +1994,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoGrab_fcartera" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoGrab_fcartera" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoGrab_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -2059,8 +2074,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoSuaje_fcartera" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoSuaje_fcartera" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoSuaje_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -2107,8 +2122,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoBarUVFcartera" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoBarUVFcartera" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoBarUVFcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVFcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                         </tbody>
                     </table>
@@ -2174,8 +2189,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoHS_guarda" name="LargoHS_guarda" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoHS_guarda" name="AnchoHS_guarda" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoHS_guarda" name="LargoHS_guarda" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoHS_guarda" name="AnchoHS_guarda" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -2210,8 +2225,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoGrab_guarda" name="LargoGrab_guarda" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoGrab_guarda" name="AnchoGrab_guarda" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoGrab_guarda" name="LargoGrab_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab_guarda" name="AnchoGrab_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -2290,8 +2305,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoSuaje_guarda" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoSuaje_guarda" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoSuaje_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -2337,8 +2352,8 @@
                     <table class="table" style="text-align: left;">
                         <tbody>
                             <tr>
-                                <td>Largo: <input type="number" id="LargoBarUVGuarda" value="1" style="width: 70px;" min="1">cm</td>
-                                <td>Ancho: <input type="number" id="AnchoBarUVGuarda" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Largo: <input type="number" id="LargoBarUVGuarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVGuarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
                             </tr>
                         </tbody>
                     </table>
@@ -5910,7 +5925,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                             $("#subForm").prop("disabled",false);
                         
-                        localStorage.setItem('js_respuesta',aJson_stringify);
+                            localStorage.setItem('js_respuesta',aJson_stringify);
                     } catch(e) {
 
                         try{
@@ -6070,11 +6085,14 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 } else {
 
+                    let idAnt = js_respuesta.id_odt_act
+                    $("#id_odt_anterior").val(idAnt)
+
                     showModCorrecto("Los datos han sido guardados correctamente...");
                 }
                 activarBtn();
             } catch(e) {
-
+                console.log(e)
                 showModError("");
                 $("#txtContenido").html("(6240) Error al grabar en la Base de Datos");
             }
@@ -7391,21 +7409,21 @@ foreach ($Porcentajes as $porcentaje) { ?>
         var idtipoHS        = $("#SelectHSEmp option:selected").data('id');
         var ColorHS         = $("#SelectColorHSEmp option:selected").text();
         var idcolorHS       = $("#SelectHSEmp option:selected").data('id');
-        var LargoHS_ver     = document.getElementById('LargoHS_ver').value;
-        var AnchoHS_ver     = document.getElementById('AnchoHS_ver').value;
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_ver').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_ver').value);
 
         //para grabados
         var tipoGrabadoG  = $("#SelectGrabEmp option:selected").text();
         var idtipoGrabado = $("#SelectHSEmp option:selected").data('id');
-        var LargoGrab     = document.getElementById('LargoGrab').value;
-        var AnchoGrab     = document.getElementById('AnchoGrab').value;
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab').value);
         var ubicacionGrab = $("#SelectUbiGrabEmp option:selected").text();
 
         //para suaje
         var tipoSuaje   = $("#SelectSuajeEmp option:selected").text();
         var idtipoSuaje = $("#SelectHSEmp option:selected").data('id');
-        var LargoSuaje  = document.getElementById('LargoSuaje').value;
-        var AnchoSuaje  = document.getElementById('AnchoSuaje').value;
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje').value);
 
         //para laser
         var tipoLaser   = $("#SelectLaserEmp option:selected").text();
@@ -7414,8 +7432,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para barnizuv
         var tipoBarnizUV   = $("#SelectBarnizUVEmp option:selected").text();
         var idtipoBarnizUV = $("#SelectHSEmp option:selected").data('id');
-        var LargoBarnizUV  = document.getElementById('LargoBarUVEmp').value;
-        var AnchoBarnizUV  = document.getElementById('AnchoBarUVEmp').value;
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVEmp').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVEmp').value);
 
         //para pegados especiales
         var tipoEspeciales   = $("#SelectEspecialesEmp option:selected").text();
@@ -7462,10 +7480,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror').innerHTML = "";
 
-                var acb  = '<tr id="AcHSEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS_ver +'x'+ AnchoHS_ver +'</span></td><td class="tipoAcabadoHS" style="display: none;" >'+ tipoGrabadoHS +'<input id="tipoAcabadoHS" name="tipoAcabadoHS" type="hidden" value="'+ idtipoHS +'"></td><td class="idcolorHS" style="display: none;" >' + idcolorHS + '<input id="idcolorHS" name="idcolorHS" type="hidden" value="'+ idcolorHS +'"></td><td class="ColorHS" style="display: none;" >' + ColorHS + '<input id="ColorHS" name="ColorHS" type="hidden" value="'+ ColorHS +'"></td><td class="LargoHS" style="display: none;">'+ LargoHS_ver +'<input id="LargoHS" name="LargoHS" type="hidden" value="'+ LargoHS_ver +'"></td><td class="AnchoHS" style="display: none;">'+ AnchoHS_ver +'<input id="AnchoHS" name="AnchoHS" type="hidden" value="'+ AnchoHS_ver +'"></td><td class="listacabadosemp img_delete"></td></tr>';
+                var acb  = '<tr id="AcHSEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td class="tipoAcabadoHS" style="display: none;" >'+ tipoGrabadoHS +'<input id="tipoAcabadoHS" name="tipoAcabadoHS" type="hidden" value="'+ idtipoHS +'"></td><td class="idcolorHS" style="display: none;" >' + idcolorHS + '<input id="idcolorHS" name="idcolorHS" type="hidden" value="'+ idcolorHS +'"></td><td class="ColorHS" style="display: none;" >' + ColorHS + '<input id="ColorHS" name="ColorHS" type="hidden" value="'+ ColorHS +'"></td><td class="LargoHS" style="display: none;">'+ LargoHS +'<input id="LargoHS" name="LargoHS" type="hidden" value="'+ LargoHS +'"></td><td class="AnchoHS" style="display: none;">'+ AnchoHS +'<input id="AnchoHS" name="AnchoHS" type="hidden" value="'+ AnchoHS +'"></td><td class="listacabadosemp img_delete"></td></tr>';
 
-                LargoHS = parseInt(LargoHS_ver, 10);
-                AnchoHS = parseInt(AnchoHS_ver, 10);
 
                 aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
 
@@ -7637,13 +7653,13 @@ foreach ($Porcentajes as $porcentaje) { ?>
         var idtipoHS        = $("#SelectHSFcajon option:selected").data('id');
         var ColorHS         = $("#SelectColorHSFcajon option:selected").text();
         var idcolorHS       = $("#SelectHSFcajon option:selected").data('id');
-        var LargoHS_ver     = document.getElementById('LargoHS_fcajon').value;
-        var AnchoHS_ver     = document.getElementById('AnchoHS_fcajon').value;
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_fcajon').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_fcajon').value);
 
         //para grabados
         var tipoGrabadoG  = $("#SelectGrabFcajon option:selected").text();
-        var LargoGrab     = document.getElementById('LargoGrab_fcajon').value;
-        var AnchoGrab     = document.getElementById('AnchoGrab_fcajon').value;
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab_fcajon').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab_fcajon').value);
         var ubicacionGrab = $("#SelectUbiGrabFcajon option:selected").text();
 
         //para pegados especiales
@@ -7652,13 +7668,13 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para barnizuv
         var tipoBarnizUV   = $("#SelectBarnizUVFcajon option:selected").text();
         var idtipoBarnizUV = $("#SelectHSFcajon option:selected").data('id');
-        var LargoBarnizUV  = document.getElementById('LargoBarUVFcajon').value;
-        var AnchoBarnizUV  = document.getElementById('AnchoBarUVFcajon').value;
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVFcajon').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVFcajon').value);
 
         //para suaje
         var tipoSuaje   = $("#SelectSuajeFcajon option:selected").text();
-        var LargoSuaje  = document.getElementById('LargoSuaje_fcajon').value;
-        var AnchoSuaje  = document.getElementById('AnchoSuaje_fcajon').value;
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje_fcajon').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje_fcajon').value);
 
 
         //para laser
@@ -7707,11 +7723,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror2').innerHTML = "";
 
-                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS_ver +'x'+ AnchoHS_ver +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS_ver +'</td><td style="display: none;">'+ AnchoHS_ver +'</td><td class="listacabadosfcajon img_delete"></td></tr>';
-
-
-                LargoHS = parseInt(LargoHS_ver, 10);
-                AnchoHS = parseInt(AnchoHS_ver, 10);
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS +'</td><td style="display: none;">'+ AnchoHS +'</td><td class="listacabadosfcajon img_delete"></td></tr>';
 
                 aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
 
@@ -7857,13 +7869,13 @@ foreach ($Porcentajes as $porcentaje) { ?>
         var idtipoHS        = $("#SelectHSFcartera option:selected").data('id');
         var ColorHS         = $("#SelectColorHSFcartera option:selected").text();
         var idcolorHS       = $("#SelectHSFcartera option:selected").data('id');
-        var LargoHS_ver     = document.getElementById('LargoHS_fcartera').value;
-        var AnchoHS_ver     = document.getElementById('AnchoHS_fcartera').value;
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_fcartera').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_fcartera').value);
 
         //para grabados
         var tipoGrabadoG  = $("#SelectGrabFcartera option:selected").text();
-        var LargoGrab     = document.getElementById('LargoGrab_fcartera').value;
-        var AnchoGrab     = document.getElementById('AnchoGrab_fcartera').value;
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab_fcartera').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab_fcartera').value);
         var ubicacionGrab = $("#SelectUbiGrabFcartera option:selected").text();
 
         //para pegados especiales
@@ -7872,13 +7884,13 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para barnizuv
         var tipoBarnizUV   = $("#SelectBarnizUVFcartera option:selected").text();
         var idtipoBarnizUV = $("#SelectHSFcartera option:selected").data('id');
-        var LargoBarnizUV  = document.getElementById('LargoBarUVFcartera').value;
-        var AnchoBarnizUV  = document.getElementById('AnchoBarUVFcartera').value;
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVFcartera').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVFcartera').value);
 
         //para suaje
         var tipoSuaje   = $("#SelectSuajeFcartera option:selected").text();
-        var LargoSuaje  = document.getElementById('LargoSuaje_fcartera').value;
-        var AnchoSuaje  = document.getElementById('AnchoSuaje_fcartera').value;
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje_fcartera').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje_fcartera').value);
 
         //para laser
         var tipoLaser   = $("#SelectLaserFcartera option:selected").text();
@@ -7926,11 +7938,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror3').innerHTML = "";
 
-                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS_ver +'x'+ AnchoHS_ver +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS_ver +'</td><td style="display: none;">'+ AnchoHS_ver +'</td><td class="listacabadosfcartera img_delete"></td></tr>';
-
-
-                LargoHS = parseInt(LargoHS_ver, 10);
-                AnchoHS = parseInt(AnchoHS_ver, 10);
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS +'</td><td style="display: none;">'+ AnchoHS +'</td><td class="listacabadosfcartera img_delete"></td></tr>';
 
                 aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
 
@@ -8078,13 +8086,13 @@ foreach ($Porcentajes as $porcentaje) { ?>
         var idtipoHS        = $("#SelectHSGuarda option:selected").data('id');
         var ColorHS         = $("#SelectColorHSGuarda option:selected").text();
         var idcolorHS       = $("#SelectHSGuarda option:selected").data('id');
-        var LargoHS_ver     = document.getElementById('LargoHS_guarda').value;
-        var AnchoHS_ver     = document.getElementById('AnchoHS_guarda').value;
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_guarda').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_guarda').value);
 
         //para grabados
         var tipoGrabadoG  = $("#SelectGrabGuarda option:selected").text();
-        var LargoGrab     = document.getElementById('LargoGrab_guarda').value;
-        var AnchoGrab     = document.getElementById('AnchoGrab_guarda').value;
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab_guarda').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab_guarda').value);
         var ubicacionGrab = $("#SelectUbiGrabGuarda option:selected").text();
 
         //para pegados especiales
@@ -8093,13 +8101,13 @@ foreach ($Porcentajes as $porcentaje) { ?>
         //para barnizuv
         var tipoBarnizUV   = $("#SelectBarnizUVGuarda option:selected").text();
         var idtipoBarnizUV = $("#SelectHSGuarda option:selected").data('id');
-        var LargoBarnizUV  = document.getElementById('LargoBarUVGuarda').value;
-        var AnchoBarnizUV  = document.getElementById('AnchoBarUVGuarda').value;
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVGuarda').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVGuarda').value);
 
         //para suaje
         var tipoSuaje   = $("#SelectSuajeGuarda option:selected").text();
-        var LargoSuaje  = document.getElementById('LargoSuaje_guarda').value;
-        var AnchoSuaje  = document.getElementById('AnchoSuaje_guarda').value;
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje_guarda').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje_guarda').value);
 
         //para laser
         var tipoLaser   = $("#SelectLaserGuarda option:selected").text();
@@ -8146,11 +8154,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
                 document.getElementById('alerterror4').innerHTML = "";
 
-                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS_ver +'x'+ AnchoHS_ver +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS_ver +'</td><td style="display: none;">'+ AnchoHS_ver +'</td><td class="listacabadosguarda img_delete"></td></tr>';
-
-
-                LargoHS = parseInt(LargoHS_ver, 10);
-                AnchoHS = parseInt(AnchoHS_ver, 10);
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS +'</td><td style="display: none;">'+ AnchoHS +'</td><td class="listacabadosguarda img_delete"></td></tr>';
 
                 aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
 
@@ -8324,8 +8328,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 LargoHS_str   = $(tr).find('td:eq(5)').text();
                 AnchoHS_str   = $(tr).find('td:eq(6)').text();
 
-                LargoHS = parseInt(LargoHS_str, 10);
-                AnchoHS = parseInt(AnchoHS_str, 10);
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
 
 
                 aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
@@ -8339,8 +8343,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Ancho_str   = $(tr).find('td:eq(4)').text();
                 ubicacion   = $(tr).find('td:eq(5)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
             }
@@ -8360,8 +8364,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Largo_str   = $(tr).find('td:eq(3)').text();
                 Ancho_str   = $(tr).find('td:eq(4)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
             }
@@ -8370,8 +8374,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
             if (tipo_acabado == "Barniz UV") {
 
                 tipoGrabado = $(tr).find('td:eq(2)').text();
-                Largo       = parseInt($(tr).find('td:eq(3)').text());
-                Ancho       = parseInt($(tr).find('td:eq(4)').text());
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
 
                 if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante") {
 
@@ -8449,8 +8453,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 LargoHS_str   = $(tr).find('td:eq(4)').text();
                 AnchoHS_str   = $(tr).find('td:eq(5)').text();
 
-                LargoHS = parseInt(LargoHS_str, 10);
-                AnchoHS = parseInt(AnchoHS_str, 10);
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
 
 
                 aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
@@ -8464,8 +8468,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Ancho_str   = $(tr).find('td:eq(4)').text();
                 ubicacion   = $(tr).find('td:eq(5)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
             }
@@ -8477,8 +8481,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Largo_str   = $(tr).find('td:eq(3)').text();
                 Ancho_str   = $(tr).find('td:eq(4)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
             }
@@ -8487,8 +8491,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
             if (tipo_acabado == "Barniz UV") {
 
                 tipoGrabado = $(tr).find('td:eq(2)').text();
-                Largo       = parseInt($(tr).find('td:eq(3)').text());
-                Ancho       = parseInt($(tr).find('td:eq(4)').text());
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
 
                 if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante") {
 
@@ -8563,8 +8567,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 LargoHS_str   = $(tr).find('td:eq(4)').text();
                 AnchoHS_str   = $(tr).find('td:eq(5)').text();
 
-                LargoHS = parseInt(LargoHS_str, 10);
-                AnchoHS = parseInt(AnchoHS_str, 10);
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
 
 
                 aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
@@ -8578,8 +8582,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Ancho_str   = $(tr).find('td:eq(4)').text();
                 ubicacion   = $(tr).find('td:eq(5)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
             }
@@ -8591,8 +8595,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Largo_str   = $(tr).find('td:eq(3)').text();
                 Ancho_str   = $(tr).find('td:eq(4)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
             }
@@ -8601,8 +8605,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
             if (tipo_acabado == "Barniz UV") {
 
                 tipoGrabado = $(tr).find('td:eq(2)').text();
-                Largo       = parseInt($(tr).find('td:eq(3)').text());
-                Ancho       = parseInt($(tr).find('td:eq(4)').text());
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
 
                 if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante"){
 
@@ -8676,8 +8680,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 LargoHS_str   = $(tr).find('td:eq(4)').text();
                 AnchoHS_str   = $(tr).find('td:eq(5)').text();
 
-                LargoHS = parseInt(LargoHS_str, 10);
-                AnchoHS = parseInt(AnchoHS_str, 10);
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
 
 
                 aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
@@ -8691,8 +8695,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Ancho_str   = $(tr).find('td:eq(4)').text();
                 ubicacion   = $(tr).find('td:eq(5)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
             }
@@ -8704,8 +8708,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
                 Largo_str   = $(tr).find('td:eq(3)').text();
                 Ancho_str   = $(tr).find('td:eq(4)').text();
 
-                Largo = parseInt(Largo_str, 10);
-                Ancho = parseInt(Ancho_str, 10);
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
 
                 aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
             }
@@ -8714,8 +8718,8 @@ foreach ($Porcentajes as $porcentaje) { ?>
             if (tipo_acabado == "Barniz UV") {
 
                 tipoGrabado = $(tr).find('td:eq(2)').text();
-                Largo       = parseInt($(tr).find('td:eq(3)').text());
-                Ancho       = parseInt($(tr).find('td:eq(4)').text());
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
 
                 if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante") {
 

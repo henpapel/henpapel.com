@@ -1384,10 +1384,10 @@ class Regalo extends Controller {
 
 
         // suaje forro cajon
-        $Largo            = $aJson['costo_grosor_carton']['calculadora']['corte_largo'];
-        $Ancho            = $aJson['costo_grosor_carton']['calculadora']['corte_ancho'];
-        $papel_costo_unit = $aJson['costo_grosor_carton']['costo_unit_papel'];
-        $cortes           = $aJson['costo_grosor_carton']['corte'];
+        $Largo            = round(floatval($aJson['costo_grosor_carton']['calculadora']['corte_largo']), 2);
+        $Ancho            = round(floatval($aJson['costo_grosor_carton']['calculadora']['corte_ancho']), 2);
+        $papel_costo_unit = floatval($aJson['costo_grosor_carton']['costo_unit_papel']);
+        $cortes           = intval($aJson['costo_grosor_carton']['corte']);
         $tot_pliegos      = $aJson['costo_grosor_carton']['tot_pliegos'];
 
 
@@ -2657,7 +2657,6 @@ class Regalo extends Controller {
 /************************ Inicia Empalme del Cajon *******************************/
 
 
-
     $aEmpBUV   = [];
     $aEmpLaser = [];
     $aEmpGrab  = [];
@@ -2688,8 +2687,10 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Barniz UV") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['tipoGrabado']));
+
             $AnchoBarniz = floatval($aJson['papel_Emp']['calculadora']['corte_ancho']);
-            $LargoBarniz = $aJson['papel_Emp']['calculadora']['corte_largo'];
+            $LargoBarniz = floatval($aJson['papel_Emp']['calculadora']['corte_largo']);
+
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
@@ -2794,8 +2795,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Grabado") {
 
             $tipoGrabado   = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['tipoGrabado']));
-            $LargoGrab     = $aAcb[$i]['Largo'];
-            $AnchoGrab     = $aAcb[$i]['Ancho'];
+            $LargoGrab     = floatval($aAcb[$i]['Largo']);
+            $AnchoGrab     = floatval($aAcb[$i]['Ancho']);
             $ubicacionGrab = $aAcb[$i]['ubicacion'];
 
             $papel_seccion        = intval($aJson['cortes']['papel_Emp']);
@@ -2826,8 +2827,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "HotStamping") {
 
             $tipoGrabado = self::strip_slashes_recursive($aAcb[$i]['tipoGrabado']);
-            $LargoHS     = intval($aAcb[$i]['LargoHS']);
-            $AnchoHS     = intval($aAcb[$i]['AnchoHS']);
+            $LargoHS     = round(floatval($aAcb[$i]['LargoHS']), 2);
+            $AnchoHS     = round(floatval($aAcb[$i]['AnchoHS']), 2);
             $ColorHS     = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['ColorHS']));
 
             $papel_seccion        = intval($aJson['cortes']['papel_Emp']);
@@ -2887,8 +2888,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Suaje") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['tipoGrabado']));
-            $Largo       = floatval($aAcb[$i]['LargoSuaje']);
-            $Ancho       = floatval($aAcb[$i]['AnchoSuaje']);
+            $Largo       = round(floatval($aAcb[$i]['LargoSuaje']), 2);
+            $Ancho       = round(floatval($aAcb[$i]['AnchoSuaje']),2);
 
             $aAcbSuaje_tmp = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
 
@@ -3028,8 +3029,8 @@ class Regalo extends Controller {
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
-                $AnchoBarniz = floatval($aAcbFCaj[$i]['Ancho']);
-                $LargoBarniz = floatval($aAcbFCaj[$i]['Largo']);
+                $AnchoBarniz = round(floatval($aAcbFCaj[$i]['Ancho']), 2);
+                $LargoBarniz = round(floatval($aAcbFCaj[$i]['Largo']), 2);
             }
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
@@ -3117,9 +3118,9 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Grabado") {
 
             $tipoGrabado   = utf8_encode(self::strip_slashes_recursive($aAcbFCaj[$i]['tipoGrabado']));
-            $LargoGrab     = $aAcbFCaj[$i]['Largo'];
-            $AnchoGrab     = $aAcbFCaj[$i]['Ancho'];
-            $ubicacionGrab = $aAcbFCaj[$i]['ubicacion'];
+            $LargoGrab     = round(floatval($aAcbFCaj[$i]['Largo']), 2);
+            $AnchoGrab     = round(floatval($aAcbFCaj[$i]['Ancho']), 2);
+            $ubicacionGrab = trim($aAcbFCaj[$i]['ubicacion']);
 
 
             $aFCajGrab[$i] = self::calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $cortes, $papel_costo_unit, $ventas_model);
@@ -3138,8 +3139,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "HotStamping") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbFCaj[$i]['tipoGrabado']));
-            $LargoHS     = intval($aAcbFCaj[$i]['LargoHS']);
-            $AnchoHS     = intval($aAcbFCaj[$i]['AnchoHS']);
+            $LargoHS     = round(floatval($aAcbFCaj[$i]['LargoHS']), 2);
+            $AnchoHS     = round(floatval($aAcbFCaj[$i]['AnchoHS']), 2);
             $ColorHS     = utf8_encode(self::strip_slashes_recursive($aAcbFCaj[$i]['ColorHS']));
 
 
@@ -3181,8 +3182,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Suaje") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbFCaj[$i]['tipoGrabado']));
-            $Largo       = floatval($aAcbFCaj[$i]['LargoSuaje']);
-            $Ancho       = floatval($aAcbFCaj[$i]['AnchoSuaje']);
+            $Largo       = round(floatval($aAcbFCaj[$i]['LargoSuaje']), 2);
+            $Ancho       = round(floatval($aAcbFCaj[$i]['AnchoSuaje']), 2);
 
             $cortes = $aJson['cortes']['papel_FCaj'];
 
@@ -3307,22 +3308,22 @@ class Regalo extends Controller {
 
         $tipo_acabado = utf8_encode(self::strip_slashes_recursive($aAcbEmpTap[$i]['Tipo_acabado']));
 
-        $papel_costo_unit = $aJson['papel_FTap']['costo_unit_papel'];
+        $papel_costo_unit = $aJson['papel_EmpTap']['costo_unit_papel'];
         $papel_costo_unit = round(floatval($papel_costo_unit), 4);
 
-        $cortes = intval($aJson['cortes']['papel_FTap']);
+        $cortes = intval($aJson['cortes']['papel_EmpTap']);
 
 
         if ($tipo_acabado == "Barniz UV") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbEmpTap[$i]['tipoGrabado']));
-            $AnchoBarniz = floatval($aJson['papel_FTap']['calculadora']['corte_ancho']);
-            $LargoBarniz = floatval($aJson['papel_FTap']['calculadora']['corte_largo']);
+            $AnchoBarniz = floatval($aJson['papel_EmpTap']['calculadora']['corte_ancho']);
+            $LargoBarniz = floatval($aJson['papel_EmpTap']['calculadora']['corte_largo']);
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
-                $AnchoBarniz = floatval($aAcbEmpTap[$i]['Ancho']);
-                $LargoBarniz = floatval($aAcbEmpTap[$i]['Largo']);
+                $AnchoBarniz = round(floatval($aAcbEmpTap[$i]['Ancho']), 2);
+                $LargoBarniz = round(floatval($aAcbEmpTap[$i]['Largo']), 2);
             }
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
@@ -3410,8 +3411,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Grabado") {
 
             $tipoGrabado   = utf8_encode(self::strip_slashes_recursive($aAcbEmpTap[$i]['tipoGrabado']));
-            $LargoGrab     = $aAcbEmpTap[$i]['Largo'];
-            $AnchoGrab     = $aAcbEmpTap[$i]['Ancho'];
+            $LargoGrab     = round(floatval($aAcbEmpTap[$i]['Largo']), 2);
+            $AnchoGrab     = round(floatval($aAcbEmpTap[$i]['Ancho']), 2);
             $ubicacionGrab = $aAcbEmpTap[$i]['ubicacion'];
 
 
@@ -3431,8 +3432,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "HotStamping") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbEmpTap[$i]['tipoGrabado']));
-            $LargoHS     = intval($aAcbEmpTap[$i]['LargoHS']);
-            $AnchoHS     = intval($aAcbEmpTap[$i]['AnchoHS']);
+            $LargoHS     = round(floatval($aAcbEmpTap[$i]['LargoHS']), 2);
+            $AnchoHS     = round(floatval($aAcbEmpTap[$i]['AnchoHS']), 2);
             $ColorHS     = utf8_encode(self::strip_slashes_recursive($aAcbEmpTap[$i]['ColorHS']));
 
 
@@ -3452,11 +3453,11 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Laminado") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbEmpTap[$i]['tipo']));
-            $LargoLam    = floatval($aJson['papel_FTap']['calculadora']['corte_largo']);
-            $AnchoLam    = floatval($aJson['papel_FTap']['calculadora']['corte_ancho']);
+            $LargoLam    = floatval($aJson['papel_EmpTap']['calculadora']['corte_largo']);
+            $AnchoLam    = floatval($aJson['papel_EmpTap']['calculadora']['corte_ancho']);
 
-            $papel_costo_unit = $aJson['papel_FTap']['costo_unit_papel'];
-            $cortes           = $aJson['cortes']['papel_FTap'];
+            $papel_costo_unit = $aJson['papel_EmpTap']['costo_unit_papel'];
+            $cortes           = $aJson['cortes']['papel_EmpTap'];
 
             $aEmpTapLam[$i] = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
@@ -3474,8 +3475,8 @@ class Regalo extends Controller {
         if ($tipo_acabado == "Suaje") {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbEmpTap[$i]['tipoGrabado']));
-            $Largo       = floatval($aAcbEmpTap[$i]['LargoSuaje']);
-            $Ancho       = floatval($aAcbEmpTap[$i]['AnchoSuaje']);
+            $Largo       = round(floatval($aAcbEmpTap[$i]['LargoSuaje']), 2);
+            $Ancho       = round(floatval($aAcbEmpTap[$i]['AnchoSuaje']), 2);
 
             $cortes = $aJson['cortes']['papel_FTap'];
 
@@ -3613,8 +3614,8 @@ class Regalo extends Controller {
 
             if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
 
-                $AnchoBarniz = floatval($aAcbFTap[$i]['Ancho']);
-                $LargoBarniz = floatval($aAcbFTap[$i]['Largo']);
+                $AnchoBarniz = round(floatval($aAcbFTap[$i]['Ancho']), 2);
+                $LargoBarniz = round(floatval($aAcbFTap[$i]['Largo']), 2);
             }
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
@@ -3703,9 +3704,9 @@ class Regalo extends Controller {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbFTap[$i]['tipoGrabado']));
 
-            $LargoGrab     = $aAcbFTap[$i]['Largo'];
-            $AnchoGrab     = $aAcbFTap[$i]['Ancho'];
-            $ubicacionGrab = $aAcbFTap[$i]['ubicacion'];
+            $LargoGrab     = round(floatval($aAcbFTap[$i]['Largo']), 2);
+            $AnchoGrab     = round(floatval($aAcbFTap[$i]['Ancho']), 2);
+            $ubicacionGrab = trim($aAcbFTap[$i]['ubicacion']);
 
 
             $aFTapGrab[$i] = self::calculoGrabado($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $cortes, $papel_costo_unit, $ventas_model);
@@ -3725,8 +3726,8 @@ class Regalo extends Controller {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbFTap[$i]['tipoGrabado']));
 
-            $LargoHS = intval($aAcbFTap[$i]['LargoHS']);
-            $AnchoHS = intval($aAcbFTap[$i]['AnchoHS']);
+            $LargoHS = round(floatval($aAcbFTap[$i]['LargoHS']), 2);
+            $AnchoHS = round(floatval($aAcbFTap[$i]['AnchoHS']), 2);
             $ColorHS = utf8_encode(self::strip_slashes_recursive($aAcbFTap[$i]['ColorHS']));
 
 
@@ -3770,8 +3771,8 @@ class Regalo extends Controller {
 
             $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcbFTap[$i]['tipoGrabado']));
 
-            $Largo = floatval($aAcbFTap[$i]['LargoSuaje']);
-            $Ancho = floatval($aAcbFTap[$i]['AnchoSuaje']);
+            $Largo = round(floatval($aAcbFTap[$i]['LargoSuaje']), 2);
+            $Ancho = round(floatval($aAcbFTap[$i]['AnchoSuaje']), 2);
 
 
             $aFTapSuaje[$i] = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $papel_costo_unit, $cortes, $ventas_model);
@@ -4577,12 +4578,12 @@ class Regalo extends Controller {
 
             if ($post) {
 
-                self::prettyPrint($_POST, "post", 4500);
+                self::prettyPrint($_POST, "post", 4581);
             }
 
             if ($debuger) {
 
-                self::prettyPrint($aJson, "aJson", 4505);
+                self::prettyPrint($aJson, "aJson", 4586);
             }
 
             echo json_encode($aJson);

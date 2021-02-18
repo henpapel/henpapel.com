@@ -337,8 +337,8 @@ class Cajas {
                 var id      = $("#SelectHSEmp option:selected").data('id');
                 var color   = $("#SelectColorHSEmp option:selected").text();
                 var idColor = $("#SelectHSEmp option:selected").data('id');
-                var largo   = parseInt(document.getElementById('LargoHS_ver').value,10);
-                var ancho   = parseInt(document.getElementById('AnchoHS_ver').value,10);
+                var largo   = parseFloat(document.getElementById('LargoHS_ver').value,10);
+                var ancho   = parseFloat(document.getElementById('AnchoHS_ver').value,10);
                 var nulo1   = document.getElementById('SelectHSEmp').value;
                 var nulo2   = document.getElementById('SelectColorHSEmp').value;
 
@@ -366,8 +366,8 @@ class Cajas {
 
                 var tipo      = $("#SelectGrabEmp option:selected").text();
                 var idTipo    = $("#SelectHSEmp option:selected").data('id');
-                var largo     = document.getElementById('LargoGrab').value;
-                var ancho     = document.getElementById('AnchoGrab').value;
+                var largo     = parseFloat(document.getElementById('LargoGrab').value);
+                var ancho     = parseFloat(document.getElementById('AnchoGrab').value);
                 var ubicacion = $("#SelectUbiGrabEmp option:selected").text();
                 var nulo1 = document.getElementById('SelectGrabEmp').value;
                 var nulo2 = document.getElementById('SelectUbiGrabEmp').value;
@@ -396,8 +396,8 @@ class Cajas {
 
                 var tipo   = $("#SelectSuajeEmp option:selected").text();
                 var idTipo = $("#SelectHSEmp option:selected").data('id');
-                var largo  = document.getElementById('LargoSuaje').value;
-                var ancho  = document.getElementById('AnchoSuaje').value;
+                var largo  = parseFloat(document.getElementById('LargoSuaje').value);
+                var ancho  = parseFloat(document.getElementById('AnchoSuaje').value);
                 var nulo1 = document.getElementById('SelectSuajeEmp').value;
 
                 if (nulo1 == 'selected') {
@@ -450,8 +450,8 @@ class Cajas {
 
                 var tipo   = $("#SelectBarnizUVEmp option:selected").text();
                 var idTipo = $("#SelectHSEmp option:selected").data('id');
-                var largo  = document.getElementById('LargoBarUVEmp').value;
-                var ancho  = document.getElementById('AnchoBarUVEmp').value;
+                var largo  = parseFloat(document.getElementById('LargoBarUVEmp').value);
+                var ancho  = parseFloat(document.getElementById('AnchoBarUVEmp').value);
                 var nulo1  = document.getElementById('SelectBarnizUVEmp').value;
 
                 if (nulo1 == 'selected') {
@@ -760,47 +760,54 @@ class Cajas {
 
         var tablaResumen = 
         `
-            <div id="resumentodocaja" style="display: none;">
+            <div id="resumentodocaja" style="display: none; background: #fff; width: 100%; height: ${heightDisplay}px; transition: transform .5s;">
 
-            <button type="button" style="text-align: end; border: none; background: none; width: 100%;" id="btnQuitarResumen"><img border="0" src="`+ this._url +`public/img/eliminar.png" style="width: 2%;">
-            </button>
+                <div class="bg-primary d-flex justify-content-end">
+                    
+                    <button type="button" id="btnQuitarResumen" class="btn btn-primary"><i class="bi bi-x-circle-fill"></i></button>
+                </div>
 
-            <table class="table tableresumenn" id="ResumenCostos">
+                <div class="d-flex justify-content-around bg-primary text-white">
+                    <label>Sección</label>
+                    <label>Adiciones</label>
+                    <label>Subtotal</label>
+                    <label>Total</label>
+                </div>
 
-                <thead class="thead-dark">
+                
+                <div style="overflow: auto; height:80%;">
 
-                    <tr>
-                        <th style="width: 20%"></th>
-                        <th>Adiciones</th>
-                        <th>Subtotal</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
+                    <table class="table tableresumenn" id="ResumenCostos" style="width:100%;height:100%">
 
-                <thead id="resumenHead"></thead>
+                        <thead id="resumenHead"></thead>
 
-                <tbody id="resumenPapeles"></tbody>
+                        <tbody id="resumenPapeles"></tbody>
 
-                ` + tableresumen + `
+                        ` + tableresumen + `
 
-                <tbody id="resumenEncuadernacion"></tbody>
+                        <tbody id="resumenEncuadernacion"></tbody>
 
-                <tbody id="resumenMensajeria"></tbody>
+                        <tbody id="resumenMensajeria"></tbody>
 
-                <tbody id="resumenEmpaque"></tbody>
+                        <tbody id="resumenEmpaque"></tbody>
 
-                <tbody id="resumenBancos"></tbody>
+                        <tbody id="resumenBancos"></tbody>
 
-                <tbody id="resumenCierres"></tbody>
+                        <tbody id="resumenCierres"></tbody>
 
-                <tbody id="resumenAccesorios"></tbody>
+                        <tbody id="resumenAccesorios"></tbody>
 
-                <tbody id="resumenOtros"></tbody>
-            </table>
-            <img border="0" src="`+ this._url +`public/img/henpp.png" style="width: 7%; margin: 2%"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
-        </div>
+                        <tbody id="resumenOtros"></tbody>
+                    </table>
+                </div>
+                
+                <div class="d-flex justify-content-start" style="height: 50px; width:100%; align-items: center">
+                    <img class="m-1" src="`+ this._url +`public/img/henpp.png" style="width: 11%;"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
+                </div>
+            </div>
         `;
         $("body").append(tablaResumen);
+        $("#resumentodocaja").css("transform","translateY(" + heightDisplay + "px)");
     }
 
     constructSec(){

@@ -64,7 +64,7 @@
                 <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ID: </label>
                 <div class="col-sm-8">
                     
-                    <input type="text" class="form-control form-control-sm" name="id_odt_anterior" id="id_odt_anterior" placeholder="ODT" tabindex="1" value="<?= $aJson['id_odt']?>" disabled>
+                    <input type="text" class="form-control form-control-sm" name="id_odt_anterior" id="id_odt_anterior" placeholder="ID" tabindex="1" value="<?= $aJson['id_odt']?>" disabled>
                 </div>
             </div>
             

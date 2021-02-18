@@ -184,6 +184,9 @@ class RegaloModel extends Controller {
                 self::mError($aJson, $mensaje, $error .  "odt;");
 
                 $l_inserted = false;
+            } else {
+
+                $aJson['id_odt_act'] = $id_caja_odt;
             }
 
 
@@ -200,6 +203,9 @@ class RegaloModel extends Controller {
                     $l_inserted        = false;
                     $inserted_odt_orig = false;
                 }
+            } else {
+
+                $aJson['id_odt_act'] = $id_caja_odt;
             }
 
 
@@ -1033,9 +1039,9 @@ class RegaloModel extends Controller {
             $l_Suaje_fcaj_fijo = true;
 
             $tipoGrabado             = self::strip_slashes_recursive($aJson['suaje_fcaj_fijo']['tipoGrabado']);
-            $Largo                   = intval($aJson['suaje_fcaj_fijo']['Largo']);
-            $Ancho                   = intval($aJson['suaje_fcaj_fijo']['Ancho']);
-            $perimetro               = intval($aJson['suaje_fcaj_fijo']['perimetro']);
+            $Largo                   = round(floatval($aJson['suaje_fcaj_fijo']['Largo']), 2);
+            $Ancho                   = round(floatval($aJson['suaje_fcaj_fijo']['Ancho']), 2);
+            $perimetro               = round(floatval($aJson['suaje_fcaj_fijo']['perimetro']), 2);
             $costo_unit_tabla_suaje  = round(floatval($aJson['suaje_fcaj_fijo']['costo_unit_tabla_suaje']), 2);
             $tabla_suaje             = round(floatval($aJson['suaje_fcaj_fijo']['tabla_suaje']), 2);
             $arreglo                 = round(floatval($aJson['suaje_fcaj_fijo']['arreglo']), 2);
@@ -2098,8 +2104,8 @@ class RegaloModel extends Controller {
                     foreach($aHotStamping as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $Color                   = self::strip_slashes_recursive($row['Color']);
                         $placa_area              = round(floatval($row['placa_area']), 2);
                         $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
@@ -2189,9 +2195,9 @@ class RegaloModel extends Controller {
                     foreach($aSuaje as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
-                        $perimetro               = intval($row['perimetro']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $perimetro               = round(floatval($row['perimetro']), 2);
                         $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
                         $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
                         $arreglo                 = round(floatval($row['arreglo']), 2);
@@ -2328,8 +2334,8 @@ class RegaloModel extends Controller {
                     foreach($aGrabado as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $ubicacion               = self::strip_slashes_recursive($row['ubicacion']);
                         $placa_area              = round(floatval($row['placa_area']), 2);
                         $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
@@ -2374,8 +2380,8 @@ class RegaloModel extends Controller {
                     foreach($aHotStamping as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $Color                   = self::strip_slashes_recursive($row['Color']);
                         $placa_area              = round(floatval($row['placa_area']), 2);
                         $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
@@ -2465,9 +2471,9 @@ class RegaloModel extends Controller {
                     foreach($aSuaje as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
-                        $perimetro               = intval($row['perimetro']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $perimetro               = round(floatval($row['perimetro']), 2);
                         $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
                         $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
                         $arreglo                 = round(floatval($row['arreglo']), 2);
@@ -2605,8 +2611,8 @@ class RegaloModel extends Controller {
                     foreach($aGrabado as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $ubicacion               = self::strip_slashes_recursive($row['ubicacion']);
                         $placa_area              = round(floatval($row['placa_area']), 2);
                         $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
@@ -2651,8 +2657,8 @@ class RegaloModel extends Controller {
                     foreach($aHotStamping as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $Color                   = self::strip_slashes_recursive($row['Color']);
                         $placa_area              = round(floatval($row['placa_area']), 2);
                         $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
@@ -2742,9 +2748,9 @@ class RegaloModel extends Controller {
                     foreach($aSuaje as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
-                        $perimetro               = intval($row['perimetro']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $perimetro               = round(floatval($row['perimetro']), 2);
                         $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
                         $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
                         $arreglo                 = round(floatval($row['arreglo']), 2);
@@ -2881,8 +2887,8 @@ class RegaloModel extends Controller {
                     foreach($aGrabado as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $ubicacion               = self::strip_slashes_recursive($row['ubicacion']);
                         $placa_area              = round(floatval($row['placa_area']), 2);
                         $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
@@ -2927,8 +2933,8 @@ class RegaloModel extends Controller {
                     foreach($aHotStamping as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
                         $Color                   = self::strip_slashes_recursive($row['Color']);
                         $placa_area              = round(floatval($row['placa_area']), 2);
                         $placa_costo_unitario    = round(floatval($row['placa_costo_unitario']), 2);
@@ -3018,9 +3024,9 @@ class RegaloModel extends Controller {
                     foreach($aSuaje as $row) {
 
                         $tipoGrabado             = self::strip_slashes_recursive($row['tipoGrabado']);
-                        $Largo                   = intval($row['Largo']);
-                        $Ancho                   = intval($row['Ancho']);
-                        $perimetro               = intval($row['perimetro']);
+                        $Largo                   = round(floatval($row['Largo']), 2);
+                        $Ancho                   = round(floatval($row['Ancho']), 2);
+                        $perimetro               = round(floatval($row['perimetro']), 2);
                         $costo_unit_tabla_suaje  = round(floatval($row['costo_unit_tabla_suaje']), 2);
                         $tabla_suaje             = round(floatval($row['tabla_suaje']), 2);
                         $arreglo                 = round(floatval($row['arreglo']), 2);
