@@ -197,11 +197,11 @@ class Cajas {
 
             if( sec['siglas'].indexOf(nva) == 0 ){
 
-                caja.saveBtnImpresiones(sec['aImp'],"listImp"+sec['siglas']);
-                caja.desactivarBtn();
+                this.saveBtnImpresiones(sec['aImp'],"listImp"+sec['siglas']);
+                this.desactivarBtn();
                 return true;
             }
-        });
+        }.bind(this));
     }
 
 	saveAcabado(){
@@ -212,11 +212,11 @@ class Cajas {
 
 	    	if( sec['siglas'].indexOf(nva) == 0 ){
 	    			
-	    		caja.saveBtnAcabados(sec['aAcb'],"listAcb"+sec['siglas']);
-                caja.desactivarBtn();
+	    		this.saveBtnAcabados(sec['aAcb'],"listAcb"+sec['siglas']);
+                this.desactivarBtn();
 	    		return true;
 	    	}
-	    });
+	    }.bind(this));
 	}
 
 	saveBtnImpresiones(arrpapeles, tabla) {
@@ -811,7 +811,7 @@ class Cajas {
     }
 
     constructSec(){
-        this._cliente = caja.getIdClient();
+        this._cliente = this.getIdClient();
         var i = 0;
         var tableresumen = ""
         this._secciones.forEach( function(sec){
@@ -822,8 +822,8 @@ class Cajas {
                 <tbody id="resumen` + sec['siglas'] + `">
                     <!-- -->
                 </tbody>`;
-            caja.divSecciones(sec['titulo'], sec['option'] ,sec['siglas'], sec['img'], toggle);
-        });
+            this.divSecciones(sec['titulo'], sec['option'] ,sec['siglas'], sec['img'], toggle);
+        }.bind(this));
         this.appendResumen(tableresumen);
     }
 

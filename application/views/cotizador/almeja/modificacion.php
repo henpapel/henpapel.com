@@ -550,8 +550,6 @@
 
                     <button type="button" class="btn btn-warning" id="btnResumen" style="font-size: 10px;">RESUMEN</button>
 
-                    <button type="button" id="btnCalculadora" disabled="" class="btn btn-warning" style="font-size: 10px;">CALCULADORA</button>
-
                     <button type="button" id="btnImprimir" class="btn btn-info" style="font-size: 10px;" disabled="">Imprimir</button>
                     <br>
 
@@ -3274,7 +3272,6 @@ if ($aJson) { ?>
             .done(function(response) {
 
                 $("#modLoading").hide();
-                console.log("(3298) response: ");
 
                 console.log(response);
 
@@ -3603,7 +3600,7 @@ if ($aJson) { ?>
 
                                     //*** otros datos ****
                                     var js_cantidad_emp   = js_variable_extra1[a]['cantidad'];
-                                    var js_tipo_emp       = js_variable_extra1[a]['tipo'];
+                                    var js_tipo_emp       = js_variable_extra1[a]['tipo_offset'];
                                     var js_num_tintas_emp = js_variable_extra1[a]['num_tintas'];
 
 
@@ -3753,7 +3750,7 @@ if ($aJson) { ?>
 
                                     for ( c in js_variable_extra3 ) {
 
-                                        var js_cantidad_con_merma_digital = js_variable_extra3[c]['cantidad'];
+                                        var js_cantidad_con_merma_digital = js_variable_extra3[c]['tiraje'];
 
 
                                         var js_costo_unitario_digital = js_variable_extra3[c]['costo_unitario'];
@@ -3766,6 +3763,7 @@ if ($aJson) { ?>
 
 
                                         var js_costo_tot_digital = js_variable_extra3[c]['costo_tot_proceso'];
+
                                         var processdigital = '<tr><td colspan="4" style="background: steelblue;color: white;">Empalme del Cajón</td></tr><tr><td>Cantidad</td><td>Costo Unitario</td><td>Costo Total</td></tr><tr><td>'+ js_cantidad_con_merma_digital +'</td><td>'+ js_costo_unitario_digital +'</td><td>$'+ js_costo_tot_digital +'<input type="hidden" class="prices" value=" '+ js_costo_tot_digital +'"></td></tr><tr><td colspan="4"></td></tr>';
 
                                         jQuery214('#table_proc_digital').append(processdigital);
@@ -3980,7 +3978,7 @@ if ($aJson) { ?>
 
                                     for ( c in js_variable_extra6 ) {
 
-                                        var js_cantidad_con_merma_digital = js_variable_extra6[c]['cantidad'];
+                                        var js_cantidad_con_merma_digital = js_variable_extra6[c]['tiraje'];
 
 
                                         var js_costo_unitario_digital = js_variable_extra6[c]['costo_unitario'];
@@ -3992,7 +3990,7 @@ if ($aJson) { ?>
                                         }
 
 
-                                        var js_costo_tot_digital = js_variable_extra6[c]['costo_tot'];
+                                        var js_costo_tot_digital = js_variable_extra6[c]['costo_tot_proceso'];
 
                                         var processdigital = '<tr><td colspan="4" style="background: steelblue;color: white;">Forro del Cajón</td></tr><tr><td>Cantidad</td><td>Costo Unitario</td><td>Coto Total</td></tr><tr><td>'+ js_cantidad_con_merma_digital +'</td><td>'+ js_costo_unitario_digital +'</td><td>$'+ js_costo_tot_digital +'<input type="hidden" class="prices" value="'+ js_costo_tot_digital +'"></td></tr><tr><td colspan="4"></td></tr>';
 
@@ -4198,7 +4196,7 @@ if ($aJson) { ?>
 
                                     for ( c in js_variable_extra9 ) {
 
-                                        var js_cantidad_con_merma_digital = js_variable_extra9[c]['cantidad'];
+                                        var js_cantidad_con_merma_digital = js_variable_extra9[c]['tiraje'];
 
 
                                         var js_costo_unitario_digital = js_variable_extra9[c]['costo_unitario'];
@@ -4210,7 +4208,7 @@ if ($aJson) { ?>
                                         }
 
 
-                                        var js_costo_tot_digital = js_variable_extra9[c]['costo_tot'];
+                                        var js_costo_tot_digital = js_variable_extra9[c]['costo_tot_proceso'];
 
                                         var processdigital = '<tr><td colspan="4" style="background: steelblue;color: white;">Forro de la Cartera</td></tr><tr><td>Cantidad</td><td>Costo Unitario</td><td>Coto Total</td></tr><tr><td>'+ js_cantidad_con_merma_digital +'</td><td>'+ js_costo_unitario_digital +'</td><td>$'+ js_costo_tot_digital +'<input type="hidden" class="prices" value="'+ js_costo_tot_digital +'"></td></tr><tr><td colspan="4"></td></tr>';
 
@@ -4418,7 +4416,7 @@ if ($aJson) { ?>
 
                                     for ( c in js_variable_extra12 ) {
 
-                                        var js_cantidad_con_merma_digital = js_variable_extra12[c]['cantidad'];
+                                        var js_cantidad_con_merma_digital = js_variable_extra12[c]['tiraje'];
 
 
                                         var js_costo_unitario_digital = js_variable_extra12[c]['costo_unitario'];
@@ -4501,7 +4499,7 @@ if ($aJson) { ?>
 
 
                                 // titulos en la Guarda
-                                if (c === 'LaminadoG' || c === 'BarnizG' || c === 'GrabadoG' || c === 'SuajeG' || c === 'BarnizG' || c === 'LaserG') {
+                                if (c === 'LaminadoG' || c === 'HotStampingG' || c === 'BarnizG' || c === 'GrabadoG' || c === 'SuajeG' || c === 'LaserG') {
 
                                     js_parte_nombre = "Guarda";
                                 }
@@ -4659,6 +4657,8 @@ if ($aJson) { ?>
                                             $('#proceso_hs_M1').show();
 
                                             var parteresumen;
+
+                                            console.log(js_parte_nombre)
 
 
                                             if (js_parte_nombre == 'Empalme del Cajón') {
@@ -4983,7 +4983,7 @@ if ($aJson) { ?>
                                         } else {
 
                                             var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td colspan="2">Tipo: '+ js_tipoGrabadoLaser +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ js_costo_unitario_Laser_emp +'</td><td>$'+ js_costo_Laser_emp +'<input type="hidden" class="prices" value="'+ js_costo_unitario_Laser_emp +'"></td></tr><tr><td colspan="2"></td></tr>';
-                                            //pendienteeeeeeeeee eliminar o vaciar la tabla para uv y laser
+
                                             jQuery214('#table_proc_Laser').append(acabadoTr);
 
                                             $('#tabla_view_acabados').show();   // donde esta este id?
@@ -5048,6 +5048,44 @@ if ($aJson) { ?>
                                 }
                             }
 
+                        //costo totales para boton resumen:
+                        let step = 6
+
+                        let seccion = (nombreResumen) =>{
+                            let precioTotal = 0;
+                            try{
+
+                                $(`#${nombreResumen} tr`).find('td').each(function(td){
+                            
+                                    let td1 = parseInt(td);
+                                    
+                                    if(td1 == step){
+
+                                        let valorTD = $(this).html()
+                                        
+                                        let datosSplit = valorTD.split('<')
+                                        datosSplit = datosSplit[0].split('$')
+                                        precio = parseFloat(datosSplit[1])
+                                        precioTotal += precio;
+                                        step += 4;
+                                    }
+                                })
+                                console.log(precioTotal)
+                                return precioTotal.toFixed(2)
+                            }catch(e){
+
+                                console.log('No se pudo obtener el valor del td. \n' + e)
+                            }finally{
+
+                                step = 6;
+                            }
+                            return 0;
+                        }
+
+                        let pTotalE = seccion('resumenEmpalme')
+                        let pTotalFCaj = seccion('resumenFcajon')
+                        let pTotalFCar = seccion('resumenFcartera')
+                        let pTotalG = seccion('resumenGuarda')
 
                         // (MERMAS)
                             $('#table_mermas_tr').empty();
@@ -5061,7 +5099,7 @@ if ($aJson) { ?>
                                 respuestamermas = js_respuesta[c];
 
                                 //titulos nombre parte
-                                if (c == 'OffEmp' || c == 'SerEmp' || c == 'DigEmp' || c == 'Laminado' || c == 'HotStamping' || c == 'Grabado' || c == 'Suaje' || c == 'Barniz UV' || c == 'Corte Laser') {
+                                if (c == 'OffEmp' || c == 'SerEmp' || c == 'DigEmp' || c == 'Laminado' || c == 'HotStamping' || c == 'Grabado' || c == 'Suaje' || c == 'Barniz UV' || c == 'Corte Laser' || c == 'Barniz_UV' || c  == 'Laser' || c === 'Off_maq_Emp') {
 
                                     js_parte_nombre = "Empalme del Cajón";
 
@@ -5069,7 +5107,7 @@ if ($aJson) { ?>
                                 }
 
 
-                                if (c == 'OffFCaj' || c == 'SerFCaj' || c == 'DigFCaj' || c == 'LaminadoFcaj' || c == 'HotStampingFcaj' || c == 'GrabadoFcaj' || c == 'SuajeFcaj') {
+                                if (c == 'OffFCaj' || c == 'SerFCaj' || c == 'DigFCaj' || c == 'LaminadoFcaj' || c == 'HotStampingFcaj' || c == 'GrabadoFcaj' || c == 'SuajeFcaj' || c == 'BarnizFcaj' || c  == 'LaserFcaj' || c === 'Off_maq_FCaj') {
 
                                     js_parte_nombre = "Forro del Cajón";
 
@@ -5077,7 +5115,7 @@ if ($aJson) { ?>
                                 }
 
 
-                                if (c == 'OffFCar' || c == 'SerFCar' || c == 'DigFCar' || c == 'LaminadoFcar' || c == 'HotStampingFcar' || c == 'GrabadoFcar' || c == 'SuajeFcar') {
+                                if (c == 'OffFCar' || c == 'SerFCar' || c == 'DigFCar' || c == 'LaminadoFcar' || c == 'HotStampingFcar' || c == 'GrabadoFcar' || c == 'SuajeFcar' || c == 'BarnizFcar'  || c  == 'LaserFcar') {
 
                                     js_parte_nombre = "Forro de la Cartera";
 
@@ -5085,7 +5123,7 @@ if ($aJson) { ?>
                                 }
 
 
-                                if (c == 'OffG' || c == 'SerG' || c == 'DigG' || c == 'LaminadoG' || c == 'HotStampingG' || c == 'GrabadoG' || c == 'SuajeG') {
+                                if (c == 'OffG' || c == 'SerG' || c == 'DigG' || c == 'LaminadoG' || c == 'HotStampingG' || c == 'GrabadoG' || c == 'SuajeG' || c == 'BarnizG' || c  == 'LaserG') {
 
                                     js_parte_nombre = "Guarda";
 
@@ -5116,6 +5154,12 @@ if ($aJson) { ?>
                                         || c == 'OffG' || c == 'SerG' || c == 'DigG'
                                         || c == 'LaminadoG' || c == 'HotStampingG'
                                         || c == 'GrabadoG' || c == 'SuajeG'
+
+                                        || c === "Barniz_UV" || c === "BarnizFcaj" || c === "BarnizFcar" || c === "BarnizG"
+
+                                        || c === "Laser" || c === "LaserFcaj" || c === "LaserFcar" || c === "LaserG"
+
+                                        || c === 'Off_maq_Emp' || c === 'Off_maq_FCaj'
                                         ) {
 
                                         var js_tiraje_mm           = js_respuesta[c][a]['cantidad'];
@@ -5128,7 +5172,7 @@ if ($aJson) { ?>
 
 
                                         // Offset
-                                        if (c === "OffEmp" || c === "OffFCaj" || c === "OffFCar" || c === "OffG") {
+                                        if (c === "OffEmp" || c === "OffFCaj" || c === "OffFCar" || c === "OffG" || c === "Off_maq_Emp" || c === "Off_maq_FCaj") {
 
                                             var mermastr = '<tr>'+ js_color_parte +'<td>Offset</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
@@ -5163,12 +5207,28 @@ if ($aJson) { ?>
 
                                                 jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
                                             }
+
+                                            if (c == "Off_maq_Emp") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenEmpalme').append(parteresumen);
+                                            }
+
+                                            if (c == "Off_maq_FCaj") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Offset</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenFcajon').append(parteresumen);
+                                            }
                                         }
 
 
                                         //digital
                                         if (c === "DigEmp" || c === "DigFCaj" || c === "DigFCar" || c === "DigG") {
 
+                                            let js_costo_unit_merma_mm = js_respuesta[c][a]['mermas']['costo_unitario'];
+                                            let js_costo_tot_merma_mm = js_respuesta[c][a]['mermas']['costo_tot'];
                                             var mermastr = '<tr>'+ js_color_parte +'<td>Digital</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_mm +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
 
@@ -5383,6 +5443,76 @@ if ($aJson) { ?>
                                             }
                                         }
 
+                                        //Barniz UV
+
+                                        if (c === "Barniz_UV" || c === "BarnizFcaj" || c === "BarnizFcar" || c === "BarnizG") {
+                                            
+                                            var mermastr = '<tr>'+ js_color_parte +'<td>Barniz UV</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
+
+                                            if (c == "Barniz_UV") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Barniz UV</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
+                                            }
+
+                                            if (c == "BarnizFcaj") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Barniz UV</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
+                                            }
+
+                                            if (c == "BarnizFcar") {
+
+                                               parteresumen = '<tr><td></td><td>Merma Barniz UV</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
+                                            }
+
+                                            if (c == "BarnizG") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Barniz UV</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
+                                            }
+                                        }
+
+                                        //Corte Laser
+
+                                        if (c === "Laser" || c === "LaserFcaj" || c === "LaserFcar" || c === "LaserG") {
+                                            
+                                            var mermastr = '<tr>'+ js_color_parte +'<td>Corte Laser</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
+
+                                            if (c == "Laser") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Corte Laser</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenempalme" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
+                                            }
+
+                                            if (c == "LaserFcaj") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Corte Laser</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcajon" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
+                                            }
+
+                                            if (c == "LaserFcar") {
+
+                                               parteresumen = '<tr><td></td><td>Merma Corte Laser</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenfcartera" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
+                                            }
+
+                                            if (c == "LaserG") {
+
+                                                parteresumen = '<tr><td></td><td>Merma Corte Laser</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="pricesresumenguarda" value="'+ js_costo_tot_merma_mm +'"></td><td></td></tr>';
+
+                                                jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
+                                            }
+                                        }
+
                                         jQuery214('#table_mermas_tr').append(mermastr);
                                     }
                                 }
@@ -5524,29 +5654,21 @@ if ($aJson) { ?>
 
                             var parteresumen;
 
-                            parteresumen = '<tr><td></td><td></td><td></td><td class="totalEmpalme">$0.00</td></tr>';
+                            parteresumen = `<tr><td></td><td></td><td></td><td class="totalEmpalme">$ ${pTotalE}</td></tr>`;
 
-                            jQuery214('#resumenEmpalme').append(parteresumen); //imprime para el resumen
+                            $('#resumenEmpalme').append(parteresumen); //imprime para el resumen
 
-                            //collectTotEmpalme();
+                            parteresumen = `<tr><td></td><td></td><td></td><td class="totalFcajon">$ ${pTotalFCaj}</td></tr>`;
 
-                            parteresumen = '<tr><td></td><td></td><td></td><td class="totalFcajon">$0.00</td></tr>';
+                            $('#resumenFcajon').append(parteresumen); //imprime para el resumen
 
-                            jQuery214('#resumenFcajon').append(parteresumen); //imprime para el resumen
+                            parteresumen = `<tr><td></td><td></td><td></td><td class="totalFcartera">$ ${pTotalFCar}</td></tr>`
 
-                            //collectTotFcajon();
+                            $('#resumenFcartera').append(parteresumen); //imprime para el resumen
 
-                            parteresumen = '<tr><td></td><td></td><td></td><td class="totalFcartera">$0.00</td></tr>';
+                            parteresumen = `<tr><td></td><td></td><td></td><td class="totalGuarda">$ ${pTotalG}</td></tr>`;
 
-                            jQuery214('#resumenFcartera').append(parteresumen); //imprime para el resumen
-
-                            //collectTotFcartera();
-
-                            parteresumen = '<tr><td></td><td></td><td></td><td class="totalGuarda">$0.00</td></tr>';
-
-                            jQuery214('#resumenGuarda').append(parteresumen); //imprime para el resumen
-
-                            //collectTotGuarda();
+                            $('#resumenGuarda').append(parteresumen); //imprime para el resumen
 
                            parteresumen = '<tr><td></td><td></td><td><b>Subtotal:</b></td><td class="grand-total"><b>$' + js_respuesta['costo_subtotal'] +'</b></td></tr><tr><td></td><td></td><td>Utilidad: </td><td id="UtilidadResumen">$' + js_respuesta['Utilidad'] + '</td></tr><tr><td></td><td></td><td>IVA:</td><td id="IVAResumen">$' + js_respuesta['iva'] + '</td></tr><tr><td></td><td></td><td>ISR: </td><td id="ISResumen">$' + js_respuesta['ISR'] + '</td></tr><tr><td></td><td></td><td>Comisiones: </td><td id="ComisionesResumen">$ ' + js_respuesta['comisiones'] + '</td></tr><tr><td></td><td></td><td>% Indirecto: </td><td id="IndirectoResumen">$' + js_respuesta['indirecto'] + '</td></tr><tr><td></td><td></td><td>Ventas: </td><td id="ventaResumen">$' + js_respuesta['ventas'] + '</td></tr><tr><td></td><td></td><td>Descuento: </td><td id="descuentoResumen">$' + js_respuesta['descuento'] + '</td></tr><tr><tr><td></td><td></td><td><b>Total: </b></td><td id="TotalResumen"><b>$' + js_respuesta['costo_odt'] + '</b></td></tr>';
 
@@ -5554,9 +5676,9 @@ if ($aJson) { ?>
 
                             jQuery214('#resumenOtros').append(parteresumen); //imprime para el resumen
 
-                            activarBtn();
+                            $("#subForm").prop("disabled",false);
                         
-                        localStorage.setItem('js_respuesta',aJson_stringify);
+                            localStorage.setItem('js_respuesta',aJson_stringify);
                     } catch(e) {
 
                         try{
@@ -5600,7 +5722,7 @@ if ($aJson) { ?>
             })
             .fail(function(response) {
 
-                console.log('(5700) Error. Revisa.');
+                console.log('(6112) Error. Revisa.');
 
                 desactivarBtn();
             });
@@ -5944,7 +6066,6 @@ if ($aJson) { ?>
 
         $("#btnImprimir").prop("disabled",false);
         $("#subForm").prop("disabled",false);
-        $("#btnCalculadora").prop("disabled",false);
     }
 
 
@@ -5952,7 +6073,6 @@ if ($aJson) { ?>
 
         $("#btnImprimir").prop("disabled",true);
         $("#subForm").prop("disabled",true);
-        $("#btnCalculadora").prop("disabled",true);
     }
 
     var divisionesImps="";
@@ -7344,11 +7464,6 @@ if ($aJson) { ?>
         return true;
     });
 
-    $("#btnCalculadora").click( function(){
-            
-        var ventana = window.open("<?=URL?>cotizador/printBoxCalculate");
-        return true;
-    });
 
     $("#imgEC").mouseover( function(){
 

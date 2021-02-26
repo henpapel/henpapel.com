@@ -401,12 +401,10 @@ class Regalo extends Cajas{
 
 	            var nombre = "Corte Laser";
 	            var tipo   = laser[i]['tipo_grabado'];
-	            var largo  = laser[i]['Largo'];
-	            var ancho  = laser[i]['Ancho'];
 	            var cUnitario  = laser[i]['costo_unitario'];
 	            var total  = laser[i]['costo_tot_proceso'];
 
-	            var tr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ titulo +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ tipo +'</td><td>Tamaño: '+ largo + 'x' + ancho +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ cUnitario +'</td><td>$'+ total +'</td></tr><tr><td colspan="2"></td></tr>';
+	            var tr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ titulo +'</td></tr><tr style="background: #87ceeb73;"><td colspan="2">Tipo: '+ tipo +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ cUnitario +'</td><td>$'+ total +'</td></tr><tr><td colspan="2"></td></tr>';
 	            
 	            $('#table_proc_Laser').append(tr);
 
@@ -760,7 +758,8 @@ class Regalo extends Cajas{
 	appndPapelCarton(arrPrincipal, arrPapel, parte ){
 
 	    if (  arrPapel == "" ||  arrPapel == undefined ) return false;
-
+	    //Esta pequeña parte pega en el boton tablas en la seccion cortes de hojas los papeles y cartones.
+	    
 	    var nombre        = arrPapel['nombre_papel'];
 	    var ancho         = arrPapel['calculadora']['corte_ancho'];
 	    var largo         = arrPapel['calculadora']['corte_largo'];
@@ -773,6 +772,7 @@ class Regalo extends Cajas{
 
 	    $('#table_papeles_tr').append(tr);
 
+	    //La parte siguiente es para el boton resumen
 	    var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
 	    var tabla = "";
 
@@ -784,7 +784,7 @@ class Regalo extends Cajas{
 				return true;
 	    	}
 	    });
-
+	    
 	    switch( parte ){
 
 	        case "Cartón Cajón":
@@ -832,24 +832,27 @@ class Regalo extends Cajas{
 	    if( aGlobal == undefined || aGlobal == null ) return false;
 
 	    var cantidad = aGlobal['tiraje'];
+
 	    //Elaboracion
 
 	        var elabFC = aGlobal['elab_FCaj'];
 	        var elabFT = aGlobal['elab_FTap'];
+
+	        let appndE = (proceso, titulo) => {
+
+	            var costoT = parseFloat(proceso['costo_tot_proceso'],2);
+	            var costoU = parseFloat(proceso['forrado_cajon_costo_unitario'],2);
+	            var tr = '<tr><td>' + titulo + '</td><td>$'+ costoU +'</td><td>$'+ costoT +'</td></tr>';
+	            return tr;
+	        }
 	        
 	        var trFC = appndE(elabFC,'Forro Cajón');
 	        var trFT = appndE(elabFT, 'Forro Tapa');
 
-	        var suma = parseInt( parseInt(elabFC['costo_tot_proceso']) + parseInt(elabFT['costo_tot_proceso']));
+	        var suma = parseFloat( parseFloat(elabFC['costo_tot_proceso']) + parseFloat(elabFT['costo_tot_proceso']),2);
 	        var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Elaboración</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ cantidad +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Totales</td></tr>' + trFC + trFT + '<tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ suma +'<input type="hidden" class="prices" value="'+ suma +'"></td></tr><tr><td colspan="3"></td></tr>';
 	        $("#table_adicionales_tr").append(tr);
-	        function appndE(proceso, titulo){
-
-	            var costoT = parseInt(proceso['costo_tot_proceso']);
-	            var costoU = parseInt(proceso['costo_unit_forrado_cajon']);
-	            var tr = '<tr><td>' + titulo + '</td><td>$'+ costoU +'</td><td>$'+ costoT +'</td></tr>';
-	            return tr;
-	        }
+	        
 	    //Ranurado
 
 	        var ranFC = aGlobal['ranurado'];
@@ -858,7 +861,8 @@ class Regalo extends Cajas{
 	        var trFC = appndR(ranFC,'Arreglo');
 	        //var trFT = appndE(ranFT, 'Forro Tapa');
 
-	        var suma = parseInt( parseInt(ranFC['costo_tot_proceso']));
+	        var suma = parseFloat( ranFC['costo_tot_proceso'],2)
+	        ;
 	        var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Ranura</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ cantidad +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Totales</td></tr>' + trFC + '<tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ suma +'<input type="hidden" class="prices" value="'+ suma +'"></td></tr><tr><td colspan="3"></td></tr>';
 	        $("#table_adicionales_tr").append(tr);
 	        function appndR(proceso, titulo){
@@ -871,8 +875,8 @@ class Regalo extends Cajas{
 	        var enc        = aGlobal['encuadernacion'];
 	        var cUDespunte = aGlobal['despunte_esquinas_emptap']['costo_unitario_esquinas'];
 	        var cTDespunte = aGlobal['despunte_esquinas_emptap']['costo_tot_proceso'];
-	        var cUEncajada = enc['encajada_costo_unitario'];
-	        var cTEncajada = enc['encajada_costo_tot'];
+	        var cUEncajada = aGlobal['encajada']['costo_unitario'];
+	        var cTEncajada = aGlobal['encajada']['costo_tot_proceso'];
 	        var total      = enc['costo_tot_proceso'];
 	        var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">Encuadernación</td></tr><tr style="background: #87ceeb73;"><td colspan="3">Cantidad: '+ cantidad +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Despunte</td><td>$'+ cUDespunte +'</td><td>$'+ cTDespunte +'</td></tr><tr><td>Encajada</td><td>$'+ cUEncajada +'</td><td>$'+ cTEncajada +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ total +'</td></tr>';
 	        $("#table_adicionales_tr").append(tr);
@@ -902,15 +906,20 @@ class Regalo extends Cajas{
             
             this.emptyTables();
             // (RESUMEN)
-                
-                //imprime titulos para resumen
-                this._secciones.forEach( function(sec){
 
+            	//PAPELES Y TITULOS
+                $('#table_papeles_tr').empty();
+                var tr = '<tr style="background: steelblue;color: white;"><td class="text-light">Parte</td><td class="text-light">Material</td><td class="text-light">C. Unitario</td><td class="text-light">Cortes</td><td class="text-light">P. por hoja</td><td class="text-light">H. sin merma</td><td class="text-light">C. Total</td></tr>';
+                $('#table_papeles_tr').append(tr);
+
+                //imprime titulos para resumen
+                this._secciones.forEach( function(sec) {
+                	console.log('entra a appendizar')
             		var titulo = '<tr><td><b>' + sec['titulo'] + '</b></td><td></td><td></td><td></td></tr>';
             		$('#resumen'+sec['siglas']).append(titulo);
             		var papel = "papel_"+sec['siglasP'];
-            		caja.appndPapelCarton( respuesta, respuesta[papel], sec['titulo'] );
-			    });
+            		this.appndPapelCarton( respuesta, respuesta[papel], sec['titulo'] );
+			    }.bind(this));
 
                 var trMensajeria = '<tr><td><b>Costo Mensajería</b></td><td></td><td></td><td></td></tr>';
                 var trEmpaque = '<tr><td><b>Costo Empaque</b></td><td></td><td></td><td></td></tr>';
@@ -932,19 +941,13 @@ class Regalo extends Cajas{
                 var trEncuadernacion = "<tr><td></td><td></td><td></td><td>$" + respuesta['encuadernacion']['costo_tot_proceso'] + "</td></tr>";
                 $("#resumenEncuadernacion").append(trEncuadernacion);
 
-            // PAPELES Y CARTONES
-
-                $('#table_papeles_tr').empty();
-
-                var tr = '<tr style="background: steelblue;color: white;"><td class="text-light">Parte</td><td class="text-light">Material</td><td class="text-light">C. Unitario</td><td class="text-light">Cortes</td><td class="text-light">P. por hoja</td><td class="text-light">H. sin merma</td><td class="text-light">C. Total</td></tr>';
-
-                $('#table_papeles_tr').append(tr);
+            // CARTONES
 
                 this.appndPapelCarton( respuesta, respuesta['costo_grosor_carton'], "Cartón Cajón" );
                 this.appndPapelCarton( respuesta, respuesta['costo_grosor_tapa'], "Cartón Tapa" );
 
             // (PROCESOS DEFAULT)
-
+            	//pendiente checar...
                 this.appndPD(respuesta);
 
             //IMPRESIONES Y ACABADOS
@@ -952,9 +955,9 @@ class Regalo extends Cajas{
             	this._secciones.forEach( function(sec){
 
             		var siglaP = sec['siglasP']
-			    	caja.appndImp( respuesta['aImp'+siglaP], sec['siglas'] );
-			    	caja.appndAcb( respuesta['aAcb'+siglaP], sec['siglas'] );
-			    });
+			    	this.appndImp( respuesta['aImp'+siglaP], sec['siglas'] );
+			    	this.appndAcb( respuesta['aAcb'+siglaP], sec['siglas'] );
+			    }.bind(this));
 
             // BANCOS
                 
@@ -1222,8 +1225,12 @@ class Regalo extends Cajas{
 	    var aAccesorios_tmp = JSON.stringify(this._accesorios, null, 4);
 
 	    var id_cliente_tmp = JSON.stringify(this._idCliente, null, 4);
-	    var id_odt_anterior = $("#id_odt_anterior").val();
+	    var id_odt_anterior = parseInt($("#id_odt_anterior").val());
 	    var modificar_odt = modificar;
+
+	    id_odt_anterior > 0 ? modificar_odt = "SI" : "NO";
+	    console.log(id_odt_anterior);
+	    console.log(modificar_odt);
 
 	    formData.push(
 	    	{name: 'id_cliente', value: id_cliente_tmp},
@@ -1258,8 +1265,8 @@ class Regalo extends Cajas{
 	    })
 	    .done(function(response) {
 
-	    	caja.postAjax(response);
-	    })
+	    	this.postAjax(response);
+	    }.bind(this))
 	    .fail(function(response) {
 
 	        console.log('(7257) Error. Revisa.');

@@ -4,7 +4,6 @@
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.es-es.js" type="text/javascript"></script>
-
 <!-- timepicker -->
 
 <link rel="stylesheet" type="text/css" href="<?= URL ?>public/css/style.css">
@@ -30,14 +29,9 @@
     <div class="table-controls">
 
         <div class="table-title">
-            Cotizaciones
+            Pedidos
         </div>
 
-        <label>
-
-            <button class="btn btn-primary btn-sm" id="btnNvaCot" data-toggle="modal" data-target="#modalClientes">+ Nueva Cotizacion</button>
-            <input type="text" style="width: 110px;" id="txtSearchODT" onkeyup="buscarODT()" name="txtSearchODT" placeholder="Buscar ODT">
-        </label>
         <label>
 
             <div class="gj-margin-top-10">
@@ -53,7 +47,10 @@
                 format: "yyyy/mm/dd",
                 uiLibrary: 'bootstrap4'
             };
-            $(document).ready( () => $('#datepicker').datepicker(config) );
+            $(document).ready(function() {
+
+                $('#datepicker').datepicker(config);
+            });
         </script>
 
         <div class="table-container">
@@ -61,14 +58,13 @@
             <table class="hep-table" id="tbeCotizaciones">
                 <thead>
                     <tr>
-                        <th><strong>N° Cot.</strong></th>
-                        <th><strong>En proceso</strong></th>
+                        <th><strong>N° Pedido.</strong></th>
                         <th><strong>Modelo</strong></th>
                         <th><strong>Cliente</strong></th>
                         <th><strong>Cantidad</strong></th>
                         <th><strong>Fecha de cotizacion</strong></th>
 
-                        <th style="width: 110px;" colspan="4"><strong>Acciones</strong></th>
+                        <th style="width: 110px;" colspan="2"><strong>Acciones</strong></th>
                     </tr>
                 </thead>
                 <tbody id="inv-body">
@@ -86,38 +82,12 @@
                             <td><?= $row['fecha_odt']; ?></td>
                             <td>
 
-                                <button data-toggle="modal" data-target="#modalODT" onclick="setODT('<?=$row['num_odt']?>','<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')" class="table-button green2">Crear ODT</button>
-                            </td>
-                            <!--<td>
-
                                 <a href="#" onclick="printCalc('<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')" class="table-button green2">Calculadora</a>
-                            </td>-->
+                            </td>
                             <td>
 
                                 <button class="table-button blue3 nueva" onclick="impr('<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')">Imprimir</button>
                             </td>
-                            <td>
-
-                                <a id="<?= $row['id_odt']; ?>" href="#" data-id="<?= $row['num_odt']; ?>" data-caja="<?= $row['nombre_caja'] ?>" onclick="vistaAct('<?= $row['id_odt']; ?>');" class="table-button orange2">Modificar</a>
-                            </td>
-                            <td>
-                                <a href="#" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="table-button red2">Eliminar</a>
-                            </td>
-                            <!--<td>
-
-                                <a href="<?= URL; ?>cotizador/printCalc/?id=<?= $row['id_odt']; ?>" target="_blank" class="btn btn-sm btn-success"><i class="bi bi-calculator"></i> Calculadora</a>
-                            </td>
-                            <td>
-
-                                <a href="<?= URL; ?>cotizador/imprimir?ct=<?= $row['id_odt']; ?>&c=<?= $_GET['c']; ?>" data-id="<?= $row['id_cliente']; ?>" class="btn btn-sm btn-info"><i class="bi bi-printer"></i> Imprimir</a>
-                            </td>
-                            <td>
-
-                                <a id="<?= $row['id_odt']; ?>" href="#" data-id="<?= $row['num_odt']; ?>" data-caja="<?= $row['nombre_caja'] ?>" onclick="vistaAct('<?= $row['id_odt']; ?>');" class="btn btn-sm btn-warning"><i class="bi bi-file-text"></i> Modificar</a>
-                            </td>
-                            <td>
-                                <a href="#" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="btn btn-sm btn-danger"><i class="bi bi-dash-circle"></i> Eliminar</a>
-                            </td>-->
                         </tr>
                     <?php
                     }
@@ -127,81 +97,13 @@
                     ?>
                         <tr>
 
-                            <td colspan="5">No hay cotizaciones guardadas
+                            <td colspan="5">No hay pedidos guardados
                             </td>
                         </tr>
                     <?php  }
                     ?>
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
-
-<!-- modal Eliminar-->
-<div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="modalEliminar" aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered" role="document">
-
-        <div class="modal-content">
-
-            <div class="modal-header" style="background-color: #E53333; color: white;">
-
-                <h5 class="modal-title">Confirmación</h5>
-                <!--
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                -->
-            </div>
-
-            <div class="modal-body">
-
-                <p style="color: black; font-size: 1.1em">¿Esta seguro de eliminar la cotizacion?</p>
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnEliminar">Si</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- modal muestra clientes para cotizacion-->
-<div class="modal fade" id="modalClientes" tabindex="-1" role="dialog" aria-labelledby="modalClientes" aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered" role="document">
-
-        <div class="modal-content" style="height: 300px !important">
-
-            <div class="modal-header azulWhi">
-
-                <h5 class="modal-title" id="txtTitModCorrecto">SELECCIONA</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                    <span aria-hidden="true" style="color: #fff">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-
-                <select class="chosen-select" name="optCliente" id="optCliente" required>
-                    <option selected disabled>Elija un cliente para continuar</option>
-                    <?php
-                    foreach ($clientes as $cliente) { ?>
-
-                        <option value="<?= $cliente['id_cliente'] ?>"><?= $cliente['nombre'] ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="modal-footer">
-
-                <button style="display: none; transition: background-color .6s;" class="btn btn-outline-success" id="btnCliente">+ Cliente</button>
-                <button id="btnContinuar" class="btn btn-outline-primary " onclick="enviar()" style="transition: background-color .6s; display: none;">Continuar</button>
-            </div>
         </div>
     </div>
 </div>
@@ -231,50 +133,17 @@
     </div>
 </div>
 
-<!-- modal ODT-->
-<div class="modal fade" id="modalODT" tabindex="-1" role="dialog" aria-labelledby="modalEliminar" aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered" role="document">
-
-        <div class="modal-content">
-
-            <div class="modal-header bg-warning">
-
-                
-                <label class="modal-title"><i class="bi bi-exclamation-triangle-fill"></i> Confirmación</label>
-                <!--
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                -->
-            </div>
-
-            <div class="modal-body">
-
-                <p id="lblODT" class="text-dark"></p>
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="convODT()">Convertir</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <script type="text/javascript">
 
-    $("#optCliente").chosen({
-        width: "95%",
-        no_results_text: "Ups! No hay resultados para."
-    });
-
     var id;
 
-    let setId = id => this.id = parseInt(id);
+    function getId(id) {
+
+        this.id = parseInt(id);
+
+        console.log(id);
+    }
 
     $("#btnEliminar").click(function() {
 
@@ -325,6 +194,8 @@
                 location.href = "<?= URL ?>circular/modCajaCircular/?num_odt=" + num_odt + "&caja=" + caja;
                 break;
             case "Libro":
+
+
                 break;
             case "Regalo":
 
@@ -404,17 +275,6 @@
         }
     }
 
-    $("#btnCliente").click( () => location.href = "<?= URL ?>cotizador/nuevo_cliente" );
-
-    function enviar() {
-
-        let id = parseInt($("#optCliente").val())
-
-        location.href = '<?php echo URL; ?>cotizador/cajas/?cliente=' + id;
-    }
-
-
-    $("#optCliente").chosen().change( () => $("#btnContinuar").show() );
 
     $(document).on('keyup', '.chosen-search input', function(e) {
 
@@ -435,10 +295,10 @@
         switch(model){
 
             case 'Almeja':
-                window.open("<?=URL?>cotizador/printCalc/?id="+odt);
+                window.open("<?= URL; ?>cotizador/printCalc/?id="+odt);
             break;
             case 'Regalo':
-                window.open("<?=URL?>regalo/printCalc/?id="+odt);
+                window.open("<?= URL; ?>regalo/printCalc/?id="+odt);
             break;
         }
     }
@@ -448,33 +308,10 @@
         switch(model){
 
             case 'Almeja':
-                window.open("<?=URL?>cotizador/impCajaAlmeja/?num_odt="+id, "Impresion", "width=600, height=600");
+                window.open("<?= URL; ?>cotizador/impCajaAlmeja/?num_odt="+id, "Impresion", "width=600, height=600");
             break;
             case 'Regalo':
-                window.open("<?=URL?>regalo/impCajaRegalo/?num_odt="+id, "Impresion", "width=600, height=600");
-            break;
-        }
-    }
-
-    let idODt  = '';
-    let modelo = '';
-
-    let setODT = (nomCot,idODT,modelo) => {
-
-        this.idOdt  = idODT;
-        this.modelo = modelo;
-        $("#lblODT").html(`Esta a punto de convertir la cotización: <strong>${nomCot}</strong> a Orden de Trabajo.<br>¿Esta Seguro?`)
-    }
-
-    let convODT = () =>{
-
-        switch(this.modelo){
-
-            case 'Almeja':
-                location.href=`<?=URL?>cotizador/convPresupToODT/?id=${this.idOdt}`
-            break;
-            case 'Regalo':
-                location.href=`<?=URL?>regalo/convPresupToODT/?id=${this.idOdt}`
+                window.open("<?= URL; ?>regalo/impCajaRegalo/?num_odt="+id, "Impresion", "width=600, height=600");
             break;
         }
     }

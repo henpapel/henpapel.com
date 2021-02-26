@@ -464,9 +464,9 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link" type="button" style="text-decoration: none;">
+                                    <label class="btn btn-link" style="text-decoration: none;">
                                         Cortes de Hojas
-                                    </button>
+                                    </label>
                                 </h2>
                             </div>
 
@@ -491,9 +491,9 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
+                                    <label class="btn btn-link collapsed" style="text-decoration: none;">
                                         Procesos Default
-                                    </button>
+                                    </label>
                                 </h2>
                             </div>
 
@@ -518,9 +518,9 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
+                                    <label class="btn btn-link collapsed" style="text-decoration: none;">
                                         Mermas Integradas
-                                    </button>
+                                    </label>
                                 </h2>
                             </div>
 
@@ -566,9 +566,9 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
+                                    <label class="btn btn-link collapsed" style="text-decoration: none;">
                                         Procesos de Impresión
-                                    </button>
+                                    </label>
                                 </h2>
                             </div>
 
@@ -624,9 +624,9 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link" type="button" style="text-decoration: none;">
+                                    <label class="btn btn-link" style="text-decoration: none;">
                                         Procesos de Acabados
-                                    </button>
+                                    </label>
                                 </h2>
                             </div>
 
@@ -715,8 +715,8 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link" type="button" style="text-decoration: none;">Bancos
-                                    </button>
+                                    <label class="btn btn-link" style="text-decoration: none;">Bancos
+                                    </label>
                                 </h2>
                             </div>
 
@@ -752,8 +752,8 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link" type="button" style="text-decoration: none;">Cierres
-                                    </button>
+                                    <label class="btn btn-link" style="text-decoration: none;">Cierres
+                                    </label>
                                 </h2>
                             </div>
 
@@ -782,8 +782,8 @@
 
                                 <h2 class="mb-0">
 
-                                    <button class="btn btn-link" type="button" style="text-decoration: none;">Accesorios
-                                    </button>
+                                    <label class="btn btn-link" style="text-decoration: none;">Accesorios
+                                    </label>
                                 </h2>
                             </div>
 

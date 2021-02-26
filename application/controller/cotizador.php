@@ -133,6 +133,63 @@ class Cotizador extends Controller {
     }
 
 
+    // Convierte las cotizaciones (presupuesto) a ODTs 
+    public function convPresupToODT() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
+
+
+        $login         = $this->loadController('login');
+        $login_model   = $this->loadModel('LoginModel');
+        $ventas_model  = $this->loadModel('VentasModel');
+
+
+        if(!$login->isLoged()) {
+
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
+        }
+
+
+        if (isset($_GET['id'])) {
+
+            $id_odt = $_GET['id'];
+            $id_odt = intval($id_odt);
+        } else {
+
+            return false;
+        }
+
+        $row = $ventas_model->getPresupById($id_odt);
+
+        $status = "";
+
+        $status = $row['status'];
+        $status = trim(strval($status));
+
+        $id_odt_orig = $row['id_odt_orig'];
+        $id_odt_orig = intval($id_odt_orig);
+
+
+        if ($status == "A" or $status == "M" or $status == "P") {
+
+            $ventas_model->convPresupToODT($id_odt, $id_odt_orig);
+        }
+
+
+        require_once 'application/views/templates/head.php';
+        require_once 'application/views/templates/top_menu.php';
+
+        require_once 'application/views/cotizador/listaCotizaciones.php';
+
+        require_once 'application/views/templates/footer.php';
+    }
+
     // llama al formulario (cajas_almeja.php)
     public function caja_almeja() {
 
@@ -322,20 +379,12 @@ class Cotizador extends Controller {
         $Herrajes          = $options_model->getHerraje();
 
 
-        /*
-        $modificado = self::actCajaAlmeja($ventas_model, $num_odt);
-
-        if (!$modificado) {
-
-            return false;
-        }
-        */
-
         $tabla_db = $ventas_model->getNumOdt($num_odt);
 
         foreach ($tabla_db as $row) {
 
             $id_odt            = intval($row['id_odt']);
+            $status            = trim($row['status']);
             $id_usuario        = intval($row['id_usuario']);
             $id_cliente        = intval($row['id_cliente']);
             $tiraje            = intval($row['tiraje']);
@@ -470,7 +519,22 @@ class Cotizador extends Controller {
         }
 
 
+        $tienda_db = $ventas_model->getNombTienda($id_tienda);
+
+        foreach ($tienda_db as $row) {
+
+            $nomb_tienda = $row['nombre_tienda'];
+            $nomb_tienda = trim($nomb_tienda);
+        }
+
+
+        if (is_array($tienda_db)) {
+
+            unset($tienda_db);
+        }
+
         $aJson['id_tienda']            = $id_tienda;
+        $aJson['nomb_tienda']          = $nomb_tienda;
         $aJson['base']                 = $base;
         $aJson['alto']                 = $alto;
         $aJson['profundidad']          = $profundidad;
@@ -697,7 +761,7 @@ class Cotizador extends Controller {
         }
 
 
-    // empiezan los costos variables (procesos)
+        // empiezan los costos variables (procesos)
 
         //$aJson['error'] = $procesos . $aJson['error'];
 
@@ -712,7 +776,7 @@ class Cotizador extends Controller {
         $num_procesos = count($keys);
 
 
-    // Inicia Impresiones Empalme
+        // Inicia Impresiones Empalme
 
         $nomb_proceso_keys = [];
 
@@ -968,6 +1032,704 @@ class Cotizador extends Controller {
     }
 
 
+    // Imprime
+    public function impCajaAlmeja() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
+
+
+        $login         = $this->loadController('login');
+        $login_model   = $this->loadModel('LoginModel');
+        $options_model = $this->loadModel('OptionsModel');
+        $ventas_model  = $this->loadModel('VentasModel');
+
+
+        if(!$login->isLoged()) {
+
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+            //header("Location:" . URL . 'login/');
+        }
+
+
+        if (isset($_GET['num_odt'])) {
+
+            $num_odt = $_GET['num_odt'];
+            $num_odt = self::strip_slashes_recursive($num_odt);
+        } else {
+
+            return false;
+        }
+
+
+        $procesos   = $options_model->getProcessCatalog();
+        $papers     = $options_model->getPapers();
+        $cartones   = $options_model->getCartones();
+
+        $cierres           = $options_model->getCostoCierre();
+        $acabados          = $options_model->getCostoAcabados();
+        $accesorios        = $options_model->getCostoAccesorios();
+        $descuentos        = $options_model->getCostoDescuentos();
+        $bancos            = $options_model->getCostoBancos();
+        $impresiones       = $options_model->getImpresiones();
+        $Digital           = $options_model->getProcDigital();
+        $ALaminados        = $options_model->getALaminados();
+        $AHotStamping      = $options_model->getAHotStamping();
+        $Colores           = $options_model->getAHotStampingColor();
+        $AGrabados         = $options_model->getAGrabados();
+        $APEspeciales      = $options_model->getAPEspeciales();
+        $ABarnizUV         = $options_model->getABarnizUV();
+        $ASuaje            = $options_model->getASuaje();
+        $ALaser            = $options_model->getALaser();
+        $TipoImp           = $options_model->getTipoSerigrafia();
+        $modeloscaj        = $options_model->getBoxModels();
+        $TipoListon        = $options_model->getTipoListon();
+        $ColoresListon     = $options_model->getColoresListon();
+        $Porcentajes       = $options_model->getPorcentajes();
+        $Herrajes          = $options_model->getHerraje();
+
+
+        $row = $ventas_model->getOdtById($num_odt);
+
+        $id_odt            = intval($row['id_odt']);
+        $status            = trim($row['status']);
+        $id_usuario        = intval($row['id_usuario']);
+        $id_cliente        = intval($row['id_cliente']);
+        $tiraje            = intval($row['tiraje']);
+        $base              = floatval($row['base']);
+        $alto              = floatval($row['alto']);
+        $profundidad       = floatval($row['profundidad']);
+        $id_vendedor       = intval($row['id_vendedor']);
+        $costo_total       = round(floatval($row['costo_total']), 2);
+        $subtotal          = round(floatval($row['subtotal']), 2);
+        $utilidad          = floatval($row['utilidad']);
+        $iva               = floatval($row['iva']);
+        $ISR               = floatval($row['ISR']);
+        $comisiones        = floatval($row['comisiones']);
+        $indirecto         = floatval($row['indirecto']);
+        $venta             = floatval($row['venta']);
+        $descuento         = floatval($row['descuento']);
+        $descuento_pcte    = floatval($row['descuento_pcte']);
+        $empaque           = floatval($row['empaque']);
+        $mensajeria        = floatval($row['mensajeria']);
+        $keys              = self::strip_slashes_recursive($row['procesos']);
+        $fecha_odt         = strtotime($row['fecha_odt']);
+        $hora_odt          = strtotime($row['hora_odt']);
+
+
+        $id_grosor_cajon_db = $ventas_model->getIdCartonTabla($id_odt, "cot_alm_cartoncaj");
+        $id_grosor_cajon    = $id_grosor_cajon_db['id_cajon'];
+        $id_grosor_cajon    = intval($id_grosor_cajon);
+
+
+        $id_grosor_cartera_db = $ventas_model->getIdCartonTabla($id_odt, "cot_alm_cartoncaj");
+        $id_grosor_cartera    = $id_grosor_cartera_db['id_cajon'];
+        $id_grosor_cartera    = intval($id_grosor_cartera);
+
+
+        $id_papel_db = $ventas_model->getPapel($id_odt, "Empalme");
+        foreach ($id_papel_db as $row) {
+
+            $id_papel_empalme = intval($row['id_papel']);
+        }
+
+
+        $id_papel_db = $ventas_model->getPapel($id_odt, "FCajon");
+        foreach ($id_papel_db as $row) {
+
+            $id_papel_Fcajon = intval($row['id_papel']);
+        }
+
+
+        $id_papel_db = $ventas_model->getPapel($id_odt, "Fcartera");
+        foreach ($id_papel_db as $row) {
+
+            $id_papel_Fcartera = intval($row['id_papel']);
+        }
+
+
+        $id_papel_db = $ventas_model->getPapel($id_odt, "Guarda");
+        foreach ($id_papel_db as $row) {
+
+            $id_papel_guarda = intval($row['id_papel']);
+        }
+
+
+
+        $fecha = date("Y/m/d", $fecha_odt);
+        $hora  = date("H:i:s", $hora_odt);
+
+
+        $carton_db = $ventas_model->getDatos($id_grosor_cajon);
+
+        $grosor_cajon = intval($carton_db['numcarton']);
+
+
+        $carton_db = $ventas_model->getDatos($id_grosor_cartera);
+
+        $grosor_cartera = intval($carton_db['numcarton']);
+
+        if (is_array($carton_db)) {
+
+            unset($carton_db);
+        }
+
+
+        $tabla_db = $ventas_model->getClientById($id_cliente);
+
+        foreach ($tabla_db as $row) {
+
+            $Nombre_cliente = $row['nombre'];
+            $Nombre_cliente = utf8_encode(self::strip_slashes_recursive($Nombre_cliente));
+        }
+
+        $nombrecliente = $Nombre_cliente;
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        $aJson = [];
+
+        $aJson['mensaje']        = "OK";
+        $aJson['error']          = "";
+        $aJson['id_odt']         = $id_odt;
+        $aJson['num_odt']        = $num_odt;
+        $aJson['Fecha']          = $fecha;
+        $aJson['hora']           = $hora;
+        $aJson['modelo']         = 1;
+        $aJson['id_cliente']     = $id_cliente;
+        $aJson['Nombre_cliente'] = $Nombre_cliente;
+        $aJson['id_usuario']     = $id_usuario;
+        $aJson['tiraje']         = $tiraje;
+
+
+        $tabla_db = $ventas_model->getNombUsuario($id_usuario);
+
+        foreach ($tabla_db as $row) {
+
+            $id_tienda = intval($row['id_tienda']);
+
+            $nomb_usuario = self::strip_slashes_recursive($row['nombre_usuario']);
+        }
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        $tienda_db = $ventas_model->getNombTienda($id_tienda);
+
+        foreach ($tienda_db as $row) {
+
+            $nomb_tienda = $row['nombre_tienda'];
+            $nomb_tienda = trim($nomb_tienda);
+        }
+
+
+        if (is_array($tienda_db)) {
+
+            unset($tienda_db);
+        }
+
+        $aJson['id_tienda']            = $id_tienda;
+        $aJson['nomb_tienda']          = $nomb_tienda;
+        $aJson['base']                 = $base;
+        $aJson['alto']                 = $alto;
+        $aJson['profundidad']          = $profundidad;
+        $aJson['costo_odt']            = $costo_total;
+        $aJson['costo_subtotal']       = round($subtotal, 2);
+        $aJson['Utilidad']             = $utilidad;
+        $aJson['iva']                  = $iva;
+        $aJson['comisiones']           = $comisiones;
+        $aJson['indirecto']            = $indirecto;
+        $aJson['ventas']               = $venta;
+        $aJson['descuento']            = $descuento;
+        $aJson['descuento_pctje']      = $descuento_pcte;
+        $aJson['ISR']                  = $ISR;
+        $aJson['empaque']              = $empaque;
+        $aJson['mensajeria']           = $mensajeria;
+
+        $aJson['id_grosor_cajon']      = $id_grosor_cajon;
+        $aJson['id_grosor_cartera']    = $id_grosor_cartera;
+        $aJson['id_vendedor']          = $id_vendedor;
+        $aJson['id_papel_empalme']     = $id_papel_empalme;
+        $aJson['id_papel_Fcajon']      = $id_papel_Fcajon;
+        $aJson['id_papel_Fcartera']    = $id_papel_Fcartera;
+        $aJson['id_papel_guarda']      = $id_papel_guarda;
+
+
+        $tabla_db = $ventas_model->getPapel($id_odt, "Empalme");
+
+        $aJson_tmp = [];
+
+        foreach ($tabla_db as $row) {
+
+            $aJson_tmp['id_papel']          = intval($row['id_papel']);
+            $aJson_tmp['nombre']            = utf8_encode(self::strip_slashes_recursive($row['nombre']));
+            $aJson_tmp['ancho']             = intval($row['ancho']);
+            $aJson_tmp['largo']             = intval($row['largo']);
+            $aJson_tmp['corte_ancho']       = intval($row['corte_ancho']);
+            $aJson_tmp['corte_largo']       = intval($row['corte_largo']);
+            $aJson_tmp['costo_unitario']    = floatval($row['costo_unitario']);
+            $aJson_tmp['tiraje']            = intval($row['tiraje']);
+            $aJson_tmp['cortes']            = intval($row['cortes']);
+            $aJson_tmp['pliegos']           = intval($row['pliegos']);
+            $aJson_tmp['costo_tot_pliegos'] = floatval($row['costo_tot_pliegos']);
+        }
+
+        $aJson['Papel_Empalme'] = $aJson_tmp;
+
+        if (is_array($aJson_tmp)) {
+
+            unset($aJson_tmp);
+        }
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        $tabla_db = $ventas_model->getPapel($id_odt, "FCajon");
+
+        $aJson_tmp = [];
+
+        foreach ($tabla_db as $row) {
+
+            $aJson_tmp['id_papel']          = intval($row['id_papel']);
+            $aJson_tmp['nombre']            = utf8_encode(self::strip_slashes_recursive($row['nombre']));
+            $aJson_tmp['ancho']             = intval($row['ancho']);
+            $aJson_tmp['largo']             = intval($row['largo']);
+            $aJson_tmp['corte_ancho']       = intval($row['corte_ancho']);
+            $aJson_tmp['corte_largo']       = intval($row['corte_largo']);
+            $aJson_tmp['costo_unitario']    = floatval($row['costo_unitario']);
+            $aJson_tmp['tiraje']            = intval($row['tiraje']);
+            $aJson_tmp['cortes']            = intval($row['cortes']);
+            $aJson_tmp['pliegos']           = intval($row['pliegos']);
+            $aJson_tmp['costo_tot_pliegos'] = floatval($row['costo_tot_pliegos']);
+        }
+
+        $tiraje = intval($row['tiraje']);;
+
+        $aJson['Papel_FCaj'] = $aJson_tmp;
+
+        if (is_array($aJson_tmp)) {
+
+            unset($aJson_tmp);
+        }
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        $tabla_db = $ventas_model->getPapel($id_odt, "Fcartera");
+
+        $aJson_tmp = [];
+
+        foreach ($tabla_db as $row) {
+
+            $aJson_tmp['id_papel']          = intval($row['id_papel']);
+            $aJson_tmp['nombre']            = utf8_encode(self::strip_slashes_recursive($row['nombre']));
+            $aJson_tmp['ancho']             = intval($row['ancho']);
+            $aJson_tmp['largo']             = intval($row['largo']);
+            $aJson_tmp['corte_ancho']       = intval($row['corte_ancho']);
+            $aJson_tmp['corte_largo']       = intval($row['corte_largo']);
+            $aJson_tmp['costo_unitario']    = floatval($row['costo_unitario']);
+            $aJson_tmp['tiraje']            = intval($row['tiraje']);
+            $aJson_tmp['cortes']            = intval($row['cortes']);
+            $aJson_tmp['pliegos']           = intval($row['pliegos']);
+            $aJson_tmp['costo_tot_pliegos'] = floatval($row['costo_tot_pliegos']);
+        }
+
+        $aJson['Papel_FCar'] = $aJson_tmp;
+
+
+        if (is_array($aJson_tmp)) {
+
+            unset($aJson_tmp);
+        }
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        $tabla_db = $ventas_model->getPapel($id_odt, "Guarda");
+
+        $aJson_tmp = [];
+
+        foreach ($tabla_db as $row) {
+
+            $aJson_tmp['id_papel']          = intval($row['id_papel']);
+            $aJson_tmp['nombre']            = utf8_encode(self::strip_slashes_recursive($row['nombre']));
+            $aJson_tmp['ancho']             = intval($row['ancho']);
+            $aJson_tmp['largo']             = intval($row['largo']);
+            $aJson_tmp['corte_ancho']       = intval($row['corte_ancho']);
+            $aJson_tmp['corte_largo']       = intval($row['corte_largo']);
+            $aJson_tmp['costo_unitario']    = floatval($row['costo_unitario']);
+            $aJson_tmp['tiraje']            = intval($row['tiraje']);
+            $aJson_tmp['cortes']            = intval($row['cortes']);
+            $aJson_tmp['pliegos']           = intval($row['pliegos']);
+            $aJson_tmp['costo_tot_pliegos'] = floatval($row['costo_tot_pliegos']);
+        }
+
+        $aJson['Papel_Guarda'] = $aJson_tmp;
+
+        if (is_array($aJson_tmp)) {
+
+            unset($aJson_tmp);
+        }
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        // cartones
+        $tabla_db = $ventas_model->getIdCarton($id_odt, "Cajon");
+
+        $aJson_tmp = [];
+
+        foreach ($tabla_db as $row) {
+
+            $aJson_tmp['id_cajon']          = intval($row['id_cajon']);
+            $aJson_tmp['num_cajon']         = intval($row['num_cajon']);
+            $aJson_tmp['tiraje']            = intval($row['tiraje']);
+            $aJson_tmp['papel']             = utf8_encode(self::strip_slashes_recursive($row['papel']));
+            $aJson_tmp['nombre']            = utf8_encode(self::strip_slashes_recursive($row['nombre']));
+            $aJson_tmp['precio']            = floatval($row['precio']);
+            $aJson_tmp['ancho']             = floatval($row['ancho']);
+            $aJson_tmp['largo']             = floatval($row['largo']);
+            $aJson_tmp['corte_ancho']       = floatval($row['corte_ancho']);
+            $aJson_tmp['corte_largo']       = floatval($row['corte_largo']);
+            $aJson_tmp['piezas_por_pliego'] = intval($row['piezas_por_pliego']);
+            $aJson_tmp['num_pliegos']       = intval($row['num_pliegos']);
+            $aJson_tmp['costo_tot_carton']  = floatval($row['costo_tot_carton']);
+        }
+
+        $aJson['CartonCaj'] = $aJson_tmp;
+
+        if (is_array($aJson_tmp)) {
+
+            unset($aJson_tmp);
+        }
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        $tabla_db = $ventas_model->getIdCarton($id_odt, "Cartera");
+
+        $aJson_tmp = [];
+
+        foreach ($tabla_db as $row) {
+
+            $aJson_tmp['id_cartera']        = intval($row['id_cajon']);
+            $aJson_tmp['num_cajon']         = floatval($row['num_cajon']);
+            $aJson_tmp['tiraje']            = intval($row['tiraje']);
+            $aJson_tmp['papel']             = utf8_encode(self::strip_slashes_recursive($row['papel']));
+            $aJson_tmp['nombre']            = utf8_encode(self::strip_slashes_recursive($row['nombre']));
+            $aJson_tmp['precio']            = floatval($row['precio']);
+            $aJson_tmp['ancho']             = floatval($row['ancho']);
+            $aJson_tmp['largo']             = floatval($row['largo']);
+            $aJson_tmp['corte_ancho']       = floatval($row['corte_ancho']);
+            $aJson_tmp['corte_largo']       = floatval($row['corte_largo']);
+            $aJson_tmp['piezas_por_pliego'] = intval($row['piezas_por_pliego']);
+            $aJson_tmp['num_pliegos']       = intval($row['num_pliegos']);
+            $aJson_tmp['costo_tot_carton']  = floatval($row['costo_tot_carton']);
+        }
+
+        $aJson['CartonCar'] = $aJson_tmp;
+
+        if (is_array($aJson_tmp)) {
+
+            unset($aJson_tmp);
+        }
+
+
+        if (is_array($tabla_db)) {
+
+            unset($tabla_db);
+        }
+
+
+        // empiezan los costos variables (procesos)
+
+        //$aJson['error'] = $procesos . $aJson['error'];
+
+        $tabla_procesos = [];
+
+        //$procesos = str_replace("[", "", $procesos);
+        //$procesos = str_replace("]", "", $procesos);
+
+        $keys  = str_replace('"', "", $keys);
+        $keys = explode(";", $keys);
+
+        $num_procesos = count($keys);
+
+
+        // Inicia Impresiones Empalme
+
+        $nomb_proceso_keys = [];
+
+        for ($i = 0; $i < $num_procesos; $i++) {
+
+            $nombre_tabla = self::strip_slashes_recursive($keys[$i]);
+
+            /*
+            $nombre_tabla_db = $ventas_model->getNombTablaProceso($nombre_proceso_tmp);
+
+            foreach($nombre_tabla_db as $row) {
+
+                $nombre_tabla = trim(strval($row['nombre']));
+            }
+            */
+
+            switch ($nombre_tabla) {
+                case 'cot_alm_offsetemp':
+
+                    $aJson['OffEmp'] = self::detalle_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_offsetfcaj':
+
+                    $aJson['OffFCaj'] = self::detalle_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_offsetfcar':
+
+                    $aJson['OffFCar'] = self::detalle_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_offsetguarda':
+
+                    $aJson['OffG'] = self::detalle_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_offset_maq_emp':
+
+                    $aJson['Off_maq_Emp'] = self::detalle_maq_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_offset_maq_fcaj':
+
+                    $aJson['Off_maq_FCaj'] = self::detalle_maq_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_offset_maq_fcar':
+
+                    $aJson['Off_maq_FCar'] = self::detalle_maq_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_offset_maq_guarda':
+
+                    $aJson['Off_maq_G'] = self::detalle_maq_proc_offset($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_digemp':
+
+                    $aJson['DigEmp'] = self::detalle_proc_digital($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_digfcaj':
+
+                    $aJson['DigFCaj'] = self::detalle_proc_digital($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_digfcar':
+
+                    $aJson['DigFCar'] = self::detalle_proc_digital($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_digguarda':
+
+                    $aJson['DigG'] = self::detalle_proc_digital($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_seremp':
+
+                    $aJson['SerEmp'] = self::detalle_proc_serigrafia($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_serfcaj':
+
+                    $aJson['SerFCaj'] = self::detalle_proc_serigrafia($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_serfcar':
+
+                    $aJson['SerFCar'] = self::detalle_proc_serigrafia($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_serguarda':
+
+                    $aJson['SerG'] = self::detalle_proc_serigrafia($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_barnizuvemp':
+
+                    $aJson['Barniz_UV'] = self::detalle_proc_Barniz_UV($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_barnizuvfcaj':
+
+                    $aJson['BarnizFcaj'] = self::detalle_proc_Barniz_UV($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_barnizuvfcar':
+
+                    $aJson['BarnizFcar'] = self::detalle_proc_Barniz_UV($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_barnizuvguarda':
+
+                    $aJson['BarnizG'] = self::detalle_proc_Barniz_UV($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_laseremp':
+
+                    $aJson['Laser'] = self::detalle_proc_Laser($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_laserfcaj':
+
+                    $aJson['LaserFcaj'] = self::detalle_proc_Laser($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_laserfcar':
+
+                    $aJson['LaserFcar'] = self::detalle_proc_Laser($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_laserguarda':
+
+                    $aJson['LaserG'] = self::detalle_proc_Laser($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_grabemp':
+
+                    $aJson['Grabado'] = self::detalle_proc_Grabado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_grabfcaj':
+
+                    $aJson['GrabadoFcaj'] = self::detalle_proc_Grabado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_grabfcar':
+
+                    $aJson['GrabadoFcar'] = self::detalle_proc_Grabado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_grabguarda':
+
+                    $aJson['GrabadoG'] = self::detalle_proc_Grabado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_hsemp':
+
+                    $aJson['HotStamping'] = self::detalle_proc_HotStamping($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_hsfcaj':
+
+                    $aJson['HotStampingFcaj'] = self::detalle_proc_HotStamping($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_hsfcar':
+
+                    $aJson['HotStampingFcar'] = self::detalle_proc_HotStamping($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_hsguarda':
+
+                    $aJson['HotStampingG'] = self::detalle_proc_HotStamping($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_lamemp':
+
+                    $aJson['Laminado'] = self::detalle_proc_Laminado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_lamfcaj':
+
+                    $aJson['LaminadoFcaj'] = self::detalle_proc_Laminado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_lamfcar':
+
+                    $aJson['LaminadoFcar'] = self::detalle_proc_Laminado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_lamguarda':
+
+                    $aJson['LaminadoG'] = self::detalle_proc_Laminado($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_suajeemp':
+
+                    $aJson['Suaje'] = self::detalle_proc_Suaje($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_suajefcaj':
+
+                    $aJson['SuajeFcaj'] = self::detalle_proc_Suaje($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_suajefcar':
+
+                    $aJson['SuajeFcar'] = self::detalle_proc_Suaje($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_alm_suajeguarda':
+
+                    $aJson['SuajeG'] = self::detalle_proc_Suaje($id_odt, $nombre_tabla, $ventas_model);
+
+                    break;
+                case 'cot_accesorios':
+
+                    $aJson['Accesorios'] = self::detalle_proc_Accesorios($id_odt, "cot_accesorios", $ventas_model);
+
+                    break;
+                case 'cot_bancos':
+
+                    $aJson['Bancos'] = self::detalle_proc_Bancos($id_odt, "cot_bancos", $ventas_model);
+
+                    break;
+                case 'cot_cierres':
+
+                    $aJson['Cierres'] = self::detalle_proc_Cierres($id_odt, "cot_cierres", $ventas_model);
+
+                    break;
+            }
+
+            $nomb_proceso_keys[] = $nombre_tabla;
+        }
+
+
+        json_encode($aJson);
+
+
+        require_once 'application/views/templates/head.php';
+        require_once 'application/views/cotizador/almeja/impresion.php';
+        require_once 'application/views/templates/footer.php';
+    }
+
+
     public function vistaAct() {
 
         if (isset($_GET['num_odt'])) {
@@ -1049,9 +1811,26 @@ class Cotizador extends Controller {
         $id_usuario = $_SESSION['user']['id_usuario'];
         $id_usuario = intval($id_usuario);
 
+
+        $nomb_usuario_db = $ventas_model->getNombUsuario($id_usuario);
+
+        foreach ($nomb_usuario_db as $row) {
+
+            $nomb_usuario = $row['nombre_usuario'];
+            $nomb_usuario = trim($nomb_usuario);
+        }
+
+
         $id_tienda = $_SESSION['user']['id_tienda'];
         $id_tienda = intval($id_tienda);
 
+        $tienda_db = $ventas_model->getNombTienda($id_tienda);
+
+        foreach ($tienda_db as $row) {
+
+            $nomb_tienda = $row['nombre_tienda'];
+            $nomb_tienda = trim($nomb_tienda);
+        }
 
         $cantidad    = 0;
         $tiraje      = 0;
@@ -1153,8 +1932,10 @@ class Cotizador extends Controller {
         $aJson['id_cliente']               = $id_cliente;
         $aJson['Nombre_cliente']           = $nombre_cliente;
         $aJson['id_usuario']               = $id_usuario;
+        $aJson['nomb_usuario']             = $nomb_usuario;
         $aJson['tiraje']                   = $tiraje;
         $aJson['id_tienda']                = $id_tienda;
+        $aJson['nomb_tienda']              = $nomb_tienda;
         $aJson['base']                     = $base;
         $aJson['alto']                     = $alto;
         $aJson['profundidad']              = $profundidad;

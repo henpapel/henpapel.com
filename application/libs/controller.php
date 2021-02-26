@@ -216,6 +216,38 @@ class Controller {
     }
 
 
+    public function getODTs() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
+
+
+        $login         = $this->loadController('login');
+        $login_model   = $this->loadModel('LoginModel');
+        $options_model = $this->loadModel('OptionsModel');
+        $ventas_model  = $this->loadModel('VentasModel');
+
+        if($login->isLoged()) {
+
+            $odts     = $ventas_model->getODTs();
+            $clientes = $ventas_model->getClients();
+
+
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/cotizador/listaOdts.php';
+            require_once 'application/views/templates/footer.php';
+        } else {
+
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+        }
+    }
+
+
     public function getCotizaciones() {
 
         if (!isset($_SESSION)) {
@@ -308,6 +340,22 @@ class Controller {
         require_once 'application/views/templates/top_menu.php';
         require_once 'application/views/cotizador/cajas.php';
         require_once 'application/views/templates/footer.php';
+    }
+
+
+    public function rectArea($largo, $ancho) {
+
+        $largo = floatval($largo);
+        $ancho = floatval($ancho);
+
+        $area = 0.0;
+
+        if ($largo > 1.0 and $ancho > 1.0) {
+
+            $area = floatval($largo * $ancho);
+        }
+
+        return $area;
     }
 
 
@@ -2058,6 +2106,9 @@ class Controller {
 
         $l_ok = true;
 
+        $LargoBarniz = floatval($LargoBarniz);
+        $AnchoBarniz = floatval($AnchoBarniz);
+
         $db_tmp = $ventas_model->costo_BarnizUV($tipoGrabado);
 
         $costo_unitario_barniz = 0;
@@ -2110,8 +2161,8 @@ class Controller {
 
         $barniz_temp['tiraje']            = $tiraje;
         $barniz_temp['tipoGrabado']       = $tipoGrabado;
-        $barniz_temp['Largo']             = floatval($LargoBarniz);
-        $barniz_temp['Ancho']             = floatval($AnchoBarniz);
+        $barniz_temp['Largo']             = $LargoBarniz;
+        $barniz_temp['Ancho']             = $AnchoBarniz;
         $barniz_temp['area']              = $area_barniz;
         $barniz_temp['costo_unitario']    = $costo_unitario_barniz;
         $barniz_temp['costo_tot_proceso'] = $costo_barniz;
@@ -2178,6 +2229,9 @@ class Controller {
         $l_ok = true;
 
         $aGrab_tmp = [];
+
+        $LargoGrab = floatval($LargoGrab);
+        $AnchoGrab = floatval($AnchoGrab);
 
         $placa_LargoGrab = $LargoGrab;
         $placa_AnchoGrab = $AnchoGrab;
@@ -2488,10 +2542,13 @@ class Controller {
 
         $l_ok = true;
 
+        $LargoHS = round(floatval($LargoHS), 2);
+        $AnchoHS = round(floatval($AnchoHS), 2);
+
         // placa
         $placa_LargoHS = $LargoHS;
         $placa_AnchoHS = $AnchoHS;
-        $placa_area    = floatval($placa_LargoHS * $placa_AnchoHS);
+        $placa_area    = round(floatval($placa_LargoHS * $placa_AnchoHS), 2);
 
         $aAcbHS_tmp['tiraje'] = $tiraje;
 
@@ -2860,7 +2917,7 @@ class Controller {
                 // pelicula
                 $pelicula_LargoHS = $LargoHS;
                 $pelicula_AnchoHS = $AnchoHS;
-                $pelicula_area    = $pelicula_LargoHS * $pelicula_AnchoHS;
+                $pelicula_area    = floatval($pelicula_LargoHS * $pelicula_AnchoHS);
 
                 $db_tmp = $ventas_model->costo_hotstamping("HG2 Pelicula");
 
@@ -3040,6 +3097,9 @@ class Controller {
 
         $l_ok = true;
 
+        $LargoLam = floatval($LargoLam);
+        $AnchoLam = floatval($AnchoLam);
+
         $costo_minimo = 0;
 
         switch ($tipoGrabado) {
@@ -3131,8 +3191,8 @@ class Controller {
 
         $Lam_tmp['tiraje']            = $tiraje;
         $Lam_tmp['tipoGrabado']       = $tipoGrabado;
-        $Lam_tmp['Largo']             = $LargoLam;
-        $Lam_tmp['Ancho']             = $AnchoLam;
+        $Lam_tmp['Largo']             = floatval($LargoLam);
+        $Lam_tmp['Ancho']             = floatval($AnchoLam);
         $Lam_tmp['area']              = $area_laminado;
         $Lam_tmp['costo_unitario']    = $laminado_costo_unitario;
         $Lam_tmp['costo_tot_proceso'] = $costo_laminado;
@@ -3202,6 +3262,11 @@ class Controller {
 
         $l_ok = true;
 
+        $Largo            = round(floatval($Largo), 2);
+        $Ancho            = round(floatval($Ancho), 2);
+        $papel_costo_unit = floatval($papel_costo_unit);
+        $cortes           = intval($cortes);
+
         $aSuaje_tmp = [];
 
         $aSuaje_tmp['tiraje']      = $tiraje;
@@ -3226,7 +3291,7 @@ class Controller {
                     $perimetral_costo_unitario = floatval($row['costo_unitario']);
                     $perimetral_costo_unitario = round($perimetral_costo_unitario, 2);
 
-                    $perimetro_minimo = intval($row['perimetro_minimo']);
+                    $perimetro_minimo = round(floatval($row['perimetro_minimo']), 2);
 
                     $por_cada = intval($row['por_cada']);
                 }
@@ -3256,7 +3321,7 @@ class Controller {
                 $tabla_suaje = round(floatval($perimetro_suaje * $perimetral_costo_unitario), 2);
 
                 $aSuaje_tmp['costo_unit_tabla_suaje'] = $perimetral_costo_unitario;
-                $aSuaje_tmp['tabla_suaje'] = $tabla_suaje;
+                $aSuaje_tmp['tabla_suaje']            = $tabla_suaje;
 
 
                 // arreglo suaje
@@ -3339,7 +3404,7 @@ class Controller {
                     $perimetral_costo_unitario = floatval($row['costo_unitario']);
                     $perimetral_costo_unitario = round($perimetral_costo_unitario, 2);
 
-                    $perimetro_minimo = intval($row['perimetro_minimo']);
+                    $perimetro_minimo = round(floatval($row['perimetro_minimo']), 2);
 
                     $por_cada = intval($row['por_cada']);
                 }
@@ -4760,5 +4825,4 @@ class Controller {
             }
         }
     }
-
 }

@@ -4731,9 +4731,100 @@ class VentasModel extends Controller {
     }
 
 
+    public function convPresupToODT($id_odt, $id_odt_orig) {
+
+        $id_odt = intval($id_odt);
+
+        $inserted_upd_odt1 = true;
+        $inserted_upd_odt2 = true;
+
+        try {
+
+            $this->db->beginTransaction();
+
+            $sql_upd_odt1 = "UPDATE cot_odt SET status = 'Z' WHERE id_odt_orig = " . $id_odt_orig . " AND (status = 'A' or status = 'M' or status = 'P')";
+
+            $query_upd_odt = $this->db->prepare($sql_upd_odt1);
+
+            $inserted_upd_odt1 = $query_upd_odt->execute();
+
+            if (!$inserted_upd_odt1) {
+
+                $inserted_upd_odt1 = false;
+            } else {
+
+                $sql_upd_odt2 = "UPDATE cot_odt SET status = 'T' WHERE id_odt = " . $id_odt;
+
+                $query_upd_odt = $this->db->prepare($sql_upd_odt2);
+
+                $inserted_upd_odt2 = $query_upd_odt->execute();
+
+                if (!$inserted_upd_odt2) {
+
+                    $inserted_upd_odt2 = false;
+                }
+            }
+
+            if ($inserted_upd_odt1 and $inserted_upd_odt2) {
+
+                $this->db->commit();
+
+                return true;
+            }
+        } catch (PDOException $exception) {
+        //} catch (Exception $e) {
+
+            $this->db->rollBack();
+
+            $excepcion = $exception->getMessage();
+
+            $excepcion_pos  = strpos($excepcion, "Field");
+            $excepcion_pos1 = strpos($excepcion, "General");
+
+            if ($excepcion_pos) {
+
+                $mensaje_db = substr($excepcion, $excepcion_pos);
+            } elseif($excepcion_pos1) {
+
+                $mensaje_db = substr($excepcion, $excepcion_pos1);
+            } else {
+
+                $mensaje_db = $exception->getMessage();
+            }
+
+            $aJson['error'] = $mensaje_db . "; Error al grabar(ODT) en la BD";
+
+            return $aJson;
+        }
+    }
+
+
+    public function getPresupById($id_odt) {
+
+        $id_odt = intval($id_odt);
+
+        $sql = "SELECT * FROM cot_odt where id_odt = " . $id_odt . " and (status = 'A' or status = 'M' or status = 'P')";
+
+        $query = $this->db->prepare($sql);
+
+        $query->execute();
+
+        $result[] = array();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result = $row;
+        }
+
+        return $result;
+    }
+
+
     public function getOdtById($id_odt) {
 
-        $sql = "SELECT * FROM cot_odt where id_odt = " . $id_odt . " and (status = 'A' or status = 'M' or status = 'T' or status = 'P')";
+        $id_odt = intval($id_odt);
+
+        $sql = "SELECT * FROM cot_odt where id_odt = " . $id_odt . " and (status = 'A' or status = 'M' or status = 'P')";
 
         $query = $this->db->prepare($sql);
 
@@ -4833,6 +4924,35 @@ class VentasModel extends Controller {
     }
 
 
+    public function getODTs() {
+
+        //$sql = "SELECT * FROM cot_odt WHERE status = 'A' order by fecha_odt desc";
+        $sql = "SELECT cot_odt.id_odt, cot_odt.num_odt, cot_odt.id_modelo, cot_odt.tiraje, cot_odt.fecha_odt
+                , cot_odt.hora_odt, modelos_cajas.nombre as nombre_caja
+                , clientes.nombre as nombre_cliente
+                , cot_tipo_costo.nombre as tipo_costo
+                FROM cot_odt
+                join cot_tipo_costo on cot_odt.tipo_costo = cot_tipo_costo.id
+                join modelos_cajas on cot_odt.id_modelo = modelos_cajas.id_modelo
+                join clientes on cot_odt.id_cliente = clientes.id_cliente
+                WHERE (cot_odt.status = 'T') order by cot_odt.fecha_odt desc, cot_odt.hora_odt desc";
+
+        $query = $this->db->prepare($sql);
+
+        $query->execute();
+
+        $result = array();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
+        }
+
+        return $result;
+
+    }
+
+
     public function getCotizaciones() {
 
         //$sql = "SELECT * FROM cot_odt WHERE status = 'A' order by fecha_odt desc";
@@ -4844,7 +4964,7 @@ class VentasModel extends Controller {
                 join cot_tipo_costo on cot_odt.tipo_costo = cot_tipo_costo.id
                 join modelos_cajas on cot_odt.id_modelo = modelos_cajas.id_modelo
                 join clientes on cot_odt.id_cliente = clientes.id_cliente
-                WHERE (cot_odt.status = 'A' or cot_odt.status = 'M' or cot_odt.status = 'T') order by cot_odt.fecha_odt desc, cot_odt.hora_odt desc";
+                WHERE (cot_odt.status = 'A' or cot_odt.status = 'M' or cot_odt.status = 'P') order by cot_odt.fecha_odt desc, cot_odt.hora_odt desc";
 
         $query = $this->db->prepare($sql);
 

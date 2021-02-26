@@ -100,7 +100,6 @@ function activarBtn() {
 
     $("#subForm").prop("disabled",false);
     $("#btnImprimir").prop("disabled",false);
-    $("#btnCalculadora").prop("disabled",false);
 }
 
 
@@ -108,7 +107,6 @@ function desactivarBtn() {
 
     $("#subForm").prop("disabled",true);
     $("#btnImprimir").prop("disabled",true);
-    $("#btnCalculadora").prop("disabled",true);
 }
 
 function vacioModalBancos() {

@@ -340,7 +340,7 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                     </li>
                     <li class="sec-level">
 
-                        <a href="#">Pedidos</a>
+                        <a href="<?=URL?>/pedidos">Pedidos</a>
                     </li>
                     <li class="sec-level">
 
