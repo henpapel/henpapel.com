@@ -133,7 +133,7 @@ class Cotizador extends Controller {
     }
 
 
-    // Convierte las cotizaciones (presupuesto) a ODTs 
+    // Convierte las cotizaciones (presupuesto) a ODTs
     public function convPresupToODT() {
 
         if (!isset($_SESSION)) {
@@ -241,15 +241,12 @@ class Cotizador extends Controller {
 
         require_once 'application/views/templates/head.php';
         require_once 'application/views/templates/top_menu.php';
-        require_once 'application/views/cotizador/cajas.php';
-
-        // plantilla
-        echo "<script>$('#form_modelo_0').hide();</script>";
-
+        require_once 'application/views/templates/cotizador/plantilla.php';
+        echo "<script>$('#divDerecho').empty()</script>";
+        echo "<script>$('#divIzquierdo').empty()</script>";
+        echo "<script>$('#divDerecho').hide()</script>";
         require_once 'application/views/cotizador/almeja/nueva_cotizacion.php';
-
-        echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-
+        echo "<script>$('#divDerecho').show('slow')</script>";
         require_once 'application/views/templates/footer.php';
     }
 
@@ -1841,17 +1838,7 @@ class Cotizador extends Controller {
         $cantidad = intval($cantidad);
         $tiraje   = intval($cantidad);
 
-        $id_cliente = $_POST['id_cliente'];
-
-        $cliente_db = $ventas_model->getClientById($id_cliente);
-
-        foreach ($cliente_db as $row) {
-
-            $nombre_cliente = $row['nombre'];
-        }
-
-        $nombre_cliente = self::strip_slashes_recursive($nombre_cliente);
-        $nombre_cliente = utf8_encode($nombre_cliente);
+        $nombre_cliente = $_POST['nombre_cliente'];
 
         //$id_modelo = $_POST['modelo'];
         $id_modelo = 1;
@@ -1929,7 +1916,6 @@ class Cotizador extends Controller {
         $aJson['nomb_odt']                 = self::strip_slashes_recursive($_POST['odt']);
         $aJson['Fecha']                    = date("Y-m-d");
         $aJson['modelo']                   = $id_modelo;
-        $aJson['id_cliente']               = $id_cliente;
         $aJson['Nombre_cliente']           = $nombre_cliente;
         $aJson['id_usuario']               = $id_usuario;
         $aJson['nomb_usuario']             = $nomb_usuario;
@@ -1991,10 +1977,10 @@ class Cotizador extends Controller {
         $aJson['Calculadora'] = self::almejaCalc($odt, $base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
 
 
-        $id_papel_empalme       = intval($_POST['papel_interior_cajon']);
-        $id_papel_forro_cajon   = intval($_POST['papel_exterior_cajon']);
-        $id_papel_forro_cartera = intval($_POST['papel_exterior_cartera']);
-        $id_papel_guarda        = intval($_POST['papel_interior_cartera']);
+        $id_papel_empalme       = intval($_POST['optEC']);
+        $id_papel_forro_cajon   = intval($_POST['optFCaj']);
+        $id_papel_forro_cartera = intval($_POST['optFCar']);
+        $id_papel_guarda        = intval($_POST['optG']);
 
 
 /******************** Inicia calculo de papeles *******************/
@@ -2255,14 +2241,6 @@ class Cotizador extends Controller {
 
         $aJson['costo_subtotal'] += round(floatval($aJson['costo_corte_tot_papel'] + $aJson['corte_tot_pliegos_carton']), 2);
 
-
-
-        $id_papel_empalme       = intval($_POST['papel_interior_cajon']);
-        $id_papel_forro_cajon   = intval($_POST['papel_exterior_cajon']);
-        $id_papel_forro_cartera = intval($_POST['papel_exterior_cartera']);
-        $id_papel_guarda        = intval($_POST['papel_interior_cartera']);
-
-
     // ************ Corte Refine **********************
 
         $aJson['costo_corte_refine'] = self::costo_guillotina("Corte", $tiraje, $ventas_model);
@@ -2424,12 +2402,10 @@ class Cotizador extends Controller {
 
         $aEncuadernacion_Fcaj = [];
 
-        $id_papel_exterior_cajon = intval($_POST['papel_exterior_cajon']);
-
         $enc_cortes = intval($aJson['Papel_Empalme']['corte']);
 
 
-        $aJson['Encuadernacion_emp'] = self::calculoEncuadernacion($tiraje, $id_papel_exterior_cajon, $enc_cortes, $ventas_model);
+        $aJson['Encuadernacion_emp'] = self::calculoEncuadernacion($tiraje, $id_papel_forro_cajon, $enc_cortes, $ventas_model);
 
 
         if ($aJson['Encuadernacion_emp']['costo_tot_proceso'] <= 0) {
@@ -2448,7 +2424,7 @@ class Cotizador extends Controller {
 
         $enc_cortes_fcaj = intval($aJson['Papel_FCaj']['corte']);
 
-        $aJson['Encuadernacion_FCaj'] = self::calculoEncuadernacion_FCaj($tiraje, $id_papel_exterior_cajon, $enc_cortes_fcaj, $ventas_model);
+        $aJson['Encuadernacion_FCaj'] = self::calculoEncuadernacion_FCaj($tiraje, $id_papel_forro_cajon, $enc_cortes_fcaj, $ventas_model);
 
         if ($aJson['Encuadernacion_FCaj']['arreglo_costo_unitario'] <= 0) {
 
@@ -2543,7 +2519,7 @@ class Cotizador extends Controller {
 
 
         // Empalme
-        $Tipo_proceso_tmp2 = json_decode($_POST['aImp'], true);
+        $Tipo_proceso_tmp2 = json_decode($_POST['aImpEC'], true);
         $Tipo_proceso_tmp  = array_values($Tipo_proceso_tmp2);
 
 
@@ -2641,10 +2617,10 @@ class Cotizador extends Controller {
 
                         $aOffEmp[$i] = $offset_tiro;
 
+                        $aOffEmp[$i]["mermas"] = $aMerma;
+
                         $aJson['Imp_Emp'] += round(floatval($offset_tiro_tmp), 2);
                         $subtotal              += round(floatval($offset_tiro_tmp), 2);
-
-                        $aOffEmp[$i]["mermas"] = $aMerma;
                     } else {        // si es maquila
 
                         $offset_tiro = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_emp_corte_ancho, $papel_emp_corte_largo, $ventas_model);
@@ -2657,6 +2633,8 @@ class Cotizador extends Controller {
                         }
 
                         $aOff_maq_Emp[$i] = $offset_tiro;
+
+                        $aOff_maq_Emp[$i]["mermas"] = $aMerma;
 
                         $aJson['Imp_Emp_maq'] += $offset_tiro_tmp;
                         $subtotal             += $offset_tiro_tmp;
@@ -2887,7 +2865,7 @@ class Cotizador extends Controller {
 
                     $aMerma = self::calculoMermaOffset($tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_papel, $ventas_model);
 
-                    $id_papel_Fcaj = intval($_POST['papel_exterior_cajon']);
+                    $id_papel_Fcaj = intval($_POST['optFCaj']);
 
                     if (!$es_maquila) {
 
@@ -2929,6 +2907,8 @@ class Cotizador extends Controller {
                         }
 
                         $aOff_maq_FCaj[$i] = $offset_tiro;
+
+                        $aOff_maq_FCaj[$i]["mermas"] = $aMerma;
 
                         $aJson['Imp_FCaj_maq'] += round(floatval($offset_tiro_tmp), 2);
                         $subtotal              += round(floatval($offset_tiro_tmp), 2);
@@ -3205,6 +3185,8 @@ class Cotizador extends Controller {
 
                         $aOff_maq_FCar[$i] = $offset_tiro;
 
+                        $aOff_maq_FCar[$i]["mermas"] = $aMerma;
+
                         $aJson['Imp_FCar_maq'] += round(floatval($offset_tiro_tmp), 2);
                         $subtotal              += round(floatval($offset_tiro_tmp), 2);
 
@@ -3476,6 +3458,8 @@ class Cotizador extends Controller {
 
                         $aOff_maq_G[$i] = $offset_tiro;
 
+                        $aOff_maq_G[$i]["mermas"] = $aMerma;
+
                         $aJson['Imp_Guarda_maq'] += round(floatval($offset_tiro_tmp), 2);
                         $subtotal                += round(floatval($offset_tiro_tmp), 2);
 
@@ -3621,7 +3605,7 @@ class Cotizador extends Controller {
 /************************ Inicia Empalme *******************************/
 
 
-    $aAcb = json_decode($_POST['aAcb'], true);
+    $aAcb = json_decode($_POST['aAcbEC'], true);
 
     $cuantos_aAcb = count($aAcb);
 
@@ -3641,9 +3625,9 @@ class Cotizador extends Controller {
 
     $aAcbMaq   = [];
 
-
+    
     for ($i = 0; $i < $cuantos_aAcb; $i++) {
-
+        
         $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['tipoGrabado']));
 
         $tipo_acabado = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['Tipo_acabado']));
@@ -5879,6 +5863,83 @@ class Cotizador extends Controller {
 
 /******************************************/
 /******************************************/
+
+/******************************************/
+
+    // checa que se haya seleccionado correctamente el papel
+    // para offset
+
+    // papel empalme
+    $id_papel_emp = $aJson['Papel_Empalme']['id_papel'];
+    $id_papel_emp = intval($id_papel_emp);
+
+    $l_papel_offset_emp = 0;
+
+    $l_papel_offset_emp = self::checkPapelOffset($id_papel_emp, "offset", $ventas_model);
+
+
+    if (!$l_papel_offset_emp) {
+
+        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el empalme no es correcto;";
+    }
+
+    // papel forro cajon
+    $id_papel_fcaj = $aJson['Papel_FCaj']['id_papel'];
+    $id_papel_fcaj = intval($id_papel_fcaj);
+
+    $l_papel_offset_fcaj = 0;
+
+    $l_papel_offset_fcaj = self::checkPapelOffset($id_papel_fcaj, "offset", $ventas_model);
+
+
+    if (!$l_papel_offset_fcaj) {
+
+        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro del cajon no es correcto;";
+    }
+
+    // forro cartera
+    $id_papel_fcar = $aJson['Papel_FCar']['id_papel'];
+    $id_papel_fcar = intval($id_papel_fcar);
+
+    $l_papel_offset_fcar = 0;
+
+    $l_papel_offset_fcar = self::checkPapelOffset($id_papel_fcar, "offset", $ventas_model);
+
+
+    if (!$l_papel_offset_fcar) {
+
+        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro de la cartera no es correcto;";
+    }
+
+    // guarda
+    $id_papel_g = $aJson['Papel_Guarda']['id_papel'];
+    $id_papel_g = intval($id_papel_g);
+
+    $l_papel_offset_g = 0;
+
+    $l_papel_offset_g = self::checkPapelOffset($id_papel_g, "offset", $ventas_model);
+
+
+    if (!$l_papel_offset_g) {
+
+        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para la guarda no es correcto;";
+    }
+
+
+/*
+    self::prettyPrint($id_papel_emp, "id_papel_emp", 5960);
+    self::prettyPrint($id_papel_fcaj, "id_papel_fcaj");
+    self::prettyPrint($id_papel_fcar, "id_papel_fcar");
+    self::prettyPrint($id_papel_g, "id_papel_g");
+    self::prettyPrint($l_papel_offset_emp, "l_papel_offset_emp");
+    self::prettyPrint($l_papel_offset_fcaj, "l_papel_offset_fcaj");
+    self::prettyPrint($l_papel_offset_fcar, "l_papel_offset_fcar");
+    self::prettyPrint($l_papel_offset_g, "l_papel_offset_g");
+    self::prettyPrint($aJson['error'], "aJson(error)");
+
+
+    die();
+*/
 
 
 /******************************************/

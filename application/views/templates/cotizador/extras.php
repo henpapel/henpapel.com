@@ -1244,6 +1244,7 @@
         $('#groupButton1').hide();
         $('#resumentodocaja').css("position","absolute");
         $('#resumentodocaja').show();*/
+        $('#resumentodocaja').show();
         $("#resumentodocaja").css("transform","translateY(0px)");
         $("#divContentI").css("z-index","0");
     }); 
@@ -1257,9 +1258,12 @@
         $('#resumentodocaja').hide();
         $('#groupButton1').show();*/
         $("#resumentodocaja").css("transform","translateY(" + heightDisplay + "px)");
-        let showDivZ = () => $("#divContentI").css("z-index","9");
-
+        let showDivZ = () => {
+            $("#divContentI").css("z-index","9");
+            $('#resumentodocaja').hide();
+        }
         setTimeout(showDivZ, 500);
+
     });
 
     //boton eliminar. Es el que hace la magia ;)

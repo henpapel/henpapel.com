@@ -65,7 +65,7 @@
         <br>
     </div>
 
-    <!-- formulario de la caja circular -->
+    <!-- formulario de la caja regalo -->
     <div id="divContentI" class="form-content medidas">
         <div class="scroll-plantilla" style="min-width: 120px; width: 92%;">
 
@@ -188,6 +188,7 @@
             </div>
         </div>
     </div>
+
     <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
         
         <button type="button" id="btnabrecierres" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#cierres" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Cierre</button>

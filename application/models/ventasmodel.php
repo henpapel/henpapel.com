@@ -14,6 +14,24 @@ class VentasModel extends Controller {
     }
 
 
+    public function getPapelId($id) {
+
+        $id = intval($id);
+        
+        $sql   = "SELECT * FROM papeles WHERE status = 'A' and id_papel = $id";
+
+        $query = $this->db->prepare($sql);
+
+        $query->execute();
+
+        $result = array();
+
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+
+        return $row;
+    }
+
+
     public function getCartonIdPapel($id) {
 
         $id_temp = intval($id);
