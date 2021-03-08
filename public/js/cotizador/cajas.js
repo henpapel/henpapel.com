@@ -512,8 +512,8 @@ class Cajas {
 
         this.desactivarBtn();
 		var impAcb = tabla.slice('4','7');
-		var seccion = tabla.slice('7','9');
-
+		var seccion = tabla.slice('7');
+        
 		this._secciones.find( function(sec){
 
 	    	if( sec['siglas'].indexOf(seccion) == 0 ) {
