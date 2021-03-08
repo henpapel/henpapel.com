@@ -193,30 +193,63 @@ class Cajas {
 
         var nva = this._nvaImp;
 
-        this._secciones.find( function(sec){
+        let banco = nva.slice(0,3)
+        
+        if( banco == 'ban' ){
 
-            if( sec['siglas'].indexOf(nva) == 0 ){
+            this._bancos.find( function(banco){
+                let len = nva.slice(3)
+                
+                if( banco['id'] == len ){
+                        
+                    this.saveBtnImpresiones(banco['impresion'],"BanImp"+len);
+                    this.desactivarBtn();
+                    return true;
+                }
+            }.bind(this));
+        }else{
 
-                this.saveBtnImpresiones(sec['aImp'],"listImp"+sec['siglas']);
-                this.desactivarBtn();
-                return true;
-            }
-        }.bind(this));
+            this._secciones.find( function(sec){
+
+                if( sec['siglas'].indexOf(nva) == 0 ){
+
+                    this.saveBtnImpresiones(sec['aImp'],"listImp"+sec['siglas']);
+                    this.desactivarBtn();
+                    return true;
+                }
+            }.bind(this));
+        }
     }
 
 	saveAcabado(){
 
 		var nva = this._nvaAcb;
+        let banco = nva.slice(0,3)
+        
+        if( banco == 'ban' ){
 
-		this._secciones.find( function(sec){
+            this._bancos.find( function(banco){
+                let len = nva.slice(3)
+                
+                if( banco['id'] == len ){
+                        
+                    this.saveBtnAcabados(banco['acabado'],"BanAcb"+len);
+                    this.desactivarBtn();
+                    return true;
+                }
+            }.bind(this));
+        }else{
 
-	    	if( sec['siglas'].indexOf(nva) == 0 ){
-	    			
-	    		this.saveBtnAcabados(sec['aAcb'],"listAcb"+sec['siglas']);
-                this.desactivarBtn();
-	    		return true;
-	    	}
-	    }.bind(this));
+            this._secciones.find( function(sec){
+
+                if( sec['siglas'].indexOf(nva) == 0 ){
+                        
+                    this.saveBtnAcabados(sec['aAcb'],"listAcb"+sec['siglas']);
+                    this.desactivarBtn();
+                    return true;
+                }
+            }.bind(this));
+        }
 	}
 
 	saveBtnImpresiones(arrpapeles, tabla) {
@@ -511,17 +544,36 @@ class Cajas {
 	delBtnSec(tabla,index){
 
         this.desactivarBtn();
-		var impAcb = tabla.slice('4','7');
-		var seccion = tabla.slice('7');
-        
-		this._secciones.find( function(sec){
+        var impAcb  = tabla.slice('4','7');
+        var seccion = tabla.slice('7');
+        let banco   = tabla.slice(0,3)
 
-	    	if( sec['siglas'].indexOf(seccion) == 0 ) {
-	    		
-	    		sec['a'+impAcb].splice(index,1);
-	    		return true;
-	    	}
-	    });
+        if( banco == 'Ban' ){
+
+            impAcb = tabla.slice(3,6)
+            seccion = tabla.slice(6)
+
+            this._bancos.find( function(banco){
+                
+                if( banco['id'] == seccion ) {
+                    if ( impAcb == 'Acb' ) impAcb = 'acabado'
+                    if ( impAcb == 'Imp' ) impAcb = 'impresion'
+                    banco[impAcb].splice(index,1);
+                    return true;
+                }
+            });
+        }else{
+
+            this._secciones.find( function(sec){
+
+                if( sec['siglas'].indexOf(seccion) == 0 ) {
+                    
+                    sec['a'+impAcb].splice(index,1);
+                    return true;
+                }
+            });
+        }
+		console.log(this._bancos)
 	}
 
     delBtnAcc(index){
@@ -964,5 +1016,126 @@ class Cajas {
                 $('#listbancoemp').append(tr);
             }
         }
+    }
+
+    appendBtnBanco(optBanco){
+
+        let seccion = '';
+        let imagen = '#';
+        let titulo = '';
+        let idOpt = '';
+        this._bancos = [];
+        this._optBanco = optBanco;
+
+        var divSeccion = `
+            <div onclick="caja.addSecBanco()" class="divContenido btn btn-outline-success" style="font-size: 20px; display: table">
+
+                <label style="cursor:pointer; display: table-cell;vertical-align: middle;">
+                    <i class="bi bi-plus-square"></i> Banco
+                </label>
+            </div>
+        `;
+
+        $("#divDerecho").append(divSeccion);
+        
+    }
+
+    addSecBanco(){
+
+        let seccion = '';
+        let imagen = '#';
+        this._bancos.push(
+            {
+                id: '',
+                material: '',
+                impresion: [],
+                acabado:[],
+                papel: '',
+                largo:'',
+                ancho:'',
+                profundidad:'',
+                posicion:'',
+            }
+        );
+        let len = this._bancos.length;
+
+        this._bancos[len-1]['id'] = len;
+        
+        let titulo = 'Banco ' + len;
+        let idOpt = 'optBan'+ len;
+        let idOptMat = 'optMatBan'+ len;
+
+        let divSeccion = `
+            <div class="divgral banco">
+                <div id="img ${seccion}" class="secciones divContenido">
+                    <!--<img src="${imagen}"  style="width: 40%;">-->
+                    <br>
+                    <label class="lblTituloSec">${titulo}</label>
+                </div>
+                <br>
+                <div class="m-2">
+                    <select id="${idOptMat}" onchange="caja.changeMaterial('${len}');" class="form-control mb-2 form-control-sm">
+                        <option selected value="selected" disabled>Elige un material</option>
+                        ${this._optBanco}
+                    </select>
+                    <select id="optPosicion${len}" class="form-control mb-2 form-control-sm">
+                        <option selected value="selected" disabled>Posición</option>
+                        <option value="Centro">Centro</option>
+                        <option value="izquierdo">Lado izquierdo</option>
+                        <option value="derecho">Lado derecho</option>
+                    </select>
+                    <select class="chosen forros" name="${idOpt}" id="${idOpt}" tabindex="9" required>
+                        <option selected disabled>Elegir tipo de papel</option> ${this._papeles}
+                    </select>
+                </div>
+                <div>
+                    <input placeholder="Largo" type="number" class="form-control form-control-sm m-1" id="txtLargo${len}">
+                    <input placeholder="Ancho" type="number" class="form-control form-control-sm m-1" id="txtAncho${len}">
+                    <input placeholder="Profundidad" type="number" class="form-control form-control-sm m-1" id="txtProf${len}">
+
+                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#Impresiones" onclick="caja.nvaImp='ban${len}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Impresiones
+                    </button>
+                    <div class="container divimpresiones">
+                        <table class="table">
+                            <tbody id="BanImp${len}">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#acabados" onclick="caja.nvaAcb='ban${len}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Acabados
+                    </button>
+                    <div class="container divacabados">
+                        <table class="table">
+                            <tbody id="BanAcb${len}">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger btn-block btn-sm" onclick="" data-toggle="modal" data-target="#modalDelBanco"><i class="bi bi-x-circle-fill"></i></button>
+            </div>
+        `;
+        $("#divDerecho").append(divSeccion);
+        $('.chosen').chosen();
+        $(`#${idOpt}_chosen`).css('display','none');
+    }
+
+    changeMaterial(lenSeccion){
+        
+        let opcion = $('#optMatBan'+lenSeccion).val()
+
+        if( opcion == 'Empalme Banco' ){
+
+            $(`#optBan${lenSeccion}_chosen`).show('fast');
+        }else{
+
+            $(`#optBan${lenSeccion}_chosen`).hide('fast');
+        }
+    }
+
+    delSecBanco(){
+
+
     }
 }

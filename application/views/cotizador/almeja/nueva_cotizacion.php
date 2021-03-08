@@ -232,7 +232,7 @@
 
 <script>
 
-    var option = "";
+    let option = "";
     var papeles = <?php echo json_encode($papers);?>;
 
     papeles.forEach( function(papel){
@@ -243,10 +243,10 @@
     var baseImg = "<?=BASE_URL?>public/img/";
 
     var seccion = [
-        { titulo: 'Empalme Cajón', img: baseImg+'banco.png', option: 'optEC', siglas: 'EC', aAcb: [], aImp: [], 'siglasP': 'Empalme' },
-        { titulo: 'Forro Cajón', img: baseImg+'banco2.png', option: 'optFCaj', siglas: 'FCaj', aAcb: [], aImp: [], 'siglasP': 'FCaj' },
-        { titulo: 'Forro Cartera', img: baseImg+'banco.png', option: 'optFCar', siglas: 'FCar', aAcb: [], aImp: [], 'siglasP': 'FCar' },
-        { titulo: 'Guarda', img: baseImg+'banco2.png', option: 'optG', siglas: 'G', aAcb: [], aImp: [], 'siglasP': 'Guarda' },
+        { titulo: 'Empalme Cajón', img: baseImg+'banco.png', option: 'optEC', siglas: 'EC', aAcb: [], aImp: [], 'siglasP': 'Empalme', color: 'paleturquoise'},
+        { titulo: 'Forro Cajón', img: baseImg+'banco2.png', option: 'optFCaj', siglas: 'FCaj', aAcb: [], aImp: [], 'siglasP': 'FCaj', color: 'thistle' },
+        { titulo: 'Forro Cartera', img: baseImg+'banco.png', option: 'optFCar', siglas: 'FCar', aAcb: [], aImp: [], 'siglasP': 'FCar',color:'wheat' },
+        { titulo: 'Guarda', img: baseImg+'banco2.png', option: 'optG', siglas: 'G', aAcb: [], aImp: [], 'siglasP': 'Guarda', color: '#a5e8a5' },
         /*{ titulo: 'Prueba', img: baseImg+'regalo.png', option: 'optP', siglas: 'P', aAcb: [], aImp: [], 'siglasP': 'pt' },*/
     ];
 
@@ -262,6 +262,15 @@
 
     //construye las secciones respecto a las divisiones que se ha declarado en la variable seccion
     caja.constructSec();
+
+    var bancos = <?php echo json_encode($bancos);?>;
+    option = ''
+    bancos.forEach( function(banco){
+
+        option += '<option value="' + banco.nombre + '">' + banco.nombre + '</option>';
+    });
+
+    caja.appendBtnBanco(option);
 
     //se asigna en que modelo esta para el select
     $("#box-model").val("1");

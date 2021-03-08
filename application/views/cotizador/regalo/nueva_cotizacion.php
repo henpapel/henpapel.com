@@ -266,6 +266,15 @@
     //construye las secciones respecto a las divisiones que se ha declarado en la variable seccion
     caja.constructSec();
 
+    var bancos = <?php echo json_encode($bancos);?>;
+    option = ''
+    bancos.forEach( function(banco){
+
+        option += '<option value="' + banco.nombre + '">' + banco.nombre + '</option>';
+    });
+
+    caja.appendBtnBanco(option);
+
     //se asigna en que modelo esta para el select
     $("#box-model").val("4");
 
