@@ -101,7 +101,7 @@
                                 <a style="font-size: 25px;" id="<?= $row['id_odt']; ?>" href="#" data-id="<?= $row['num_odt']; ?>" data-caja="<?= $row['nombre_caja'] ?>" onclick="vistaAct('<?= $row['id_odt']; ?>');" class="table-button orange2"><i class="bi bi-pencil"></i></a>
                             </td>
                             <td class="mx-1">
-                                <a href="#" style="font-size: 25px;" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="table-button red2"><i class="bi bi-trash"></i></a>
+                                <a href="#" style="font-size: 25px;" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="table-button red2"><i class="bi bi-dash"></i></a>
                             </td>
                             
                             <!--<td>
