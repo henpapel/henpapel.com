@@ -21,7 +21,7 @@ class Crud extends Controller {
 
             require_once 'application/views/templates/head.php';
             require_once 'application/views/templates/top_menu.php';
-            require_once 'application/views/papeles/index.php';
+            require_once 'application/views/crud/index.php';
             require_once 'application/views/templates/footer.php';
         } else {
 
@@ -88,18 +88,15 @@ class Crud extends Controller {
         
         $optionsmodel = $this->loadModel('OptionsModel');
         $login_model  = $this->loadModel('LoginModel');
-        $ventas_model  = $this->loadModel('VentasModel');
        
         if($login->isLoged()) {
 
             $id = $_GET['id'];
-            $id = intval($id);
-
-            $datos = $optionsmodel->getPapelId($id);
+            $datos = $optionsmodel->getDatos($id);
 
             require_once 'application/views/templates/head.php';
             require_once 'application/views/templates/top_menu.php';
-            require_once 'application/views/papeles/modificar.php';
+            require_once 'application/views/crud/modificar.php';
             require_once 'application/views/templates/footer.php';
         } else {
 
@@ -121,7 +118,7 @@ class Crud extends Controller {
     
             require_once 'application/views/templates/head.php';
             require_once 'application/views/templates/top_menu.php';
-            require_once 'application/views/papeles/agregar.php';
+            require_once 'application/views/crud/agregar.php';
             require_once 'application/views/templates/footer.php';
         } else {
 
