@@ -242,8 +242,8 @@
 <div class="modal fade" id="modalSalida" tabindex="-1" aria-labelledby="lblSalidaModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title" id="lblSalidaModal"><i class="bi bi-exclamation-triangle"></i> Advertencia</h5>
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white" id="lblSalidaModal"><i class="bi bi-exclamation-triangle"></i> Advertencia</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -253,28 +253,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <a type="button" href="<?=URL?>cotizador/getCotizaciones" class="btn btn-warning">Salir</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Eliminar Banco -->
-<div class="modal fade" id="modalDelBanco" tabindex="-1" aria-labelledby="lblSalidaModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title" id="lblSalidaModal"><i class="bi bi-exclamation-triangle"></i> Advertencia</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Esta a punto de eliminar el banco: <br>¿Desea continuar?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" onclick="caja.delSecBanco()" class="btn btn-warning">Continuar</button>
+                <a type="button" href="<?=URL?>cotizador/getCotizaciones" class="btn btn-danger">Salir</a>
             </div>
         </div>
     </div>

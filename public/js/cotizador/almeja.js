@@ -230,7 +230,10 @@ class Almeja extends Cajas{
     appndImp( aImp, secciones ){
 
         if ( aImp == undefined ) return false;
-        let trMerma = ''
+                
+        let offset     = null;
+        let digital    = null;
+        let serigrafia = null;
 
         //Se divide en partes todos los indices de impresiones y se hace un ciclo for para cada uno
         let partes = secciones.split(' ');
@@ -250,12 +253,10 @@ class Almeja extends Cajas{
             let seccion = parte.slice(3)
             if ( seccion == 'Emp' ) seccion = 'EC'
             //if ( seccion == 'Guarda' ) seccion = 'G'
-            let colorSeccion = ''
             this._secciones.find(function(sec){
 
                 if( sec['siglas'].indexOf(seccion) == 0 ){
                     titulo = sec['titulo'];
-                    colorSeccion = `<td style="background: ${sec['color']};">${sec['siglas']}</td>`
                     return true;
                 }
             });
@@ -263,7 +264,6 @@ class Almeja extends Cajas{
             if( parte == 'Off_maq_Emp' ) titulo = 'Empalme Cajón'
             if( parte == 'Off_maq_FCaj' ) titulo = 'Forro Cajón'
             
-            //estaba aplicando mermas para offset, faltan los demas procesos
             switch( impresion ){
 
                 case 'Off':
@@ -281,12 +281,6 @@ class Almeja extends Cajas{
                             var cTArr     = arreglo[j]['arreglo_costo'];
                             var total     = parseFloat(arreglo[j]['costo_tot_proceso']);
 
-                            let mermaMin  = arreglo[j]['mermas']['merma_min']
-                            let mermaAdic = arreglo[j]['mermas']['merma_adic']
-                            let cUMerma = arreglo[j]['mermas']['costo_unit_papel_merma']
-                            let cTMerma = arreglo[j]['mermas']['costo_tot_pliegos_merma']
-
-
                             var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">' + titulo + ' - Maquila</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ cantidad +'</td><td>Tipo: '+ tipo +'</td><td>Tintas: '+ tintas +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ cULam +'</td><td>'+ cTLam +'</td></tr><tr><td>Arreglo</td><td>'+ cUArr +'</td><td>'+ cTArr +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ total +'</td></tr><tr><td colspan="3"></td></tr>';
 
                             $('#table_proc_offset').append(tr);
@@ -296,13 +290,6 @@ class Almeja extends Cajas{
                             var trResumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
                             $('#resumen'+seccion).append(trResumen);
-                            
-                            //mermas en boton resumen
-                            trMerma = '<tr><td></td><td>Merma Offset</td><td>$'+ total +'</td><td></td></tr>';
-                            $('#resumenEmpalme').append(trMerma);
-
-                            trMerma = '<tr>'+ colorSeccion +'<td>Offset</td><td>'+ mermaMin +'</td><td>'+ mermaAdic +'</td><td>'+ cTMerma +'</td><td>$'+ cUMerma +'</td><td>$'+ cTMerma +'<input type="hidden" class="prices" value="'+ cTMerma +'"></td></tr>';
-                            $('#table_mermas_tr').append(trMerma);
                         }
                     }else{
 
@@ -318,30 +305,18 @@ class Almeja extends Cajas{
                             var cUTir     = arreglo[j]['costo_unitario_tiro'];
                             var cTTir     = arreglo[j]['costo_tiro'];
                             var total     = parseFloat(arreglo[j]['costo_tot_proceso']);
-                            let mermaMin  = arreglo[j]['mermas']['merma_min']
-                            let mermaAdic = arreglo[j]['mermas']['merma_adic']
-                            let cUMerma = arreglo[j]['mermas']['costo_unit_papel_merma']
-                            let cTMerma = arreglo[j]['mermas']['costo_tot_pliegos_merma']
 
                             var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">' + titulo + '</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ cantidad +'</td><td>Tipo: '+ tipo +'</td><td>Tintas: '+ tintas +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>$'+ cULam +'</td><td>$'+ cTLam +'</td></tr><tr><td>Arreglo</td><td>$'+ cUArr +'</td><td>$'+ cTArr +'</td></tr><tr><td>Tiro</td><td>$'+ cUTir +'</td><td>$'+ cTTir +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ total +'</td></tr><tr><td colspan="3"></td></tr>';
 
-                            $('#table_proc_offset').append(tr);
-                            $('#proceso_offset_M1').show();
+                                $('#table_proc_offset').append(tr);
+                                $('#proceso_offset_M1').show();
 
-                            var trResumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
+                                var trResumen = '<tr><td></td><td>Impresión Offset</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
-                            $('#resumen'+seccion).append(trResumen);
-
-                            //mermas en boton resumen
-                            trMerma = '<tr><td></td><td>Merma Offset</td><td>$'+ total +'</td><td></td></tr>';
-                            $('#resumenEmpalme').append(trMerma);
-
-                            trMerma = '<tr>'+ colorSeccion +'<td>Offset</td><td>'+ mermaMin +'</td><td>'+ mermaAdic +'</td><td>'+ cTMerma +'</td><td>$'+ cUMerma +'</td><td>$'+ cTMerma +'</td></tr>';
-                            $('#table_mermas_tr').append(trMerma);
+                                $('#resumen'+seccion).append(trResumen);
                         }
                     }
                 break;
-
                 case 'Dig':
 
                     for( let j = 0; j < arreglo.length; j++ ){
@@ -367,7 +342,6 @@ class Almeja extends Cajas{
                         $('#resumen'+seccion).append(trResumen);
                     }
                 break;
-
                 case 'Ser':
 
                     for( let j = 0; j < arreglo.length; j++ ){
@@ -709,6 +683,8 @@ class Almeja extends Cajas{
         var modificar_odt = modificar;
 
         id_odt_anterior > 0 ? modificar_odt = "SI" : "NO";
+        console.log(id_odt_anterior);
+        console.log(modificar_odt);
 
         formData.push(
             {name: 'id_cliente', value: id_cliente_tmp},
