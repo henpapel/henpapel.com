@@ -352,7 +352,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
                 </div>
             </div>
         </div>

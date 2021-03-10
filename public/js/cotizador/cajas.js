@@ -123,6 +123,7 @@ class Cajas {
             $('#resumen'+ sec['siglas']).empty();
         })
         $('#resumenCartones').empty();
+        $('#table_mermas_tr').empty();
         $('#resumenOtros').empty();
         $("#resumenHead").empty();
         $("#resumenMensajeria").empty();
@@ -659,6 +660,7 @@ class Cajas {
         $("#btnImprimir").prop("disabled",false);
         $("#btnActG").prop("disabled",false);
         $("#btnCalculadora").prop("disabled",false);
+        
     }
 
 
@@ -667,6 +669,7 @@ class Cajas {
         $("#btnImprimir").prop("disabled",true);
         $("#btnActG").prop("disabled",true);
         $("#btnCalculadora").prop("disabled",true);
+        $("#btnPODT").prop("disabled",true);
     }
 
     changeData(url){
@@ -1025,6 +1028,7 @@ class Cajas {
         let titulo = '';
         let idOpt = '';
         this._bancos = [];
+        this.idBanco = 1;
         this._optBanco = optBanco;
 
         var divSeccion = `
@@ -1046,8 +1050,9 @@ class Cajas {
         let imagen = '#';
         this._bancos.push(
             {
-                id: '',
-                material: '',
+                index: '',
+                id: this.idBanco,
+                Tipo_banco: '',
                 impresion: [],
                 acabado:[],
                 papel: '',
@@ -1055,18 +1060,22 @@ class Cajas {
                 ancho:'',
                 profundidad:'',
                 posicion:'',
+                suaje:'',
+                ambos_lados: '',
             }
         );
-        let len = this._bancos.length;
 
-        this._bancos[len-1]['id'] = len;
+        let index = (this._bancos.length - 1)
+        this._bancos[index]['index'] = index;
         
-        let titulo = 'Banco ' + len;
-        let idOpt = 'optBan'+ len;
-        let idOptMat = 'optMatBan'+ len;
+        let id = this.idBanco
+        let titulo = 'Banco '+ id;
+        let idOpt = 'optBan'+ id;
+        let idOptMat = 'optMatBan'+ id;
 
-        let divSeccion = `
-            <div class="divgral banco">
+
+        let divBanco = `
+            <div id="divBanco${id}" class="divgral banco">
                 <div id="img ${seccion}" class="secciones divContenido">
                     <!--<img src="${imagen}"  style="width: 40%;">-->
                     <br>
@@ -1074,68 +1083,122 @@ class Cajas {
                 </div>
                 <br>
                 <div class="m-2">
-                    <select id="${idOptMat}" onchange="caja.changeMaterial('${len}');" class="form-control mb-2 form-control-sm">
+                    <select id="${idOptMat}" onchange="caja.changeMaterial('${id}');" class="form-control mb-2 form-control-sm">
                         <option selected value="selected" disabled>Elige un material</option>
                         ${this._optBanco}
                     </select>
-                    <select id="optPosicion${len}" class="form-control mb-2 form-control-sm">
+                    <select class="chosen forros" name="${idOpt}" id="${idOpt}" tabindex="9" required>
+                        <option selected disabled>Elegir tipo de papel</option> ${this._papeles}
+                    </select>
+                    <div id="divChkBanco${id}" class="custom-control custom-checkbox" style="display:none">
+                        
+                        <input type="checkbox" class="custom-control-input" id="chkALados${id}">
+                        <label class="custom-control-label" for="chkALados${id}">Ambos lados</label>
+                    </div>
+                    <div id="divExtrasBanco${id}">
+                        <select id="${idOptMat}" onchange="caja.changeMaterial('${id}');" class="form-control mb-2 form-control-sm">
+                            <option selected value="selected" disabled>Elige un material</option>
+                            <option value="Eva">Eva</option>
+                            <option value="Espuma">Espuma</option>
+                        </select>
+                        <button class="btn btn-outline-primary btn-block">Extra</button>
+                    </div>
+                    <select id="optPosicion${id}" class="form-control mb-2 form-control-sm">
                         <option selected value="selected" disabled>Posición</option>
                         <option value="Centro">Centro</option>
                         <option value="izquierdo">Lado izquierdo</option>
                         <option value="derecho">Lado derecho</option>
                     </select>
-                    <select class="chosen forros" name="${idOpt}" id="${idOpt}" tabindex="9" required>
-                        <option selected disabled>Elegir tipo de papel</option> ${this._papeles}
-                    </select>
+                    <div class="">
+                        
+                        <label for="optSuaje${id}">¿Lleva suaje?</label>
+                        <select id="optSuaje${id}" class="form-control mb-2 form-control-sm">
+                            <option value="No" selected>No</option>
+                            <option value="Si">Si</option>
+                        </select>    
+                    </div>
                 </div>
                 <div>
-                    <input placeholder="Largo" type="number" class="form-control form-control-sm m-1" id="txtLargo${len}">
-                    <input placeholder="Ancho" type="number" class="form-control form-control-sm m-1" id="txtAncho${len}">
-                    <input placeholder="Profundidad" type="number" class="form-control form-control-sm m-1" id="txtProf${len}">
+                    <input placeholder="Largo" type="number" class="form-control form-control-sm m-1" id="txtLargo${id}">
+                    <input placeholder="Ancho" type="number" class="form-control form-control-sm m-1" id="txtAncho${id}">
+                    <input placeholder="Profundidad" type="number" class="form-control form-control-sm m-1" id="txtProf${id}">
 
-                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#Impresiones" onclick="caja.nvaImp='ban${len}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Impresiones
+                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#Impresiones" onclick="caja.nvaImp='ban${id}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Impresiones
                     </button>
                     <div class="container divimpresiones">
                         <table class="table">
-                            <tbody id="BanImp${len}">
+                            <tbody id="BanImp${id}">
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <div>
-                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#acabados" onclick="caja.nvaAcb='ban${len}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Acabados
+                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#acabados" onclick="caja.nvaAcb='ban${id}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Acabados
                     </button>
                     <div class="container divacabados">
                         <table class="table">
-                            <tbody id="BanAcb${len}">
+                            <tbody id="BanAcb${id}">
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger btn-block btn-sm" onclick="" data-toggle="modal" data-target="#modalDelBanco"><i class="bi bi-x-circle-fill"></i></button>
+                <button type="button" class="btnDelBanco btn btn-danger btn-block btn-sm" onclick="caja.setBanco('${id}')" data-toggle="modal" data-target="#modalDelBanco"><i class="bi bi-x-circle-fill"></i></button>
             </div>
         `;
-        $("#divDerecho").append(divSeccion);
+
+        $("#divDerecho").append(divBanco);
         $('.chosen').chosen();
         $(`#${idOpt}_chosen`).css('display','none');
+        this.idBanco++;
+        console.log(this._bancos)
     }
 
-    changeMaterial(lenSeccion){
+    changeMaterial(id){
         
-        let opcion = $('#optMatBan'+lenSeccion).val()
+        let opcion = $('#optMatBan'+id).val()
+        let material = $(`#optMatBan${id} option:selected`).text();
+        
+        if( material == 'Carton' ){
 
-        if( opcion == 'Empalme Banco' ){
-
-            $(`#optBan${lenSeccion}_chosen`).show('fast');
+            $(`#optBan${id}_chosen`).show('fast');
+            $(`#divChkBanco${id}`).show('fast');
         }else{
 
-            $(`#optBan${lenSeccion}_chosen`).hide('fast');
+            $(`#optBan${id}_chosen`).hide('fast');
+            $(`#divChkBanco${id}`).hide('fast');
         }
     }
 
     delSecBanco(){
 
+        let id = this.lenBanco1;
+        
+        this._bancos.find(function(banco){
 
+            if( banco['id'] == id ){
+                
+                this._bancos.splice(banco['index'],1)
+
+                return true;
+            }
+        }.bind(this))
+
+        $("#divBanco"+id).remove();
+        $('#modalDelBanco').modal('hide');
+
+        let i = 0;
+        this._bancos.forEach(function(banco){
+            
+            banco['index'] = i++
+        });
+
+        console.log(this._bancos)
+    }
+
+    setBanco(id){
+
+        this.lenBanco1 = id;
+        $('#lblBanco').html(`Esta a punto de eliminar el banco: ${id} <br>¿Desea continuar?`);
     }
 }

@@ -216,38 +216,6 @@ class Controller {
     }
 
 
-    public function getODTs() {
-
-        if (!isset($_SESSION)) {
-
-            session_start();
-        }
-
-
-        $login         = $this->loadController('login');
-        $login_model   = $this->loadModel('LoginModel');
-        $options_model = $this->loadModel('OptionsModel');
-        $ventas_model  = $this->loadModel('VentasModel');
-
-        if($login->isLoged()) {
-
-            $odts     = $ventas_model->getODTs();
-            $clientes = $ventas_model->getClients();
-
-
-            require_once 'application/views/templates/head.php';
-            require_once 'application/views/templates/top_menu.php';
-            require_once 'application/views/cotizador/listaOdts.php';
-            require_once 'application/views/templates/footer.php';
-        } else {
-
-            echo '<script language="javascript">';
-            echo 'window.location.href="' . URL . 'login/"';
-            echo '</script>';
-        }
-    }
-
-
     public function getCotizaciones() {
 
         if (!isset($_SESSION)) {
@@ -847,6 +815,189 @@ class Controller {
         unset($a_Calculadora_secc);
 
         return $aPapel_secc;
+    }
+
+
+    // calculo del papel incluyendo cortes
+    protected function calculaPapelCartera($seccion, $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model) {
+
+
+        $papel_secc = self::getPapelCarton($seccion, $id_papel, $options_model);
+
+        $costo_unit_papel = round(floatval($papel_secc['costo_unit_papel']), 4);
+
+        $p_ancho = round(floatval($papel_secc['ancho_papel']), 2);
+        $p_largo = round(floatval($papel_secc['largo_papel']), 2);
+        $c_ancho = $secc_ancho;
+        $c_largo = $secc_largo;
+
+        $b  = max($p_ancho, $p_largo);
+        $h  = min($p_ancho, $p_largo);
+        $cb = $c_ancho;
+        $ch = $c_largo;
+
+        $cortes = self::Acomoda($b, $h, $c_ancho, $c_largo, "H", "H");
+
+        $corte      = $cortes['cortesT'];
+        $corte_secc = $corte;
+
+        $tot_pliegos = self::Deltax($tiraje, $corte_secc);
+
+        $tot_costo = round(floatval($tot_pliegos * $costo_unit_papel), 2);
+
+
+        $aPapel_secc = [];
+
+        $aPapel_secc['tiraje']   = $tiraje;
+        $aPapel_secc['id_papel'] = $papel_secc['id_papel'];
+
+        if ($papel_secc['carton'] === true) {
+
+            $aPapel_secc['num_carton'] = $id_papel;
+        }
+
+        $aPapel_secc['nombre_papel']     = $papel_secc['nombre_papel'];
+        $aPapel_secc['ancho_papel']      = round($papel_secc['ancho_papel'], 2);
+        $aPapel_secc['largo_papel']      = round($papel_secc['largo_papel'], 2);
+        $aPapel_secc['costo_unit_papel'] = round($papel_secc['costo_unit_papel'], 4);
+        $aPapel_secc['corte']            = $corte_secc;
+        $aPapel_secc['tot_pliegos']      = $tot_pliegos;
+        $aPapel_secc['tot_costo']        = $tot_costo;
+
+
+        if ($papel_secc['costo_unit_papel'] <= 0) {
+
+            $aPapel_secc['tot_costo'] = 0;
+        }
+
+        $a_Calculadora_secc = array();
+
+        $a_Calculadora_secc['corte_ancho'] = min($secc_ancho, $secc_largo);
+        $a_Calculadora_secc['corte_largo'] = max($secc_ancho, $secc_largo);
+
+        $cortes_H['orientacion']     = "horizontal";
+        $a_Calculadora_secc['corte'] = $cortes;
+
+
+        $aPapel_secc['calculadora'] = $a_Calculadora_secc;
+
+        unset($a_Calculadora_secc);
+
+        return $aPapel_secc;
+    }
+
+
+    protected function calculaBancoTriangular($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model) {
+
+        $id_papel = intval($id_papel);
+
+        $row = $ventas_model->getPapelId($id_papel);
+
+        $papel_nombre     = trim($row['nombre']);
+        $papel_color      = trim($row['color']);
+        $secc_ancho       = $row['ancho'];
+        $secc_largo       = $row['largo'];
+        $papel_costo_unit = floatval($row['costo_unitario']);
+
+        $base = floatval($largo / 2);
+
+        $secc_largo = $largo + round(floatval((sqrt(($base ** 2) + ($altura ** 2))) * 2), 2) + 1;
+        $secc_ancho = $ancho;
+
+        $area = round(floatval($secc_largo * $ancho), 2);
+
+
+        $ranurado_hor_db = self::calculoRanurado($tiraje, $ventas_model);
+
+
+        $calculo_papel = self::calculaPapel("BancoSup", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+
+        $tot_costo_papel = round(floatval($calculo_papel['tot_costo']), 2);
+
+        $tot_costo = round(floatval($tot_costo_papel + $ranurado_hor_db['costo_tot_proceso']), 2);
+
+
+        $ranurado_ver_db = 0;
+
+        if ($largo > $ancho) {
+
+            $ranurado_ver_db = self::calculoRanurado($tiraje, $ventas_model);
+
+            $tot_costo = round(floatval($tot_costo + $ranurado_ver_db['costo_tot_proceso']), 2);
+        }
+
+        $aBanco = array();
+
+        $aBanco['id_papel']             = $id_papel;
+        $aBanco['tiraje']               = $tiraje;
+        $aBanco['papel']                = $calculo_papel;
+        $aBanco['largo']                = $largo;
+        $aBanco['ancho']                = $ancho;
+        $aBanco['altura']               = $altura;
+        $aBanco['largo_area']           = $secc_largo;
+        $aBanco['ancho_area']           = $ancho;
+        $aBanco['area']                 = $area;
+        $aBanco['arreglo_ranurado_hor'] = $ranurado_hor_db;
+        $aBanco['arreglo_ranurado_ver'] = $ranurado_ver_db;
+        $aBanco['tot_costo']            = $tot_costo;
+
+
+        return $aBanco;
+    }
+
+
+    protected function calculaBancoNormal($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model) {
+
+        $secc_ancho = $ancho;
+        $secc_largo = $largo;
+        $area       = round(floatval($secc_largo * $secc_ancho), 2);
+
+        $id_papel = intval($id_papel);
+
+        $row = $ventas_model->getPapelId($id_papel);
+
+        $papel_nombre     = trim($row['nombre']);
+        $papel_color      = trim($row['color']);
+        $ancho            = $row['ancho'];
+        $largo            = $row['largo'];
+        $papel_costo_unit = floatval($row['costo_unitario']);
+
+
+        $calculo_papel = self::calculaPapel("BancoInf", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+
+        $tot_costo_papel = round(floatval($calculo_papel['tot_costo']), 2);
+
+
+        $ranurado_hor_db = self::calculoRanurado($tiraje, $ventas_model);
+
+        $tot_costo = round(floatval($tot_costo_papel + $ranurado_hor_db['costo_tot_proceso']), 2);
+
+
+        $ranurado_ver_db = 0;
+
+        if ($largo > $ancho) {
+
+            $ranurado_ver_db = $ranurado_hor_db;
+
+            $tot_costo = round(floatval($tot_costo + $ranurado_ver_db['costo_tot_proceso']), 2);
+        }
+
+
+        $aBanco = array();
+
+        $aBanco['id_papel']             = $id_papel;
+        $aBanco['tiraje']               = $tiraje;
+        $aBanco['papel']                = $calculo_papel;
+        $aBanco['largo']                = $secc_largo;
+        $aBanco['ancho']                = $secc_ancho;
+        $aBanco['altura']               = $altura;
+        $aBanco['area']                 = $area;
+        $aBanco['arreglo_ranurado_hor'] = $ranurado_hor_db['costo_tot_proceso'];
+        $aBanco['arreglo_ranurado_ver'] = $ranurado_ver_db['costo_tot_proceso'];
+        $aBanco['tot_costo']            = $tot_costo;
+
+
+        return $aBanco;
     }
 
 
@@ -3206,6 +3357,12 @@ class Controller {
             $costo_laminado = $costo_minimo;
         }
 
+        $arreglo_lam = 0;
+
+        $arreglo_lam = $ventas_model->getArregloLaminado();
+        $arreglo_lam = floatval($arreglo_lam['costo_unitario']);
+
+        $costo_laminado = floatval($costo_laminado + $arreglo_lam);
 
         $Lam_tmp = [];
 
@@ -3214,6 +3371,7 @@ class Controller {
         $Lam_tmp['Largo']             = floatval($LargoLam);
         $Lam_tmp['Ancho']             = floatval($AnchoLam);
         $Lam_tmp['area']              = $area_laminado;
+        $Lam_tmp['arreglo']           = $arreglo_lam;
         $Lam_tmp['costo_unitario']    = $laminado_costo_unitario;
         $Lam_tmp['costo_tot_proceso'] = $costo_laminado;
 

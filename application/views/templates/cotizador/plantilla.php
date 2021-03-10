@@ -168,7 +168,7 @@
         </div>
     </form>
 
-    <div id="divFooter" class="mx-1" style="position:fixed; right:0%; top:85%;">
+    <div id="divFooter" class="mx-1" style="position:fixed; right:0%; top:86%;">
         <div id="groupButton1">
 
             <button id="btnCalcularC" class="btn btn-primary btn-sm" style="font-size: 10px;"><i class="bi bi-calculator-fill" style="color: #000"></i> CALCULAR</button>
@@ -184,6 +184,8 @@
             <button type="button" id="btnImprimir" disabled="" class="btn btn-info btn-sm" style="font-size: 10px;"><i class="bi bi-printer"></i> IMPRIMIR</button>
 
             <button type="button" id="btnSalir" data-toggle="modal" data-target="#modalSalida" class="btn btn-danger btn-sm" style="font-size: 10px;"><i class="bi bi-door-open"></i> SALIR</button>
+
+            <button type="button" disabled="" id="btnPODT" class="btn btn-info btn-sm" style="font-size: 12px;"><i class="bi bi-printer"></i> Previsualizar ODT</button>
 
             <br>
 
@@ -269,7 +271,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div id="lblBanco" class="modal-body">
                 Esta a punto de eliminar el banco: <br>¿Desea continuar?
             </div>
             <div class="modal-footer">
@@ -382,4 +384,9 @@
         }
     };
 
+    $('#btnPODT').click(function(){
+
+        var ventana = window.open("<?=URL?>cotizador/imprODT", "Impresion", "width=600, height=600");
+        return true;
+    });
 </script>

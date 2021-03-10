@@ -81,7 +81,7 @@
                     <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">N° Cot: </label>
                     <div class="col-sm-8">
                         
-                        <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="######" tabindex="1" onkeyup="caja.desactivarBtn()">
+                        <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="######" tabindex="1" onchange="caja.desactivarBtn()" onkeyup="caja.desactivarBtn()">
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                     <label for="corte_largo" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Base: </label>
                     <div class="col-sm-8">
                         
-                        <input type="number" class="form-control form-control-sm" name="base" id="corte_largo" placeholder="cm" tabindex="2" min="1" onkeyup="caja.desactivarBtn()">
+                        <input type="number" class="form-control form-control-sm" name="base" id="corte_largo" placeholder="cm" tabindex="2" min="1" onchange="caja.desactivarBtn()" onkeyup="caja.desactivarBtn()">
                     </div>
                 </div>
                 <!--Alto-->
@@ -110,7 +110,7 @@
                     <label for="corte_ancho" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Alto: </label>
                     <div class="col-sm-8">
                         
-                        <input type="number" class="form-control form-control-sm" name="alto" id="corte_ancho" placeholder="cm" tabindex="3" min="1" onkeyup="caja.desactivarBtn()">
+                        <input type="number" class="form-control form-control-sm" name="alto" id="corte_ancho" placeholder="cm" tabindex="3" min="1" onchange="caja.desactivarBtn()" onkeyup="caja.desactivarBtn()">
                     </div>
                 </div>
                 <!--Profundidad-->
@@ -119,7 +119,7 @@
                     <label for="profundidad_1" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Prof: </label>
                     <div class="col-sm-8">
                         
-                        <input type="number" class="form-control form-control-sm" name="profundidad" id="profundidad_1" placeholder="cm" tabindex="4" min="1" onkeyup="caja.desactivarBtn()">
+                        <input type="number" class="form-control form-control-sm" name="profundidad" id="profundidad_1" placeholder="cm" tabindex="4" min="1" onchange="caja.desactivarBtn()" onkeyup="caja.desactivarBtn()">
                     </div>
                 </div>
                 
@@ -179,7 +179,7 @@
                     <label for="qty" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Cantidad: </label>
                     <div class="col-sm-8">
                         
-                        <input type="number" class="form-control form-control-sm" name="qty" id="qty" placeholder="Cantidad" tabindex="8" min="1" onkeyup="caja.desactivarBtn();">
+                        <input type="number" class="form-control form-control-sm" name="qty" id="qty" placeholder="Cantidad" tabindex="8" min="1" onkeyup="caja.desactivarBtn();" onchange="caja.desactivarBtn()">
                     </div>
                 </div>
             </div>
@@ -264,10 +264,11 @@
     caja.constructSec();
 
     var bancos = <?php echo json_encode($bancos);?>;
+    
     option = ''
     bancos.forEach( function(banco){
 
-        option += '<option value="' + banco.nombre + '">' + banco.nombre + '</option>';
+        option += '<option value="' + banco.id_banco + '">' + banco.nombre + '</option>';
     });
 
     caja.appendBtnBanco(option);

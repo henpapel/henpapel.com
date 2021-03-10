@@ -133,6 +133,21 @@ class Cotizador extends Controller {
     }
 
 
+// aqui me quede...
+    
+    public function getODTs() {
+
+        $ventas_model  = $this->loadModel('VentasModel');
+
+        $odts = $ventas_model->getODTs();
+
+        require_once 'application/views/templates/head.php';
+        require_once 'application/views/templates/top_menu.php';
+        require_once 'application/views/pedidos/listaPedidos.php';
+        require_once 'application/views/templates/footer.php';
+    }
+
+
     // Convierte las cotizaciones (presupuesto) a ODTs
     public function convPresupToODT() {
 
@@ -178,12 +193,21 @@ class Cotizador extends Controller {
 
         if ($status == "A" or $status == "M" or $status == "P") {
 
-            $ventas_model->convPresupToODT($id_odt, $id_odt_orig);
+            $ok = $ventas_model->convPresupToODT($id_odt, $id_odt_orig);
+
+            $cotizaciones = $ventas_model->getCotizaciones();
+
+            if (!$ok) {
+
+                $aJson['error'] = $aJson['error'] . " Error al convertir el presupuesto a ODT;";
+            }
         }
 
 
         require_once 'application/views/templates/head.php';
         require_once 'application/views/templates/top_menu.php';
+
+        //header(URL.'cotizador/listaCotizaciones.php');
 
         require_once 'application/views/cotizador/listaCotizaciones.php';
 
@@ -247,8 +271,7 @@ class Cotizador extends Controller {
         echo "<script>$('#divDerecho').hide()</script>";
         require_once 'application/views/cotizador/almeja/nueva_cotizacion.php';
         echo "<script>$('#divDerecho').show('slow')</script>";
-        require_once 'application/views/templates/footer.php';
-    }
+        require_once 'application/views/templates/footer.php';    }
 
 
     // inicia actualizacion de almeja (cambia el estado y graba los nuevos calculos)
@@ -1053,8 +1076,8 @@ class Cotizador extends Controller {
 
         if (isset($_GET['num_odt'])) {
 
-            $num_odt = $_GET['num_odt'];
-            $num_odt = self::strip_slashes_recursive($num_odt);
+            $id_odt = $_GET['num_odt'];
+            $id_odt = intval($id_odt);
         } else {
 
             return false;
@@ -1088,9 +1111,9 @@ class Cotizador extends Controller {
         $Herrajes          = $options_model->getHerraje();
 
 
-        $row = $ventas_model->getOdtById($num_odt);
+        $row = $ventas_model->getOdtById($id_odt);
 
-        $id_odt            = intval($row['id_odt']);
+        $num_odt           = self::strip_slashes_recursive($row['num_odt']);
         $status            = trim($row['status']);
         $id_usuario        = intval($row['id_usuario']);
         $id_cliente        = intval($row['id_cliente']);
@@ -1743,7 +1766,11 @@ class Cotizador extends Controller {
         }
     }
 
+    public function imprODT(){
 
+         require_once 'application/views/templates/head.php';
+        require_once 'application/views/pedidos/pedido.php';
+    }
 
     // calculo del modelo caja almeja
     public function saveCaja() {
@@ -1778,13 +1805,16 @@ class Cotizador extends Controller {
 
         $odt = "";
 
-        $odt = strip_tags(trim($_POST['odt']));
-        $odt = strtoupper($odt);
-        $odt = self::strip_slashes_recursive($odt);
+        if (!empty($_POST['odt'])) {
+
+            $odt = strip_tags(trim($_POST['odt']));
+            $odt = strtoupper($odt);
+            $odt = self::strip_slashes_recursive($odt);
+        }
 
 
-        $modificar = $_POST['modificar'];
-        if(isset($_POST['modificar']) and $_POST['modificar'] = "SI") {
+        $modificar = "NO";
+        if(!empty($_POST['modificar']) and $_POST['modificar'] = "SI") {
 
             $modificar == "SI";
 
@@ -1795,13 +1825,8 @@ class Cotizador extends Controller {
 
                 self::msgError("Ya hay una ODT con el mismo nombre");
             }
-        } else {
-
-            $modificar = "NO";
         }
 
-
-        $_POST['odt'] = $odt;
 
         $id_usuario = $_SESSION['user']['id_usuario'];
         $id_usuario = intval($id_usuario);
@@ -1809,35 +1834,68 @@ class Cotizador extends Controller {
 
         $nomb_usuario_db = $ventas_model->getNombUsuario($id_usuario);
 
+        $id_tienda = 0;
+        $nomb_tienda = "";
+
         foreach ($nomb_usuario_db as $row) {
 
             $nomb_usuario = $row['nombre_usuario'];
-            $nomb_usuario = trim($nomb_usuario);
+            $nomb_usuario = self::strip_slashes_recursive($nomb_usuario);
+
+            $id_tienda = $row['id_tienda'];
+            $id_tienda = intval($id_tienda);
         }
 
 
-        $id_tienda = $_SESSION['user']['id_tienda'];
-        $id_tienda = intval($id_tienda);
+        if (is_array($nomb_usuario_db)) {
 
-        $tienda_db = $ventas_model->getNombTienda($id_tienda);
-
-        foreach ($tienda_db as $row) {
-
-            $nomb_tienda = $row['nombre_tienda'];
-            $nomb_tienda = trim($nomb_tienda);
+            unset($nomb_usuario_db);
         }
+
+
+        if ($id_tienda > 0) {
+
+            $tienda_db = $ventas_model->getNombTienda($id_tienda);
+
+            foreach ($tienda_db as $row) {
+
+                $nomb_tienda = $row['nombre_tienda'];
+                $nomb_tienda = self::strip_slashes_recursive($nomb_tienda);
+            }
+
+            if (is_array($tienda_db)) {
+
+                unset($tienda_db);
+            }
+        }
+
 
         $cantidad    = 0;
         $tiraje      = 0;
         $costo_total = 0;
         $costo_corte = 0;
 
-        $cantidad = $_POST["qty"];
-        $cantidad = intval($cantidad);
-        $tiraje   = intval($cantidad);
+        if (!empty($_POST['qty'])) {
 
-        $nombre_cliente = $_POST['nombre_cliente'];
-        $id_cliente     = $ventas_model->getClientByName($nombre_cliente);
+            $cantidad = $_POST['qty'];
+            $cantidad = intval($cantidad);
+            $tiraje   = intval($cantidad);
+        }
+
+
+        $id_cliente = 0;
+        $nombre_cliente = "";
+
+        if (!empty($_POST['nombre_cliente'])) {
+
+            $nombre_cliente = $_POST['nombre_cliente'];
+            $nombre_cliente = self::strip_slashes_recursive($nombre_cliente);
+        }
+
+        $row = $ventas_model->getClientByName($nombre_cliente);
+
+        $id_cliente = $row['id_cliente'];
+        $id_cliente = intval($id_cliente);
 
         //$id_modelo = $_POST['modelo'];
         $id_modelo = 1;
@@ -1851,12 +1909,17 @@ class Cotizador extends Controller {
         $grosor_cajon   = 0;
         $grosor_cartera = 0;
 
+        if (!empty($_POST['base'])) {
 
-        $base = $_POST['base'];
-        $base = floatval($base);
+            $base = $_POST['base'];
+            $base = floatval($base);
+        }
 
-        $alto = $_POST['alto'];
-        $alto = floatval($alto);
+        if (!empty($_POST['alto'])) {
+
+            $alto = $_POST['alto'];
+            $alto = floatval($alto);
+        }
 
         if (!self::checaAnchoLargo($alto, $base)) {
 
@@ -1867,44 +1930,102 @@ class Cotizador extends Controller {
             $alto = $largo_temp;
         }
 
-        $profundidad    = $_POST['profundidad'];
-        $profundidad    = floatval($profundidad);
+        if (!empty($_POST['profundidad'])) {
 
-        $grosor_cajon   = $_POST['grosor-cajon'];
-        $grosor_cajon   = floatval($grosor_cajon);
+            $profundidad = $_POST['profundidad'];
+            $profundidad = floatval($profundidad);
+        }
 
-        $grosor_cartera = $_POST['grosor-cartera'];
-        $grosor_cartera = floatval($grosor_cartera);
 
-        $cajon          = $grosor_cajon;
-        $cartera        = $grosor_cartera;
+        $cajon = 0.0;
+        if (!empty($_POST['grosor-cajon'])) {
 
-        $offset         = $_POST['offset'];
-        $offset         = floatval($offset);
+            $grosor_cajon = $_POST['grosor-cajon'];
+            $grosor_cajon = floatval($grosor_cajon);
 
-        $digital        = $_POST['digital'];
-        $digital        = floatval($digital);
+            $cajon = $grosor_cajon;
+        }
 
-        $serigrafia     = $_POST['serigrafia'];
-        $serigrafia     = floatval($serigrafia);
 
-        $hs             = $_POST['hs'];
-        $hs             = floatval($hs);
+        $cartera = 0.0;
+        if (!empty($_POST['grosor-cartera'])) {
 
-        $laminado       = $_POST['laminado'];
-        $laminado       = floatval($laminado);
+            $grosor_cartera = $_POST['grosor-cartera'];
+            $grosor_cartera = floatval($grosor_cartera);
 
-        $barnizadic     = $_POST['barnizadic'];
-        $barnizadic     = floatval($barnizadic);
+            $cartera = $grosor_cartera;
+        }
 
-        $barniz         = $_POST['barniz'];
-        $barniz         = floatval($barniz);
 
-        $suaje          = $_POST['suaje'];
-        $suaje          = floatval($suaje);
+        $offset = 0.0;
+        if (!empty($_POST['offset'])) {
 
-        $forrado        = $_POST['forrado'];
-        $forrado        = floatval($forrado);
+            $offset = $_POST['offset'];
+            $offset = floatval($offset);
+        }
+
+
+        $digital = 0.0;
+        if (!empty($_POST['digital'])) {
+
+            $digital = $_POST['digital'];
+            $digital = floatval($digital);
+        }
+
+
+        $serigrafia = 0.0;
+        if (!empty($_POST['serigrafia'])) {
+
+            $serigrafia = $_POST['serigrafia'];
+            $serigrafia = floatval($serigrafia);
+        }
+
+
+        $hs = 0.0;
+        if (!empty($_POST['hs'])) {
+
+            $hs = $_POST['hs'];
+            $hs = floatval($hs);
+        }
+
+
+        $laminado = 0.0;
+        if (!empty($_POST['laminado'])) {
+
+            $laminado = $_POST['laminado'];
+            $laminado = floatval($laminado);
+        }
+
+
+        $barnizadic = 0.0;
+        if (!empty($_POST['barnizadic'])) {
+
+            $barnizadic = $_POST['barnizadic'];
+            $barnizadic = floatval($barnizadic);
+        }
+
+
+        $barniz = 0.0;
+        if (!empty($_POST['barniz'])) {
+
+            $barniz = $_POST['barniz'];
+            $barniz = floatval($barniz);
+        }
+
+
+        $suaje = 0.0;
+        if (!empty($_POST['suaje'])) {
+
+            $suaje = $_POST['suaje'];
+            $suaje = floatval($suaje);
+        }
+
+        $forrado = 0.0;
+        if (!empty($_POST['forrado'])) {
+
+            $forrado = $_POST['forrado'];
+            $forrado = floatval($forrado);
+        }
 
 
     // aJson
@@ -1915,8 +2036,8 @@ class Cotizador extends Controller {
         $aJson['nomb_odt']                 = self::strip_slashes_recursive($_POST['odt']);
         $aJson['Fecha']                    = date("Y-m-d");
         $aJson['modelo']                   = $id_modelo;
-        $aJson['Nombre_cliente']           = $nombre_cliente;
         $aJson['id_cliente']               = $id_cliente;
+        $aJson['Nombre_cliente']           = $nombre_cliente;
         $aJson['id_usuario']               = $id_usuario;
         $aJson['nomb_usuario']             = $nomb_usuario;
         $aJson['tiraje']                   = $tiraje;
@@ -1973,10 +2094,11 @@ class Cotizador extends Controller {
         //$aJson['costo_corte_tot_carton']   = [];
 
 
+
     // Calculadora
         $aJson['Calculadora'] = self::almejaCalc($odt, $base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
 
-
+        // variables POST cambiadas
         $id_papel_empalme       = intval($_POST['optEC']);
         $id_papel_forro_cajon   = intval($_POST['optFCaj']);
         $id_papel_forro_cartera = intval($_POST['optFCar']);
@@ -2005,7 +2127,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_Empalme']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Empalme;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en Empalme;");
         }
 
 
@@ -2045,7 +2167,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_FCaj']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro del cajon;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en Forro del cajon;");
         }
 
 
@@ -2067,7 +2189,7 @@ class Cotizador extends Controller {
         $secc_ancho = $B1;
         $secc_largo = $Y1;
 
-        $aJson['Papel_FCar'] = self::calculaPapel("FCar", $id_papel_forro_cartera, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+        $aJson['Papel_FCar'] = self::calculaPapelCartera("FCar", $id_papel_forro_cartera, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
         $papel_tot_costo = round(floatval($aJson['Papel_FCar']['costo_unit_papel']), 2);
 
@@ -2085,7 +2207,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_FCar']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro de la cartera;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en Forro de la cartera;");
         }
 
 
@@ -2124,7 +2246,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_Guarda']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en la Guarda;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en la Guarda;");
         }
 
 
@@ -2163,7 +2285,7 @@ class Cotizador extends Controller {
 
         if ($corte_cajon <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton del cajon;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al carton del cajon;");
         }
 
         $aJson['Cortes']['carton_cajon'] = $corte_cajon;
@@ -2198,7 +2320,7 @@ class Cotizador extends Controller {
 
         if ($corte_cajon_cartera <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton de la cartera;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al carton de la cartera;");
         }
 
         $cost_tot_carton = round(floatval($aJson['CartonCar']['costo_unit_papel']), 2);
@@ -2240,6 +2362,19 @@ class Cotizador extends Controller {
     // termina corte
 
         $aJson['costo_subtotal'] += round(floatval($aJson['costo_corte_tot_papel'] + $aJson['corte_tot_pliegos_carton']), 2);
+
+
+        $id_papel_empalme       = intval($_POST['optEC']);
+        $id_papel_forro_cajon   = intval($_POST['optFCaj']);
+        $id_papel_forro_cartera = intval($_POST['optFCar']);
+        $id_papel_guarda        = intval($_POST['optG']);
+
+        /*
+        $id_papel_empalme       = intval($_POST['papel_interior_cajon']);
+        $id_papel_forro_cajon   = intval($_POST['papel_exterior_cajon']);
+        $id_papel_forro_cartera = intval($_POST['papel_exterior_cartera']);
+        $id_papel_guarda        = intval($_POST['papel_interior_cartera']);
+        */
 
     // ************ Corte Refine **********************
 
@@ -2402,10 +2537,12 @@ class Cotizador extends Controller {
 
         $aEncuadernacion_Fcaj = [];
 
+        $id_papel_exterior_cajon = intval($_POST['optFCaj']);
+
         $enc_cortes = intval($aJson['Papel_Empalme']['corte']);
 
 
-        $aJson['Encuadernacion_emp'] = self::calculoEncuadernacion($tiraje, $id_papel_forro_cajon, $enc_cortes, $ventas_model);
+        $aJson['Encuadernacion_emp'] = self::calculoEncuadernacion($tiraje, $id_papel_exterior_cajon, $enc_cortes, $ventas_model);
 
 
         if ($aJson['Encuadernacion_emp']['costo_tot_proceso'] <= 0) {
@@ -2424,7 +2561,7 @@ class Cotizador extends Controller {
 
         $enc_cortes_fcaj = intval($aJson['Papel_FCaj']['corte']);
 
-        $aJson['Encuadernacion_FCaj'] = self::calculoEncuadernacion_FCaj($tiraje, $id_papel_forro_cajon, $enc_cortes_fcaj, $ventas_model);
+        $aJson['Encuadernacion_FCaj'] = self::calculoEncuadernacion_FCaj($tiraje, $id_papel_exterior_cajon, $enc_cortes_fcaj, $ventas_model);
 
         if ($aJson['Encuadernacion_FCaj']['arreglo_costo_unitario'] <= 0) {
 
@@ -2668,7 +2805,7 @@ class Cotizador extends Controller {
 
                         if ($aDigEmp[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas en Empalme;");
+                            self::mError($aJson, $mensaje, $error . "Digital Empalme. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         }
 
                         if ($aDigEmp[$i]['costo_tot_proceso'] <= 0) {
@@ -2680,7 +2817,7 @@ class Cotizador extends Controller {
                         $subtotal             += round(floatval($aDigEmp[$i]['costo_tot_proceso']), 2);
                     } else {
 
-                        self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas en Digital Empalme;");
+                        self::mError($aJson, $mensaje, $error . "Digital Empalme. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -2942,7 +3079,7 @@ class Cotizador extends Controller {
 
                         if ($aDigFCaj[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Digital Forro del cajon;");
+                            self::mError($aJson, $mensaje, "Digital Forro del Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         } elseif ($aDigFCaj[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Digital Forro del cajon;");
@@ -2952,7 +3089,7 @@ class Cotizador extends Controller {
                         $subtotal          += round(floatval($aDigFCaj[$i]['costo_tot_proceso']), 2);
                     } else {
 
-                        self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas (Forro del cajon);");
+                        self::mError($aJson, $mensaje, $error . "Digital Forro del Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -3231,7 +3368,7 @@ class Cotizador extends Controller {
 
                         if ($aDigFCar[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas (Forro Cartera);");
+                            self::mError($aJson, $mensaje, "Digital Forro Cartera. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         } elseif ($aDigFCar[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Digital. No existe costo en Forro de la Cartera;");
@@ -3241,7 +3378,7 @@ class Cotizador extends Controller {
                         $subtotal          += round(floatval($aDigFCar[$i]['costo_tot_proceso']), 2);
                     } else {
 
-                        self::mError($aJson, $mensaje, $error .  "Digital. No cabe con las medidas proporcionadas en Forro de la Cartera;");
+                        self::mError($aJson, $mensaje, $error .  "Digital Forro Cartera. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -3492,7 +3629,7 @@ class Cotizador extends Controller {
 
                         if ($aDigG[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Guarda;");
+                            self::mError($aJson, $mensaje, "Digital Guarda. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         } elseif ($aDigG[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Digital(Guarda);");
@@ -3502,7 +3639,7 @@ class Cotizador extends Controller {
                         $subtotal            += round(floatval($aDigG[$i]['costo_tot_proceso']), 2);
                     } else {
 
-                        self::mError($aJson, $mensaje, $error .  "Digital. No cabe con las medidas proporcionadas en Guarda;");
+                        self::mError($aJson, $mensaje, $error .  "Digital Guarda. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -3625,9 +3762,9 @@ class Cotizador extends Controller {
 
     $aAcbMaq   = [];
 
-    
+
     for ($i = 0; $i < $cuantos_aAcb; $i++) {
-        
+
         $tipoGrabado = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['tipoGrabado']));
 
         $tipo_acabado = utf8_encode(self::strip_slashes_recursive($aAcb[$i]['Tipo_acabado']));
@@ -5098,7 +5235,28 @@ class Cotizador extends Controller {
 
 /************************* Inicia Bancos ********************************/
 
+/*
+    $id_papel = 1;
+    $largo    = 13;
+    $ancho    = 12;
+    $altura   = 5;
 
+    // calculo de banco superior triangular
+    $banco_carton_tri = self::calculaBancoTriangular($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model);
+
+
+    // calculo de banco inferior circular
+    $banco_carton_norm = self::calculaBancoNormal($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model);
+
+
+    self::prettyPrint($banco_carton_tri, "banco_carton_tri", 5148);
+    self::prettyPrint($banco_carton_norm, "banco_carton_norm", 5149);
+
+
+    die();
+*/
+
+    // costeo de materiales Bancos
     if (isset($_POST["aBancos"]) and !empty($_POST["aBancos"])) {
 
         $aBancos_tmp = json_decode($_POST['aBancos'], true);
@@ -5125,14 +5283,17 @@ class Cotizador extends Controller {
 
             $largo       = $aBancos_R[$i]['largo'];
             $ancho       = $aBancos_R[$i]['ancho'];
-            $profundidad = $aBancos_R[$i]['Profundidad'];
+            $profundidad = $aBancos_R[$i]['profundidad'];
+
+
+// aqui me quede...
 
             $banco_tiraje = intval($_POST['qty']);
 
             switch ($Tipo_banco) {
                 case 'Carton':
 
-                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['Suaje']));
+                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['suaje']));
 
 
                     $costo_bancos_tmp = $ventas_model->costo_bancos("Carton");
@@ -5195,7 +5356,7 @@ class Cotizador extends Controller {
                     break;
                 case 'Espuma':
 
-                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['Suaje']));
+                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['suaje']));
 
                     $costo_bancos_tmp = $ventas_model->costo_bancos("Espuma");
 
@@ -5864,82 +6025,236 @@ class Cotizador extends Controller {
 /******************************************/
 /******************************************/
 
-/******************************************/
+/********** Validación de Offset, Digital Y Laminado **************/
 
     // checa que se haya seleccionado correctamente el papel
     // para offset
 
     // papel empalme
-    $id_papel_emp = $aJson['Papel_Empalme']['id_papel'];
-    $id_papel_emp = intval($id_papel_emp);
+    if (array_key_exists('OffEmp', $aJson)) {
 
-    $l_papel_offset_emp = 0;
+        $id_papel_emp = $aJson['Papel_Empalme']['id_papel'];
+        $id_papel_emp = intval($id_papel_emp);
 
-    $l_papel_offset_emp = self::checkPapelOffset($id_papel_emp, "offset", $ventas_model);
+        $l_papel_offset_emp = 0;
+
+        $l_papel_offset_emp = self::checkPapelOffset($id_papel_emp, "offset", $ventas_model);
 
 
-    if (!$l_papel_offset_emp) {
+        if (!$l_papel_offset_emp) {
 
-        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el empalme no es correcto;";
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el empalme no es correcto;";
+        }
     }
 
     // papel forro cajon
-    $id_papel_fcaj = $aJson['Papel_FCaj']['id_papel'];
-    $id_papel_fcaj = intval($id_papel_fcaj);
+    if (array_key_exists('OffFCaj', $aJson)) {
 
-    $l_papel_offset_fcaj = 0;
-
-    $l_papel_offset_fcaj = self::checkPapelOffset($id_papel_fcaj, "offset", $ventas_model);
+        $id_papel_fcaj = $aJson['Papel_FCaj']['id_papel'];
+        $id_papel_fcaj = intval($id_papel_fcaj);
 
 
-    if (!$l_papel_offset_fcaj) {
+        $l_papel_offset_fcaj = 0;
 
-        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro del cajon no es correcto;";
+        $l_papel_offset_fcaj = self::checkPapelOffset($id_papel_fcaj, "offset", $ventas_model);
+
+
+        if (!$l_papel_offset_fcaj) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro del cajon no es correcto;";
+        }
     }
+
 
     // forro cartera
-    $id_papel_fcar = $aJson['Papel_FCar']['id_papel'];
-    $id_papel_fcar = intval($id_papel_fcar);
+    if (array_key_exists('OffFCar', $aJson)) {
 
-    $l_papel_offset_fcar = 0;
+        $id_papel_fcar = $aJson['Papel_FCar']['id_papel'];
+        $id_papel_fcar = intval($id_papel_fcar);
 
-    $l_papel_offset_fcar = self::checkPapelOffset($id_papel_fcar, "offset", $ventas_model);
+        $l_papel_offset_fcar = 0;
+
+        $l_papel_offset_fcar = self::checkPapelOffset($id_papel_fcar, "offset", $ventas_model);
 
 
-    if (!$l_papel_offset_fcar) {
+        if (!$l_papel_offset_fcar) {
 
-        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro de la cartera no es correcto;";
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro de la cartera no es correcto;";
+        }
     }
+
 
     // guarda
-    $id_papel_g = $aJson['Papel_Guarda']['id_papel'];
-    $id_papel_g = intval($id_papel_g);
+    if (array_key_exists('OffG', $aJson)) {
 
-    $l_papel_offset_g = 0;
+        $id_papel_g = $aJson['Papel_Guarda']['id_papel'];
+        $id_papel_g = intval($id_papel_g);
 
-    $l_papel_offset_g = self::checkPapelOffset($id_papel_g, "offset", $ventas_model);
+        $l_papel_offset_g = 0;
+
+        $l_papel_offset_g = self::checkPapelOffset($id_papel_g, "offset", $ventas_model);
 
 
-    if (!$l_papel_offset_g) {
+        if (!$l_papel_offset_g) {
 
-        $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para la guarda no es correcto;";
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para la guarda no es correcto;";
+        }
     }
 
 
-/*
-    self::prettyPrint($id_papel_emp, "id_papel_emp", 5960);
-    self::prettyPrint($id_papel_fcaj, "id_papel_fcaj");
-    self::prettyPrint($id_papel_fcar, "id_papel_fcar");
-    self::prettyPrint($id_papel_g, "id_papel_g");
-    self::prettyPrint($l_papel_offset_emp, "l_papel_offset_emp");
-    self::prettyPrint($l_papel_offset_fcaj, "l_papel_offset_fcaj");
-    self::prettyPrint($l_papel_offset_fcar, "l_papel_offset_fcar");
-    self::prettyPrint($l_papel_offset_g, "l_papel_offset_g");
-    self::prettyPrint($aJson['error'], "aJson(error)");
+
+    // checa que se haya seleccionado correctamente el papel
+    // para digital
+
+    // papel empalme
+    if (array_key_exists('DigEmp', $aJson)) {
+
+        $id_papel_emp = $aJson['Papel_Empalme']['id_papel'];
+        $id_papel_emp = intval($id_papel_emp);
+
+        $l_papel_offset_emp = 0;
+
+        $l_papel_offset_emp = self::checkPapelOffset($id_papel_emp, "digital", $ventas_model);
 
 
-    die();
-*/
+        if (!$l_papel_offset_emp) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) para el empalme no es correcto;";
+        }
+    }
+
+    // papel forro cajon
+    if (array_key_exists('DigFCaj', $aJson)) {
+
+        $id_papel_fcaj = $aJson['Papel_FCaj']['id_papel'];
+        $id_papel_fcaj = intval($id_papel_fcaj);
+
+
+        $l_papel_offset_fcaj = 0;
+
+        $l_papel_offset_fcaj = self::checkPapelOffset($id_papel_fcaj, "digital", $ventas_model);
+
+
+        if (!$l_papel_offset_fcaj) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) para el forro del cajon no es correcto;";
+        }
+    }
+
+
+    // forro cartera
+    if (array_key_exists('DigFCar', $aJson)) {
+
+        $id_papel_fcar = $aJson['Papel_FCar']['id_papel'];
+        $id_papel_fcar = intval($id_papel_fcar);
+
+        $l_papel_offset_fcar = 0;
+
+        $l_papel_offset_fcar = self::checkPapelOffset($id_papel_fcar, "digital", $ventas_model);
+
+
+        if (!$l_papel_offset_fcar) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) para el forro de la cartera no es correcto;";
+        }
+    }
+
+
+    // guarda
+    if (array_key_exists('DigG', $aJson)) {
+
+        $id_papel_g = $aJson['Papel_Guarda']['id_papel'];
+        $id_papel_g = intval($id_papel_g);
+
+        $l_papel_offset_g = 0;
+
+        $l_papel_offset_g = self::checkPapelOffset($id_papel_g, "digital", $ventas_model);
+
+
+        if (!$l_papel_offset_g) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) para la guarda no es correcto;";
+        }
+    }
+
+
+
+    // checa que se haya seleccionado correctamente el papel
+    // para laminado
+
+    // papel empalme
+    if (array_key_exists('Laminado', $aJson)) {
+
+        $id_papel_emp = $aJson['Papel_Empalme']['id_papel'];
+        $id_papel_emp = intval($id_papel_emp);
+
+        $l_papel_offset_emp = 0;
+
+        $l_papel_offset_emp = self::checkPapelOffset($id_papel_emp, "laminado", $ventas_model);
+
+
+        if (!$l_papel_offset_emp) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) para el empalme no es correcto;";
+        }
+    }
+
+    // papel forro cajon
+    if (array_key_exists('LaminadoFcaj', $aJson)) {
+
+        $id_papel_fcaj = $aJson['Papel_FCaj']['id_papel'];
+        $id_papel_fcaj = intval($id_papel_fcaj);
+
+
+        $l_papel_offset_fcaj = 0;
+
+        $l_papel_offset_fcaj = self::checkPapelOffset($id_papel_fcaj, "laminado", $ventas_model);
+
+
+        if (!$l_papel_offset_fcaj) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) para el forro del cajon no es correcto;";
+        }
+    }
+
+
+    // forro cartera
+    if (array_key_exists('LaminadoFcar', $aJson)) {
+
+        $id_papel_fcar = $aJson['Papel_FCar']['id_papel'];
+        $id_papel_fcar = intval($id_papel_fcar);
+
+        $l_papel_offset_fcar = 0;
+
+        $l_papel_offset_fcar = self::checkPapelOffset($id_papel_fcar, "laminado", $ventas_model);
+
+
+        if (!$l_papel_offset_fcar) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) para el forro de la cartera no es correcto;";
+        }
+    }
+
+
+    // guarda
+    if (array_key_exists('LaminadoG', $aJson)) {
+
+        $id_papel_g = $aJson['Papel_Guarda']['id_papel'];
+        $id_papel_g = intval($id_papel_g);
+
+        $l_papel_offset_g = 0;
+
+        $l_papel_offset_g = self::checkPapelOffset($id_papel_g, "laminado", $ventas_model);
+
+
+        if (!$l_papel_offset_g) {
+
+            $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) para la guarda no es correcto;";
+        }
+    }
+
+
+/********** Termina validación de Offset, Digital Y Laminado **************/
 
 
 /******************************************/
@@ -6326,6 +6641,7 @@ class Cotizador extends Controller {
 
         $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
 
+
         $cuantos_db = count($sql_tabla_temp_db);
 
         for ($j = 0; $j < $cuantos_db; $j++) {
@@ -6335,6 +6651,7 @@ class Cotizador extends Controller {
             $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
             $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
             $aJson_tmp[$j]['tiempo_requerido']  = floatval($sql_tabla_temp_db[$j]['tiempo_requerido']);
+            $aJson_tmp[$j]['merma_min']         = floatval($sql_tabla_temp_db[$j]['merma_min']);
             $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
         }
 

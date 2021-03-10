@@ -227,6 +227,69 @@ class Almeja extends Cajas{
             $("#table_adicionales_tr").append(tr);
     }
 
+    appndMermas(arrMerma, tipo, colorSeccion, seccion){
+
+        let mermaMin   = ''
+        let mermaAdic  = ''
+        let cUMerma    = ''
+        let cTMerma    = ''
+        let mermaTotal = ''
+
+        if( tipo == 'Digital' ){
+
+            //a checar
+            return true;
+            mermaMin   = arrMerma['merma_min']
+            mermaAdic  = arrMerma['merma_adic']
+            cUMerma    = arrMerma['costo_unit_papel_merma']
+            cTMerma    = arrMerma['costo_tot_pliegos_merma']
+            mermaTotal = arrMerma['merma_tot']
+
+            let trMerma = `<tr><td></td><td>Merma ${tipo}</td><td>$${cTMerma}</td><td></td></tr>`;
+            $('#resumen'+seccion).append(trMerma);
+
+            //para boton tablas
+            trMerma = 
+            `
+                <tr>${colorSeccion}
+                    <td>${tipo}</td>
+                    <td>${mermaMin}</td>
+                    <td>${mermaAdic}</td>
+                    <td>${mermaTotal}</td>
+                    <td>$${cUMerma}</td>
+                    <td>$${cTMerma}</td>
+                </tr>
+            `;
+            $('#table_mermas_tr').append(trMerma);
+            return true
+        }
+
+        mermaMin   = arrMerma['merma_min']
+        mermaAdic  = arrMerma['merma_adic']
+        cUMerma    = arrMerma['costo_unit_papel_merma']
+        if( cUMerma == undefined ) cUMerma = arrMerma['costo_unit_merma'];
+        cTMerma    = arrMerma['costo_tot_pliegos_merma']
+        mermaTotal = arrMerma['merma_tot']
+
+        //para resumen
+        let trMerma = `<tr><td></td><td>Merma ${tipo}</td><td>$${cTMerma}</td><td></td></tr>`;
+        $('#resumen'+seccion).append(trMerma);
+
+        //para boton tablas
+        trMerma = 
+        `
+            <tr>${colorSeccion}
+                <td>${tipo}</td>
+                <td>${mermaMin}</td>
+                <td>${mermaAdic}</td>
+                <td>${mermaTotal}</td>
+                <td>$${cUMerma}</td>
+                <td>$${cTMerma}</td>
+            </tr>
+        `;
+        $('#table_mermas_tr').append(trMerma);
+    }
+
     appndImp( aImp, secciones ){
 
         if ( aImp == undefined ) return false;
@@ -281,11 +344,6 @@ class Almeja extends Cajas{
                             var cTArr     = arreglo[j]['arreglo_costo'];
                             var total     = parseFloat(arreglo[j]['costo_tot_proceso']);
 
-                            let mermaMin  = arreglo[j]['mermas']['merma_min']
-                            let mermaAdic = arreglo[j]['mermas']['merma_adic']
-                            let cUMerma = arreglo[j]['mermas']['costo_unit_papel_merma']
-                            let cTMerma = arreglo[j]['mermas']['costo_tot_pliegos_merma']
-
 
                             var tr = '<tr><td colspan="3" style="background: steelblue;color: white;">' + titulo + ' - Maquila</td></tr><tr style="background: #87ceeb73;"><td>Cantidad: '+ cantidad +'</td><td>Tipo: '+ tipo +'</td><td>Tintas: '+ tintas +'</td></tr><tr><td></td><td>Costo Unitario</td><td>Subtotal</td></tr><tr><td>Laminas</td><td>'+ cULam +'</td><td>'+ cTLam +'</td></tr><tr><td>Arreglo</td><td>'+ cUArr +'</td><td>'+ cTArr +'</td></tr><tr style="border-top: 2px solid #cccc;"><td></td><td>Total</td><td>$'+ total +'</td></tr><tr><td colspan="3"></td></tr>';
 
@@ -297,12 +355,9 @@ class Almeja extends Cajas{
 
                             $('#resumen'+seccion).append(trResumen);
                             
-                            //mermas en boton resumen
-                            trMerma = '<tr><td></td><td>Merma Offset</td><td>$'+ total +'</td><td></td></tr>';
-                            $('#resumenEmpalme').append(trMerma);
 
-                            trMerma = '<tr>'+ colorSeccion +'<td>Offset</td><td>'+ mermaMin +'</td><td>'+ mermaAdic +'</td><td>'+ cTMerma +'</td><td>$'+ cUMerma +'</td><td>$'+ cTMerma +'<input type="hidden" class="prices" value="'+ cTMerma +'"></td></tr>';
-                            $('#table_mermas_tr').append(trMerma);
+                            //mermas
+                            this.appndMermas(arreglo[j]['mermas'], 'Offset', colorSeccion, seccion);
                         }
                     }else{
 
@@ -332,12 +387,8 @@ class Almeja extends Cajas{
 
                             $('#resumen'+seccion).append(trResumen);
 
-                            //mermas en boton resumen
-                            trMerma = '<tr><td></td><td>Merma Offset</td><td>$'+ total +'</td><td></td></tr>';
-                            $('#resumenEmpalme').append(trMerma);
-
-                            trMerma = '<tr>'+ colorSeccion +'<td>Offset</td><td>'+ mermaMin +'</td><td>'+ mermaAdic +'</td><td>'+ cTMerma +'</td><td>$'+ cUMerma +'</td><td>$'+ cTMerma +'</td></tr>';
-                            $('#table_mermas_tr').append(trMerma);
+                            //mermas
+                            this.appndMermas(arreglo[j]['mermas'], 'Offset', colorSeccion, seccion);
                         }
                     }
                 break;
@@ -350,6 +401,7 @@ class Almeja extends Cajas{
                         var cUDig    = arreglo[j]['costo_unitario'];
                         var cTDig    = arreglo[j]['costo_tot_proceso'];
                         var cabe     = arreglo[j]['cabe_digital'];
+
                         if ( cabe == "NO" ){
 
                             var tr = '';
@@ -365,6 +417,9 @@ class Almeja extends Cajas{
                         var trResumen = '<tr><td></td><td>Impresión Digital</td><td>$'+ cTDig +'<input type="hidden" class="pricesresumenempalme" value="'+ cTDig +'"></td><td></td></tr>';
 
                         $('#resumen'+seccion).append(trResumen);
+
+                        //mermas
+                        this.appndMermas(arreglo[j]['mermas'], 'Digital', colorSeccion, seccion);
                     }
                 break;
 
@@ -390,6 +445,9 @@ class Almeja extends Cajas{
                         var trResumen = '<tr><td></td><td>Impresión Serigrafia</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
                         $('#resumen'+seccion).append(trResumen);
+
+                        //mermas
+                        this.appndMermas(arreglo[j]['mermas'], 'Serigrafia', colorSeccion, seccion);
                     }
                 break;
             }
@@ -447,11 +505,13 @@ class Almeja extends Cajas{
             if ( seccion == '_UV' || seccion == '' ) seccion = 'EC';
             if ( seccion == 'Fcaj' ) seccion = 'FCaj';
             if ( seccion == 'Fcar' ) seccion = 'FCar';
+            let colorSeccion = ''
             //se busca el titulo por ultimo
             this._secciones.find(function(sec){
 
                 if( sec['siglas'].indexOf(seccion) == 0 ){
                     titulo = sec['titulo'];
+                    colorSeccion = `<td style="background: ${sec['color']};">${sec['siglas']}</td>`
                     return true;
                 }
             });
@@ -478,6 +538,9 @@ class Almeja extends Cajas{
                         var trResumen = '<tr><td></td><td>Acabado Barniz UV</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
                         $('#resumen'+seccion).append(trResumen);
+
+                        //mermas
+                        this.appndMermas(arreglo[j]['mermas'], 'Barniz UV', colorSeccion, seccion);
                     }
                 break;
                 case 'Las':
@@ -498,6 +561,10 @@ class Almeja extends Cajas{
                         var trResumen = '<tr><td></td><td>Acabado Corte Laser</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
                         $('#resumen'+seccion).append(trResumen);
+
+                        //mermas
+                        //a checar
+                        //this.appndMermas(arreglo[j]['mermas'], 'Corte Laser', colorSeccion, seccion);
                     }
                 break;
                 case 'Gra':
@@ -526,6 +593,9 @@ class Almeja extends Cajas{
                         var trResumen = '<tr><td></td><td>Acabado Grabado</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
                         $('#resumen'+seccion).append(trResumen);
+
+                        //mermas
+                        this.appndMermas(arreglo[j]['mermas'], 'Grabado', colorSeccion, seccion);
                     }
                 break;
                 case 'Hot':
@@ -556,7 +626,10 @@ class Almeja extends Cajas{
 
                         var trResumen = '<tr><td></td><td>Acabado HotStamping</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
-                        $('#resumen'+seccion).append(trResumen);  
+                        $('#resumen'+seccion).append(trResumen);
+
+                        //mermas
+                        this.appndMermas(arreglo[j]['mermas'], 'Hot Stamping', colorSeccion, seccion);
                     }
                 break;
                 case 'Lam':
@@ -579,6 +652,9 @@ class Almeja extends Cajas{
                         var trResumen = '<tr><td></td><td>Acabado Laminado</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
                         $('#resumen'+seccion).append(trResumen);
+
+                        //mermas
+                        this.appndMermas(arreglo[j]['mermas'], 'Laminado', colorSeccion, seccion);
                     }
                 break;
                 case 'Sua':
@@ -604,7 +680,10 @@ class Almeja extends Cajas{
 
                         var trResumen = '<tr><td></td><td>Acabado Suaje</td><td>$'+ total +'<input type="hidden" class="pricesresumenempalme" value="'+ total +'"></td><td></td></tr>';
 
-                        $('#resumen'+seccion).append(trResumen );      
+                        $('#resumen'+seccion).append(trResumen );
+
+                        //mermas
+                        this.appndMermas(arreglo[j]['mermas'], 'Suaje', colorSeccion, seccion);    
                     }
                 break;
             }
@@ -614,58 +693,40 @@ class Almeja extends Cajas{
     //Checa los datos ingresados en la interfaz que se le presenta al usuario. avalando los campos y arrojando un mensaje de error.
     checkDatosI(grabar, modificar){
 
-        let formData      = $("#dataForm").serializeArray();
-        let odt           = $("#odt").val();
-        let base          = $("#corte_largo").val();
-        let alto          = $("#corte_ancho").val();
-        let profundidad   = $("#profundidad_1").val();
-        let grosor_cajon = $("#grosor_cajon_1").val();
-        let grosor_cartera   = $("#grosor_cartera_1").val();
-        let cantidad      = $("#qty").val();
-
+        let formData       = $("#dataForm").serializeArray();
+        let odt            = $("#odt").val();
+        let base           = $("#corte_largo").val();
+        let alto           = $("#corte_ancho").val();
+        let profundidad    = $("#profundidad_1").val();
+        let grosor_cajon   = $("#grosor_cajon_1").val();
+        let grosor_cartera = $("#grosor_cartera_1").val();
+        let cantidad       = $("#qty").val();
 
         $(".is-invalid").removeClass('is-invalid');
 
-        if( this.revisarPropiedades(odt,"ODT") == false ) {
-            
-            $("#odt").addClass('is-invalid');
-            return false;
+        let checkDatos = (valor, input) =>{
+
+            if( valor == '' || valor == null ){
+
+                $(`#${input}`).addClass('is-invalid');
+                return true;
+            }
         }
 
-        if( this.revisarPropiedades(base,"base") == false ) {
-            
-            $("#corte_largo").addClass('is-invalid');
-            return false;
-        }
-        
-        if( this.revisarPropiedades(alto,"alto") == false ) {
-            
-            $("#corte_ancho").addClass('is-invalid');
-            return false;
-        }
-        
-        if( this.revisarPropiedades(profundidad,"Profundidad") == false ) {
-            
-            $("#profundidad_1").addClass('is-invalid');
-            return false;
-        }
+        checkDatos(odt, 'odt');
+        checkDatos(base, 'corte_largo');
+        checkDatos(alto, 'corte_ancho');
+        checkDatos(profundidad, 'profundidad_1');
+        checkDatos(grosor_cajon, 'grosor_cajon_1');
+        checkDatos(grosor_cartera, 'grosor_cartera_1');
+        checkDatos(cantidad, 'qty');
+        $('#optEC_chosen').addClass('is-invalid');
+        if( odt == '' || base == '' || alto == '' || profundidad == '' || grosor_cajon == '' || grosor_cartera == '' || cantidad == '' ){
 
-        if( this.revisarPropiedades(grosor_cajon,"Grosor Cajón") == false ) {
-            
-            $("#grosor_cajon_1").addClass('is-invalid');
-            return false;
-        }
-
-        if( this.revisarPropiedades(grosor_cartera,"Grosor Cartera") == false ) {
-            
-            $("#grosor_cartera_1").addClass('is-invalid');
-            return false;
-        }
-
-        if( this.revisarPropiedades(cantidad,"Cantidad") == false ) {
-            
-            $("#qty").addClass('is-invalid');
-            return false;
+            this.showModError("");
+            $("#txtContenido").html("Debe de llenar los campos marcados en <label class='text-danger font-weight-bold'>rojo</label> para poder continuar.");
+            this.errorBanco = true;
+            return false
         }
 
         var cadena = "";
@@ -688,6 +749,116 @@ class Almeja extends Cajas{
             return false;
         }
 
+        //Bancos - sirve para llenar los input de bancos y al mismo tiempo checar que esten llenos. en dado caso de que no arroje un error
+        this.errorBanco = false
+        this._bancos.find(function(banco){
+
+
+            let id          = banco['id'];
+            let largo       = '';
+            let ancho       = '';
+            let material    = '';
+            let papel       = '';
+            let profundidad = '';
+            let posicion    = '';
+            let suaje       = '';
+
+            banco['largo']       = $('#txtLargo'+id).val()
+            banco['ancho']       = $('#txtAncho'+id).val()
+            banco['id_banco']  = $('#optMatBan'+id).val()
+            banco['Tipo_banco']  = $(`#optMatBan${id} option:selected`).text();
+            banco['papel']       = $('#optBan'+id).val()
+            banco['profundidad'] = $('#txtProf'+id).val()
+            banco['posicion']    = $('#optPosicion'+id).val()
+            banco['suaje']       = $('#optSuaje'+id).val()
+
+            largo       = banco['largo']
+            ancho       = banco['ancho']
+            material    = banco['id_banco']
+            papel       = banco['papel']
+            profundidad = banco['profundidad']
+            posicion    = banco['posicion']
+            suaje       = banco['suaje']
+
+            $('#txtLargo'+id).removeClass('is-invalid')
+            $('#txtAncho'+id).removeClass('is-invalid')
+            $('#optMatBan'+id).removeClass('is-invalid')
+            $('#txtProf'+id).removeClass('is-invalid')
+            $('#optPosicion'+id).removeClass('is-invalid')
+            $('#optBan'+id).removeClass('is-invalid')
+            $('#optSuaje'+id).removeClass('is-invalid')
+
+
+            let checkDatos = (valor, id, input) =>{
+
+                if( valor == '' || valor == null ){
+
+                    $(`#${input + id}`).addClass('is-invalid');
+                    return true;
+                }
+            }
+
+            let checkMedidas = (medOrig, medChk, input, id) =>{
+
+                medOrig = parseFloat(medOrig)
+                medChk = parseFloat(medChk)
+                if( medChk > medOrig ){
+
+                    $(`#${input + id}`).addClass('is-invalid');
+                    return true;
+                }
+            }
+
+            checkDatos(material, id, 'optMatBan');
+            checkDatos(posicion, id, 'optPosicion');
+            checkDatos(largo, id, 'txtLargo');
+            checkDatos(ancho, id, 'txtAncho');
+            checkDatos(profundidad, id, 'txtProf');
+            checkDatos(suaje, id, 'optSuaje');
+
+            let error = false;
+            if( material == 'Carton' ){
+
+                error = checkDatos(papel,id,'optBan')
+            }
+            
+            if( largo == '' || ancho == '' || material == null || profundidad == '' || posicion == null || suaje == null || error == true ){
+
+                this.showModError("");
+                $("#txtContenido").attr("align", "left");
+                $("#txtContenido").html("");
+                $("#txtContenido").html("Debe de llenar todos los campos de banco");
+                this.errorBanco = true;
+                return false
+            }else{
+
+                let largoOrig = $('#corte_largo').val()
+                let anchoOrig = $('#corte_ancho').val()
+                let profOrig  = $('#profundidad_1').val()
+
+                let errorLargo = checkMedidas(largoOrig, largo,'txtLargo',id);
+                let errorAncho = checkMedidas(anchoOrig, ancho,'txtAncho',id);
+                let errorProf = checkMedidas(profOrig, profundidad,'txtProf',id);
+                if( errorLargo == true || errorAncho == true || errorProf == true ){
+
+                    this.showModError("");
+                    $("#txtContenido").html("Las medidas rebasan a las originales. Favor de corregirlas");
+                    this.errorBanco = true;
+                    return false
+                }else{
+
+                    this.errorBanco = false    
+                }
+                
+            }
+        }.bind(this))
+
+        if( this.errorBanco == true ){
+
+            return false
+        }
+        
+
         this._secciones.forEach( function(sec){
 
             let partImp = 'aImp' +sec['siglas'];
@@ -707,9 +878,9 @@ class Almeja extends Cajas{
         var id_cliente_tmp = JSON.stringify(this._idCliente, null, 4);
         var id_odt_anterior = parseInt($("#id_odt_anterior").val());
         var modificar_odt = modificar;
-
-        id_odt_anterior > 0 ? modificar_odt = "SI" : "NO";
-
+        
+        id_odt_anterior > 0 ? modificar_odt = "SI" :  modificar_odt = "NO";
+        console.log(modificar_odt)
         formData.push(
             {name: 'id_cliente', value: id_cliente_tmp},
             {name: 'aCierres', value: aCierres_tmp},
@@ -813,6 +984,7 @@ class Almeja extends Cajas{
 	            		$('#lblToast').html('Los datos han sido actualizados!')
 	            	}
 	                caja.activarBtn();
+                    $("#btnPODT").prop("disabled",false);
 	            }
 	        } catch( e ) {
 

@@ -2028,8 +2028,8 @@ class RegaloModel extends Controller {
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
-                        $merma_min               = intval($row['merma_min']);
-                        $merma_tot               = intval($row['merma_tot']);
+                        $merma_min               = intval($row['mermas']['merma_min']);
+                        $merma_tot               = intval($row['mermas']['merma_tot']);
 
                         $sql_laser_empcaj = "INSERT INTO cot_reg_laserempcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
@@ -2159,6 +2159,7 @@ class RegaloModel extends Controller {
                         $Ancho                   = intval($row['Ancho']);
                         $area                    = round(floatval($row['area']), 2);
                         $laminado_costo_unitario = round(floatval($row['costo_unitario']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
@@ -2168,7 +2169,7 @@ class RegaloModel extends Controller {
                         $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
                         $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_laminado_empcaj = "INSERT INTO cot_reg_lamempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_laminado_empcaj = "INSERT INTO cot_reg_lamempcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_laminado_empcaj = $this->db->prepare($sql_laminado_empcaj);
 
@@ -2304,8 +2305,8 @@ class RegaloModel extends Controller {
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
-                        $merma_min               = intval($row['merma_min']);
-                        $merma_tot               = intval($row['merma_tot']);
+                        $merma_min               = intval($row['mermas']['merma_min']);
+                        $merma_tot               = intval($row['mermas']['merma_tot']);
 
                         $sql_laser_fcaj = "INSERT INTO cot_reg_laserfcaj(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
@@ -2435,6 +2436,7 @@ class RegaloModel extends Controller {
                         $ancho                   = intval($row['Ancho']);
                         $area                    = round(floatval($row['area']), 2);
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
@@ -2444,7 +2446,7 @@ class RegaloModel extends Controller {
                         $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
                         $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_laminado_fcaj = "INSERT INTO cot_reg_lamfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_laminado_fcaj = "INSERT INTO cot_reg_lamfcaj(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_laminado_fcaj = $this->db->prepare($sql_laminado_fcaj);
 
@@ -2581,8 +2583,8 @@ class RegaloModel extends Controller {
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
-                        $merma_min               = intval($row['merma_min']);
-                        $merma_tot               = intval($row['merma_tot']);
+                        $merma_min               = intval($row['mermas']['merma_min']);
+                        $merma_tot               = intval($row['mermas']['merma_tot']);
 
                         $sql_laser_emptap = "INSERT INTO cot_reg_laseremptap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
@@ -2712,6 +2714,7 @@ class RegaloModel extends Controller {
                         $Ancho                   = intval($row['Ancho']);
                         $area                    = round(floatval($row['area']), 2);
                         $laminado_costo_unitario = round(floatval($row['costo_unitario']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
@@ -2721,7 +2724,7 @@ class RegaloModel extends Controller {
                         $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
                         $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_laminado_emtap = "INSERT INTO cot_reg_lamemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_laminado_emtap = "INSERT INTO cot_reg_lamemptap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_laminado_emptap = $this->db->prepare($sql_laminado_emtap);
 
@@ -2857,8 +2860,8 @@ class RegaloModel extends Controller {
                         $costo_unitario          = round(floatval($row['costo_unitario']), 2);
                         $tiempo_requerido        = round(floatval($row['tiempo_requerido']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
-                        $merma_min               = intval($row['merma_min']);
-                        $merma_tot               = intval($row['merma_tot']);
+                        $merma_min               = intval($row['mermas']['merma_min']);
+                        $merma_tot               = intval($row['mermas']['merma_tot']);
 
                         $sql_laser_ftap = "INSERT INTO cot_reg_laserftap(id_odt, id_modelo, tipo_grabado, tiraje, costo_unitario, tiempo_requerido, costo_tot_proceso, merma_min, merma_tot, fecha) VALUES($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $costo_unitario, $tiempo_requerido, $costo_tot_proceso, $merma_min, $merma_tot, '$d_fecha')";
 
@@ -2988,6 +2991,7 @@ class RegaloModel extends Controller {
                         $Ancho                   = intval($row['Ancho']);
                         $area                    = round(floatval($row['area']), 2);
                         $laminado_costo_unitario = round(floatval($row['costo_unitario']), 2);
+                        $arreglo                 = round(floatval($row['arreglo']), 2);
                         $costo_tot_proceso       = round(floatval($row['costo_tot_proceso']), 2);
                         $merma_min               = intval($row['mermas']['merma_min']);
                         $merma_adic              = intval($row['mermas']['merma_adic']);
@@ -2997,7 +3001,7 @@ class RegaloModel extends Controller {
                         $costo_unit_merma        = round(floatval($row['mermas']['costo_unit_merma']), 2);
                         $costo_tot_pliegos_merma = round(floatval($row['mermas']['costo_tot_pliegos_merma']), 2);
 
-                        $sql_laminado_ftap = "INSERT INTO cot_reg_lamftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        $sql_laminado_ftap = "INSERT INTO cot_reg_lamftap(id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha) VALUES($id_caja_odt, $id_modelo, '$tipoGrabado', $tiraje, $Largo, $Ancho, $area, $laminado_costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                         $query_laminado_ftap = $this->db->prepare($sql_laminado_ftap);
 
