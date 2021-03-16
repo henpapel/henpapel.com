@@ -201,38 +201,38 @@
                 <table class="table">
                     <tr>
                         <td>Subtotal: </td>
-                        <td id="tdSubtotalCaja" class="grand-total">$0.00</td>
+                        <td align="right" id="tdSubtotalCaja" class="grand-total">$0.00</td>
                     </tr>
                     <tr>
                         <td>Utilidad: </td>
-                        <td id="UtilidadDrop">$0.00</td>
+                        <td align="right" id="UtilidadDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>IVA:</td>
-                        <td id="IVADrop">$0.00</td>
+                        <td align="right" id="IVADrop">$0.00</td>
                     </tr>
 
                     <tr>
                         <td>ISR: </td>
-                        <td id="ISRDrop">$0.00</td>
+                        <td align="right" id="ISRDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>Comisiones: </td>
-                        <td id="ComisionesDrop">$0.00</td>
+                        <td align="right" id="ComisionesDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>% Indirecto: </td>
-                        <td id="IndirectoDrop">$0.00</td>
+                        <td align="right" id="IndirectoDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>Ventas: </td>
-                        <td id="VentasDrop">$0.00</td>
+                        <td align="right" id="VentasDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>
                             <button type="button" id="descuentoModal" data-toggle="modal" data-target="#descuentos" style="border: none; background: white;">Descuento: (0%) </button>
                         </td>
-                        <td id="DescuentoDrop">$0.00</td>
+                        <td align="right" id="DescuentoDrop">$0.00</td>
                     </tr>
                 </table>
             </div>

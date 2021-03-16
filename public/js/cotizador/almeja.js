@@ -53,13 +53,15 @@ class Almeja extends Cajas{
         if( arrPapel['precio'] !== undefined ) isModCartones();
         if( arrPapel['costo_tot_pliegos'] !== undefined ) isModPapers();
 
+        costoUnitario = this.formateo(costoUnitario);
+        costoTotal = this.formateo(costoTotal);
         
         var tr = '<tr><td>' + parte + '</td><td>' + nombre + '</td><td>$' + costoUnitario + '</td><td>Largo: ' + largo + ' Ancho: ' + ancho + '</td><td>' + corte + '</td><td>' + pliegos + '</td><td>$' + costoTotal + '<input type="hidden" class="prices" value="' + costoTotal + '"></td></tr>';
 
         $('#table_papeles_tr').append(tr);
 
         //La parte siguiente es para el boton resumen
-        var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
+        var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td align="right">$'+ costoTotal +'</td><td></td></tr>';
         var tabla = "";
 
         this._secciones.find( function(sec){
@@ -81,33 +83,40 @@ class Almeja extends Cajas{
                 case "Empalme Cajón":
     
                     var precioEnc = arrPrincipal['Encuadernacion_emp']['costo_tot_proceso'];
-                    var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
+                    precioEnc = this.formateo(precioEnc);
+                    
+                    var trEnc = "<tr><td></td><td>Encuadernación</td><td  align='right'>$" + precioEnc + "</td><td></td></tr>";
                     $('#resumen'+tabla).append(trEnc);
                 break;
                 case "Forro Cajón":
                     var precioElab = arrPrincipal['Elab_Car']['forro_costo_tot'];
-                    var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
+                    precioElab = this.formateo(precioElab);
+                    var trElab = "<tr><td></td><td>Elaboración</td><td  align='right'>$" + precioElab + "</td><td></td></tr>";
                     $('#resumen'+tabla).append(trElab);
                     
                     var precioRanurado = arrPrincipal['arreglo_ranurado_hor_fcar']['costo_tot_proceso'];
-                    var trRan = "<tr><td></td><td>Ranurado</td><td>$" + precioRanurado + "</td><td></td></tr>";
+                    precioRanurado = this.formateo(precioRanurado);
+                    var trRan = "<tr><td></td><td>Ranurado</td><td  align='right'>$" + precioRanurado + "</td><td></td></tr>";
                     $('#resumen'+tabla).append(trRan);
     
                     var precioEnc = arrPrincipal['Encuadernacion_FCaj']['costo_tot_proceso'];
-                    var trEnc = "<tr><td></td><td>Encuadernación</td><td>$" + precioEnc + "</td><td></td></tr>";
+                    precioEnc = this.formateo(precioEnc);
+                    var trEnc = "<tr><td></td><td>Encuadernación</td><td align='right'>$" + precioEnc + "</td><td></td></tr>";
                     $('#resumen'+tabla).append(trEnc);
                 break;
                 case "Empalme Tapa":
                 break;
                 case "Carton Tapa":
-                    trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'</td><td></td></tr>';
+                    trResumen = '<tr><td></td><td>'+ nombre +'</td><td align="right">$'+ costoTotal +'</td><td></td></tr>';
                 break;
                 case "Forro Tapa":
                     var precioElab = arrPrincipal['elab_FTap']['costo_tot_proceso'];
-                    var trElab = "<tr><td></td><td>Elaboración</td><td>$" + precioElab + "</td><td></td></tr>";
+                    precioElab = this.formateo(precioElab);
+                    var trElab = "<tr><td></td><td>Elaboración</td><td align='right'>$" + precioElab + "</td><td></td></tr>";
                     $('#resumen'+tabla).append(trElab);
     
                     var precioRanurado = arrPrincipal['ranurado']['costo_tot_proceso'];
+                    precioRanurado = this.formateo(precioRanurado);
                     var trRan = "<tr><td></td><td>Ranurado</td><td>$" + precioRanurado + "</td><td></td></tr>";
                     $('#resumen'+tabla).append(trRan);
                 break;
@@ -1071,15 +1080,15 @@ class Almeja extends Cajas{
                 $('#resumenEncuadernacion').append(trEncuadernacion);
 
             // (MENSAJERIA)
-                var costo_msj = "<tr><td></td><td></td><td></td><td>$" + respuesta['mensajeria'] + "</td></tr>";
+                var costo_msj = "<tr><td></td><td></td><td></td><td align='right'>$" + this.formateo(respuesta['mensajeria']) + "</td></tr>";
                 $('#resumenMensajeria').append(costo_msj);
 
             // (EMPAQUE)
-                var costo_emp = "<tr><td></td><td></td><td></td><td>$" + respuesta['empaque'] + "</td></tr>";
+                var costo_emp = "<tr><td></td><td></td><td></td><td align='right'>$" + this.formateo(respuesta['empaque']) + "</td></tr>";
                 $('#resumenEmpaque').append(costo_emp);
 
             //ENCUADERNACION
-                var trEncuadernacion = "<tr><td></td><td></td><td></td><td>$" + respuesta['Encuadernacion_emp']['costo_tot_proceso'] + "</td></tr>";
+                var trEncuadernacion = "<tr><td></td><td></td><td></td><td align='right'>$" + this.formateo(respuesta['Encuadernacion_emp']['costo_tot_proceso']) + "</td></tr>";
                 $("#resumenEncuadernacion").append(trEncuadernacion);
 
             // CARTONES
@@ -1213,15 +1222,26 @@ class Almeja extends Cajas{
             
 
             // COSTOS
-                $("#tdSubtotalCaja").html("$" + respuesta['costo_subtotal']);
-                $("#UtilidadDrop").html("$" + respuesta['Utilidad']);
-                $("#Totalplus").html("$" + respuesta['costo_odt']);
-                $("#IVADrop").html("$" + respuesta['iva']);
-                $("#ComisionesDrop").html("$" + respuesta['comisiones']);
-                $("#IndirectoDrop").html("$" + respuesta['indirecto']);
-                $("#VentasDrop").html("$" + respuesta['ventas']);
-                $("#ISRDrop").html("$" + respuesta['ISR']);
-                $("#DescuentoDrop").html("$" + respuesta['descuento']);
+                let subtotal   = this.formateo(respuesta['costo_subtotal'])
+                let utilidad   = this.formateo(respuesta['Utilidad'])
+                let costo_odt  = this.formateo(respuesta['costo_odt'])
+                let iva        = this.formateo(respuesta['iva'])
+                console.log(iva)
+
+                let comisiones = this.formateo(respuesta['comisiones'])
+                let indirecto  = this.formateo(respuesta['indirecto'])
+                let ventas     = this.formateo(respuesta['ventas'])
+                let isr        = this.formateo(respuesta['ISR'])
+                let descuento  = this.formateo(respuesta['descuento'])
+                $("#tdSubtotalCaja").html("$" + subtotal);
+                $("#UtilidadDrop").html("$" + utilidad);
+                $("#Totalplus").html("$" + costo_odt);
+                $("#IVADrop").html("$" + iva);
+                $("#ComisionesDrop").html("$" + comisiones);
+                $("#IndirectoDrop").html("$" + indirecto);
+                $("#VentasDrop").html("$" + ventas);
+                $("#ISRDrop").html("$" + isr);
+                $("#DescuentoDrop").html("$" + descuento);
             
             //funcion para costo totales para sumas del resumen:
             let step = 6
@@ -1240,17 +1260,21 @@ class Almeja extends Cajas{
                             let valorTD = $(this).html()
                             
                             let datosSplit = valorTD.split('<')
-                            datosSplit = datosSplit[0].split('$')
-                            precio = parseFloat(datosSplit[1])
+                            
+                            datosSplit[0] = datosSplit[0].replace(',','')
+
+                            datosSplit = datosSplit[0].replace('$','')
+                            precio = parseFloat(datosSplit)
                             precioTotal += precio;
                             step += 4;
                         }
                     })
+                    precioTotal = this.formateo(precioTotal)
 
-                    let parteresumen = `<tr><td></td><td></td><td></td><td class="totalEmpalme">$ ${precioTotal.toFixed(2)}</td></tr>`;
+                    let parteresumen = `<tr><td></td><td></td><td></td><td class="totalEmpalme" align="right">$${precioTotal}</td></tr>`;
 
                     $('#'+nombreResumen).append(parteresumen); //imprime para el resumen
-                    return precioTotal.toFixed(2)
+                    return precioTotal
                 }catch(e){
 
                     console.log('No se pudo obtener el valor del td. \n' + e)
@@ -1271,7 +1295,7 @@ class Almeja extends Cajas{
 
                 let parteresumen;
 
-                parteresumen = '<tr><td></td><td></td><td><b>Subtotal:</b></td><td class="grand-total"><b>$' + respuesta['costo_subtotal'] +'</b></td></tr><tr><td></td><td></td><td>Utilidad: </td><td id="UtilidadResumen">$' + respuesta['Utilidad'] + '</td></tr><tr><td></td><td></td><td>IVA:</td><td id="IVAResumen">$' + respuesta['iva'] + '</td></tr><tr><td></td><td></td><td>ISR: </td><td id="ISResumen">$' + respuesta['ISR'] + '</td></tr><tr><td></td><td></td><td>Comisiones: </td><td id="ComisionesResumen">$ ' + respuesta['comisiones'] + '</td></tr><tr><td></td><td></td><td>% Indirecto: </td><td id="IndirectoResumen">$' + respuesta['indirecto'] + '</td></tr><tr><td></td><td></td><td>Ventas: </td><td id="ventaResumen">$' + respuesta['ventas'] + '</td></tr><tr><td></td><td></td><td>Descuento: </td><td id="descuentoResumen">$' + respuesta['descuento'] + '</td></tr><tr><tr><td></td><td></td><td><b>Total: </b></td><td id="TotalResumen"><b>$' + respuesta['costo_odt'] + '</b></td></tr>';
+                parteresumen = '<tr><td></td><td></td><td><b>Subtotal:</b></td><td class="grand-total" align="right"><b>$' + subtotal +'</b></td></tr><tr><td></td><td></td><td>Utilidad: </td><td id="UtilidadResumen" align="right">$' + utilidad + '</td></tr><tr><td></td><td></td><td>IVA:</td><td id="IVAResumen" align="right">$' + iva + '</td></tr><tr><td></td><td></td><td>ISR: </td><td id="ISResumen" align="right">$' + isr + '</td></tr><tr><td></td><td></td><td>Comisiones: </td><td id="ComisionesResumen" align="right">$ ' + comisiones + '</td></tr><tr><td></td><td></td><td>% Indirecto: </td><td id="IndirectoResumen" align="right">$' + indirecto + '</td></tr><tr><td></td><td></td><td>Ventas: </td><td id="ventaResumen" align="right">$' + ventas + '</td></tr><tr><td></td><td></td><td>Descuento: </td><td id="descuentoResumen" align="right">$' + descuento + '</td></tr><tr><tr><td></td><td></td><td><b>Total: </b></td><td id="TotalResumen" align="right"><b>$' + costo_odt + '</b></td></tr>';
 
                 $('#resumenOtros').append(parteresumen); //imprime para el resumen
 

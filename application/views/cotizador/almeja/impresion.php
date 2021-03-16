@@ -243,7 +243,7 @@
 
 		$("#lblCUnitario").html("$"+cUnitario);
 
-		$("#lblCotizacion").html(`Cotizacion: <label class='f-negrita'>${aJson.nomb_odt}</label>`);
+		$("#lblCotizacion").html(`Cotizacion: <label class='f-negrita'>${aJson.num_odt}</label>`);
 
 		$("#lblCTotal").html(`$${aJson.costo_odt}`);
 		

@@ -830,7 +830,7 @@ class Cajas {
                 </div>
 
                 
-                <div style="overflow: auto; height:80%;">
+                <div id="tResumentodocaja" style="overflow: auto; height:80%;">
 
                     <table class="table tableresumenn" id="ResumenCostos" style="width:100%;height:100%">
 
@@ -858,6 +858,7 @@ class Cajas {
                 
                 <div class="d-flex justify-content-start" style="height: 50px; width:100%; align-items: center">
                     <img class="m-1" src="`+ this._url +`public/img/henpp.png" style="width: 11%;"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
+                    <button class="btn btn-primary" onclick="caja.imprimirDIV('tResumentodocaja');">Imprimir</button>
                 </div>
             </div>
         `;
@@ -1232,5 +1233,87 @@ class Cajas {
 
         this.lenBanco1 = id;
         $('#lblBanco').html(`Esta a punto de eliminar el banco. <br>¿Desea continuar?`);
+    }
+
+    imprimirDIV(contenido) {
+        var ficha = document.getElementById(contenido);
+        var ventanaImpresion = window.open(' ', 'popUp');
+        ventanaImpresion.document.write(ficha.innerHTML);
+        ventanaImpresion.document.close();
+        ventanaImpresion.print();
+        ventanaImpresion.close();
+    }
+
+    formateo (valor){
+        try{
+
+            valor = parseFloat(valor).toFixed(2)
+
+            //valor = new Intl.NumberFormat("es-MX").format(valor);
+            
+            if ( valor.indexOf('.') == -1 ) {
+
+                valor = valor + '.00'
+            }
+
+            if( valor.indexOf('.') !== -1 ) {
+
+                let valorT = valor.split('.')
+                valorT = valorT[1]
+                
+                if( valorT.length < 2 ){
+
+                    valor = valor + '0'
+                }
+            }
+
+            let setComas = valor =>{
+
+                let valorTemp = valor.split('.')
+                
+
+                let aux = (valorTemp[0].length - 1);
+                let valorL = ''
+                //si el numero es mayor a 999 entonces entra al if en caso omiso se retorna el valor.
+                if( valorTemp[0].length > 3 ){
+                    //se invierte el digito ingresado
+                    for( let i = (valorTemp[0].length - 1); i >= 0; i-- ){
+                        //entrara la primera vez
+                        if( i == aux ){
+                            //se asigna la coma
+                            valorL = valorL + ','
+                            //deciende de 3 en 3
+                            aux -= 3
+                        }
+                        //por ultimo concatena el valor del numero que sigue
+                        valorL = valorL + valorTemp[0][i]
+                    }
+
+                    let cadena = ''
+                    let x = valorL.length
+                    //se voltea el valor que se obtuvo
+                    while (x >= 0) {
+                        
+                        cadena = cadena + valorL.charAt(x);
+                        x--;
+                    }
+                    //elimina coma extra
+                    cadena = cadena.slice(0,( cadena.length -1 ))
+                    valorL = cadena + '.' + valorTemp[1]
+                }else{
+
+                    return valor
+                }
+                return valorL
+            }
+            valor = setComas(valor)
+        }catch(e){
+
+            console.log('no se pudo formatear el valor. \n' + e)
+        }finally{
+
+            return valor
+        }
+        
     }
 }
