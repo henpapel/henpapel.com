@@ -1062,6 +1062,7 @@ class Cajas {
                 posicion:'',
                 suaje:'',
                 ambos_lados: '',
+                seccion: '',
             }
         );
 
@@ -1069,10 +1070,14 @@ class Cajas {
         this._bancos[index]['index'] = index;
         
         let id = this.idBanco
-        let titulo = 'Banco '+ id;
+        let titulo = 'Banco';
         let idOpt = 'optBan'+ id;
         let idOptMat = 'optMatBan'+ id;
+        let optionSeccion = ''
+        this._secciones.forEach(function( sec ){
 
+            optionSeccion += `<option value="${sec['titulo']}">${sec['titulo']}</option>`
+        });
 
         let divBanco = `
             <div id="divBanco${id}" class="divgral banco">
@@ -1083,7 +1088,7 @@ class Cajas {
                 </div>
                 <br>
                 <div class="m-2">
-                    <select id="${idOptMat}" onchange="caja.changeMaterial('${id}');" class="form-control mb-2 form-control-sm">
+                    <select id="${idOptMat}" class="form-control mb-2 form-control-sm">
                         <option selected value="selected" disabled>Elige un material</option>
                         ${this._optBanco}
                     </select>
@@ -1095,19 +1100,17 @@ class Cajas {
                         <input type="checkbox" class="custom-control-input" id="chkALados${id}">
                         <label class="custom-control-label" for="chkALados${id}">Ambos lados</label>
                     </div>
-                    <div id="divExtrasBanco${id}">
-                        <select id="${idOptMat}" onchange="caja.changeMaterial('${id}');" class="form-control mb-2 form-control-sm">
-                            <option selected value="selected" disabled>Elige un material</option>
-                            <option value="Eva">Eva</option>
-                            <option value="Espuma">Espuma</option>
-                        </select>
-                        <button class="btn btn-outline-primary btn-block">Extra</button>
-                    </div>
+                    
+                    
                     <select id="optPosicion${id}" class="form-control mb-2 form-control-sm">
                         <option selected value="selected" disabled>Posición</option>
                         <option value="Centro">Centro</option>
                         <option value="izquierdo">Lado izquierdo</option>
                         <option value="derecho">Lado derecho</option>
+                    </select>
+                    <select id="optSeccion${id}" class="form-control mb-2 form-control-sm">
+                        <option selected value="selected" disabled>Sección</option>
+                        ${optionSeccion}
                     </select>
                     <div class="">
                         
@@ -1117,11 +1120,21 @@ class Cajas {
                             <option value="Si">Si</option>
                         </select>    
                     </div>
+
+                    <div class="">
+                        
+                        <label for="optPapel${id}">¿Lleva papel?</label>
+                        <select id="optPapel${id}" onchange="caja.changeMaterial('${id}');" class="form-control mb-2 form-control-sm">
+                            <option value="No" selected>No</option>
+                            <option value="Si">Si</option>
+                        </select>    
+                    </div>
+                    <input placeholder="Largo" min="1" type="number" class="form-control form-control-sm m-1" id="txtLargo${id}">
+                    <input placeholder="Ancho" min="1" type="number" class="form-control form-control-sm m-1" id="txtAncho${id}">
+                    <input placeholder="Profundidad" min="1" type="number" class="form-control form-control-sm m-1" id="txtProf${id}">
                 </div>
-                <div>
-                    <input placeholder="Largo" type="number" class="form-control form-control-sm m-1" id="txtLargo${id}">
-                    <input placeholder="Ancho" type="number" class="form-control form-control-sm m-1" id="txtAncho${id}">
-                    <input placeholder="Profundidad" type="number" class="form-control form-control-sm m-1" id="txtProf${id}">
+                <div id="divImp${id}" style="display:none">
+                    
 
                     <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#Impresiones" onclick="caja.nvaImp='ban${id}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Impresiones
                     </button>
@@ -1133,12 +1146,24 @@ class Cajas {
                     </div>
                 </div>
 
-                <div>
+                <div id="divAcb${id}" style="display:none">
                     <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#acabados" onclick="caja.nvaAcb='ban${id}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Acabados
                     </button>
                     <div class="container divacabados">
                         <table class="table">
                             <tbody id="BanAcb${id}">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="divEBanco${id}" style="display:none">
+                    
+
+                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#modalExtraBanco" onclick=""><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Extras
+                    </button>
+                    <div class="container divimpresiones">
+                        <table class="table">
+                            <tbody id="BanImp${id}">
                             </tbody>
                         </table>
                     </div>
@@ -1156,17 +1181,24 @@ class Cajas {
 
     changeMaterial(id){
         
-        let opcion = $('#optMatBan'+id).val()
-        let material = $(`#optMatBan${id} option:selected`).text();
+        let opcion = $('#optPapel'+id).val()
+        let material = $(`#optPapel${id} option:selected`).text();
         
-        if( material == 'Carton' ){
+        if( material == 'Si' ){
 
             $(`#optBan${id}_chosen`).show('fast');
             $(`#divChkBanco${id}`).show('fast');
+            $(`#divImp${id}`).show('fast');
+            $(`#divAcb${id}`).show('fast');
+            $(`#divEBanco${id}`).show('fast');
+            
         }else{
 
             $(`#optBan${id}_chosen`).hide('fast');
             $(`#divChkBanco${id}`).hide('fast');
+            $(`#divImp${id}`).hide('fast');
+            $(`#divAcb${id}`).hide('fast');
+            $(`#divEBanco${id}`).hide('fast');
         }
     }
 
@@ -1199,6 +1231,6 @@ class Cajas {
     setBanco(id){
 
         this.lenBanco1 = id;
-        $('#lblBanco').html(`Esta a punto de eliminar el banco: ${id} <br>¿Desea continuar?`);
+        $('#lblBanco').html(`Esta a punto de eliminar el banco. <br>¿Desea continuar?`);
     }
 }

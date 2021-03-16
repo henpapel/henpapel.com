@@ -762,15 +762,17 @@ class Almeja extends Cajas{
             let profundidad = '';
             let posicion    = '';
             let suaje       = '';
+            let seccion     = '';
 
             banco['largo']       = $('#txtLargo'+id).val()
             banco['ancho']       = $('#txtAncho'+id).val()
-            banco['id_banco']  = $('#optMatBan'+id).val()
+            banco['id_banco']    = $('#optMatBan'+id).val()
             banco['Tipo_banco']  = $(`#optMatBan${id} option:selected`).text();
             banco['papel']       = $('#optBan'+id).val()
             banco['profundidad'] = $('#txtProf'+id).val()
             banco['posicion']    = $('#optPosicion'+id).val()
             banco['suaje']       = $('#optSuaje'+id).val()
+            banco['seccion']     = $('#optSeccion'+id).val()
 
             largo       = banco['largo']
             ancho       = banco['ancho']
@@ -779,6 +781,7 @@ class Almeja extends Cajas{
             profundidad = banco['profundidad']
             posicion    = banco['posicion']
             suaje       = banco['suaje']
+            seccion     = banco['seccion']
 
             $('#txtLargo'+id).removeClass('is-invalid')
             $('#txtAncho'+id).removeClass('is-invalid')
@@ -787,6 +790,7 @@ class Almeja extends Cajas{
             $('#optPosicion'+id).removeClass('is-invalid')
             $('#optBan'+id).removeClass('is-invalid')
             $('#optSuaje'+id).removeClass('is-invalid')
+            $('#optSeccion'+id).removeClass('is-invalid')
 
 
             let checkDatos = (valor, id, input) =>{
@@ -815,6 +819,7 @@ class Almeja extends Cajas{
             checkDatos(ancho, id, 'txtAncho');
             checkDatos(profundidad, id, 'txtProf');
             checkDatos(suaje, id, 'optSuaje');
+            checkDatos(seccion, id, 'optSeccion');
 
             let error = false;
             if( material == 'Carton' ){
@@ -822,7 +827,7 @@ class Almeja extends Cajas{
                 error = checkDatos(papel,id,'optBan')
             }
             
-            if( largo == '' || ancho == '' || material == null || profundidad == '' || posicion == null || suaje == null || error == true ){
+            if( largo == '' || ancho == '' || material == null || profundidad == '' || posicion == null || suaje == null || seccion == null || error == true ){
 
                 this.showModError("");
                 $("#txtContenido").attr("align", "left");
