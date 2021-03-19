@@ -100,8 +100,13 @@
 
                                 <a id="<?= $row['id_odt']; ?>" href="#" data-id="<?= $row['num_odt']; ?>" data-caja="<?= $row['nombre_caja'] ?>" onclick="vistaAct('<?= $row['id_odt']; ?>');" class="table-button orange2">Modificar</a>
                             </td>
+<<<<<<< HEAD
                             <td>
                                 <a href="#" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="table-button red2">Eliminar</a>
+=======
+                            <td class="mx-1">
+                                <a href="#" style="font-size: 25px;" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="table-button red2"><i class="bi bi-trash"></i></a>
+>>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
                             </td>
                             <!--<td>
 

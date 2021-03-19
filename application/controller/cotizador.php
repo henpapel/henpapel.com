@@ -1020,14 +1020,12 @@ class Cotizador extends Controller {
 
         require_once 'application/views/templates/head.php';
         require_once 'application/views/templates/top_menu.php';
-        require_once 'application/views/cotizador/cajas.php';
-
-        echo "<script>$('#form_modelo_0').hide();</script>";
-
+        require_once 'application/views/templates/cotizador/plantilla.php';
+        echo "<script>$('#divDerecho').empty()</script>";
+        echo "<script>$('#divIzquierdo').empty()</script>";
+        echo "<script>$('#divDerecho').hide()</script>";
         require_once 'application/views/cotizador/almeja/modificacion.php';
-
-        echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-
+        echo "<script>$('#divDerecho').show('slow')</script>";
         require_once 'application/views/templates/footer.php';
     }
 
@@ -1841,6 +1839,7 @@ class Cotizador extends Controller {
         $cantidad = intval($cantidad);
         $tiraje   = intval($cantidad);
 
+<<<<<<< HEAD
         $id_cliente = $_POST['id_cliente'];
 
         $cliente_db = $ventas_model->getClientById($id_cliente);
@@ -1852,6 +1851,10 @@ class Cotizador extends Controller {
 
         $nombre_cliente = self::strip_slashes_recursive($nombre_cliente);
         $nombre_cliente = utf8_encode($nombre_cliente);
+=======
+        $nombre_cliente = $_POST['nombre_cliente'];
+        $id_cliente     = $ventas_model->getClientByName($nombre_cliente);
+>>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
 
         //$id_modelo = $_POST['modelo'];
         $id_modelo = 1;
@@ -1931,6 +1934,7 @@ class Cotizador extends Controller {
         $aJson['modelo']                   = $id_modelo;
         $aJson['id_cliente']               = $id_cliente;
         $aJson['Nombre_cliente']           = $nombre_cliente;
+        $aJson['id_cliente']               = $id_cliente;
         $aJson['id_usuario']               = $id_usuario;
         $aJson['nomb_usuario']             = $nomb_usuario;
         $aJson['tiraje']                   = $tiraje;

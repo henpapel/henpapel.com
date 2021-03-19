@@ -30,42 +30,6 @@
     </div>
 </div>
 
-<!-- ******* Modal Guardar Todo ******** -->
-<div class="modal fade" id="modalExtraBanco" tabindex="-1" role="dialog" aria-labelledby="modalExtraBanco" aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered" role="document">
-
-        <div class="modal-content">
-
-            <div class="modal-header azulWhi">
-
-                <h5 class="modal-title">Extras</h5>
-                <!--
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                -->
-            </div>
-
-            <div class="modal-body">
-
-                <select id="optEBanco" class="form-control mb-2 form-control-sm">
-                    <option value="" selected>Elige el tipo de extra</option>
-                    <option value="Eva">Eva</option>
-                    <option value="Espuma">Espuma</option>
-                </select> 
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" id="btnSaveEBanco">agregar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- ******* Todos los modales Banco ******** -->
     <!-- Banco Empalme -->
     <div class="modal fade" id="bancoemp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -388,7 +352,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
+                    <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
                 </div>
             </div>
         </div>

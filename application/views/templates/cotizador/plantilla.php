@@ -103,7 +103,7 @@
     .div-izquierdo{
 
         width: 20%;
-        height: 96%;
+        height: 92%;
         display: block;
         position: absolute;
         padding: 0px;

@@ -535,6 +535,7 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 <!-- Botones de CALCULAR, GUARDAR, TABLAS, RESUMEN e IMPRESION -->
                 <div id="social" class="social" style="/*width: 45%;*/ float: right; /*display: none;*/">
 
@@ -602,6 +603,11 @@
                     </div>
 
                     <!--<div style="float: left; font-size: 25px;">Total: </div>-->
+=======
+        <div class="div-buttons mt-1 p-1 mb-5" style="height: 20%;">
+            
+            <button type="button" id="btnabrecierres" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#cierres" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Cierre</button>
+>>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
 
                     <!--<div  id="gran_total">$0.00</div>-->
                 </div>
@@ -668,6 +674,7 @@
                                     <td></td>
                                     <td>
 
+<<<<<<< HEAD
                                         <input name="offsetadic" id="offsetadic" type="text" style="border: none;" readonly>
                                     </td>
                                     <td></td>
@@ -872,6 +879,14 @@
                         </div>
                     </div>
                 </div>
+=======
+            <div id="ListaBancoEmp">
+                <table class="table" id="banTable">
+                    <tbody id="listbancoemp">
+                        <!-- contenido seleccionado -->
+                    </tbody>
+                </table>
+>>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
             </div>
         </form>
     </div>
@@ -883,6 +898,7 @@
 
         <div class="modal-dialog modal-dialog-centered" role="document">
 
+<<<<<<< HEAD
             <div class="modal-content">
 
                 <div class="modal-header azulWhi">
@@ -9510,6 +9526,10 @@ foreach ($Porcentajes as $porcentaje) { ?>
 
         $("#imgEC").find("img").prop("src", "<?=URL?>public/img/almeja-EC.gif");
     });
+=======
+    var option = "";
+    var papeles = <?php echo json_encode($papers);?>;
+>>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
 
     $("#imgEC").mouseout( function(){
 
@@ -9546,6 +9566,7 @@ foreach ($Porcentajes as $porcentaje) { ?>
         $("#imgG").find("img").prop("src", "<?=URL?>public/img/banco2.png");
     });
 
+<<<<<<< HEAD
     //history.forward();
 
     $("#btnImprimir").click( function(){
@@ -9553,9 +9574,22 @@ foreach ($Porcentajes as $porcentaje) { ?>
         var ventana = window.open("<?=URL?>cotizador/imprCaja/?model=1", "Impresion", "width=600, height=600");
         return true;
     });
+=======
+    //funciones para gift
+    $("#imgEC").mouseover( function(){
+>>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
 
-    $("#box-model").val("1");
+        $("#imgEC").find("img").prop("src", "<?=URL?>public/img/almeja-EC.gif");
+    });
 
+    $("#imgEC").mouseout( function(){
+
+        $("#imgEC").find("img").prop("src", "<?=URL?>public/img/banco.png");
+    });
+
+    $("#imgFCaj").mouseover( function(){
+
+<<<<<<< HEAD
     $(document).on('click', '.active-result', function (e) {
         
         desactivarBtn();
@@ -9570,3 +9604,33 @@ foreach ($Porcentajes as $porcentaje) { ?>
     });
 
 </script>
+=======
+        $("#imgFCaj").find("img").prop("src", "<?=URL?>public/img/almeja-FCaj.gif");
+    });
+
+    $("#imgFCaj").mouseout( function(){
+
+        $("#imgFCaj").find("img").prop("src", "<?=URL?>public/img/banco2.png");
+    });
+
+    $("#imgFCar").mouseover( function(){
+
+        $("#imgFCar").find("img").prop("src", "<?=URL?>public/img/almeja-G.gif");
+    });
+
+    $("#imgFCar").mouseout( function(){
+
+        $("#imgFCar").find("img").prop("src", "<?=URL?>public/img/banco.png");
+    });
+
+    $("#imgG").mouseover( function(){
+
+        $("#imgG").find("img").prop("src", "<?=URL?>public/img/almeja-FCar.gif");
+    });
+
+    $("#imgG").mouseout( function(){
+
+        $("#imgG").find("img").prop("src", "<?=URL?>public/img/banco2.png");
+    });
+</script>
+>>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")

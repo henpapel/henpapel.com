@@ -205,17 +205,10 @@ class Regalo extends Controller {
 
         if ($status == "A" or $status == "M" or $status == "P") {
 
-            $ok = $ventas_model->convPresupToODT($id_odt, $id_odt_orig);
-
-            $cotizaciones = $ventas_model->getCotizaciones();
-
-            if (!$ok) {
-
-                $aJson['error'] = $aJson['error'] . " Error al convertir el presupuesto a ODT;";
-            }
+            $ventas_model->convPresupToODT($id_odt, $id_odt_orig);
         }
 
-        header(URL.'regalo/listaCotizaciones.php');
+        header(URL.'regalo/getCotizaciones');
     }
 
 
@@ -1347,7 +1340,7 @@ class Regalo extends Controller {
 
         if (intval($aPapel_tmp['corte']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en empalme del cajon;");
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en empalme del cajon;");
         }
 
 
@@ -1384,7 +1377,7 @@ class Regalo extends Controller {
 
         if (intval($aPapel_tmp['corte']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en forro del cajon;");
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en forro del cajon;");
         }
 
 
@@ -1404,7 +1397,6 @@ class Regalo extends Controller {
         }
 
 
-
     /*********** Empalme de la Tapa *************/
 
         $id_papel = intval($id_papel_empalme_tapa);
@@ -1415,7 +1407,7 @@ class Regalo extends Controller {
         $secc_largo = $aCalculadora['X11'];
         $secc_largo = floatval($secc_largo);
 
-        $aPapel_tmp = self::calculaPapelCartera("EmpTap", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+        $aPapel_tmp = self::calculaPapel("FextCaj", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
         if ($aPapel_tmp['tot_costo'] <= 0) {
 
@@ -1424,7 +1416,7 @@ class Regalo extends Controller {
 
         if (intval($aPapel_tmp['corte']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego empalme de la Tapa;");
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego empalme de la Tapa;");
         }
 
         $aJson['cortes']['papel_EmpTap'] = $aPapel_tmp['corte'];
@@ -1439,8 +1431,6 @@ class Regalo extends Controller {
 
             unset($aPapel_tmp);
         }
-
-
 
 
     /*********** Forro de la Tapa *************/
@@ -1462,7 +1452,7 @@ class Regalo extends Controller {
 
         if (intval($aPapel_tmp['corte']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo .  " x " . $secc_ancho . ") son mayores al pliego en Forro de la Tapa;");
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro de la Tapa;");
         }
 
 
@@ -1474,13 +1464,14 @@ class Regalo extends Controller {
         $tot_costo_papeles      += $aPapel_tmp['tot_costo'];
         $subtotal               += $aPapel_tmp['tot_costo'];
 
-        $aJson['costo_papeles'] = round($tot_costo_papeles, 2);
-
 
         if (is_array($aPapel_tmp) and count($aPapel_tmp) > 0) {
 
             unset($aPapel_tmp);
         }
+
+
+        $aJson['costo_papeles'] = round($tot_costo_papeles, 2);
 
 
 /**************** Termina el calculo de todos los papeles **************/
@@ -1515,7 +1506,7 @@ class Regalo extends Controller {
 
         if ($corte_cajon <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte (" . $cart_largo . " x " . $cart_ancho . ") son mayores al carton del cajon (empalme del cajon);");
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton del cajon (empalme del cajon);");
         }
 
         $aCortes['cajon']             = $corte_cajon;
@@ -1548,7 +1539,7 @@ class Regalo extends Controller {
 
         if ($corte_tapa <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte (" . $cart_largo . " x " . $cart_ancho . ") son mayores al carton (empalme de la tapa);");
+            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton (empalme de la tapa);");
         }
 
         $aCortes['tapa']            = $corte_tapa;
@@ -2168,14 +2159,14 @@ class Regalo extends Controller {
 
                         if ($aDigEmp[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital Empalme Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas (Base del cajon);");
                         } elseif (!self::checaCostos($aDigEmp[$i], "Digital")) {
 
                             self::mError($aJson, $mensaje, "Digital. No existe costo (Empalme del cajon);");
                         }
                     } else {
 
-                        self::mError($aJson, $mensaje, "Digital Empalme Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                        self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Empalme del cajon;");
                     }
                 }
 
@@ -2445,7 +2436,7 @@ class Regalo extends Controller {
 
                         if ($aDigFCaj[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital Forro Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Forro del cajon);");
                         } elseif (!self::checaCostos($aDigFCaj[$i], "Digital")) {
 
                             self::mError($aJson, $mensaje, $error . "Digital (Forro del cajon);");
@@ -2454,7 +2445,7 @@ class Regalo extends Controller {
 
                         if ($aDigFCaj[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital Forro Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Forro del cajon);");
                         } elseif (!self::checaCostos($aDigFCaj[$i], "Digital")) {
 
                             self::mError($aJson, $mensaje, $error . "Digital (Forro del cajon);");
@@ -2753,7 +2744,7 @@ class Regalo extends Controller {
 
                         if ($aDigEmpTap[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital Empalme Tapa. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Empalme de la Tapa);");
                         } elseif (!self::checaCostos($aDigEmpTap[$i], "Digital")) {
 
                             self::mError($aJson, $mensaje, $error . "Digital (Empalme de la Tapa);");
@@ -2762,7 +2753,7 @@ class Regalo extends Controller {
 
                         if ($aDigEmpTap[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital Empalme Tapa. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Empalme de la Tapa);");
                         } elseif (!self::checaCostos($aDigEmpTap[$i], "Digital")) {
 
                             self::mError($aJson, $mensaje, $error . "Digital (Empalme de la Tapa);");
@@ -3070,7 +3061,7 @@ class Regalo extends Controller {
 
                         if ($aDigFTap[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital Forro Tapa. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Forro de la Tapa);");
                         } elseif (!self::checaCostos($aDigFTap[$i], "Digital")) {
 
                             self::mError($aJson, $mensaje, $error . "Digital (Forro de la Tapa);");
@@ -3079,7 +3070,7 @@ class Regalo extends Controller {
 
                         if ($aDigFTap[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital Forro Tapa. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . "). ");
+                            self::mError($aJson, $mensaje, "No cabe con las medidas proporcionadas (Forro de la Tapa);");
                         } elseif (!self::checaCostos($aDigFTap[$i], "Digital")) {
 
                             self::mError($aJson, $mensaje, $error . "Digital (Forro de la Tapa);");
@@ -5084,284 +5075,6 @@ class Regalo extends Controller {
 
 
 /******************************************/
-
-/*
-    if (array_key_exists('Offset', $aJson['aImpEmp'])) {
-
-        $id_papel_emp = $aJson['papel_Emp']['id_papel'];
-        $id_papel_emp = intval($id_papel_emp);
-
-        self::prettyPrint("Offset", "Si existe Offset en aImpEmp", 5094);
-        self::prettyPrint($id_papel_emp, "id_papel_emp");
-
-
-        die();
-    }
-*/
-
-
-
-/********** Validación de Offset, Digital Y Laminado **************/
-
-    // checa que se haya seleccionado correctamente el papel
-    // para offset
-
-    // papel empalme cajon
-    if (array_key_exists('aImpEmp', $aJson)) {
-
-        if (array_key_exists('Offset', $aJson['aImpEmp'])) {
-
-            $id_papel_emp = $aJson['papel_Emp']['id_papel'];
-            $id_papel_emp = intval($id_papel_emp);
-
-            $l_papel_offset_emp = 0;
-
-            $l_papel_offset_emp = self::checkPapelOffset($id_papel_emp, "offset", $ventas_model);
-
-
-            if (!$l_papel_offset_emp) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el empalme del cajon no es correcto;";
-            }
-        }
-    }
-
-    // papel forro cajon
-    if (array_key_exists('aImpFCaj', $aJson)) {
-
-        if (array_key_exists('Offset', $aJson['aImpFCaj'])) {
-
-            $id_papel_fcaj = $aJson['papel_FCaj']['id_papel'];
-            $id_papel_fcaj = intval($id_papel_fcaj);
-
-
-            $l_papel_offset_fcaj = 0;
-
-            $l_papel_offset_fcaj = self::checkPapelOffset($id_papel_fcaj, "offset", $ventas_model);
-
-
-            if (!$l_papel_offset_fcaj) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro del cajon no es correcto;";
-            }
-        }
-    }
-
-    // empalme tapa
-    if (array_key_exists('aImpEmpTap', $aJson)) {
-
-        if (array_key_exists('Offset', $aJson['aImpEmpTap'])) {
-
-            $id_papel_fcar = $aJson['papel_EmpTap']['id_papel'];
-            $id_papel_fcar = intval($id_papel_fcar);
-
-            $l_papel_offset_fcar = 0;
-
-            $l_papel_offset_fcar = self::checkPapelOffset($id_papel_fcar, "offset", $ventas_model);
-
-
-            if (!$l_papel_offset_fcar) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el empalme de la tapa no es correcto;";
-            }
-        }
-    }
-
-    // forro tapa
-    if (array_key_exists('aImpFTap', $aJson)) {
-    
-        if (array_key_exists('Offset', $aJson['aImpFTap'])) {
-
-            $id_papel_g = $aJson['papel_FTap']['id_papel'];
-            $id_papel_g = intval($id_papel_g);
-
-            $l_papel_offset_g = 0;
-
-            $l_papel_offset_g = self::checkPapelOffset($id_papel_g, "offset", $ventas_model);
-
-
-            if (!$l_papel_offset_g) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Offset) para el forro de la tapa no es correcto;";
-            }
-        }
-    }
-
-
-    // checa que se haya seleccionado correctamente el papel
-    // para digital
-
-    // papel empalme
-    if (array_key_exists('aImpEmp', $aJson)) {
-
-        if (array_key_exists('Digital', $aJson['aImpEmp'])) {
-
-            $id_papel_emp = $aJson['papel_Emp']['id_papel'];
-            $id_papel_emp = intval($id_papel_emp);
-
-            $l_papel_offset_emp = 0;
-
-            $l_papel_offset_emp = self::checkPapelOffset($id_papel_emp, "digital", $ventas_model);
-
-
-            if (!$l_papel_offset_emp) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) para el empalme no es correcto;";
-            }
-        }
-    }
-
-    // papel forro cajon
-    if (array_key_exists('aImpFCaj', $aJson)) {
-
-        if (array_key_exists('Digital', $aJson['aImpFCaj'])) {
-
-            $id_papel_fcaj = $aJson['papel_FCaj']['id_papel'];
-            $id_papel_fcaj = intval($id_papel_fcaj);
-
-
-            $l_papel_offset_fcaj = 0;
-
-            $l_papel_offset_fcaj = self::checkPapelOffset($id_papel_fcaj, "digital", $ventas_model);
-
-
-            if (!$l_papel_offset_fcaj) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) para el forro del cajon no es correcto;";
-            }
-        }
-    }
-
-    // Empalme tapa
-    if (array_key_exists('aImpEmpTap', $aJson)) {
-
-        if (array_key_exists('Digital', $aJson)) {
-
-            $id_papel_emptap = $aJson['papel_EmpTap']['id_papel'];
-            $id_papel_emptap = intval($id_papel_emptap);
-
-            $l_papel_dig_emptap = 0;
-
-            $l_papel_dig_emptap = self::checkPapelOffset($id_papel_emptap, "digital", $ventas_model);
-
-
-            if (!$l_papel_dig_emptap) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) para el empalme tapa no es correcto;";
-            }
-        }
-    }
-
-
-    // Forro Tapa
-    if (array_key_exists('aImpFTap', $aJson)) {
-
-        if (array_key_exists('Digital', $aJson['aImpFTap'])) {
-
-            $id_papel_dig_ftap = $aJson['papel_FTap']['id_papel'];
-            $id_papel_dig_ftap = intval($id_papel_dig_ftap);
-
-            $l_papel_dif_ftap = 0;
-
-            $l_papel_dif_ftap = self::checkPapelOffset($id_papel_dig_ftap, "digital", $ventas_model);
-
-
-            if (!$l_papel_dif_ftap) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Digital) forro tapa no es correcto;";
-            }
-        }
-    }
-
-
-    // checa que se haya seleccionado correctamente el papel
-    // para laminado
-
-    // papel empalme
-    if (array_key_exists('aAcbEmp', $aJson)) {
-
-        if (array_key_exists('Laminado', $aJson['aAcbEmp'])) {
-
-            $id_papel_emp = $aJson['papel_Emp']['id_papel'];
-            $id_papel_emp = intval($id_papel_emp);
-
-            $l_papel_lam_emp = 0;
-
-            $l_papel_lam_emp = self::checkPapelOffset($id_papel_emp, "laminado", $ventas_model);
-
-
-            if (!$l_papel_lam_emp) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) para el empalme no es correcto;";
-            }
-        }
-    }
-
-    // forro cajon
-    if (array_key_exists('aAcbFCaj', $aJson)) {
-
-        if (array_key_exists('Laminado', $aJson['aAcbFCaj'])) {
-
-            $id_papel_fcaj = $aJson['papel_FCaj']['id_papel'];
-            $id_papel_fcaj = intval($id_papel_fcaj);
-
-
-            $l_papel_lam_fcaj = 0;
-
-            $l_papel_lam_fcaj = self::checkPapelOffset($id_papel_fcaj, "laminado", $ventas_model);
-
-
-            if (!$l_papel_lam_fcaj) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) para el forro del cajon no es correcto;";
-            }
-        }
-    }
-
-    // Empalme tapa
-    if (array_key_exists('aAcbEmpTap', $aJson)) {
-
-        if (array_key_exists('Laminado', $aJson['aAcbEmpTap'])) {
-
-            $id_papel_lam_emptap = $aJson['papel_EmpTap']['id_papel'];
-            $id_papel_lam_emptap = intval($id_papel_lam_emptap);
-
-            $l_papel_lam_emptap = 0;
-
-            $l_papel_lam_emptap = self::checkPapelOffset($id_papel_lam_emptap, "laminado", $ventas_model);
-
-
-            if (!$l_papel_lam_emptap) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) empalme tapa no es correcto;";
-            }
-        }
-    }
-
-
-    // forro tapa
-    if (array_key_exists('aAcbFTap', $aJson)) {
-
-        if (array_key_exists('Laminado', $aJson)) {
-
-            $id_papel_ftap = $aJson['papel_FTap']['id_papel'];
-            $id_papel_ftap = intval($id_papel_ftap);
-
-            $l_papel_lam_ftap = 0;
-
-            $l_papel_lam_ftap = self::checkPapelOffset($id_papel_ftap, "laminado", $ventas_model);
-
-
-            if (!$l_papel_lam_ftap) {
-
-                $aJson['error'] = $aJson['error'] . " El papel seleccionado (Laminado) forro tapa no es correcto;";
-            }
-        }
-    }
-
-
-/********** Termina validación de Offset, Digital Y Laminado **************/
-
 
 
 /******************************************/
