@@ -2399,7 +2399,7 @@ class AlmejaModel extends Controller {
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
-                    $merma_min         = intval($v_tmp_R[$k]['mermas']['merma_min']);
+                    $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
                     $sql_LaserEmp = "INSERT INTO cot_alm_laseremp
@@ -2441,7 +2441,7 @@ class AlmejaModel extends Controller {
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
-                    $merma_min         = intval($v_tmp_R[$k]['mermas']['merma_min']);
+                    $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
                     $sql_LaserFcaj = "INSERT INTO cot_alm_laserfcaj
@@ -2483,7 +2483,7 @@ class AlmejaModel extends Controller {
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
-                    $merma_min         = intval($v_tmp_R[$k]['mermas']['merma_min']);
+                    $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
                     $sql_LaserFcar = "INSERT INTO cot_alm_laserfcar
@@ -2524,7 +2524,7 @@ class AlmejaModel extends Controller {
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
                     $tiempo_requerido  = round(floatval($v_tmp_R[$k]['tiempo_requerido']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
-                    $merma_min         = intval($v_tmp_R[$k]['mermas']['merma_min']);
+                    $merma_min         = intval($v_tmp_R[$k]['merma_min']);
 
 
                     $sql_LaserG = "INSERT INTO cot_alm_laserguarda
@@ -3045,7 +3045,6 @@ class AlmejaModel extends Controller {
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
-                    $arreglo           = round(floatval($v_tmp_R[$k]['arreglo']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
                     $merma_min               = intval($v_tmp_R[$k]['mermas']['merma_min']);
@@ -3058,9 +3057,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LamEmp = "INSERT INTO cot_alm_lamemp
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                     $query_LamEmp = $this->db->prepare($sql_LamEmp);
 
@@ -3096,7 +3095,6 @@ class AlmejaModel extends Controller {
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
-                    $arreglo           = round(floatval($v_tmp_R[$k]['arreglo']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
@@ -3110,9 +3108,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LamFcaj = "INSERT INTO cot_alm_lamfcaj
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
 
                     $query_LamFcaj = $this->db->prepare($sql_LamFcaj);
@@ -3148,7 +3146,6 @@ class AlmejaModel extends Controller {
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = floatval($v_tmp_R[$k]['area']);
                     $costo_unitario    = floatval($v_tmp_R[$k]['costo_unitario']);
-                    $arreglo           = floatval($v_tmp_R[$k]['arreglo']);
                     $costo_tot_proceso = floatval($v_tmp_R[$k]['costo_tot_proceso']);
 
 
@@ -3162,9 +3159,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LamFcar = "INSERT INTO cot_alm_lamfcar
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
                     $query_LamFcar = $this->db->prepare($sql_LamFcar);
 
@@ -3199,7 +3196,6 @@ class AlmejaModel extends Controller {
                     $ancho             = round(floatval($v_tmp_R[$k]['Ancho']), 2);
                     $area              = round(floatval($v_tmp_R[$k]['area']), 2);
                     $costo_unitario    = round(floatval($v_tmp_R[$k]['costo_unitario']), 2);
-                    $arreglo           = round(floatval($v_tmp_R[$k]['arreglo']), 2);
                     $costo_tot_proceso = round(floatval($v_tmp_R[$k]['costo_tot_proceso']), 2);
 
 
@@ -3213,9 +3209,9 @@ class AlmejaModel extends Controller {
 
 
                     $sql_LamG = "INSERT INTO cot_alm_lamguarda
-                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, arreglo, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
+                        (id_odt, id_modelo, tipo_grabado, tiraje, largo, ancho, area, costo_unitario, costo_tot_proceso, merma_min, merma_adic, merma_tot, cortes_por_pliego, merma_tot_pliegos, costo_unit_merma, costo_tot_pliegos_merma, fecha)
                     VALUES
-                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $arreglo, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
+                        ($id_caja_odt, $id_modelo, '$tipo_grabado', $tiraje, $largo, $ancho, $area, $costo_unitario, $costo_tot_proceso, $merma_min, $merma_adic, $merma_tot, $cortes_por_pliego, $merma_tot_pliegos, $costo_unit_merma, $costo_tot_pliegos_merma, '$d_fecha')";
 
 
                     $query_LamG = $this->db->prepare($sql_LamG);
