@@ -208,16 +208,35 @@
 	</footer>
 </body>
 <script type="text/javascript">
+	
+	let aJson = [];
+</script>
+
+<?php if( isset($aJson) ) { ?>
+	<script type="text/javascript">
+		aJson = JSON.parse(`<?php echo json_encode($aJson);?>`);
+		console.log(aJson)
+	</script>
+<?php } ?>
+
+<script type="text/javascript">
 	/*window.print();
 	window.addEventListener("afterprint", function(){
     	
     	this.close();
 	}, false);*/
+	
+	
 	try{
-		var aJson = [];
-		aJson = JSON.parse(localStorage.getItem('js_respuesta'));
+		let controlador = localStorage.getItem('controlador');
 		
-		console.log(aJson);
+		if( controlador == 'no' ) aJson = JSON.parse(localStorage.getItem('js_respuesta'));
+	}catch(e){
+
+		console.log("No se logro obtener el array \n\n" + e);
+	}
+
+
 		$("#detCaja").empty();
 
 		var cUnitario = parseFloat(aJson['costo_odt'] / aJson['tiraje'] ).toFixed(2);
@@ -230,7 +249,7 @@
 		
 		$("#lblTiraje").html(`${aJson.tiraje}`);
 
-		$("#lblTienda").html(`Empresa: ${aJson.id_tienda}`);
+		$("#lblTienda").html(`Empresa: ${aJson.nomb_tienda}`);
 
 		$("#lblCliente").html(`${aJson.Nombre_cliente}`);
 
@@ -335,7 +354,10 @@
 
 		function appndPapel( arrPapel, texto ){
 
-			var tr = `<p class="f-negrita">Papel ${texto} forrado en: ${arrPapel.nombre_papel}</p>;`
+			let nombre = arrPapel.nombre_papel;
+			if( nombre == undefined ) nombre = arrPapel.nombre
+
+			var tr = `<p class="f-negrita">Papel ${texto} forrado en: ${nombre}</p>;`
 			$("#detCaja").append(tr);
 		}
 
@@ -350,6 +372,7 @@
 					case "offset":
 
 						var tipo   = arrImpresion[i]['tipo_offset'];
+						if( tipo == undefined ) tipo = arrImpresion[i]['Tipo']
 						var tintas = arrImpresion[i]['num_tintas'];
 
 						var tr = '<p style="margin-bottom: 5px; margin-left: 10px;">Impresion ' + impresion+" Tipo: " + tipo + ", Tintas: " + tintas + '</p>';
@@ -433,8 +456,5 @@
 				$("#detCaja").append(tr);
 			}
 		}
-	}catch(e){
 
-		console.log("No se logro obtener el array \n\n" + e);
-	}
 </script>

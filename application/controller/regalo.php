@@ -160,7 +160,7 @@ class Regalo extends Controller {
     }
 
 
-    // Convierte las cotizaciones (presupuesto) a ODTs 
+    // Convierte las cotizaciones (presupuesto) a ODTs
     public function convPresupToODT() {
 
         if (!isset($_SESSION)) {
@@ -732,7 +732,7 @@ class Regalo extends Controller {
 
         $aJson = [];
 
-        
+
         $row = $ventas_model->getOdtById($num_odt);
 
         $id_odt            = intval($row['id_odt']);
@@ -2113,6 +2113,8 @@ class Regalo extends Controller {
 
                         $aOff_maq_Emp[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
+                        $aOff_maq_Emp[$i]["mermas"] = $aMerma;
+
                         $aJson['Imp_EmpCaj_maq'] += $aOff_maq_Emp[$i]['costo_tot_proceso'];
                         $subtotal                += $aOff_maq_Emp[$i]['costo_tot_proceso'];
 
@@ -2395,6 +2397,8 @@ class Regalo extends Controller {
                     } else {        // si es maquila
 
                         $aOff_maq_FCaj[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
+
+                        $aOff_maq_FCaj[$i]["mermas"] = $aMerma;
 
                         $aJson['Imp_FCaj_maq'] += $aOff_maq_FCaj[$i]['costo_tot_proceso'];
                         $subtotal              += $aOff_maq_FCaj[$i]['costo_tot_proceso'];
@@ -2705,6 +2709,8 @@ class Regalo extends Controller {
                     } else {        // si es maquila
 
                         $aOff_maq_EmpTap[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
+
+                        $aOff_maq_EmpTap[$i]["mermas"] = $aMerma;
 
                         $aJson['Imp_EmpTap_maq'] += $aOff_maq_EmpTap[$i]['costo_tot_proceso'];
                         $subtotal                += $aOff_maq_EmpTap[$i]['costo_tot_proceso'];
@@ -3021,6 +3027,7 @@ class Regalo extends Controller {
 
                         $aOff_maq_FTap[$i] = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
+                        $aOff_maq_FTap[$i]["mermas"] = $aMerma;
 
                         $aJson['Imp_FTap_maq'] += $aOff_maq_FTap[$i]['costo_tot_proceso'];
                         $subtotal              += $aOff_maq_FTap[$i]['costo_tot_proceso'];

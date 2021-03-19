@@ -321,7 +321,7 @@ class Cajas {
 
                     var tr  = '<tr><td style="text-align: left;" class="textAcbEmp">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
-                    arrPapeles.push({"Tipo_acabado": opAcb, "tipo": tipo});
+                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo});
 
                     $('#acabados').modal('hide');
 

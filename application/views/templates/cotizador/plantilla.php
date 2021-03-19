@@ -266,7 +266,7 @@
     $(document).ready( () =>{
 
         $("#resumentodocaja").css("transform","translateY(" + heightDisplay + "px)");
-        $("#resumentodocaja").css("display","block");
+        $("#resumentodocaja").css("display","none");
     });
 
     /*$("#btnHamburguer").click(function() {

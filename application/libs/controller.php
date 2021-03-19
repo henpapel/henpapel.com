@@ -343,6 +343,21 @@ class Controller {
     }
 
 
+    public function checkPapelOffset($id_papel, $proceso, $ventas_model) {
+
+        $proceso = trim($proceso);
+
+        $l_papel = 0;
+
+        $row = $ventas_model->getPapelId($id_papel);
+
+        $l_papel = $row[$proceso];
+        $l_papel = intval($l_papel);
+
+        return $l_papel;
+    }
+
+
     public function rectArea($largo, $ancho) {
 
         $largo = floatval($largo);
@@ -2199,6 +2214,12 @@ class Controller {
             $merma_tot = round(floatval($costo_unitario_laser * $merma_min), 2);
         }
 
+        $aMerma_laser_tmp = [];
+
+        $aMerma_laser_tmp['merma_min']      = $merma_min;
+        $aMerma_laser_tmp['merma_tot']      = $merma_min;
+        $aMerma_laser_tmp['costo_unitario'] = $costo_unitario_laser;
+
         if (is_array($costo_laser_temp)) {
 
             unset($costo_laser_temp);
@@ -2216,8 +2237,7 @@ class Controller {
         $laser_tmp['costo_unitario']    = $costo_unitario_laser;
         $laser_tmp['tiempo_requerido']  = $tiempo_requerido;
         $laser_tmp['costo_tot_proceso'] = $costo_laser;
-        $laser_tmp['merma_min']         = $merma_min;
-        $laser_tmp['merma_tot']         = $merma_tot;
+        $laser_tmp['mermas']            = $aMerma_laser_tmp;
 
 
         return $laser_tmp;
