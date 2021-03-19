@@ -2712,7 +2712,6 @@ if ($aJson) { ?>
                         var tipoLaminado   = arrAcb[i]['tipoGrabado'];
                         var Largo   = arrAcb[i]['Largo'];
                         var Ancho   = arrAcb[i]['Ancho'];
-                        var Tiraje   = arrAcb[i]['tiraje'];
                         var IDopAcb        = 1;
                         var idtipoLaminado = 1;
                         var costo          = parseFloat(arrAcb[i]['costo_unitario']);
@@ -2726,9 +2725,7 @@ if ($aJson) { ?>
                         parteresumen = '<tr><td></td><td>Acabado Laminado</td><td>$'+ costo +'<input type="hidden" class="pricesresumenempalme" value="'+ costo +'"></td><td></td></tr>';
                         $('#' + tablaR).append(parteresumen);
 
-                        //var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ seccion +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ tipoLaminado +'</td><td>Tamaño: '+ Largo +'x'+ Ancho +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ costo +'</td><td>$'+ total +'<input type="hidden" class="prices" value="' + total + '"></td></tr><tr><td colspan="2"></td></tr>';
-
-                        var acabadoTr = `<tr><td colspan="3" style="background: steelblue;color: white;">${seccion}</td></tr><tr style="background: #87ceeb73;"><td>Tipo: ${tipoLaminado}</td><td>Tiraje: ${Tiraje}</td><td>Tamaño: ${Largo}x${Ancho}</td></tr><tr><td>Costo Unitario</td><td></td><td>Total</td></tr><tr><td>$${costo}</td><td></td><td>$${ total}<input type="hidden" class="prices" value="${total}"></td></tr><tr><td colspan="2"></td></tr>`;
+                        var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ seccion +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ tipoLaminado +'</td><td>Tamaño: '+ Largo +'x'+ Ancho +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ costo +'</td><td>$'+ total +'<input type="hidden" class="prices" value="' + total + '"></td></tr><tr><td colspan="2"></td></tr>';
 
                             $('#table_proc_Lam').append(acabadoTr);
                             $('#proceso_lam_M1').show();
@@ -4521,7 +4518,6 @@ if ($aJson) { ?>
                                         var js_tipoGrabadoLam_emp = js_respuesta[c][a]['tipoGrabado'];
                                         var js_LargoLam_emp       = js_respuesta[c][a]['Largo'];
                                         var js_AnchoLam_emp       = js_respuesta[c][a]['Ancho'];
-                                        var Tiraje       = js_respuesta[c][a]['tiraje'];
 
 
                                         var js_costo_unitario_lam_emp = js_respuesta[c][a]['costo_unitario'];
@@ -4543,9 +4539,7 @@ if ($aJson) { ?>
 
                                         } else {
 
-                                            //var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoLam_emp +'</td><td>Tamaño: '+ js_LargoLam_emp +'x'+ js_AnchoLam_emp +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ js_costo_unitario_lam_emp +'</td><td>$'+ js_costo_tiro_lam_emp +'<input type="hidden" class="prices" value="'+ js_costo_tiro_lam_emp +'"></td></tr><tr><td colspan="2"></td></tr>';
-
-                                            var acabadoTr = `<tr><td colspan="3" style="background: steelblue;color: white;">${js_parte_nombre}</td></tr><tr style="background: #87ceeb73;"><td>Tipo: ${js_tipoGrabadoLam_emp}</td><td>Tiraje: ${Tiraje}</td><td>Tamaño: ${js_LargoLam_emp}x${js_AnchoLam_emp}</td></tr><tr><td>Costo Unitario</td><td></td><td>Total</td></tr><tr><td>$${js_costo_unitario_lam_emp}</td><td></td><td>$${ js_costo_tiro_lam_emp}<input type="hidden" class="prices" value="${js_costo_tiro_lam_emp}"></td></tr><tr><td colspan="2"></td></tr>`;
+                                            var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoLam_emp +'</td><td>Tamaño: '+ js_LargoLam_emp +'x'+ js_AnchoLam_emp +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ js_costo_unitario_lam_emp +'</td><td>$'+ js_costo_tiro_lam_emp +'<input type="hidden" class="prices" value="'+ js_costo_tiro_lam_emp +'"></td></tr><tr><td colspan="2"></td></tr>';
 
                                             jQuery214('#table_proc_Lam').append(acabadoTr);
 
@@ -5077,6 +5071,7 @@ if ($aJson) { ?>
                                         step += 4;
                                     }
                                 })
+                                console.log(precioTotal)
                                 return precioTotal.toFixed(2)
                             }catch(e){
 
@@ -5487,8 +5482,6 @@ if ($aJson) { ?>
                                         //Corte Laser
 
                                         if (c === "Laser" || c === "LaserFcaj" || c === "LaserFcar" || c === "LaserG") {
-
-                                            js_merma_adic_mm = 'N/A';
                                             
                                             var mermastr = '<tr>'+ js_color_parte +'<td>Corte Laser</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
@@ -5687,7 +5680,6 @@ if ($aJson) { ?>
                             $("#subForm").prop("disabled",false);
                         
                             localStorage.setItem('js_respuesta',aJson_stringify);
-                            localStorage.setItem('controlador','no');
                     } catch(e) {
 
                         try{
@@ -5844,7 +5836,6 @@ if ($aJson) { ?>
                     $("#id_odt_anterior").val(idAnt)
 
                     showModCorrecto("Los datos han sido guardados correctamente...");
-                    activarBtn();
                 }
             } catch(e) {
 
@@ -7385,9 +7376,6 @@ if ($aJson) { ?>
     $(".medidas-input").addClass("not-empty");
     $("#box-model").hide();
 </script>
-<<<<<<< HEAD
 =======
 </script>
 >>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
-=======
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")

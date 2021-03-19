@@ -1,179 +1,539 @@
 <style type="text/css">
-    
-    .lblTituloSec{
 
-        align-content: center;
+    .seccionP{
     }
-    .panel{
-
-        align-content: center;
-    }
-    .secciones{
-
-        background-color: lightsteelblue;
-        padding: 10px 0;
-        border-radius: 5px;
-        transition: background-color .5s, color .5s;
-    }
-    .secciones:hover{
-
-        background: #5B84B1;
+    #modLoading{
         color: #fff;
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+        position: fixed; 
+        z-index: 10; 
+        padding-top: 100px; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7); 
     }
-    .divContenido{
-
-        display: block; text-align: center; width: 100%;
-    }
-
-    #divContentI{
-
-        transition: width .2s        
-    }
-
-    .divImgC {
-
-        width: 100%;
-        text-align: center;
-        display: inline-block;
-        background-image: url(<?=URL ;?>public/img/worn_dots.png);
-        background-repeat: repeat;
-        height: 25%;
+    @keyframes rotate {
+        from {transform: rotate(1deg);}
+        to {transform: rotate(360deg);}
     }
 
-    @media all and ( max-width: 580px ) {
-
-        .divImgC {
-
-            height: 100px;
-        }
+    @-webkit-keyframes rotate {
+        from {-webkit-transform: rotate(1deg);}
+        to {-webkit-transform: rotate(360deg);}
+    }
+    .imgr{
+        -webkit-animation: 1s rotate linear infinite;
+        animation: 1s rotate linear infinite;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
     }
 </style>
-
+<!-- div loading -->
+<div id="modLoading" style="display: none;">
+    <img id="rotate1" class="imgr" style="width: 80px; height: 80px;" src="<?= URL?>public/img/cargando.png">
+    Cargando...
+</div>
 <!-- ******* Formulario de Almeja modelo (1) -->
+    <div id="form_modelo_1">
+        <form class="caja-form" name="caja-form" id="caja-form" method = "post" action = "<?php echo URL; ?>cotizador/saveCaja/">
 
-    <div id="divIzquierdo-slave" class="div-izquierdo" style="display: none; height: 98%; margin: 0px;">
+            <div class="wrap cont-grid" id="form_modelo_1_grid">
 
-        <div class="divImgC">
-            <!-- imagenes de almeja -->
-            <div class="img" id="image_1" style="background-image:url(<?=URL ?>public/img/1.png); position: relative; width: 100%;"></div>
+                <!-- Contenido del selector del modelo de caja -->
+                <div class="div-izquierdo" style="height: 80%;">
 
-            <div class="img" id="image_1_alto" style="display:none;background-image:url(<?=URL ?>public/img/1_alto.png); position: relative; width: 100%;">
-            </div>
+                    <!-- muestra imagenes -->
+                    <div style="width: 100%; text-align: center; display: inline-block; background-image: url(<?=URL ;?>public/img/worn_dots.png); background-repeat: repeat; height: 200px;">
 
-            <div class="img" id="image_1_ancho" style="display:none;background-image:url(<?=URL ?>public/img/1_ancho.png); position: relative; width: 100%;">
-            </div>
+                        <!-- imagenes de almeja -->
+                        <div class="img" id="image_1" style="background-image:url(<?=URL ?>public/img/1.png); position: relative; width: 200px;"></div>
 
-            <div class="img" id="image_1_profundidad" style="display:none;background-image:url(<?=URL ?>public/img/1_profundidad.png); position: relative; width: 100%;">
-            </div>
+                        <div class="img" id="image_1_alto" style="display:none;background-image:url(<?=URL ?>public/img/1_alto.png); position: relative; width: 200px;">
+                        </div>
 
-            <br>
-        </div>
+                        <div class="img" id="image_1_ancho" style="display:none;background-image:url(<?=URL ?>public/img/1_ancho.png); position: relative; width: 200px;">
+                        </div>
 
-        <!-- formulario de la caja regalo -->
-        <div id="divContentI" class="form-content medidas">
-            <div class="scroll-plantilla" style="min-width: 120px; width: 92%;">
+                        <div class="img" id="image_1_profundidad" style="display:none;background-image:url(<?=URL ?>public/img/1_profundidad.png); position: relative; width: 200px;">
+                        </div>
 
-                <input type="hidden" name="modelo" id="modelo" value="<?=$id_modelo?>">
-                <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= $nombrecliente ?>">
-                <!--N° Cot-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="odt" class="col-sm-4 col-form-label col-form-label-sm text-secondary">N° Cot: </label>
-                    <div class="col-sm-8">
-                        
-                        <input type="text" class="form-control form-control-sm" name="odt" id="odt" placeholder="######" tabindex="1" onkeyup="caja.desactivarBtn()">
+                        <br>
                     </div>
-                </div>
 
-                <!--ODT ID-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="id_odt_anterior" class="col-sm-4 col-form-label col-form-label-sm text-secondary">ID: </label>
-                    <div class="col-sm-8">
-                        
-                        <input type="text" class="form-control form-control-sm" name="id_odt_anterior" id="id_odt_anterior" placeholder="ID" tabindex="1" value="" disabled>
-                    </div>
-                </div>
+                    <!-- formulario de la caja almeja -->
+                    <div class="form-content medidas" style="height: 450px;">
 
-                <!--Base-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="corte_largo" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Base: </label>
-                    <div class="col-sm-8">
-                        
-                        <input type="number" class="form-control form-control-sm" name="base" id="corte_largo" placeholder="cm" tabindex="2" min="1" onkeyup="caja.desactivarBtn()">
-                    </div>
-                </div>
-                <!--Alto-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="corte_ancho" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Alto: </label>
-                    <div class="col-sm-8">
-                        
-                        <input type="number" class="form-control form-control-sm" name="alto" id="corte_ancho" placeholder="cm" tabindex="3" min="1" onkeyup="caja.desactivarBtn()">
-                    </div>
-                </div>
-                <!--Profundidad-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="profundidad_1" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Prof: </label>
-                    <div class="col-sm-8">
-                        
-                        <input type="number" class="form-control form-control-sm" name="profundidad" id="profundidad_1" placeholder="cm" tabindex="4" min="1" onkeyup="caja.desactivarBtn()">
-                    </div>
-                </div>
-                
-                <!--G Cajon-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="grosor_cajon_1" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Grosor Cajón: </label>
-                    <div class="col-sm-8">
-                        
-                        <select class="custom-select custom-select-sm" name="grosor-cajon" id="grosor_cajon_1" tabindex="6" required onchange="caja.desactivarBtn();">
-                            
-                            <option selected="" value="" disabled>Elige</option>
-                            <?php
-                                foreach ($cartones as $carton) {
+                        <input type="hidden" name="modelo" id="modelo" value="1">
 
-                                    $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+                        <!-- ODT -->
+                        <div class="input-group">
 
-                                    if ($expensive) {
+                            <div class="cajas-col-input t-left">
 
-                                        ?>
-                                        <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
-                                        <?php
+                                <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="<?= utf8_decode($nombrecliente);?>">
+                                <span>N° Cot: </span>
+                            </div>
+
+
+                            <div class="cajas-col-input t-right">
+
+                                <input class="cajas-input medidas-input" name="odt"id="odt-1" type="text" placeholder="######" tabindex="1" min="1" step="1" autofocus required style="text-transform: uppercase;" onkeyup="desactivarBtn();">
+                            </div>
+                        </div>
+
+                        <!-- id_odt anterior -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>ID: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <input class="cajas-input medidas-input" name="id_odt_anterior" id="id_odt_anterior" value="" disabled>
+                            </div>
+                        </div>
+
+                        <!-- Base Interior -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>Base: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <!--
+                                <input class="cajas-input medidas-input" name="alto" id="corte_largo" type="number" step="any" min="0.1" tabindex="2" placeholder="cm" required="">
+                                -->
+                                <input class="cajas-input medidas-input" name="base" id="corte_largo" type="number" step="any" min="0.01" tabindex="2" placeholder="cm" required onkeyup="desactivarBtn();" onchange="desactivarBtn()">
+                            </div>
+                        </div>
+
+                        <!-- Ancho Interior -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>Alto: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <input class="cajas-input medidas-input" name="alto" id="corte_ancho" type="number" step="any" min="0.01" tabindex="3" placeholder="cm" required onkeyup="desactivarBtn();" onchange="desactivarBtn()">
+                            </div>
+                        </div>
+
+                        <!-- Profundidad -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>Profundidad: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <input class="cajas-input medidas-input" name="profundidad" id="profundidad_1" type="number" step="any" min="0.01" placeholder="cm" tabindex="4" required="" onkeyup="desactivarBtn();" onchange="desactivarBtn()">
+                            </div>
+                        </div>
+
+                        <!-- Grosor Cajón -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>Grosor Cajón: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <select class="cajas-input medidas-input" name="grosor-cajon" id="grosor_cajon_1" tabindex="5" required onchange="desactivarBtn()">
+
+                                    <option data-price="40" data-ancho="90" data-largo="130" selected="" value="" disabled>Elige</option>
+
+                                    <?php
+                                    foreach ($cartones as $carton) {
+
+                                        $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+
+                                        if ($expensive) {
+
+                                            ?>
+                                            <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                                            <?php
+                                        }
                                     }
-                                }
-                            ?>
-                        </select>
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Grosor Cartera -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>Grosor Cartera: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <select class="cajas-input medidas-input" name="grosor-cartera" id="grosor_cartera_1" tabindex="6" required onchange="desactivarBtn()">
+
+                                    <option data-price="40" data-ancho="90" data-largo="130" selected="" disabled="">Elige</option>
+
+                                    <?php
+                                    foreach ($cartones as $carton) {
+
+                                        $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+
+                                        if ($expensive) {
+
+                                            ?>
+                                            <option value="<?=$carton['numcarton']?>" data-id="<?=$carton['id_papel']?>" data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                                        <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Cantidad -->
+                        <div class="input-group">
+
+                            <div class="cajas-col-input t-left">
+
+                                <span>Cantidad: </span>
+                            </div>
+
+                            <div class="cajas-col-input t-right">
+
+                                <!--
+                                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required onclick="PrimeroInputs()">
+                                -->
+                                <input class="cajas-input" name="qty" id="qty" type="number" min="1" step="1" placeholder="Cantidad" tabindex="7" required="" onkeyup="desactivarBtn()" onchange="desactivarBtn()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <!-- botón modal cierres y divs -->
+                    <div>
+
+                        <button type="button" id="btnabrecierres" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#cierres">Añadir Cierres <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                        <div id="ListaCierres" class="container divcierres">
+
+                            <table class="table" id="cieTable">
+
+                                <tbody id="listcierres"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- botón modal accesorios y divs -->
+                    <div>
+
+                        <button type="button" id="btnabreaccesorios" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#accesorios">Añadir Accesorios <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                        <div id="ListaAccesoriosEmp" class="container divaccesorios">
+                            <table class="table" id="accesoriosTable">
+                                <tbody id="listaccesorios">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- botón modal bancos y divs -->
+                    <div>
+
+                        <button id="btnabrebancoemp" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#bancoemp">Añadir Banco <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                        <div id="ListaBancoEmp" class="container divbancos">
+                            <table class="table" id="banTable">
+                                <tbody id="listbancoemp">
+                                    <!-- contenido seleccionado -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <!--G Cartera-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="grosor_cartera_1" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Grosor Cartera: </label>
-                    <div class="col-sm-8">
-                        
-                        <select class="custom-select custom-select-sm"name="grosor-cartera" id="grosor_cartera_1" tabindex="7" required onchange="caja.desactivarBtn();">
-                            
-                            <option selected="" value="" disabled>Elige</option>
-                            <?php
-                            foreach ($cartones as $carton) {
 
-                                $expensive = $options_model->mostExpensive($carton['numcarton'], round($carton['costo_unitario'], 2));
+                <div class="grid div-derecho" id="form_modelo_1_derecho" style="height: 530px; display: none;">
 
-                                if ($expensive) {
+                    <!-- grid Empalme del Cajón -->
+                    <div id="gridEmp" class="divgral">
 
-                                    ?>
-                                    <option value="<?=$carton['numcarton']?>"  data-id="<?=$carton['id_papel']?>" data-ancho="<?=$carton['ancho']?>" data-largo="<?=$carton['largo']?>" data-price="<?=$carton['costo_unitario']?>" ><?=$carton['numcarton'] ?></option>
+                        <div class="panel" id="imgEC">
+                            <img src="<?=URL ?>/public/img/banco.png" style="width: 100px;">
+
+                            <br>
+                            Empalme del Cajón
+                        </div>
+
+                        <br>
+
+                        <!-- Papel Empalme -->
+                        <div>
+                            <select class="chosen forros" name="papel_interior_cajon" id="interior_cajon" data-ancho="ancho_cajon" data-largo="largo_cajon" data-name="papel_interior_cajon" data-parte="guarda_cajon" tabindex="7">
+
+                                <option value="nulo" selected disabled>Elegir tipo de papel</option>
+                                <?php
+                                foreach ($papers as $paper) {   ?>
+
+                                    <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                        <!-- mismo papel para todos -->
+                        <div class="custom-control custom-checkbox mr-sm-2">
+                            <input type="checkbox" name="btnCheckPaper" id="btnCheckPaper" class="custom-control-input">
+                            <label class="custom-control-label" for="btnCheckPaper"style="font-size: 15px; cursor: pointer;" class="btn btn-outline-primary">Mismo Papel Para Todos</label>
+                        </div>
+
+                        <!-- Añadir Impresiones -->
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresiones">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaImpresiones" class="container divimpresiones">
+
+                                <table class="table" id="Imptable">
+                                    <tbody id="listimpresiones">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Añadir Acabados -->
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaAcabadosEmp" class="container divacabados">
+                                <table class="table" id="acbTable">
+                                    <tbody id="listacabadosemp">
+                                        <!-- contenido seleccionado -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- grid Forro del cajón -->
+                    <div id="gridFcajon" class="divgral">
+
+                        <div class="panel" id="imgFCaj">
+                            <img src="<?=URL ?>/public/img/banco2.png" style="width: 100px;">
+
+                            <br>
+                            Forro del Cajón
+                        </div>
+                        <br>
+
+                        <div>
+                            <select class="chosen forros" name="papel_exterior_cajon" id="exterior_cajon" data-name="papel_exterior_cajon" data-parte="forro_cajon" data-ancho="a_forro_ext_cajon" data-largo="l_forro_ext_cajon" tabindex="8" required>
+
+                                <option value="nulo" selected disabled>Elegir tipo de papel</option>
+                                <?php
+                                foreach ($papers as $paper) {   ?>
+
+                                    <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre']?>
+                                </option> <?php } ?>
+                            </select>
+                        </div>
+
+                        <br>
+
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresionesfcajon">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaImpresiones" class="container divimpresiones">
+                                <table class="table" id="Imptablefcajon">
+                                    <tbody id="listimpresionesfcajon">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados_fcajon">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaAcabadosFcajon" class="container divacabados">
+                                <table class="table" id="acbTableFcajon">
+                                    <tbody id="listacabadosfcajon">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- grid Forro de la Cartera -->
+                    <div id="gridFcartera" class="divgral">
+
+                        <div class="panel" id="imgFCar">
+                            <img src="<?=URL ?>/public/img/banco.png" style="width: 100px;">
+                            <br>
+                            Forro de la Cartera
+                        </div>
+                        <br>
+
+                        <div>
+                            <select class="chosen forros" name="papel_exterior_cartera" id="exterior_cartera" data-ancho="a_forro_ext_cartera" data-largo="l_forro_ext_cartera" data-name="papel_exterior_cartera" data-parte="forro_cartera"  tabindex="9" required>
+
+                                <option value="nulo" selected disabled>Elegir tipo de papel</option>
+
+                                <?php
+                                foreach ($papers as $paper) {   ?>
+
+                                    <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
                                     <?php
                                 }
-                            }
-                            ?>
-                        </select>
+                                ?>
+                            </select>
+                        </div>
+
+                        <br>
+
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresionesfcartera">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaImpresiones" class="container divimpresiones">
+                                <table class="table" id="Imptablefcartera">
+                                    <tbody id="listimpresionesfcartera">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados_fcartera">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaAcabadosFcartera" class="container divacabados">
+                                <table class="table" id="acbTableFcartera">
+                                    <tbody id="listacabadosfcartera">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- grid Guarda -->
+                    <div id="gridGuarda" class="divgral">
+
+                        <div class="panel" id="imgG">
+                            <img src="<?=URL ?>/public/img/banco2.png" style="width: 100px;">
+                            <br>
+                            Guarda
+                        </div>
+                        <br>
+
+                        <div>
+                            <select class="chosen forros" name="papel_interior_cartera" id="interior_cartera" data-ancho="a_forro_int_cartera" data-largo="l_forro_int_cartera" data-name="papel_interior_cartera" data-parte="guarda" tabindex="10" required>
+
+                                <option value="nulo" selected disabled>Elegir tipo de papel</option>
+
+                                <?php
+                                foreach ($papers as $paper) {   ?>
+
+                                    <option value="<?=$paper['id_papel']?>" data-ancho="<?=$paper['ancho']?>" data-largo="<?=$paper['largo']?>" data-digital="<?=(strtolower($paper['digital'])=='verdadero')? 'true':'false' ?>" data-offset="<?=(strtolower($paper['offset'])=='verdadero')? 'true':'false' ?>" data-laminado="<?=(strtolower($paper['laminado'])=='verdadero')? 'true':'false' ?>" data-precio="<?=$paper['costo_unitario']?>" data-nombre="<?=$paper['nombre'] ?>"><?=$paper['nombre'] ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <br>
+
+                        <div>
+
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#Impresionesguarda">Añadir Impresiones <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaImpresiones" class="container divimpresiones">
+
+                                <table class="table" id="Imptableguarda">
+
+                                    <tbody id="listimpresionesguarda">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div>
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#acabados_guarda">Añadir Acabados <img border="0" src="<?=URL ;?>public/img/add.png" style="width: 7%;"></button>
+
+                            <div id="ListaAcabadosGuarda" class="container divacabados">
+
+                                <table class="table" id="acbTableGuarda">
+
+                                    <tbody id="listacabadosguarda">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--
+                        <div>
+                            <span style="color: black; font-size: 1.2em"> Grabar </span>
+                            <br>
+                            <input type="radio" name="grabar" id="grabar" value="NO" checked="checked"> No
+                            <input type="radio" name="grabar" id="grabar" value="SI"> Si
+                            <br>
+                        </div>
+                        -->
                     </div>
                 </div>
-<<<<<<< HEAD
+
+                <div class="modal fade" id="modalSaveAll" tabindex="-1" role="dialog" aria-labelledby="modalSaveAll" aria-hidden="true">
+
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header azulWhi">
+
+                                <h5 class="modal-title">GUARDAR</h5>
+                                <!--
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                -->
+                            </div>
+
+                            <div class="modal-body">
+
+                                <p style="color: black; font-size: 1.1em">¿Esta seguro de guardar la cotizacion?</p>
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" id="subForm2">Si</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 <<<<<<< HEAD
                 <!-- Botones de CALCULAR, GUARDAR, TABLAS, RESUMEN e IMPRESION -->
@@ -250,47 +610,70 @@
 >>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
 
                     <!--<div  id="gran_total">$0.00</div>-->
-=======
-                <!--Cantidad-->
-                <div class="form-group row mt-2 ml-0">
-                    
-                    <label for="qty" class="col-sm-4 col-form-label col-form-label-sm text-secondary">Cantidad: </label>
-                    <div class="col-sm-8">
-                        
-                        <input type="number" class="form-control form-control-sm" name="qty" id="qty" placeholder="Cantidad" tabindex="8" min="1" onkeyup="caja.desactivarBtn();">
-                    </div>
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")
                 </div>
-            </div>
-        </div>
 
-        <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
-            
-            <button type="button" id="btnabrecierres" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#cierres" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Cierre</button>
+                <!-- Modulos de botones azules -->
+                <div class="wrap right" style="width: 100%; margin-left: 8px; display: none;">
 
-            <div id="ListaCierres" class="">
+                    <div class="aumentos">
 
-                <table class="table" id="cieTable">
+                        <table class="t-resume" style="display: none;">
 
-                    <tbody id="listcierres"></tbody>
-                </table>
-            </div>
+                            <thead>
 
+                                <tr>
+                                    <th>Contenido</th>
+                                    <th>Subtotal</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
 
-            <button type="button" id="btnabreaccesorios" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#accesorios" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Accesorio</button>
+                            <tbody id="forros-select">
 
-            <div id="ListaAccesoriosEmp" class="">
+                            </tbody>
 
-                <table class="table" id="accesoriosTable">
-                    <tbody id="listaccesorios">
+                            <tbody id="resume-body">
 
-                    </tbody>
-                </table>
-            </div>
+                            </tbody>
 
-            <button id="btnabrebancoemp" type="button" class="btn btn-block btn-outline-primary chkSize  btn-sm text-left" data-toggle="modal" data-target="#bancoemp"><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px"> Banco</button>
+                            <tbody id="discount-body">
 
-<<<<<<< HEAD
+                            </tbody>
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td style="text-align: right; color: #2c3e50; font-weight: bold; back">TOTAL:</td>
+                                    <td id="total">$0.0</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- tabla de mermas -->
+                        <div class="container" style="text-align: left;">
+                            <table>
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <td></td>
+                                        <td><strong>Minima</strong></td>
+                                        <td></td>
+                                        <td><strong>Adicional</strong></td>
+                                        <td></td>
+                                        <td><b>Total<b></td>
+                                    </tr>
+                                </thead>
+
+                                <tr>
+                                    <td>Offset</td>
+                                    <td>
+
+                                        <input name="offset1" id="offset1" type="text" style="border: none;" readonly>
+                                    </td>
+                                    <td></td>
+                                    <td>
+
 <<<<<<< HEAD
                                         <input name="offsetadic" id="offsetadic" type="text" style="border: none;" readonly>
                                     </td>
@@ -498,23 +881,16 @@
                 </div>
 =======
             <div id="ListaBancoEmp">
-=======
-            <div id="ListaBancoEmp" class="">
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")
                 <table class="table" id="banTable">
                     <tbody id="listbancoemp">
                         <!-- contenido seleccionado -->
                     </tbody>
                 </table>
-<<<<<<< HEAD
 >>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
-=======
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")
             </div>
-        </div>
+        </form>
     </div>
 
-<<<<<<< HEAD
 <!-- ******* Todos los Modales Impresiones ******* -->
     <!-- Modal Impresiones Empalme -->
 
@@ -601,23 +977,2557 @@
                             <tbody>
 
                                 <tr>
-=======
+
+                                    <td colspan="2">
+
+                                        <label>Se agregará una impresión digital</label>
+                                        <!--<select  id="SelectImpDigital" class="SelectTSM">
+
+                                            <option selected value="selected" disabled>Elige el tipo de Digital</option>
+
+                                            <?php
+
+                                                $carta  = $Digital['carta'];
+                                                $carta2  = $Digital['dobleCarta'];
+                                                foreach ($carta as $dig) { ?>
+
+                                                    <option id="ImpDig" value="<?=$dig['nombre']?>"  data-id="<?=$dig['id_proc_digital']?>"><?=$dig['nombre']?></option>
+                                            <?php
+
+                                                }
+                                            ?>
+                                        </select>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opImpresionSerigrafia" style="display: none;">
+
+                        <table class="table" style="text-align: left;">
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>Número de tintas:</td>
+                                    <td>
+
+                                        <input type="number" value="1" id="tintasS" style="width: 50px;" min="1" max="6">
+                                    </td>
+                                </tr>
+
+                                <tr>
+
+                                    <td colspan="2">
+
+                                        <select  id="SelectImpTipoSeri" class="SelectTSM">
+
+                                            <option selected value="selected" disabled>Elige el tipo de serigrafia</option>
+
+                                            <?php
+                                            foreach ($TipoImp as $TipoImps) {   ?>
+
+                                                <option id="Imp" value="<?=$TipoImps['nombre']?>" data-precio="<?=$TipoImps['precio']?>" data-id="<?=$TipoImps['id_impresiones_slave']?>"><?=$TipoImps['nombre']?></option>
+                                            <?php
+                                            }
+                                        ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="btnImpresiones" class="btn btn-guardar-blues">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Impresiones Forro del Cajon -->
+    <div class="modal fade" id="Impresionesfcajon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header azulWhi">
+
+                    <h5 class="modal-title" id="exampleModalLongTitle">Impresiones</h5>
+
+                    <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div id="alerterrorimp2">
+
+                    </div>
+
+                    <div>
+
+                        <select  id="miSelectFcajon" class="SelectTSM">
+
+                            <option selected value="selected" disabled>Elige el tipo de impresión</option>
+
+                            <?php
+                            foreach ($impresiones as $impresion) {   ?>
+
+                                <option id="Imp" value="<?=$impresion['nombre']?>" data-precio="<?=$impresion['precio']?>" data-id="<?=$impresion['id_impresion']?>"><?=$impresion['nombre']?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div id="opImpresionOffsetFcajon" style="display: none;">
+
+                        <table class="table" style="text-align: left;" >
+
+                            <tbody>
+                                <tr>
+                                    <td>Número de tintas:</td>
+                                    <td><input type="number" id="tintasOFcajon" value="1" style="width: 50px;" min="1" max="6"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectImpTipoOffFcajon" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige el tipo de offset</option>
+                                            <?php
+                                            foreach ($TipoImp as $TipoImps) {   ?>
+                                            <option id="Imp" value="<?=$TipoImps['nombre']?>" data-precio="<?=$TipoImps['precio']?>" data-id="<?=$TipoImps['id_impresiones_slave']?>"><?=$TipoImps['nombre']?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opImpresionDigitalFcajon" style="display: none;">
+
+                        <table class="table" style="text-align: left;">
+
+                            <tbody>
+                                <tr>
+
+                                    <td colspan="2">
+
+                                        <!--<select  id="SelectImpDigitalFCajon" class="SelectTSM">
+
+                                            <option selected value="selected" disabled>Elige el tipo de Digital</option>
+
+                                            <?php
+                                            foreach ($Digital as $dig) {   ?>
+
+                                                <option id="ImpDig" value="<?=$dig['nombre']?>"  data-id="<?=$dig['id_proc_digital']?>"><?=$dig['nombre']?></option>
+                                            <?php
+                                            }
+
+                                        ?>
+                                        </select>
+                                        -->
+                                        <label>Se agregará una impresión digital</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opImpresionSerigrafiaFcajon" style="display: none;">
+
+                        <table class="table" style="text-align: left;">
+
+                            <tbody>
+                                <tr>
+                                    <td>Número de tintas:</td>
+                                    <td><input type="number" value="1" id="tintasSFcajon" style="width: 50px;" min="1" max="6"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectImpTipoSeriFcajon" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige el tipo de serigrafia</option>
+                                            <?php
+                                            foreach ($TipoImp as $TipoImps) {   ?>
+                                            <option id="Imp" value="<?=$TipoImps['nombre']?>" data-precio="<?=$TipoImps['precio']?>" data-id="<?=$TipoImps['id_impresiones_slave']?>"><?=$TipoImps['nombre']?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="btnImpresionesFcajon" class="btn btn-guardar-blues">Guardar</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Impresiones Forro de la Cartera -->
+    <div class="modal fade" id="Impresionesfcartera" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header azulWhi">
+
+                    <h5 class="modal-title" id="exampleModalLongTitle">Impresiones</h5>
+
+                    <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div id="alerterrorimp3">
+
+                    </div>
+
+                    <div>
+                        <select  id="miSelectFcartera" class="SelectTSM">
+
+                            <option selected value="selected" disabled>Elige el tipo de impresión</option>
+
+                            <?php
+                            foreach ($impresiones as $impresion) {   ?>
+
+                                <option id="Imp" value="<?=$impresion['nombre']?>" data-precio="<?=$impresion['precio']?>" data-id="<?=$impresion['id_impresion']?>"><?=$impresion['nombre']?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div id="opImpresionOffsetFcartera" style="display: none;">
+
+                        <table class="table" style="text-align: left;" >
+
+                            <tbody>
+                                <tr>
+                                    <td>Número de tintas:</td>
+                                    <td><input type="number" id="tintasOFcartera" value="1" style="width: 50px;" min="1" max="6"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectImpTipoOffFcartera" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige el tipo de offset</option>
+                                            <?php
+                                            foreach ($TipoImp as $TipoImps) {   ?>
+                                            <option id="Imp" value="<?=$TipoImps['nombre']?>" data-precio="<?=$TipoImps['precio']?>" data-id="<?=$TipoImps['id_impresiones_slave']?>"><?=$TipoImps['nombre']?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opImpresionDigitalFcartera" style="display: none;">
+
+                        <table class="table" style="text-align: left;">
+
+                            <tbody>
+                                <tr>
+
+                                    <td colspan="2">
+
+                                        <label>Se agregará una impresión digital</label>
+                                        <!--<select  id="SelectImpDigitalFCartera" class="SelectTSM">
+
+                                            <option selected value="selected" disabled>Elige el tipo de Digital</option>
+
+                                            <?php
+                                            foreach ($Digital as $dig) {   ?>
+
+                                                <option id="ImpDig" value="<?=$dig['nombre']?>"  data-id="<?=$dig['id_proc_digital']?>"><?=$dig['nombre']?></option>
+                                            <?php
+                                            }
+
+                                        ?>
+                                        </select>
+                                        -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opImpresionSerigrafiaFcartera" style="display: none;">
+
+                        <table class="table" style="text-align: left;">
+
+                            <tbody>
+                                <tr>
+                                    <td>Número de tintas:</td>
+                                    <td><input type="number" value="1" id="tintasSFcartera" style="width: 50px;" min="1" max="6"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectImpTipoSeriFcartera" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige el tipo de serigrafia</option>
+                                            <?php
+                                            foreach ($TipoImp as $TipoImps) {   ?>
+                                            <option id="Imp" value="<?=$TipoImps['nombre']?>" data-precio="<?=$TipoImps['precio']?>" data-id="<?=$TipoImps['id_impresiones_slave']?>"><?=$TipoImps['nombre']?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="btnImpresionesFcartera" class="btn btn-guardar-blues">Guardar</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Impresiones Guarda -->
+    <div class="modal fade" id="Impresionesguarda" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header azulWhi">
+
+                    <h5 class="modal-title" id="exampleModalLongTitle">Impresiones</h5>
+
+                    <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div id="alerterrorimp4">
+
+                    </div>
+
+                    <div>
+
+                        <select  id="miSelectGuarda" class="SelectTSM">
+
+                            <option selected value="selected" disabled>Elige el tipo de impresión</option>
+
+                            <?php
+                            foreach ($impresiones as $impresion) {   ?>
+
+                                <option id="Imp" value="<?=$impresion['nombre']?>" data-precio="<?=$impresion['precio']?>" data-id="<?=$impresion['id_impresion']?>"><?=$impresion['nombre']?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div id="opImpresionOffsetGuarda" style="display: none;">
+
+                        <table class="table" style="text-align: left;" >
+                            <tbody>
+                                <tr>
+                                    <td>Número de tintas:</td>
+                                    <td><input type="number" id="tintasOGuarda" value="1" style="width: 50px;" min="1" max="6"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectImpTipoOffGuarda" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige el tipo de offset</option>
+                                            <?php
+                                            foreach ($TipoImp as $TipoImps) {   ?>
+                                            <option id="Imp" value="<?=$TipoImps['nombre']?>" data-precio="<?=$TipoImps['precio']?>" data-id="<?=$TipoImps['id_impresiones_slave']?>"><?=$TipoImps['nombre']?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opImpresionDigitalGuarda" style="display: none;">
+
+                        <table class="table" style="text-align: left;">
+                            <tbody>
+                                <tr>
+
+                                    <td colspan="2">
+
+                                        <label>Se agregará una impresión digital</label>
+                                        <!--<select  id="SelectImpDigitalG" class="SelectTSM">
+
+                                            <option selected value="selected" disabled>Elige el tipo de Digital</option>
+
+                                            <?php
+                                            foreach ($Digital as $dig) {   ?>
+
+                                                <option id="ImpDig" value="<?=$dig['nombre']?>"  data-id="<?=$dig['id_proc_digital']?>"><?=$dig['nombre']?></option>
+                                            <?php
+                                            }
+
+                                        ?>
+                                        </select>
+                                        -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opImpresionSerigrafiaGuarda" style="display: none;">
+
+                        <table class="table" style="text-align: left;">
+
+                            <tbody>
+                                <tr>
+                                    <td>Número de tintas:</td>
+                                    <td><input type="number" value="1" id="tintasSGuarda" style="width: 50px;" min="1" max="6"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectImpTipoSeriGuarda" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige el tipo de serigrafia</option>
+                                            <?php
+                                            foreach ($TipoImp as $TipoImps) {   ?>
+                                            <option id="Imp" value="<?=$TipoImps['nombre']?>" data-precio="<?=$TipoImps['precio']?>" data-id="<?=$TipoImps['id_impresiones_slave']?>"><?=$TipoImps['nombre']?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="btnImpresionesGuarda" class="btn btn-guardar-blues">Guardar</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- ******* Todos los Modales Acabados ******* -->
+    <!-- Acabados Empalme -->
+    <div class="modal fade" id="acabados" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header azulWhi">
+
+                    <h5 class="modal-title" id="exampleModalLongTitle">Acabados</h5>
+
+                    <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div id="alerterror">
+
+                    </div>
+
+                    <div>
+
+                        <select  id="SelectAcEmp" class="SelectTSM">
+
+                            <option selected value="selected" disabled>Elige el tipo de acabado</option>
+
+                            <?php
+                            foreach ($acabados as $acabado) {   ?>
+
+                                <option id="Acb" value="<?=$acabado['nombre']?>" data-precio="<?=$acabado['precio']?>" data-id="<?=$acabado['id_acabados']?>"><?=$acabado['nombre']?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div id="opAcLaminadoEmp" style="display: none;">
+
+                        <br>
+                        <table class="table" style="text-align: left;">
+
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select  id="SelectLaminadoEmp" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige un tipo de laminado</option>
+                                            <?php
+                                            foreach ($ALaminados as $alaminado) {   ?>
+                                            <option id="aLam" value="<?=$alaminado['nombre']?>" data-precio="<?=$alaminado['precio']?>" data-id="<?=$alaminado['id_proc_laminado']?>"><?=$alaminado['nombre']?></option>
+                                            <?php
+                                            } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="opAcHotStampingEmp" style="display: none;">
+
+                        <br>
+                        <table class="table" style="text-align: left;">
+                            <tbody>
+                                <tr>
+                                    <td>Largo: <input type="number" id="LargoHS_ver" name="LargoHS_ver" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                                    <td>Ancho: <input type="number" id="AnchoHS_ver" name="AnchoHS_ver" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectHSEmp" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige un tipo de HotStamping</option>
+                                            <?php
+                                            foreach ($AHotStamping as $ahotstam) {   ?>
+                                            <option id="aHS" value="<?=$ahotstam['nombre']?>" data-precio="<?=$ahotstam['precio']?>" data-id="<?=$ahotstam['id_slave_hs']?>"><?=$ahotstam['nombre']?></option>
+                                            <?php
+                                            }   ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <select  id="SelectColorHSEmp" class="SelectTSM">
+                                            <option selected value="selected" disabled>Elige un color</option>
+                                            <?php
+                                            foreach ($Colores as $Coloress) {   ?>
+                                            <option id="cHS" value="<?=$Coloress['nombre']?>" data-precio="<?=$Coloress['precio']?>"><?=$Coloress['nombre']?></option>
+                                            <?php
+                                            } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <div id="opAcGrabadoEmp" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoGrab" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectGrabEmp" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de grabado</option>
+                                        <?php
+                                        foreach ($AGrabados as $agrabado) {   ?>
+                                        <option id="Grab" value="<?=$agrabado['nombre']?>" data-precio="<?=$agrabado['precio']?>"><?=$agrabado['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectUbiGrabEmp" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige la ubicación del grabado</option>
+                                        <option id="Ubi" value="Lomo" data-precio="">En el Lomo</option>
+                                        <option id="Ubi" value="Cierre" data-precio="">En el cierre</option>
+                                        <option id="Ubi" value="Tapa" data-precio="">En la Tapa</option>
+                                        <option id="Ubi" value="Izquierdo" data-precio="">Lado Izquierdo</option>
+                                        <option id="Ubi" value="Derecho" data-precio="">Lado Derecho</option>
+                                        <option id="Ubi" value="Fondo" data-precio="">En el Fondo</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="imagengrabados">
+                        <img border="0" src="<?=URL ;?>public/img/1.png" style="width: 70%">
+                    </div>
+                </div>
+
+                <div id="opAcEspecialesEmp" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectEspecialesEmp" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Pegado Especial</option>
+                                        <?php
+                                        foreach ($APEspeciales as $aespeciales) {   ?>
+                                        <option id="aLam" value="<?=$aespeciales['nombre']?>" data-precio="<?=$aespeciales['precio']?>"><?=$aespeciales['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcBarnizUVEmp" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectBarnizUVEmp" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo</option>
+                                        <?php
+                                        foreach ($ABarnizUV as $aBarniz) {   ?>
+                                        <option id="aBar" value="<?=$aBarniz['nombre']?>" data-precio="<?=$aBarniz['precio']?>"><?=$aBarniz['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcSuajeEmp" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoSuaje" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectSuajeEmp" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Suaje</option>
+                                        <?php
+                                        foreach ($ASuaje as $asuaj) {   ?>
+                                        <option id="aSuaj" value="<?=$asuaj['nombre']?>"><?=$asuaj['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcLaserEmp" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <!--<tr>
+                                <td>Largo: <input type="number" id="LargoLaser1" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoLaser1" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>-->
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectLaserEmp" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de laser</option>
+                                        <?php
+                                        foreach ($ALaser as $alaser) {   ?>
+                                        <option id="alaser" value="<?=$alaser['nombre']?>" data-precio="<?=$alaser['precio']?>"><?=$alaser['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcBarUVEmp" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoBarUVEmp" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVEmp" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAcabados" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Acabados Forro del Cajón -->
+    <div class="modal fade" id="acabados_fcajon" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header azulWhi">
+            <h5 class="modal-title" id="exampleModalLongTitle">Acabados</h5>
+            <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+
+                <div id="alerterror2">
+
+                </div>
+                <div>
+                    <select  id="SelectAcFcajon" class="SelectTSM">
+                        <option selected value="selected" disabled>Elige el tipo de acabado</option>
+                        <?php
+                        foreach ($acabados as $acabado) {   ?>
+                        <option id="Acb" value="<?=$acabado['nombre']?>" data-precio="<?=$acabado['precio']?>" data-id="<?=$acabado['id_acabados']?>"><?=$acabado['nombre']?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div id="opAcLaminadoFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectLaminadoFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de laminado</option>
+                                        <?php
+                                        foreach ($ALaminados as $alaminado) {   ?>
+                                        <option id="aLam" value="<?=$alaminado['nombre']?>" data-precio="<?=$alaminado['precio']?>" data-id="<?=$alaminado['id_proc_laminado']?>"><?=$alaminado['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcHotStampingFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoHS_fcajon" name="LargoHS_fcajon" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoHS_fcajon" name="AnchoHS_fcajon" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectHSFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de HotStamping</option>
+                                        <?php
+                                        foreach ($AHotStamping as $ahotstam) {   ?>
+                                        <option id="aHS" value="<?=$ahotstam['nombre']?>" data-precio="<?=$ahotstam['precio']?>" data-id="<?=$ahotstam['id_slave_hs']?>"><?=$ahotstam['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectColorHSFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un color</option>
+                                        <?php
+                                        foreach ($Colores as $Coloress) {   ?>
+                                        <option id="cHS" value="<?=$Coloress['nombre']?>" data-precio="<?=$Coloress['precio']?>"><?=$Coloress['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcGrabadoFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoGrab_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectGrabFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de grabado</option>
+                                        <?php
+                                        foreach ($AGrabados as $agrabado) {   ?>
+                                        <option id="Grab" value="<?=$agrabado['nombre']?>" data-precio="<?=$agrabado['precio']?>"><?=$agrabado['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectUbiGrabFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige la ubicación del grabado</option>
+                                        <option id="Ubi" value="Lomo" data-precio="">En el Lomo</option>
+                                        <option id="Ubi" value="Cierre" data-precio="">En el cierre</option>
+                                        <option id="Ubi" value="Tapa" data-precio="">En la Tapa</option>
+                                        <option id="Ubi" value="Izquierdo" data-precio="">Lado Izquierdo</option>
+                                        <option id="Ubi" value="Derecho" data-precio="">Lado Derecho</option>
+                                        <option id="Ubi" value="Fondo" data-precio="">En el Fondo</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="imagengrabados2">
+                        <img border="0" src="<?=URL ;?>public/img/1.png" style="width: 70%">
+                    </div>
+                </div>
+
+                <div id="opAcEspecialesFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectEspecialesFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Pegado Especial</option>
+                                        <?php
+                                        foreach ($APEspeciales as $aespeciales) {   ?>
+                                        <option id="aLam" value="<?=$aespeciales['nombre']?>" data-precio="<?=$aespeciales['precio']?>"><?=$aespeciales['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcBarnizUVFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectBarnizUVFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo</option>
+                                        <?php
+                                        foreach ($ABarnizUV as $aBarniz) {   ?>
+                                        <option id="aBar" value="<?=$aBarniz['nombre']?>" data-precio="<?=$aBarniz['precio']?>"><?=$aBarniz['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcSuajeFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoSuaje_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje_fcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectSuajeFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Suaje</option>
+                                        <?php
+                                        foreach ($ASuaje as $asuaj) {   ?>
+                                        <option id="aSuaj" value="<?=$asuaj['nombre']?>" data-precio="<?=$asuaj['precio']?>"><?=$asuaj['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcLaserFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <!--<tr>
+                                <td>Largo: <input type="number" id="LargoLaser_fcajon" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoLaser_fcajon" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>-->
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectLaserFcajon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de laser</option>
+                                        <?php
+                                        foreach ($ALaser as $alaser) {   ?>
+                                        <option id="alaser" value="<?=$alaser['nombre']?>" data-precio="<?=$alaser['precio']?>"><?=$alaser['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcBarUVFcajon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoBarUVFcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVFcajon" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAcabadosfcajon" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Acabados Forro de la Cartera -->
+    <div class="modal fade" id="acabados_fcartera" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header azulWhi">
+            <h5 class="modal-title" id="exampleModalLongTitle">Acabados</h5>
+            <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+
+                <div id="alerterror3">
+
+                </div>
+                <div>
+                    <select  id="SelectAcFcartera" class="SelectTSM">
+                        <option selected value="selected" disabled>Elige el tipo de acabado</option>
+                        <?php
+                        foreach ($acabados as $acabado) {   ?>
+                        <option id="Acb" value="<?=$acabado['nombre']?>" data-precio="<?=$acabado['precio']?>" data-id="<?=$acabado['id_acabados']?>"><?=$acabado['nombre']?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div id="opAcLaminadoFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectLaminadoFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de laminado</option>
+                                        <?php
+                                        foreach ($ALaminados as $alaminado) {   ?>
+                                        <option id="aLam" value="<?=$alaminado['nombre']?>" data-precio="<?=$alaminado['precio']?>" data-id="<?=$alaminado['id_proc_laminado']?>"><?=$alaminado['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcHotStampingFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoHS_fcartera" name="LargoHS_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoHS_fcartera" name="AnchoHS_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectHSFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de HotStamping</option>
+                                        <?php
+                                        foreach ($AHotStamping as $ahotstam) {   ?>
+                                        <option id="aHS" value="<?=$ahotstam['nombre']?>" data-precio="<?=$ahotstam['precio']?>" data-id="<?=$ahotstam['id_slave_hs']?>"><?=$ahotstam['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectColorHSFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un color</option>
+                                        <?php
+                                        foreach ($Colores as $Coloress) {   ?>
+                                        <option id="cHS" value="<?=$Coloress['nombre']?>" data-precio="<?=$Coloress['precio']?>"><?=$Coloress['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcGrabadoFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoGrab_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectGrabFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de grabado</option>
+                                        <?php
+                                        foreach ($AGrabados as $agrabado) {   ?>
+                                        <option id="Grab" value="<?=$agrabado['nombre']?>" data-precio="<?=$agrabado['precio']?>"><?=$agrabado['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectUbiGrabFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige la ubicación del grabado</option>
+                                        <option id="Ubi" value="Lomo" data-precio="">En el Lomo</option>
+                                        <option id="Ubi" value="Cierre" data-precio="">En el cierre</option>
+                                        <option id="Ubi" value="Tapa" data-precio="">En la Tapa</option>
+                                        <option id="Ubi" value="Izquierdo" data-precio="">Lado Izquierdo</option>
+                                        <option id="Ubi" value="Derecho" data-precio="">Lado Derecho</option>
+                                        <option id="Ubi" value="Fondo" data-precio="">En el Fondo</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="imagengrabados3">
+                        <img border="0" src="<?=URL ;?>public/img/1.png" style="width: 70%">
+                    </div>
+                </div>
+
+                <div id="opAcEspecialesFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectEspecialesFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Pegado Especial</option>
+                                        <?php
+                                        foreach ($APEspeciales as $aespeciales) {   ?>
+                                        <option id="aLam" value="<?=$aespeciales['nombre']?>" data-precio="<?=$aespeciales['precio']?>"><?=$aespeciales['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcBarnizUVFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectBarnizUVFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo</option>
+                                        <?php
+                                        foreach ($ABarnizUV as $aBarniz) {   ?>
+                                        <option id="aBar" value="<?=$aBarniz['nombre']?>" data-precio="<?=$aBarniz['precio']?>"><?=$aBarniz['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcSuajeFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoSuaje_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje_fcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectSuajeFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Suaje</option>
+                                        <?php
+                                        foreach ($ASuaje as $asuaj) {   ?>
+                                        <option id="aSuaj" value="<?=$asuaj['nombre']?>" data-precio="<?=$asuaj['precio']?>"><?=$asuaj['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcLaserFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <!--<tr>
+                                <td>Largo: <input type="number" id="LargoLaser_fcartera" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoLaser_fcartera" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>-->
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectLaserFcartera" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de laser</option>
+                                        <?php
+                                        foreach ($ALaser as $alaser) {   ?>
+                                        <option id="alaser" value="<?=$alaser['nombre']?>" data-precio="<?=$alaser['precio']?>"><?=$alaser['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcBarUVFcartera" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoBarUVFcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVFcartera" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAcabadosfcartera" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Acabados Guarda -->
+    <div class="modal fade" id="acabados_guarda" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header azulWhi">
+            <h5 class="modal-title" id="exampleModalLongTitle">Acabados</h5>
+            <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+
+                <div id="alerterror4">
+
+                </div>
+                <div>
+                    <select  id="SelectAcGuarda" class="SelectTSM">
+                        <option selected value="selected" disabled>Elige el tipo de acabado</option>
+                        <?php
+                        foreach ($acabados as $acabado) {   ?>
+                        <option id="Acb" value="<?=$acabado['nombre']?>" data-precio="<?=$acabado['precio']?>" data-id="<?=$acabado['id_acabados']?>"><?=$acabado['nombre']?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div id="opAcLaminadoGuarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectLaminadoGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de laminado</option>
+                                        <?php
+                                        foreach ($ALaminados as $alaminado) {   ?>
+                                        <option id="aLam" value="<?=$alaminado['nombre']?>" data-precio="<?=$alaminado['precio']?>" data-id="<?=$alaminado['id_proc_laminado']?>"><?=$alaminado['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcHotStampingGuarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoHS_guarda" name="LargoHS_guarda" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoHS_guarda" name="AnchoHS_guarda" value="1.00" style="width: 70px;" step="0.01" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectHSGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de HotStamping</option>
+                                        <?php
+                                        foreach ($AHotStamping as $ahotstam) {   ?>
+                                        <option id="aHS" value="<?=$ahotstam['nombre']?>" data-precio="<?=$ahotstam['precio']?>" data-id="<?=$ahotstam['id_slave_hs']?>"><?=$ahotstam['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectColorHSGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un color</option>
+                                        <?php
+                                        foreach ($Colores as $Coloress) {   ?>
+                                        <option id="cHS" value="<?=$Coloress['nombre']?>" data-precio="<?=$Coloress['precio']?>"><?=$Coloress['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcGrabadoGuarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoGrab_guarda" name="LargoGrab_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoGrab_guarda" name="AnchoGrab_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectGrabGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de grabado</option>
+                                        <?php
+                                        foreach ($AGrabados as $agrabado) {   ?>
+                                        <option id="Grab" value="<?=$agrabado['nombre']?>" data-precio="<?=$agrabado['precio']?>"><?=$agrabado['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectUbiGrabGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige la ubicación del grabado</option>
+                                        <option id="Ubi" value="Lomo" data-precio="">En el Lomo</option>
+                                        <option id="Ubi" value="Cierre" data-precio="">En el cierre</option>
+                                        <option id="Ubi" value="Tapa" data-precio="">En la Tapa</option>
+                                        <option id="Ubi" value="Izquierdo" data-precio="">Lado Izquierdo</option>
+                                        <option id="Ubi" value="Derecho" data-precio="">Lado Derecho</option>
+                                        <option id="Ubi" value="Fondo" data-precio="">En el Fondo</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="imagengrabados4">
+                        <img border="0" src="<?=URL ;?>public/img/1.png" style="width: 70%">
+                    </div>
+                </div>
+
+                <div id="opAcEspecialesGuarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectEspecialesGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Pegado Especial</option>
+                                        <?php
+                                        foreach ($APEspeciales as $aespeciales) {   ?>
+                                        <option id="aLam" value="<?=$aespeciales['nombre']?>" data-precio="<?=$aespeciales['precio']?>"><?=$aespeciales['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcBarnizUVGuarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectBarnizUVGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo</option>
+                                        <?php
+                                        foreach ($ABarnizUV as $aBarniz) {   ?>
+                                        <option id="aBar" value="<?=$aBarniz['nombre']?>" data-precio="<?=$aBarniz['precio']?>"><?=$aBarniz['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcSuajeGuarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoSuaje_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSuaje_guarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectSuajeGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de Suaje</option>
+                                        <?php
+                                        foreach ($ASuaje as $asuaj) {   ?>
+                                        <option id="aSuaj" value="<?=$asuaj['nombre']?>" data-precio="<?=$asuaj['precio']?>"><?=$asuaj['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opAcLaserGuarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <!--<tr>
+                                <td>Largo: <input type="number" id="LargoLaser_guarda" name="LargoLaser_guarda" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoLaser_guarda" name="AnchoLaser_guarda" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>-->
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectLaserGuarda" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de laser</option>
+                                        <?php
+                                        foreach ($ALaser as $alaser) {   ?>
+                                        <option id="alaser" value="<?=$alaser['nombre']?>" data-precio="<?=$alaser['precio']?>"><?=$alaser['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="opAcBarUVguarda" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoBarUVGuarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoBarUVGuarda" value="1.00" step="0.01" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAcabadosguarda" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+<!-- ******* Todos los modales Banco ******** -->
+    <!-- Banco Empalme -->
+    <div class="modal fade" id="bancoemp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header azulWhi">
+            <h5 class="modal-title" id="exampleModalLongTitle">Banco</h5>
+            <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+
+                <div id="alerterror5">
+
+                </div>
+                <div>
+                    <select id="SelectBanEmp" class="SelectTSM">
+                        <option selected value="selected" disabled>Elige un material</option>
+                        <?php
+                        foreach ($bancos as $banco) {   ?>
+                        <option id="Ban" value="<?=$banco['nombre']?>" data-precio="<?=$banco['precio']?>" data-id="<?=$banco['id_acabados']?>"><?=$banco['nombre']?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <br>
+
+                <div>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: </td><td><input type="number" id="LargoBanco" name="LargoBanco" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                                <td>Ancho: </td><td><input type="number" id="AnchoBanco" name="AnchoBanco" value="1" style="width: 70px;" min="1">cm</td>
+                            <tr>
+                                <td>Profundidad: </td><td><input type="number" id="ProfundidadBanco" name="ProfundidadBanco" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr id="llevasuajemodBanco" style="display: none;">
+                                <td>¿Lleva Suaje?: </td>
+                                <td>
+                                    <select class="SelectTSM" id="SelectSuajeBanco">
+
+                                        <option value="No">No</option>
+                                        <option value="Si">Si</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" id="footerBancoEmp" style="display: none">
+                <button type="button" id="btnBancoEmp" name="btnBancoEmp" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+            <div class="modal-footer" id="footerBancoFcajon" style="display: none">
+                <button type="button" id="btnBancoFcajon" name="btnBancoFcajon" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+            <div class="modal-footer" id="footerBancoFcartera" style="display: none">
+                <button type="button" id="btnBancoFcartera" name="btnBancoFcartera" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+            <div class="modal-footer" id="footerBancoGuarda" style="display: none">
+                <button type="button" id="btnBancoGuarda" name="btnBancoGuarda" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+<!-- ******* Todo el Modal Cierres ******* -->
+    <div class="modal fade" id="cierres" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header azulWhi">
+            <h5 class="modal-title" id="exampleModalLongTitle">Cierres</h5>
+            <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+
+                <div id="alerterror6">
+
+                </div>
+                <div>
+                    <select  id="SelectCieEmp" class="SelectTSM">
+                        <option selected value="selected" disabled>Elige el tipo de cierre</option>
+                        <?php
+                        foreach ($cierres as $cierre) {   ?>
+                        <option id="Acb" value="<?=$cierre['nombre']?>" data-precio="<?=$cierre['precio']?>" data-id="<?=$cierre['id_cierres']?>"><?=$cierre['nombre']?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+
+                <div id="opCieParaPares" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Número de pares:</td>
+                                <td>
+                                    <input type="number" id="paresCierre" value="1" style="width: 50px;" min="1">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opCieListon" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoListon" name="LargoHS_ver" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoListon" name="AnchoHS_ver" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectListonEmp" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo de liston</option>
+                                        <?php
+                                        foreach ($TipoListon as $tipliston) {   ?>
+                                        <option id="listontip" value="<?=$tipliston['nombre']?>" data-precio="<?=$tipliston['precio']?>" data-id="<?=$tipliston['id_liston']?>"><?=$tipliston['nombre']?></option>
+                                        <?php
+                                        }   ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectColorListon" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un color</option>
+                                        <?php
+                                        foreach ($ColoresListon as $coloresls) {   ?>
+                                        <option id="clis" value="<?=$coloresls['nombre']?>" data-precio="<?=$coloresls['precio']?>"><?=$coloresls['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opCieMarialuisa" style="display: none;">
+
+                    <table class="table" style="text-align: left;">
+
+                        <tbody>
+
+                            <tr>
+
+                                <td colspan="2">Se agregará un cierre Marialuisa
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="opCieSuajeCalado" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoSCalado" name="LargoSCalado" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoSCalado" name="AnchoSCalado" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <select  id="SelectSCalado" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un tipo</option>
+                                        <?php
+                                        foreach ($ALaser as $alaser) {   ?>
+                                        <option id="liston" value="<?=$alaser['nombre']?>" data-precio="<?=$alaser['precio']?>"><?=$alaser['nombre']?></option>
+                                        <?php
+                                        } ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--<div id="opCieVelcro" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Número de pares:</td>
+                                <td>
+                                    <input type="number" id="paresVelcro" value="1" style="width: 50px;" min="1">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnCierres" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- se completo el cierre del div -->
+    <div class="modal fade" id="accesorios" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header azulWhi">
+            <h5 class="modal-title" id="exampleModalLongTitle">Accesorios</h5>
+            <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+
+                <div id="alerterror7">
+
+                </div>
+
+
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <select  id="SelectAccesorio" class="SelectTSM">
+                                    <option selected value="selected" disabled>Elige un tipo</option>
+                                    <?php
+                                        foreach ($accesorios as $accesorio) {
+                                    ?>
+                                            <option id="idAccesorio" data-id="<?=$accesorio['id_accesorios']?>" data-group="accesorios" data-price="<?=$accesorio['precio']?>"><?=$accesorio['nombre']?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="opMedidas" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>Largo: <input type="number" id="LargoAcc" name="LargoAcc" value="1" style="width: 70px;" min="1">cm</td>
+                                <td>Ancho: <input type="number" id="AnchoAcc" name="AnchoAcc" value="1" style="width: 70px;" min="1">cm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="opOjillo" style="display: none;">
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">se agregará un accesorio Ojillo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="opColores" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select id="SelectColor" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un color</option>
+                                            <?php
+                                                foreach ($ColoresListon as $Colores) {
+                                            ?>
+                                                    <option id="cl" value="<?=$Colores['nombre']?>" data-precio="<?=$Colores['precio']?>"><?=$Colores['nombre']?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="opHerraje" style="display: none;">
+                    <br>
+                    <table class="table" style="text-align: left;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select  id="SelectHerraje" class="SelectTSM">
+                                        <option selected value="selected" disabled>Elige un herraje</option>
+                                            <?php
+                                                foreach ($Herrajes as $herraje) {
+                                            ?>
+                                                    <option id="h" value="<?=$herraje['nombre']?>" data-precio="<?=$herraje['precio']?>"><?=$herraje['nombre']?></option>
+                                            <?php
+                                                }
+                                            ?>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAccesorios" class="btn btn-guardar-blues">Guardar</button>
+                <button type="button" id="btnCancelAccesorios" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+      </div>
+    </div>
+    </div>
+
+<!-- Modal Tablas (Tablas de Registros) -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="procesosModal">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header azulWhi">
+
+                <h5 class="modal-title" id="exampleModalLongTitle">Tablas de Registros</h5>
+
+                <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Tabla de Registros -->
+            <div class="modal-body">
+
+                <div class="accordion" id="accordionExample">
+
+                    <!-- Cortes de Hojas -->
+                    <div class="card">
+
+                        <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onmouseover="this.style.cursor='pointer'">
+
+                            <h2 class="mb-0">
+
+                                <label class="btn btn-link" style="text-decoration: none;">
+                                    Cortes de Hojas
+                                </label>
+                            </h2>
+                        </div>
+
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                            <div class="card-body">
+
+                                <table class="t-resume" style="text-align: center;">
+
+                                    <tbody id="table_papeles_tr">
+                                        <!-- Aquí se registran los datos -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+
+                        <!-- Procesos Default -->
+                        <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" onmouseover="this.style.cursor='pointer'">
+
+                            <h2 class="mb-0">
+
+                                <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
+                                    Procesos Default
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+
+                            <div class="card-body">
+
+                                <table class="t-resume" style="text-align: center;">
+
+                                    <tbody id="table_adicionales_tr">
+                                        <!-- Aquí se registran los procesos default -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mermas Integradas -->
+                    <div class="card">
+
+                        <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" onmouseover="this.style.cursor='pointer'">
+
+                            <h2 class="mb-0">
+
+                                <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
+                                    Mermas Integradas
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+
+                            <div class="card-body">
+
+                                <!-- tabla de mermas resumen -->
+                                <table class="t-resume" style="text-align: center;">
+
+                                    <thead style="background: darkslateblue; color: white;">
+
+                                        <tr>
+                                            <td></td>
+                                            <td style="color: white;">Proceso</td>
+                                            <td style="color: white;">Minima</td>
+                                            <td style="color: white;">Adicional</td>
+                                            <td style="color: white;">Total</td>
+                                            <td style="color: white;">Costo Unitario</td>
+                                            <td style="color: white;">Costo Total</td>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="table_mermas_tr">
+                                        <!-- Aquí se registran los datos -->
+                                    </tbody>
+
+                                    <tfoot>
+
+                                        <tr>
+                                            <td colspan="7" style="font-size: x-small;">E: Empalme | Fj: Forro del Cajón | Fr: Forro de la Cartera | G: Guarda</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Procesoso deImpresión -->
+                    <div class="card">
+
+                        <div class="card-header" id="headingFour" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" onmouseover="this.style.cursor='pointer'">
+
+                            <h2 class="mb-0">
+
+                                <button class="btn btn-link collapsed" type="button" style="text-decoration: none;">
+                                    Procesos de Impresión
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+
+                            <div class="card-body">
+
+                                <!-- procesos offset Empalme-->
+                                <div class="container" id="proceso_offset_M1" style="display: none;">
+                                    <h5>Offset</h5>
+
+                                    <table id="tabla_view_offset_emp" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="table_proc_offset">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Serigrafia -->
+                                <div class="container" id="proceso_serigrafia_M1" style="display: none;">
+
+                                    <h5>Serigrafia</h5>
+
+                                    <table id="tabla_aj_serigrafia_emp" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="table_proc_serigrafia">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Digital -->
+                                <div class="container" id="proceso_digital_M1" style="display: none;">
+
+                                    <h5>Digital</h5>
+
+                                    <table id="tabla_aj_digital_emp" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="table_proc_digital">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Procesos de Acabados -->
+                    <div class="card">
+
+                        <div class="card-header" id="headingFive" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive" onmouseover="this.style.cursor='pointer'">
+
+                            <h2 class="mb-0">
+
+                                <button class="btn btn-link" type="button" style="text-decoration: none;">
+                                    Procesos de Acabados
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+
+                            <div class="card-body">
+                                <!-- proceso laminado-->
+                                <div class="container" id="proceso_lam_M1" style="display: none;">
+
+                                    <h5>Laminado</h5>
+
+                                    <table id="tabla_view_Lam" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="table_proc_Lam">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- proceso hot stamping-->
+                                <div class="container" id="proceso_hs_M1" style="display: none;">
+
+                                    <h5>HotStamping</h5>
+
+                                    <table id="tabla_view_HS" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="table_proc_HS">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- proceso grabados-->
+                                <div class="container" id="proceso_grab_M1" style="display: none;">
+
+                                    <h5>Grabados</h5>
+
+                                    <table id="tabla_view_Grab" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="table_proc_Grab">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- proceso suaje-->
+                                <div class="container" id="proceso_suaje_M1" style="display: none;">
+                                    <h5>Suaje</h5>
+
+                                    <table id="tabla_view_Suaje" class="t-resume" style="text-align: center;">
+                                        <tbody id="table_proc_Suaje">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- proceso corte laser-->
+                                <div class="container" id="proceso_laser_M1" style="display: none;">
+                                    <h5>Corte Laser</h5>
+
+                                    <table id="tabla_view_Laser" class="t-resume" style="text-align: center;">
+                                        <tbody id="table_proc_Laser">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- proceso barniz uv -->
+                                <div class="container" id="proceso_barnizuv_M1" style="display: none;">
+                                    <h5>Barniz UV</h5>
+
+                                    <table id="tabla_view_BarnizUV" class="t-resume" style="text-align: center;">
+                                        <tbody id="table_proc_BarnizUV">
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Procesos Banco -->
+                    <div class="card">
+
+                        <div class="card-header" id="headingSix" onmouseover="this.style.cursor='pointer'"  data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+
+                            <h2 class="mb-0">
+
+                                <button class="btn btn-link" type="button" style="text-decoration: none;">Bancos
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+
+                            <div class="card-body">
+
+                                <!-- proceso laminado-->
+                                <div class="container" id="bancos" style="display:none;">
+
+                                    <table id="" class="t-resume" style="text-align: center;">
+                                        <thead style="background: steelblue;color: white;">
+                                            <td style="color: white">Tipo</td>
+                                            <td style="color: white">Suaje</td>
+                                            <td style="color: white">Costo Unitario</td>
+                                            <td style="color: white">Total</td>
+                                        </thead>
+
+                                        <tbody id="tabla_bancos">
+
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Procesos Cierres -->
+                    <div class="card">
+
+                        <div class="card-header" id="headingSeven" onmouseover="this.style.cursor='pointer'"  data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+
+                            <h2 class="mb-0">
+
+                                <button class="btn btn-link" type="button" style="text-decoration: none;">Cierres
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
+
+                            <div class="card-body">
+
+                                <div class="container" id="divCierres" style="display:none;">
+
+                                    <table id="" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="tabla_cierres">
+
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Procesos Accesorios -->
+                    <div class="card">
+
+                        <div class="card-header" id="headingEight" onmouseover="this.style.cursor='pointer'"  data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
+
+                            <h2 class="mb-0">
+
+                                <button class="btn btn-link" type="button" style="text-decoration: none;">Accesorios
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample">
+
+                            <div class="card-body">
+
+                                <!-- proceso laminado-->
+                                <div class="container" id="divAccesorios" style="display:none;">
+
+                                    <table id="" class="t-resume" style="text-align: center;">
+
+                                        <tbody id="tabla_accesorios">
+
+                                            <!-- Aquí se registran los datos -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Resumen -->
+<div id="resumentodocaja" style="display: none;">
+
+    <button type="button" style="text-align: end; border: none; background: none; width: 100%;" id="btnQuitarResumen"><img border="0" src="<?=URL ;?>public/img/eliminar.png" style="width: 2%;">
+    </button>
+
+    <table class="table tableresumenn" id="ResumenCostos">
+
+        <thead id="resumenHead">
+            <!-- -->
+        </thead>
+
+        <thead class="thead-dark">
+
+            <tr>
+                <th style="width: 20%"></th>
+                <th>Adiciones</th>
+                <th>Subtotal</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody id="resumenEmpalme">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenFcajon">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenFcartera">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenGuarda">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenEncuadernacion">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenMensajeria">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenEmpaque">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenBancos">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenCierres">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenAccesorios">
+            <!-- -->
+        </tbody>
+
+        <tbody id="resumenOtros">
+            <!-- -->
+        </tbody>
+    </table>
+    <img border="0" src="<?=URL ;?>public/img/henpp.png" style="width: 7%; margin: 2%"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
+</div>
+
+
+<!-- Descuentos y botones de Guardar y Cancelar del modal "Descuentos" -->
+<div class="modal fade" id="descuentos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header azulWhi">
+
+                <h5 class="modal-title" id="exampleModalLongTitle">Descuentos</h5>
+
+                <button type="button" class="close" style="color: white;" data-dismiss="modal" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- Descuentos: 3%; 5%; 10%; 15%; 20% -->
+                <div>
+                    <table>
+                        <?php
+                        foreach ($descuentos as $descuento) { ?>
+                            <tr>
+                                <td>
+                                    Aplicar el <?=$descuento['cantidad']?>%
+                                </td>
+                                <td>
+                                    <input class="d-check" type="radio" name="desc" data-discount="<?=$descuento['cantidad']?>" data-value="1"  value="<?=$descuento['cantidad']?>">
+                                </td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="btnSaveDescuento" class="btn btn-guardar-blues">Guardar</button>
+
+                <button type="button" id="btnCancelDescuento" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalError" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header azulWhi" style="background: red">
+
+                <h5 class="modal-title" id="txtTituloModal">Error</h5>
+                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    <span aria-hidden="true" style="color: #fff">&times;</span>
+                </button>
+                
+            </div>
+
+            <div id="modBody" class="modal-body">
+
+                <p id="txtContenido" style="color: black; font-size: 1.1em"></p>
+                
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCorrecto" tabindex="-1" role="dialog" aria-labelledby="modalCorrecto" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header azulWhi">
+
+                <h5 class="modal-title" id="txtTitModCorrecto">Registro Exitoso</h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+
+                <p id="txtContCorrecto" style="color: black; font-size: 1.1em"></p>
+            </div>
+
+            <div class="modal-footer">
+
+                <button id="btnModCorrecto" type="button" class="btn btn-primary azulWhi" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- desde aqui comienza javascript de cajas.php -->
+
 <?php
-    require "application/views/templates/cotizador/acabados.php";
-    require "application/views/templates/cotizador/extras.php";
-    require "application/views/templates/cotizador/impresiones.php";
+
+/* Datos leidos de la tabla porcentaje_adicional */
+foreach ($Porcentajes as $porcentaje) { ?>
+
+    <input type="hidden" id="porcentaje_<?=$porcentaje['nombre_aumento']?>" value="<?=$porcentaje['porcentaje']?>">
+<?php }
+
 ?>
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")
 
-<script src="<?=URL?>public/js/cotizador/cajas.js"></script>
-<script src="<?=URL?>public/js/cotizador/almeja.js"></script>
 
+<script type="text/javascript" src="<?= URL ?>public/js/cotizador/almeja.js"></script>
 <script>
 
-    
+    // variable del boton de impresiones (modal)
+    var ImpOffset = "";
+
+    var aCalculos = {};
+    var aCortes   = {};
+    var aTr3      = [];
+
+
+    // matriz de Impresiones
+    var aImp     = [];
+    var aImpFCaj = [];
+    var aImpFCar = [];
+    var aImpG    = [];
+
+
+    // matriz de acabados
+    var aAcb     = [];
+    var aAcbFCaj = [];
+    var aAcbFCar = [];
+    var aAcbG    = [];
+
+    // matriz de cierres y accesorios
+    var aCierres    = [];
+    var aAccesorios = [];
+
+
+    // matriz de bancos
+    var aBancos = [];
+
+
+    jQuery214(".chosen").chosen();
+
+    /* Plugin de jQuery */
+    jQuery214(document).on("change", ".chosen", function () {
+
+        if ($(this).val()) {
+
+            papel_elegido = true;
+            $(this).addClass('paper_selected');
+            $('#papers_config_button').hide();
+        } else {
+
+            papel_elegido = false;
+
+            $(this).removeClass('paper_selected');
+            $('#papers_config_button').show();
+        }
+    });
+
+
+    // focus => Ancho Interior
+    jQuery214(document).on("focus", "#corte_ancho", function () {
+
+        jQuery214('#image_1_ancho').show();
+        jQuery214('#image_1').hide();
+    });
+
+
+    // focus => Alto Interior
+    jQuery214(document).on("focus", "#corte_largo", function () {
+
+        jQuery214('#image_1_alto').show();
+        jQuery214('#image_1').hide();
+    });
+
+
+    // focus => profundidad
+    jQuery214(document).on("focus", "#profundidad_1", function () {
+
+        jQuery214('#image_1_profundidad').show();
+        jQuery214('#image_1').hide();
+    });
+
+
+    // focusout
+    jQuery214(document).on("focusout", "#corte_largo", function () {
+
+        jQuery214('#image_1_alto').hide();
+        jQuery214('#image_1').show();
+    });
+
+
+    // focusout => Ancho Interior
+    jQuery214(document).on("focusout", "#corte_ancho", function () {
+
+        jQuery214('#image_1_ancho').hide();
+        jQuery214('#image_1').show();
+    });
+
+
+    // focusout => profundidad
+    jQuery214(document).on("focusout", "#profundidad_1", function () {
+
+        jQuery214('#image_1_profundidad').hide();
+        jQuery214('#image_1').show();
+    });
+
+
+    function showModal(modalID, backdrop2 = false) {
+
+        $('#' + modalID).animate({'opacity':'1'}, 300, 'linear');
+        $('.backdrop').animate({'opacity':'.50'}, 300, 'linear');
+        $('.backdrop, #' + modalID).css('display', 'block');
+
+        if (backdrop2) {
+
+            $('.backdrop2').animate({'opacity':'.50'}, 300, 'linear');
+            $('.backdrop2, #' + modalID).css('display', 'block');
+        }
+    }
+
+
+    function closeModal(target = false, drop_target = false) {
+
+        if (!target) {
+
+            $('.backdrop, .cotizador_box, .loader,.backdrop2, .cotizador_box2').animate({'opacity':'0'}, 300, 'linear', function() {
+
+                $('.backdrop, .cotizador_box, .loader,.backdrop2, .cotizador_box2').css('display', 'none');
+            });
+
+            setTimeout(function() {
+
+                $('.second').hide();
+                $('.first').show();
+                $('.b-checked').find('input').prop('checked', false);
+                $('.b-checked').removeClass('b-checked');
+            }, 400);
+        } else {
+
+            $('.backdrop2, .cotizador_box2').animate({'opacity':'0'}, 300, 'linear', function() {
+
+                $('.backdrop2, .cotizador_box2').css('display', 'none');
+            });
+        }
+    }
+
+    var descuento = 0;
+
+    /* Descuento */
+    jQuery214(document).on("click", ".d-check", function (){
+
+        descuento = $(this).val();
+
+        closeModal();
+    });
+
+
+    jQuery214(document).on("click", "#btnSaveDescuento", function (){
+
+        $("#descuentoModal").html("Descuento: (" + descuento + "%)");
+
+        $("#descuentos").modal("hide");
+    });
+
+
+    jQuery214(document).on("click", "#btnCancelDescuento", function (){
+
+        jQuery214('#DescuentoDrop').html("$0.00");
+
+        $('#descuentos').find("input:checked").prop("checked", false);
+
+        $("#descuentoModal").html("Descuento: (0%)");
+
+        descuento = 0;
+    });
+
+
+    jQuery214(document).on("click", "#descuentoModal", function (){
+
+        //showModal('d_grabado',true);
+        $('#descuentos').modal('show');
+    });
+
+    function appndPapelCarton( arrPapel, parte ){
+
+        if (  arrPapel == "" ||  arrPapel == undefined ) return false;
+
+        var nombre        = arrPapel['nombre_papel'];
+        var ancho         = arrPapel['calculadora']['corte_ancho'];
+        var largo         = arrPapel['calculadora']['corte_largo'];
+        var costoUnitario = arrPapel['costo_unit_papel'];
+        var costoTotal    = arrPapel['tot_costo'];
+        var corte         = arrPapel['corte'];
+        var pliegos       = arrPapel['tot_pliegos'];
+
+        var tr = '<tr><td>' + parte + '</td><td>' + nombre + '</td><td>$' + costoUnitario + '</td><td>Largo: ' + largo + ' Ancho: ' + ancho + '</td><td>' + corte + '</td><td>' + pliegos + '</td><td>$' + costoTotal + '<input type="hidden" class="prices" value="' + costoTotal + '"></td></tr>';
+
+        $('#table_papeles_tr').append(tr);
+
+        var trResumen = '<tr><td></td><td>Papel '+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
+        var tabla = "";
+        switch( parte ){
+
+            case "Cartón Cajón":
+                tabla = "Empalme";
+                trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenempalme" value="' + costoTotal + '"></td><td></td></tr>';
+            break;
+            case "Empalme Cajón":
+                tabla = "Empalme";
+            break;
+            case "Forro Cajón":
+                tabla = "Fcajon";
+            break;
+            case "Cartón Cartera":
+                tabla = "Fcartera";
+                trResumen = '<tr><td></td><td>'+ nombre +'</td><td>$'+ costoTotal +'<input type="hidden" class="pricesresumenfcartera" value="' + costoTotal + '"></td><td></td></tr>';
+            break;
+            case "Forro Cartera":
+                tabla = "Fcartera";
+            break;
+            case "Guarda":
+                tabla = "Guarda";
+            break;
+        }
+        $('#resumen' + tabla ).append(trResumen);
+    }
+
+    function cleanModError(){
+
+        $("#modError").remove();
+    }
+
+    function appndMsgError(error){
+
+        var divError = $("#modError").html();
+        
+        if( divError !== undefined ){
+
+            $("#modError").remove();
+        }
+        var btnError = `
+
+            <div id="modError">
+                <a class="btn btn-danger" data-toggle="collapse" href="#ModmsgError" role="button" aria-expanded="false" aria-controls="ModmsgError">
+                        Ver mas...
+                </a>
+                <div class="collapse" id="ModmsgError">
+                    <div class="card card-body" id="txtError">
+                        
+                    </div>
+                </div>
+            </div>
+        `;
+        $("#modBody").append(btnError);
+        $("#txtError").html(error);
+    }
 
     // papel(es) seleccionado(s)
-    $(document).on("click", "#papeles_submit", function () {
+    jQuery214(document).on("click", "#papeles_submit", function () {
 
         var grabar = "NO";
 
@@ -1920,8 +4830,6 @@
                                 }
                             }
 
-
-
                         // oculta
                             $('#proceso_hs_M1').hide();
 
@@ -1995,7 +4903,6 @@
                                         var js_tipoGrabadoLam_emp = js_respuesta[c][a]['tipoGrabado'];
                                         var js_LargoLam_emp       = js_respuesta[c][a]['Largo'];
                                         var js_AnchoLam_emp       = js_respuesta[c][a]['Ancho'];
-                                        var tiraje       = js_respuesta[c][a]['tiraje'];
 
 
                                         var js_costo_unitario_lam_emp = js_respuesta[c][a]['costo_unitario'];
@@ -2017,7 +4924,7 @@
 
                                         } else {
 
-                                            var acabadoTr = `<tr><td colspan="3" style="background: steelblue;color: white;">${js_parte_nombre}</td></tr><tr style="background: #87ceeb73;"><td>Tipo: ${js_tipoGrabadoLam_emp}</td><td>Tiraje: ${tiraje}</td><td>Tamaño: ${js_LargoLam_emp}x${js_AnchoLam_emp}</td></tr><tr><td>Costo Unitario</td><td></td><td>Total</td></tr><tr><td>$${js_costo_unitario_lam_emp}</td><td></td><td>$${ js_costo_tiro_lam_emp}<input type="hidden" class="prices" value="${js_costo_tiro_lam_emp}"></td></tr><tr><td colspan="2"></td></tr>`;
+                                            var acabadoTr = '<tr><td colspan="2" style="background: steelblue;color: white;">'+ js_parte_nombre +'</td></tr><tr style="background: #87ceeb73;"><td>Tipo: '+ js_tipoGrabadoLam_emp +'</td><td>Tamaño: '+ js_LargoLam_emp +'x'+ js_AnchoLam_emp +'</td></tr><tr><td>Costo Unitario</td><td>Total</td></tr><tr><td>$'+ js_costo_unitario_lam_emp +'</td><td>$'+ js_costo_tiro_lam_emp +'<input type="hidden" class="prices" value="'+ js_costo_tiro_lam_emp +'"></td></tr><tr><td colspan="2"></td></tr>';
 
                                             jQuery214('#table_proc_Lam').append(acabadoTr);
 
@@ -2549,6 +5456,7 @@
                                         step += 4;
                                     }
                                 })
+                                console.log(precioTotal)
                                 return precioTotal.toFixed(2)
                             }catch(e){
 
@@ -2959,8 +5867,6 @@
                                         //Corte Laser
 
                                         if (c === "Laser" || c === "LaserFcaj" || c === "LaserFcar" || c === "LaserG") {
-
-                                            js_merma_adic_mm = 'N/A';
                                             
                                             var mermastr = '<tr>'+ js_color_parte +'<td>Corte Laser</td><td>'+ js_merma_min_mm +'</td><td>'+ js_merma_adic_mm +'</td><td>'+ js_merma_tot_mm +'</td><td>$'+ js_costo_unit_merma_2m +'</td><td>$'+ js_costo_tot_merma_mm +'<input type="hidden" class="prices" value="'+ js_costo_tot_merma_mm +'"></td></tr>';
 
@@ -3159,7 +6065,6 @@
                             $("#subForm").prop("disabled",false);
                         
                             localStorage.setItem('js_respuesta',aJson_stringify);
-                            localStorage.setItem('controlador','no');
                     } catch(e) {
 
                         try{
@@ -3209,6 +6114,13 @@
             });
         }
     });
+
+    /*$("#btnModCorrecto").click( function() {
+
+        location.href="<?=URL?>cotizador/getCotizaciones/";
+
+        $("#subForm").prop("disabled", true);
+    });*/
 
 
     // graba en la Base de Datos
@@ -3325,8 +6237,8 @@
                     $("#id_odt_anterior").val(idAnt)
 
                     showModCorrecto("Los datos han sido guardados correctamente...");
-                    activarBtn();
                 }
+                activarBtn();
             } catch(e) {
                 console.log(e)
                 showModError("");
@@ -3340,7 +6252,3278 @@
     });
 
 
-<<<<<<< HEAD
+    jQuery214(document).on("click", ".listimpresiones", function () {
+
+        $(this).closest('tr').remove();
+
+        aImp.length = 0;
+
+        var TableData       = "";
+        var tipo_imp_offset = "";
+
+        $("#Imptable tr").each(function(row, tr){
+
+            var opImp   = $(tr).find('td:eq(0)').text(); // IDopImp
+            var IDopImp = parseInt($(tr).find('td:eq(1)').text());
+
+            var tintassel_str = $(tr).find('td:eq(3)').text();
+            var tintassel     = parseInt(tintassel_str, 10);
+            var tipo          = $(tr).find('td:eq(4)').text();
+
+            if (opImp == 'Offset') {
+
+                var idtipoOff = parseInt($("#tipoOffEmp").val());
+
+                aImp.push({"Tipo_impresion": opImp, "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+            } else if (opImp == "Digital") {
+
+                /*var tipo    = $(tr).find('td:eq(3)').text();
+                var tipoDig = $(tr).find('td:eq(2)').text();
+
+                var idtipoDig_str = $("#tipoDigFCajon").val();
+                var idtipoDig     = parseInt(idtipoDig_str, 10);
+
+                aImp.push({"Tipo_impresion": opImp, "tipo_digital": tipo, "idtipoDig": idtipoDig});*/
+                aImp.push({"Tipo_impresion": opImp});
+
+            } else if (opImp == "Serigrafia") {
+
+                var idtipoSeri = parseInt($("#tipoSeriEmp").val());
+
+                aImp.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+            }
+        });
+        desactivarBtn();
+    });
+
+
+    jQuery214(document).on("click", ".listimpresionesfcajon", function () {
+
+        $(this).closest('tr').remove();
+
+        aImpFCaj.length = 0;
+
+        var TableData       = "";
+        var tipo_imp_offset = "";
+
+        $("#Imptablefcajon tr").each(function(row, tr) {
+
+            var IDopImp       = parseInt($(tr).find('td:eq(1)').text());
+            var tintassel_str = $(tr).find('td:eq(3)').text();
+            var tintassel     = parseInt(tintassel_str, 10);
+            var tipo          = $(tr).find('td:eq(4)').text();
+
+            var opImp = $(tr).find('td:eq(0)').text(); // IDopImp
+
+            if (opImp == 'Offset') {
+
+                var idtipoOff = parseInt($("#tipoOffFcajon").val());
+
+                aImpFCaj.push({"Tipo_impresion": opImp, "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+            } else if (opImp == "Digital") {
+
+                /*var tipo    = $(tr).find('td:eq(3)').text();
+                var tipoDig = $(tr).find('td:eq(2)').text();
+
+                var idtipoDig_str = $("#tipoDigFCajon").val();
+                var idtipoDig     = parseInt(idtipoDig_str, 10);
+
+                aImpFCaj.push({"Tipo_impresion": opImp, "tipo_digital": tipo, "idtipoDig": idtipoDig});*/
+                aImpFCaj.push({"Tipo_impresion": opImp});
+            } else if (opImp == "Serigrafia") {
+
+                var idtipoSeri = parseInt($("#tipoSeriFcajon").val());
+
+                aImpFCaj.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+            }
+        });
+        desactivarBtn();
+    });
+
+
+    jQuery214(document).on("click", ".listimpresionesfcartera", function () {
+
+        $(this).closest('tr').remove();
+
+        aImpFCar.length = 0;
+
+        $("#Imptablefcartera tr").each(function(row, tr) {
+
+            var IDopImp       = parseInt($(tr).find('td:eq(1)').text());
+            var tintassel_str = $(tr).find('td:eq(3)').text();
+            var tintassel     = parseInt(tintassel_str, 10);
+            var tipo          = $(tr).find('td:eq(4)').text();
+
+            var opImp = $(tr).find('td:eq(0)').text(); // IDopImp
+
+            if (opImp == 'Offset') {
+
+                var idtipoOff = parseInt($("#tipoOffFcartera").val());
+
+                aImpFCar.push({"Tipo_impresion": opImp, "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+            } else if (opImp == "Digital") {
+
+                /*var tipo    = $(tr).find('td:eq(3)').text();
+                var tipoDig = $(tr).find('td:eq(2)').text();
+
+                var idtipoDig_str = $("#tipoDigFCajon").val();
+                var idtipoDig     = parseInt(idtipoDig_str, 10);
+
+                aImpFCar.push({"Tipo_impresion": opImp, "tipo_digital": tipo, "idtipoDig": idtipoDig});*/
+                aImpFCar.push({"Tipo_impresion": opImp});
+            } else if (opImp == "Serigrafia") {
+
+                var idtipoSeri = parseInt($("#tipoSeriFcartera").val());
+
+                aImpFCar.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+            }
+        });
+        desactivarBtn();
+    });
+
+
+    jQuery214(document).on("click", ".listimpresionesguarda", function () {
+
+        $(this).closest('tr').remove();
+
+        aImpG.length = 0;
+
+        var TableData       = "";
+        var tipo_imp_offset = "";
+
+        $("#Imptableguarda tr").each(function(row, tr) {
+
+            var IDopImp       = parseInt($(tr).find('td:eq(1)').text());
+            var tintassel_str = $(tr).find('td:eq(3)').text();
+            var tintassel     = parseInt(tintassel_str, 10);
+            var tipo          = $(tr).find('td:eq(4)').text();
+
+            var opImp = $(tr).find('td:eq(0)').text(); // IDopImp
+
+            if (opImp == 'Offset') {
+
+                var idtipoOff = parseInt($("#tipoOffGuarda").val());
+
+                aImpG.push({"Tipo_impresion": opImp, "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+            } else if (opImp == "Digital") {
+
+                /*var tipo    = $(tr).find('td:eq(3)').text();
+                var tipoDig = $(tr).find('td:eq(2)').text();
+
+                var idtipoDig_str = $("#tipoDigFCajon").val();
+                var idtipoDig     = parseInt(idtipoDig_str, 10);
+
+                aImpG.push({"Tipo_impresion": opImp, "tipo_digital": tipo, "idtipoDig": idtipoDig});*/
+                aImpG.push({"Tipo_impresion": opImp});
+            } else if (opImp == "Serigrafia") {
+
+                var idtipoSeri = parseInt($("#tipoSeriGuarda").val());
+
+                aImpG.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipo, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+            }
+        });
+        desactivarBtn();
+    });
+
+
+    jQuery214(document).on("click", ".delete", function () {
+
+        $(this).closest('tr').remove();
+        
+    });
+
+</script>
+
+<!-- boton de impresiones -->
+<script type="text/javascript">
+
+    /* -------- Activa los div de los select impresiones ---------*/
+    document.getElementById('miSelect').onchange = function(event) {
+
+        var opcionact = document.getElementById('miSelect').value;
+
+        switch(opcionact){
+
+            case "Offset":
+                hideSelectImp('opImpresionOffset');
+            break;
+            case "Digital":
+                hideSelectImp('opImpresionDigital');
+            break;
+            case "Serigrafia":
+                hideSelectImp('opImpresionSerigrafia');
+            break;
+
+        }
+    }
+
+    document.getElementById('miSelectFcajon').onchange = function(event) {
+
+        var opcionact = document.getElementById('miSelectFcajon').value;
+
+        switch(opcionact){
+
+            case "Offset":
+                hideSelectImp('opImpresionOffsetFcajon');
+            break;
+            case "Digital":
+                hideSelectImp('opImpresionDigitalFcajon');
+            break;
+            case "Serigrafia":
+                hideSelectImp('opImpresionSerigrafiaFcajon');
+            break;
+        }
+    }
+
+
+    document.getElementById('miSelectFcartera').onchange = function(event) {
+
+        var opcionact = document.getElementById('miSelectFcartera').value;
+
+        switch(opcionact){
+
+            case "Offset":
+                hideSelectImp('opImpresionOffsetFcartera');
+            break;
+            case "Digital":
+                hideSelectImp('opImpresionDigitalFcartera');
+            break;
+            case "Serigrafia":
+                hideSelectImp('opImpresionSerigrafiaFcartera');
+            break;
+        }
+    }
+
+
+    document.getElementById('miSelectGuarda').onchange = function(event) {
+
+        var opcionact = document.getElementById('miSelectGuarda').value;
+
+        switch(opcionact){
+
+            case "Offset":
+                hideSelectImp('opImpresionOffsetGuarda');
+            break;
+            case "Digital":
+                hideSelectImp('opImpresionDigitalGuarda');
+            break;
+            case "Serigrafia":
+                hideSelectImp('opImpresionSerigrafiaGuarda');
+            break;
+        }
+    }
+
+    $(document).on('click', '#btnImpresiones', function(event) {
+
+        var IDopImp  = $("#miSelect option:selected").data('id');
+        var opImp    = $("#miSelect option:selected").text();
+        var precio   = $("#miSelect option:selected").data('precio'); //precio unitario
+
+
+        //para Offset
+        var tipoOffset     = $("#SelectImpTipoOff option:selected").text();
+        var preciotipoOff  = $("#SelectImpTipoOff option:selected").data('precio');
+        var idtipoOff      = $("#SelectImpTipoOff option:selected").data('id');
+        var tintassel      = document.getElementById('tintasO').value;
+
+
+        //para digital
+        //var tipoDig   = $("#SelectImpDigital option:selected").text();
+        //var idtipoDig = $("#SelectImpDigital option:selected").data('id');
+
+
+        //para Serigrafia
+        var tipoSeri       = $("#SelectImpTipoSeri option:selected").text();
+        var preciotipoSeri = $("#SelectImpTipoSeri option:selected").data('precio');
+        var idtipoSeri     = $("#SelectImpTipoSeri option:selected").data('id');
+        var tintassel2     = document.getElementById('tintasS').value;
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        if (opImp == 'Offset') {
+
+            var nuloo = document.getElementById('SelectImpTipoOff').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp').innerHTML = "";
+
+                var imp  = '<tr id="ImpOfEmp"><td class="textImp">' + opImp + '</td><td style="display: none">'+ IDopImp +'<input id="IDopImpOfEmp" name="IDopImpOfEmp" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment" >...<span class="CellComment">Numero de Tintas: '+ tintassel +', Tipo: '+ tipoOffset +'</span></td><td class="tintasImp" style="display: none;">'+ tintassel +'<input id="tintasselOfEmp" name="tintasselOfEmp" type="hidden" value="'+ tintassel +'"></td><td class="tipoOffset" style="display: none;">'+ tipoOffset +'<input id="tipoOffEmp" name="tipoOffEmp" type="hidden" value="'+ idtipoOff +'"></td><td class="listimpresiones img_delete"></td></tr>';
+
+                aImp.push({"Tipo_impresion": opImp, "tintas": tintassel, "tipo_offset": tipoOffset, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+
+                $('#Impresiones').modal('hide');
+
+                jQuery214('#listimpresiones').append(imp);
+
+                vacioModalImpresiones();
+            }
+        }
+
+
+        if (opImp == 'Digital') {
+
+            var imp  = '<tr id="ImpOfEmp"><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="listimpresiones img_delete"></td></tr>';
+            aImp.push({"Tipo_impresion": opImp});
+
+            $('#Impresiones').modal('hide');
+
+            jQuery214('#listimpresiones').append(imp);
+
+            vacioModalImpresiones();
+            /*var nuloo = document.getElementById('SelectImpDigital').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp').innerHTML = "";
+
+                //var imp  = '<tr id="ImpOfEmp"><td class="textImp">' + opImp + '</td><td style="display: none"><input id="IDopImpDiEmp" name="IDopImpDiEmp" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment" >...<span class="CellComment">Tipo: ' + tipoDig + '</span></td><td class="tipoDig" style="display: none;">'+ tipoDig +'<input id="tipoDigEmp" name="tipoDigEmp" type="hidden" value="'+ idtipoDig +'"></td><td class="listimpresiones img_delete"></td></tr>';
+
+                var imp  = '<tr id="ImpOfEmp"><td class="textImp">' + opImp + '</td><td></td><td class="listimpresiones img_delete"></td></tr>';
+
+                //aImp.push({"Tipo_impresion": opImp, "tipo_digital": tipoDig, "idtipoDig": idtipoDig});
+                aImp.push({"Tipo_impresion": opImp});
+
+                $('#Impresiones').modal('hide');
+
+                jQuery214('#listimpresiones').append(imp);
+
+                vacioModalImpresiones();
+            }*/
+        }
+
+
+        if (opImp == 'Serigrafia') {
+
+            var nuloo = document.getElementById('SelectImpTipoSeri').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp').innerHTML = "";
+
+                var imp  = '<tr id="ImpSerEmp"><td class="textImp">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input id="IDopImpSerEmp" name="IDopImpSerEmp" style="display:none" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel2 +', Tipo: '+ tipoSeri +'</span></td><td class="tintasImp" style="display: none;">'+ tintassel2 +'<input id="tintasselSerEmp" name="tintasselSerEmp" type="hidden" value="'+ tintassel2 +'"></td><td class="tipoSeri" style="display: none;">'+ tipoSeri +'<input id="tipoSeriEmp" name="tipoSeriEmp" type="hidden" value="'+ idtipoSeri +'"></td><td class="listimpresiones img_delete"></td></tr>';
+
+                aImp.push({"Tipo_impresion": opImp,  "tintas": tintassel2, "tipo_offset": tipoSeri, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+
+                $('#Impresiones').modal('hide');
+
+                jQuery214('#listimpresiones').append(imp);
+
+                vacioModalImpresiones();
+            }
+        }
+        desactivarBtn();
+    });
+
+
+    $(document).on('click', '#btnImpresionesFcajon', function(event) {
+
+        var IDopImp  = $("#miSelectFcajon option:selected").data('id');
+        var opImp    = $("#miSelectFcajon option:selected").text();
+        var precio   = $("#miSelectFcajon option:selected").data('precio'); //precio unitario
+
+        //para Offset
+        var tipoOffset     = $("#SelectImpTipoOffFcajon option:selected").text();
+        var preciotipoOff  = $("#SelectImpTipoOffFcajon option:selected").data('precio');
+        var idtipoOff      = $("#SelectImpTipoOffFcajon option:selected").data('id');
+        var tintassel      = document.getElementById('tintasOFcajon').value;
+
+        //para digital
+
+        //var tipoDig   = $("#SelectImpDigitalFCajon option:selected").text();
+        //var idtipoDig = $("#SelectImpDigitalFCajon option:selected").data('id');
+
+        //para Serigrafia
+        var tipoSeri       = $("#SelectImpTipoSeriFcajon option:selected").text();
+        var preciotipoSeri = $("#SelectImpTipoSeriFcajon option:selected").data('precio');
+        var idtipoSeri     = $("#SelectImpTipoSeriFcajon option:selected").data('id');
+        var tintassel2     = document.getElementById('tintasSFcajon').value;
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+
+        if (opImp == 'Offset') {
+
+            var nuloo = document.getElementById('SelectImpTipoOffFcajon').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp2').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp2').innerHTML = "";
+
+                var imp  = '<tr id="ImpOfFcajon"><td class="textImp">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input id="IDopImpOfFcajon" name="IDopImpOfFcajon" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel +', Tipo: '+ tipoOffset +'</span></td><td class="tintasImpFcajon" style="display: none;">'+ tintassel + '<input id="tintasselOfFcajon" name="tintasselOfFcajon" type="hidden" value="'+ tintassel +'"></td><td class="tipoOffset" style="display: none;">'+ tipoOffset + '<input id="tipoOffFcajon" name="tipoOffFcajon" type="hidden" value="'+ idtipoOff +'"></td><td class="listimpresionesfcajon img_delete"></td></tr>';
+
+                aImpFCaj.push({"Tipo_impresion": opImp, "tintas": tintassel, "tipo_offset": tipoOffset, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+
+                $('#Impresionesfcajon').modal('hide');
+
+                jQuery214('#listimpresionesfcajon').append(imp);
+
+                vacioModalImpresiones();
+            }
+        }
+
+
+        if (opImp == 'Digital') {
+
+            var imp  = '<tr id="ImpOfFcajon"><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="listimpresionesfcajon img_delete"></td></tr>';
+            aImpFCaj.push({"Tipo_impresion": opImp});
+
+            $('#Impresionesfcajon').modal('hide');
+
+            jQuery214('#listimpresionesfcajon').append(imp);
+
+            vacioModalImpresiones();
+
+            /*var nuloo = document.getElementById('SelectImpDigitalFCajon').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp2').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp2').innerHTML = "";
+
+                var imp  = '<tr id="ImpOfFcajon"><td class="textImp">' + opImp + '</td><td style="display: none"><input id="IDopImpDigFcajon" name="IDopImpDigFcajon" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment" >...<span class="CellComment">Tipo: ' + tipoDig + '</span></td><td class="tipoDig" style="display: none;">'+ tipoDig +'<input id="tipoDigFCajon" name="tipoDigFCajon" type="hidden" value="'+ idtipoDig +'"></td><td class="listimpresionesfcajon img_delete"></td></tr>';
+
+                aImpFCaj.push({"Tipo_impresion": opImp, "tipo_digital": tipoDig, "idtipoDig": idtipoDig});
+
+                $('#Impresionesfcajon').modal('hide');
+
+                jQuery214('#listimpresionesfcajon').append(imp);
+
+                vacioModalImpresiones();
+            }*/
+        }
+
+
+        if (opImp == 'Serigrafia') {
+
+            var nuloo = document.getElementById('SelectImpTipoSeriFcajon').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp2').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp2').innerHTML = "";
+
+                var imp  = '<tr id="ImpSerFcajon"><td class="textImpFcajon">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input id="IDopImpSerFcajon" name="IDopImpSerFcajon" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel2 +', Tipo: '+ tipoSeri +'</span></td><td class="tintasImpFcajon" style="display: none;">'+ tintassel2 +'<input id="tintasselSerFcajon" name="tintasselSerFcajon" type="hidden" value="'+ tintassel2 +'"></td><td class="tipoSeriFcajon" style="display: none;">'+ tipoSeri +'<input id="tipoSeriFcajon" name="tipoSeriFcajon" type="hidden" value="'+ idtipoSeri +'"></td><td class="listimpresionesfcajon img_delete"></td></tr>';
+
+                aImpFCaj.push({"Tipo_impresion": opImp,  "tintas": tintassel2, "tipo_offset": tipoSeri, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+
+                $('#Impresionesfcajon').modal('hide');
+
+                jQuery214('#listimpresionesfcajon').append(imp);
+
+                vacioModalImpresiones();
+            }
+        }
+        desactivarBtn();
+    });
+
+
+    $(document).on('click', '#btnImpresionesFcartera', function(event) {
+
+        var IDopImp  = $("#miSelectFcartera option:selected").data('id');
+        var opImp    = $("#miSelectFcartera option:selected").text();
+        var precio   = $("#miSelectFcartera option:selected").data('precio'); //precio unitario
+
+        //para Offset
+        var tipoOffset     = $("#SelectImpTipoOffFcartera option:selected").text();
+        var preciotipoOff  = $("#SelectImpTipoOffFcartera option:selected").data('precio');
+        var idtipoOff      = $("#SelectImpTipoOffFcartera option:selected").data('id');
+        var tintassel      = document.getElementById('tintasOFcartera').value;
+
+        //para digital
+
+        //var tipoDig   = $("#SelectImpDigitalFCartera option:selected").text();
+        //var idtipoDig = $("#SelectImpDigitalFCartera option:selected").data('id');
+
+        //para Serigrafia
+        var tipoSeri       = $("#SelectImpTipoSeriFcartera option:selected").text();
+        var preciotipoSeri = $("#SelectImpTipoSeriFcartera option:selected").data('precio');
+        var idtipoSeri     = $("#SelectImpTipoSeriFcartera option:selected").data('id');
+        var tintassel2     = document.getElementById('tintasSFcartera').value;
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        if (opImp == 'Offset') {
+
+            var nuloo = document.getElementById('SelectImpTipoOffFcartera').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp3').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp3').innerHTML = "";
+
+                var imp  = '<tr id="ImpOfFcartera"><td class="textImpFcartera">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input id="IDopImpOfFcartera" name="IDopImpOfFcartera" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel +', Tipo: '+ tipoOffset +'</span></td><td class="tintasImpFcartera" style="display: none;">'+ tintassel + '<input id="tintasselOfFcartera" name="tintasselOfFcartera" type="hidden" value="'+ tintassel +'"></td><td class="tipoOffset" style="display: none;">'+ tipoOffset + '<input id="tipoOffFcartera" name="tipoOffFcartera" type="hidden" value="'+ idtipoOff +'"></td><td class="listimpresionesfcartera img_delete"></td></tr>';
+
+                aImpFCar.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipoOffset, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+
+                $('#Impresionesfcartera').modal('hide');
+
+                jQuery214('#listimpresionesfcartera').append(imp);
+
+                vacioModalImpresiones();
+            }
+        }
+
+
+        if (opImp == 'Digital') {
+
+            var imp  = '<tr id="ImpDigFcartera"><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="listimpresionesfcartera img_delete"></td></tr>';
+            aImpFCar.push({"Tipo_impresion": opImp});
+
+            $('#Impresionesfcartera').modal('hide');
+
+            jQuery214('#listimpresionesfcartera').append(imp);
+
+            vacioModalImpresiones();
+            /*var nuloo = document.getElementById('SelectImpDigitalFCartera').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp3').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp3').innerHTML = "";
+
+                var imp  = '<tr id="ImpDigFcartera"><td class="textImpFcartera">' + opImp + '</td><td style="display: none"><input id="IDopImpDigFcartera" name="IDopImpDigFcartera" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment" >...<span class="CellComment">Tipo: ' + tipoDig + '</span></td><td class="tipoDig" style="display: none;">'+ tipoDig +'<input id="tipoDigFCartera" name="tipoDigFCartera" type="hidden" value="'+ idtipoDig +'"></td><td class="listimpresionesfcartera img_delete"></td></tr>';
+
+                aImpFCar.push({"Tipo_impresion": opImp, "tipo_digital": tipoDig, "idtipoDig": idtipoDig});
+
+                $('#Impresionesfcartera').modal('hide');
+
+                jQuery214('#listimpresionesfcartera').append(imp);
+
+                vacioModalImpresiones();
+            }*/
+        }
+
+
+        if (opImp == 'Serigrafia') {
+
+            var nuloo = document.getElementById('SelectImpTipoSeriFcartera').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp3').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp3').innerHTML = "";
+
+                var imp  = '<tr id="ImpSerFcartera"><td class="textImpFcartera">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input id="IDopImpSerFcartera" name="IDopImpSerFcartera" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel2 +', Tipo: '+ tipoSeri +'</span></td><td class="tintasImpFcartera" style="display: none;">'+ tintassel2 +'<input id="tintasselSerFcartera" name="tintasselSerFcartera" type="hidden" value="'+ tintassel2 +'"></td><td class="tipoSeriFcartera" style="display: none;">'+ tipoSeri +'<input id="tipoSeriFcartera" name="tipoSeriFcartera" type="hidden" value="'+ idtipoSeri +'"></td><td class="listimpresionesfcartera img_delete"></td></tr>';
+
+
+
+                aImpFCar.push({"Tipo_impresion": opImp,  "tintas": tintassel2, "tipo_offset": tipoSeri, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+
+                $('#Impresionesfcartera').modal('hide');
+
+                jQuery214('#listimpresionesfcartera').append(imp);
+
+                vacioModalImpresiones();
+            }
+        }
+        desactivarBtn();
+    });
+
+
+    $(document).on('click', '#btnImpresionesGuarda', function(event) {
+
+        var IDopImp  = $("#miSelectGuarda option:selected").data('id');
+        var opImp    = $("#miSelectGuarda option:selected").text();
+        var precio   = $("#miSelectGuarda option:selected").data('precio'); //precio unitario
+
+        //para Offset
+        var tipoOffset     = $("#SelectImpTipoOffGuarda option:selected").text();
+        var preciotipoOff  = $("#SelectImpTipoOffGuarda option:selected").data('precio');
+        var idtipoOff      = $("#SelectImpTipoOffGuarda option:selected").data('id');
+        var tintassel      = document.getElementById('tintasOGuarda').value;
+
+        //para digital
+
+        //var tipoDig   = $("#SelectImpDigitalG option:selected").text();
+        //var idtipoDig = $("#SelectImpDigitalG option:selected").data('id');
+
+        //para Serigrafia
+        var tipoSeri       = $("#SelectImpTipoSeriGuarda option:selected").text();
+        var preciotipoSeri = $("#SelectImpTipoSeriGuarda option:selected").data('precio');
+        var idtipoSeri     = $("#SelectImpTipoSeriGuarda option:selected").data('id');
+        var tintassel2     = document.getElementById('tintasSGuarda').value;
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+
+        if (opImp == 'Offset') {
+
+                var nuloo = document.getElementById('SelectImpTipoOffGuarda').value;
+
+
+                if (nuloo == 'selected') {
+
+                    document.getElementById('alerterrorimp4').innerHTML = alertDiv;
+
+                } else {
+
+                    document.getElementById('alerterrorimp4').innerHTML = "";
+
+                    var imp  = '<tr id="ImpOfGuarda"><td class="textImpGuarda">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input id="IDopImpOfGuarda" name="IDopImpOfGuarda" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel +', Tipo: '+ tipoOffset +'</span></td><td class="tintasImpGuarda" style="display: none;">'+ tintassel + '<input id="tintasselOfGuarda" name="tintasselOfGuarda" type="hidden" value="'+ tintassel +'"></td><td class="tipoOffset" style="display: none;">'+ tipoOffset + '<input id="tipoOffGuarda" name="tipoOffGuarda" type="hidden" value="'+ idtipoOff +'"></td><td class="listimpresionesguarda img_delete"></td></tr>';
+
+                    aImpG.push({"Tipo_impresion": opImp,  "tintas": tintassel, "tipo_offset": tipoOffset, "IDopImp": IDopImp, "idtipoOff": idtipoOff});
+
+                    $('#Impresionesguarda').modal('hide');
+
+                    jQuery214('#listimpresionesguarda').append(imp);
+
+                    vacioModalImpresiones();
+                }
+        }
+
+
+        if (opImp == 'Digital') {
+
+            var imp  = '<tr id="ImpDigGuarda"><td class="textImp">' + opImp + '</td><td class="CellWithComment">...<span class="CellComment">Se agregó una impresión digital</span></td><td class="listimpresionesguarda img_delete"></td></tr>';
+            aImpG.push({"Tipo_impresion": opImp});
+
+            $('#Impresionesguarda').modal('hide');
+
+            jQuery214('#listimpresionesguarda').append(imp);
+
+            vacioModalImpresiones();
+            /*var nuloo = document.getElementById('SelectImpDigitalG').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterrorimp2').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterrorimp2').innerHTML = "";
+
+                var imp  = '<tr id="ImpDigGuarda"><td class="textImpGuarda">' + opImp + '</td><td style="display: none"><input id="IDopImpDigGuarda" name="IDopImpDigGuarda" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment" >...<span class="CellComment">Tipo: ' + tipoDig + '</span></td><td class="tipoDig" style="display: none;">'+ tipoDig +'<input id="tipoDigGuarda" name="tipoDigGuarda" type="hidden" value="'+ idtipoDig +'"></td><td class="listimpresionesguarda img_delete"></td></tr>';
+
+                aImpG.push({"Tipo_impresion": opImp, "tipo_digital": tipoDig, "idtipoDig": idtipoDig});
+
+                $('#Impresionesguarda').modal('hide');
+
+                jQuery214('#listimpresionesguarda').append(imp);
+
+                vacioModalImpresiones();
+            }*/
+        }
+
+
+        if (opImp == 'Serigrafia') {
+
+                var nuloo = document.getElementById('SelectImpTipoSeriGuarda').value;
+
+                if (nuloo == 'selected') {
+
+                    document.getElementById('alerterrorimp4').innerHTML = alertDiv;
+
+                } else {
+
+                    document.getElementById('alerterrorimp4').innerHTML = "";
+
+                    var imp  = '<tr id="ImpSerGuarda"><td class="textImpGuarda">' + opImp +'</td><td style="display: none">'+ IDopImp +'<input id="IDopImpSerGuarda" name="IDopImpSerGuarda" type="hidden" value="'+ IDopImp +'"></td><td class="CellWithComment">...<span class="CellComment">Numero de Tintas: '+ tintassel2 +', Tipo: '+ tipoSeri +'</span></td><td class="tintasImpGuarda" style="display: none;">'+ tintassel2 +'<input id="tintasselSerGuarda" name="tintasselSerGuarda" type="hidden" value="'+ tintassel2 +'"></td><td class="tipoSeriGuarda" style="display: none;">'+ tipoSeri +'<input id="tipoSeriGuarda" name="tipoSeriGuarda" type="hidden" value="'+ idtipoSeri +'"></td><td class="listimpresionesguarda img_delete"></td></tr>';
+
+                    aImpG.push({"Tipo_impresion": opImp,  "tintas": tintassel2, "tipo_offset": tipoSeri, "IDopImp": IDopImp, "idtipoSeri": idtipoSeri});
+
+                    $('#Impresionesguarda').modal('hide');
+
+                    jQuery214('#listimpresionesguarda').append(imp);
+
+                    vacioModalImpresiones();
+                }
+        }
+        desactivarBtn();
+    });
+</script>
+
+
+<script>
+
+    $("#btnCheckPaper").click( function() {
+
+        var chk   =$("#btnCheckPaper").prop("checked");
+        var texto = $("#interior_cajon_chosen span").html();
+
+
+        if(chk) {
+
+            $("#exterior_cajon_chosen span").html(texto);
+            $("#exterior_cartera_chosen span").html(texto);
+            $("#interior_cartera_chosen span").html(texto);
+
+            $("#exterior_cajon option[data-nombre='" + texto +"']").prop("selected",true);
+            $("#exterior_cartera option[data-nombre='" + texto +"']").prop("selected",true);
+            $("#interior_cartera option[data-nombre='" + texto +"']").prop("selected",true);
+
+            papel_elegido = true;
+
+            $("#interior_cajon").addClass('paper_selected');
+            $("#exterior_cartera").addClass('paper_selected');
+            $("#interior_cartera").addClass('paper_selected');
+            $("#exterior_cajon").addClass('paper_selected');
+            $('#papers_config_button').hide();
+        } else {
+
+            $("#exterior_cajon_chosen span").html("Elegir tipo de papel");
+            $("#exterior_cartera_chosen span").html("Elegir tipo de papel");
+            $("#interior_cartera_chosen span").html("Elegir tipo de papel");
+
+            $("#exterior_cajon option[data-nombre='" + texto +"']").prop("selected",false);
+            $("#exterior_cartera option[data-nombre='" + texto +"']").prop("selected",false);
+            $("#interior_cartera option[data-nombre='" + texto +"']").prop("selected",false);
+
+            $("#exterior_cajon").val(null);
+            $("#exterior_cartera").val(null);
+            $("#interior_cartera").val(null);
+
+            papel_elegido = false;
+
+            $("#interior_cajon").removeClass('paper_selected');
+            $("#exterior_cartera").removeClass('paper_selected');
+            $("#interior_cartera").removeClass('paper_selected');
+            $("#exterior_cajon").removeClass('paper_selected');
+            $('#papers_config_button').show();
+        }
+    });
+</script>
+
+<script>
+
+    //Activa los div de los select acabados en parte empalme del cajon -------
+    document.getElementById('SelectAcEmp').onchange = function(event) {
+
+        var opcionact = document.getElementById('SelectAcEmp').value;
+
+        $('#opAcLaminadoEmp').hide('slow');
+        $('#opAcHotStampingEmp').hide('slow');
+        $('#opAcGrabadoEmp').hide('slow');
+        $('#opAcEspecialesEmp').hide('slow');
+        $('#opAcBarnizUVEmp').hide('slow');
+        $('#opAcSuajeEmp').hide('slow');
+        $('#opAcLaserEmp').hide('slow');
+        $('#opAcBarUVEmp').hide('slow');
+
+
+        if (opcionact == 'Laminado') {
+
+            $('#opAcLaminadoEmp').show('normal');
+        }
+
+
+        if (opcionact == 'HotStamping') {
+
+            $('#opAcHotStampingEmp').show('normal');
+        }
+
+
+        if (opcionact == 'Grabado') {
+
+            $('#opAcGrabadoEmp').show('normal');
+        }
+
+
+        if (opcionact == 'Pegados Especiales') {
+
+            $('#opAcEspecialesEmp').show('normal');
+        }
+
+
+        if (opcionact == 'Barniz UV') {
+
+            $('#opAcBarnizUVEmp').show('normal');
+        }
+
+
+        if (opcionact == 'Suaje') {
+
+            $('#opAcSuajeEmp').show('normal');
+        }
+
+
+        if (opcionact == 'Corte Laser') {
+
+            $('#opAcLaserEmp').show('normal');
+        }
+
+
+        document.getElementById('SelectBarnizUVEmp').onchange = function(event) {
+
+            var seleccion = document.getElementById('SelectBarnizUVEmp').value;
+
+
+            if (seleccion == 'Registro Mate') {
+
+                $('#opAcBarUVEmp').show('normal');
+            }
+
+
+            if (seleccion == 'Mate') {
+
+                $('#opAcBarUVEmp').hide('normal');
+            }
+
+
+            if (seleccion == 'Brillante') {
+
+                $('#opAcBarUVEmp').hide('normal');
+            }
+
+
+            if (seleccion == 'Registro Brillante') {
+
+                $('#opAcBarUVEmp').show('normal');
+            }
+
+        }
+
+
+        document.getElementById('SelectUbiGrabEmp').onchange = function(event) {
+
+            var ubicacion = document.getElementById('SelectUbiGrabEmp').value;
+
+
+            if (ubicacion == 'Lomo') {
+
+                $('#imagengrabados').html('<img border="0" src="<?=URL ;?>public/img/lomo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Cierre') {
+
+                $('#imagengrabados').html('<img border="0" src="<?=URL ;?>public/img/cierre.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Tapa') {
+
+                $('#imagengrabados').html('<img border="0" src="<?=URL ;?>public/img/tapa.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Izquierdo') {
+
+                $('#imagengrabados').html('<img border="0" src="<?=URL ;?>public/img/izquierdo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Derecho') {
+
+                $('#imagengrabados').html('<img border="0" src="<?=URL ;?>public/img/derecho.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Fondo') {
+
+                $('#imagengrabados').html('<img border="0" src="<?=URL ;?>public/img/fondo.png" style="width: 70%">')
+            }
+        }
+    }
+
+
+    //Activa los div de los select acabados en parte forro del cajon ---------
+    document.getElementById('SelectAcFcajon').onchange = function(event) {
+
+        var opcionact = document.getElementById('SelectAcFcajon').value;
+
+        $('#opAcLaminadoFcajon').hide('slow');
+        $('#opAcHotStampingFcajon').hide('slow');
+        $('#opAcGrabadoFcajon').hide('slow');
+        $('#opAcEspecialesFcajon').hide('slow');
+        $('#opAcBarnizUVFcajon').hide('slow');
+        $('#opAcSuajeFcajon').hide('slow');
+        $('#opAcLaserFcajon').hide('slow');
+        $('#opAcBarUVFcajon').hide('slow');
+
+
+        if (opcionact == 'Laminado') {
+
+            $('#opAcLaminadoFcajon').show('normal');
+        }
+
+
+        if (opcionact == 'HotStamping') {
+
+            $('#opAcHotStampingFcajon').show('normal');
+        }
+
+
+        if (opcionact == 'Grabado') {
+
+            $('#opAcGrabadoFcajon').show('normal');
+        }
+
+
+        if (opcionact == 'Pegados Especiales') {
+
+            $('#opAcEspecialesFcajon').show('normal');
+        }
+
+
+        if (opcionact == 'Barniz UV') {
+
+            $('#opAcBarnizUVFcajon').show('normal');
+        }
+
+
+        if (opcionact == 'Suaje') {
+
+            $('#opAcSuajeFcajon').show('normal');
+        }
+
+
+        if (opcionact == 'Corte Laser') {
+
+            $('#opAcLaserFcajon').show('normal');
+        }
+
+
+        document.getElementById('SelectBarnizUVFcajon').onchange = function(event) {
+
+            var seleccion = document.getElementById('SelectBarnizUVFcajon').value;
+
+
+            if (seleccion == 'Registro Mate') {
+
+                $('#opAcBarUVFcajon').show('normal');
+            }
+
+
+            if (seleccion == 'Mate') {
+
+                $('#opAcBarUVFcajon').hide('normal');
+            }
+
+
+            if (seleccion == 'Brillante') {
+
+                $('#opAcBarUVFcajon').hide('normal');
+            }
+
+
+            if (seleccion == 'Registro Brillante') {
+
+                $('#opAcBarUVFcajon').show('normal');
+            }
+
+        }
+
+
+        document.getElementById('SelectUbiGrabFcajon').onchange = function(event) {
+
+            var ubicacion = document.getElementById('SelectUbiGrabFcajon').value;
+
+
+            if (ubicacion == 'Lomo') {
+
+                $('#imagengrabados2').html('<img border="0" src="<?=URL ;?>public/img/lomo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Cierre') {
+
+                $('#imagengrabados2').html('<img border="0" src="<?=URL ;?>public/img/cierre.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Tapa') {
+
+                $('#imagengrabados2').html('<img border="0" src="<?=URL ;?>public/img/tapa.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Izquierdo') {
+
+                $('#imagengrabados2').html('<img border="0" src="<?=URL ;?>public/img/izquierdo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Derecho') {
+
+                $('#imagengrabados2').html('<img border="0" src="<?=URL ;?>public/img/derecho.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Fondo') {
+
+                $('#imagengrabados2').html('<img border="0" src="<?=URL ;?>public/img/fondo.png" style="width: 70%">')
+            }
+        }
+    }
+
+
+    //Activa los div de los select acabados en parte forro de la cartera------
+    document.getElementById('SelectAcFcartera').onchange = function(event) {
+
+        var opcionact = document.getElementById('SelectAcFcartera').value;
+
+        $('#opAcLaminadoFcartera').hide('slow');
+        $('#opAcHotStampingFcartera').hide('slow');
+        $('#opAcGrabadoFcartera').hide('slow');
+        $('#opAcEspecialesFcartera').hide('slow');
+        $('#opAcBarnizUVFcartera').hide('slow');
+        $('#opAcSuajeFcartera').hide('slow');
+        $('#opAcLaserFcartera').hide('slow');
+        $('#opAcBarUVFcartera').hide('slow');
+
+
+        if (opcionact == 'Laminado') {
+
+            $('#opAcLaminadoFcartera').show('normal');
+        }
+
+
+        if (opcionact == 'HotStamping') {
+
+            $('#opAcHotStampingFcartera').show('normal');
+        }
+
+
+        if (opcionact == 'Grabado') {
+
+            $('#opAcGrabadoFcartera').show('normal');
+        }
+
+
+        if (opcionact == 'Pegados Especiales') {
+
+            $('#opAcEspecialesFcartera').show('normal');
+        }
+
+
+        if (opcionact == 'Barniz UV') {
+
+            $('#opAcBarnizUVFcartera').show('normal');
+        }
+
+
+        if (opcionact == 'Suaje') {
+
+            $('#opAcSuajeFcartera').show('normal');
+        }
+
+
+        if (opcionact == 'Corte Laser') {
+
+            $('#opAcLaserFcartera').show('normal');
+        }
+
+
+        document.getElementById('SelectBarnizUVFcartera').onchange = function(event) {
+
+            var seleccion = document.getElementById('SelectBarnizUVFcartera').value;
+
+
+            if (seleccion == 'Registro Mate') {
+
+                $('#opAcBarUVFcartera').show('normal');
+            }
+
+
+            if (seleccion == 'Mate') {
+
+                $('#opAcBarUVFcartera').hide('normal');
+            }
+
+
+            if (seleccion == 'Brillante') {
+
+                $('#opAcBarUVFcartera').hide('normal');
+            }
+
+
+            if (seleccion == 'Registro Brillante') {
+
+                $('#opAcBarUVFcartera').show('normal');
+            }
+
+        }
+
+
+        document.getElementById('SelectUbiGrabFcartera').onchange = function(event) {
+
+            var ubicacion = document.getElementById('SelectUbiGrabFcartera').value;
+
+
+            if (ubicacion == 'Lomo') {
+
+                $('#imagengrabados3').html('<img border="0" src="<?=URL ;?>public/img/lomo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Cierre') {
+
+                $('#imagengrabados3').html('<img border="0" src="<?=URL ;?>public/img/cierre.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Tapa') {
+
+                $('#imagengrabados3').html('<img border="0" src="<?=URL ;?>public/img/tapa.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Izquierdo') {
+
+                $('#imagengrabados3').html('<img border="0" src="<?=URL ;?>public/img/izquierdo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Derecho') {
+
+                $('#imagengrabados3').html('<img border="0" src="<?=URL ;?>public/img/derecho.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Fondo') {
+
+                $('#imagengrabados3').html('<img border="0" src="<?=URL ;?>public/img/fondo.png" style="width: 70%">')
+            }
+        }
+    }
+
+
+    //Activa los div de los select acabados en parte guarda------
+    document.getElementById('SelectAcGuarda').onchange = function(event) {
+
+        var opcionact = document.getElementById('SelectAcGuarda').value;
+
+        $('#opAcLaminadoGuarda').hide('slow');
+        $('#opAcHotStampingGuarda').hide('slow');
+        $('#opAcGrabadoGuarda').hide('slow');
+        $('#opAcEspecialesGuarda').hide('slow');
+        $('#opAcBarnizUVGuarda').hide('slow');
+        $('#opAcSuajeGuarda').hide('slow');
+        $('#opAcLaserGuarda').hide('slow');
+        $('#opAcBarUVguarda').hide('slow');
+
+
+        if (opcionact == 'Laminado') {
+
+            $('#opAcLaminadoGuarda').show('normal');
+        }
+
+
+        if (opcionact == 'HotStamping') {
+
+            $('#opAcHotStampingGuarda').show('normal');
+        }
+
+
+        if (opcionact == 'Grabado') {
+
+            $('#opAcGrabadoGuarda').show('normal');
+        }
+
+
+        if (opcionact == 'Pegados Especiales') {
+
+            $('#opAcEspecialesGuarda').show('normal');
+        }
+
+
+        if (opcionact == 'Barniz UV') {
+
+            $('#opAcBarnizUVGuarda').show('normal');
+        }
+
+
+        if (opcionact == 'Suaje') {
+
+            $('#opAcSuajeGuarda').show('normal');
+        }
+
+
+        if (opcionact == 'Corte Laser') {
+
+            $('#opAcLaserGuarda').show('normal');
+        }
+
+
+        document.getElementById('SelectBarnizUVGuarda').onchange = function(event) {
+
+            var seleccion = document.getElementById('SelectBarnizUVGuarda').value;
+
+
+            if (seleccion == 'Registro Mate') {
+
+                $('#opAcBarUVguarda').show('normal');
+            }
+
+
+            if (seleccion == 'Mate') {
+
+                $('#opAcBarUVguarda').hide('normal');
+            }
+
+
+            if (seleccion == 'Brillante') {
+
+                $('#opAcBarUVguarda').hide('normal');
+            }
+
+
+            if (seleccion == 'Registro Brillante') {
+
+                $('#opAcBarUVguarda').show('normal');
+            }
+        }
+
+
+        // Ubicacion de la impresion
+        document.getElementById('SelectUbiGrabGuarda').onchange = function(event) {
+
+            var ubicacion = document.getElementById('SelectUbiGrabGuarda').value;
+
+
+            if (ubicacion == 'Lomo') {
+
+                $('#imagengrabados4').html('<img border="0" src="<?=URL ;?>public/img/lomo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Cierre') {
+
+                $('#imagengrabados4').html('<img border="0" src="<?=URL ;?>public/img/cierre.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Tapa') {
+
+                $('#imagengrabados4').html('<img border="0" src="<?=URL ;?>public/img/tapa.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Izquierdo') {
+
+                $('#imagengrabados4').html('<img border="0" src="<?=URL ;?>public/img/izquierdo.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Derecho') {
+
+                $('#imagengrabados4').html('<img border="0" src="<?=URL ;?>public/img/derecho.png" style="width: 70%">')
+            }
+
+
+            if (ubicacion == 'Fondo') {
+
+                $('#imagengrabados4').html('<img border="0" src="<?=URL ;?>public/img/fondo.png" style="width: 70%">')
+            }
+        }
+    }
+
+
+    // -------- onclick Guardar de modales acabados (tr)---------
+    $(document).on('click', '#btnAcabados', function(event) {
+
+        var IDopAcb  = $("#SelectAcEmp option:selected").data('id');
+        var opAcb    = $("#SelectAcEmp option:selected").text();
+
+
+        //para laminado
+        var tipoLaminado   = $("#SelectLaminadoEmp option:selected").text();
+        var idtipoLaminado = $("#SelectLaminadoEmp option:selected").data('id');
+
+        //para hoststamping
+        var tipoGrabadoHS   = $("#SelectHSEmp option:selected").text();
+        var idtipoHS        = $("#SelectHSEmp option:selected").data('id');
+        var ColorHS         = $("#SelectColorHSEmp option:selected").text();
+        var idcolorHS       = $("#SelectHSEmp option:selected").data('id');
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_ver').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_ver').value);
+
+        //para grabados
+        var tipoGrabadoG  = $("#SelectGrabEmp option:selected").text();
+        var idtipoGrabado = $("#SelectHSEmp option:selected").data('id');
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab').value);
+        var ubicacionGrab = $("#SelectUbiGrabEmp option:selected").text();
+
+        //para suaje
+        var tipoSuaje   = $("#SelectSuajeEmp option:selected").text();
+        var idtipoSuaje = $("#SelectHSEmp option:selected").data('id');
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje').value);
+
+        //para laser
+        var tipoLaser   = $("#SelectLaserEmp option:selected").text();
+        var idtipoLaser = $("#SelectHSEmp option:selected").data('id');
+
+        //para barnizuv
+        var tipoBarnizUV   = $("#SelectBarnizUVEmp option:selected").text();
+        var idtipoBarnizUV = $("#SelectHSEmp option:selected").data('id');
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVEmp').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVEmp').value);
+
+        //para pegados especiales
+        var tipoEspeciales   = $("#SelectEspecialesEmp option:selected").text();
+        var idtipoEspeciales = $("#SelectHSEmp option:selected").data('id');
+
+
+        if (opAcb == 'Laminado') {
+
+            var nuloo = document.getElementById('SelectLaminadoEmp').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr id="AcLamEmp"><td style="text-align: left;" class="textAcbEmp">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoLaminado +'</span></td><td class="tipoLamEmp" style="display: none">'+ tipoLaminado +'<input id="tipoLaminadoEmp" name="tipoLaminadoEmp" type="hidden" value="'+ idtipoLaminado +'"></td><td class="listacabadosemp img_delete"></td></tr>';
+
+
+                aAcb.push({"Tipo_acabado": opAcb, "IDopAcb": IDopAcb, "tipoGrabado": tipoLaminado, "idtipoLaminado": idtipoLaminado});
+
+
+                $('#acabados').modal('hide');
+
+                jQuery214('#listacabadosemp').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'HotStamping') {
+
+            var nulo1 = document.getElementById('SelectHSEmp').value;
+            var nulo2 = document.getElementById('SelectColorHSEmp').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr id="AcHSEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td class="tipoAcabadoHS" style="display: none;" >'+ tipoGrabadoHS +'<input id="tipoAcabadoHS" name="tipoAcabadoHS" type="hidden" value="'+ idtipoHS +'"></td><td class="idcolorHS" style="display: none;" >' + idcolorHS + '<input id="idcolorHS" name="idcolorHS" type="hidden" value="'+ idcolorHS +'"></td><td class="ColorHS" style="display: none;" >' + ColorHS + '<input id="ColorHS" name="ColorHS" type="hidden" value="'+ ColorHS +'"></td><td class="LargoHS" style="display: none;">'+ LargoHS +'<input id="LargoHS" name="LargoHS" type="hidden" value="'+ LargoHS +'"></td><td class="AnchoHS" style="display: none;">'+ AnchoHS +'<input id="AnchoHS" name="AnchoHS" type="hidden" value="'+ AnchoHS +'"></td><td class="listacabadosemp img_delete"></td></tr>';
+
+
+                aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+
+
+                $('#acabados').modal('hide');
+
+                jQuery214('#listacabadosemp').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Grabado') {
+
+            var nulo1 = document.getElementById('SelectGrabEmp').value;
+            var nulo2 = document.getElementById('SelectUbiGrabEmp').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr id="AcGrabEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoG +', Medidas: '+ LargoGrab +'x'+ AnchoGrab +', Ubicacion: '+ ubicacionGrab +'</span></td><td class="tipoGrabadoG" style="display: none;">'+ tipoGrabadoG +'<input id="tipoGrabadoG" name="tipoGrabadoG" type="hidden" value="'+ idtipoGrabado +'"></td><td class="LargoGrab" style="display: none;">'+ LargoGrab +'</td><td class="AnchoGrab" style="display: none;">'+ AnchoGrab +'</td><td class="ubicacionGrab" style="display: none;">'+ ubicacionGrab +'<input id="ubicacionGrab" name="ubicacionGrab" type="hidden" value="'+ ubicacionGrab +'"></td><td class="listacabadosemp img_delete"></td></tr>';
+
+
+                aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoG, "Largo": LargoGrab, "Ancho": AnchoGrab, "ubicacion": ubicacionGrab});
+
+
+                $('#acabados').modal('hide');
+
+                jQuery214('#listacabadosemp').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Suaje') {
+
+            var nulo1 = document.getElementById('SelectSuajeEmp').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr id="AcSuajeEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoSuaje +', Medidas: '+ LargoSuaje +'x'+ AnchoSuaje +'</span></td><td class="tipoSuaje" style="display: none;">'+ tipoSuaje +'</td><td class="LargoSuaje" style="display: none;">'+ LargoSuaje +'</td><td class="AnchoSuaje" style="display: none;">'+ AnchoSuaje +'</td><td class="listacabadosemp img_delete"></td></tr>';
+
+
+                aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoSuaje, "LargoSuaje": LargoSuaje, "AnchoSuaje": AnchoSuaje});
+
+                $('#acabados').modal('hide');
+
+                jQuery214('#listacabadosemp').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Corte Laser')  {
+
+            var nulo1 = document.getElementById('SelectLaserEmp').value;
+
+            if (nulo1 == 'selected')  {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosemp img_delete"></td></tr>';
+
+                aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
+
+                $('#acabados').modal('hide');
+
+                jQuery214('#listacabadosemp').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Barniz UV')  {
+
+            var nulo1 = document.getElementById('SelectBarnizUVEmp').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+
+                if (tipoBarnizUV === 'undefined' || tipoBarnizUV === 'null') {
+
+                    tipoBarnizUV = '';
+                }
+
+
+                if(tipoBarnizUV == "Registro Mate" || tipoBarnizUV == "Registro Brillante") {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + ', Medidas: ' + LargoBarnizUV + 'x' + AnchoBarnizUV +'</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + LargoBarnizUV + '<input id="LargoBarnizUVEmp" name="LargoBarnizUVEmp" type="hidden" value="' + LargoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + AnchoBarnizUV + '<input id="AnchoBarnizUVEmp" name="AnchoBarnizUVEmp" type="hidden" value="' + AnchoBarnizUV + '"></td><td class="listacabadosemp img_delete"></td></tr>';
+
+                    aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": LargoBarnizUV, "Ancho": AnchoBarnizUV});
+                } else {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + '</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="listacabadosemp img_delete"></td></tr>';
+
+                    aAcb.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": null, "Ancho": null});
+                }
+
+                $('#acabados').modal('hide');
+
+                jQuery214('#listacabadosemp').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Pegados Especiales') {
+
+            var nulo1 = document.getElementById('SelectEspecialesEmp').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr id="AcEspecialesEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="'+ IDopAcb +'"></td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoEspeciales +'</span></td><td class="tipoEspeciales" style="display: none">'+ tipoEspeciales +'<input id="tipoEspeciales" name="tipoEspeciales" type="hidden" value="'+ idtipoEspeciales +'"></td><td class="listacabadosemp img_delete"></td></tr>';
+
+                $('#acabados').modal('hide');
+
+                jQuery214('#listacabadosemp').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+        desactivarBtn();
+    });
+
+
+    $(document).on('click', '#btnAcabadosfcajon', function(event) {
+
+        var IDopAcb  = $("#SelectAcFcajon option:selected").data('id');
+        var opAcb    = $("#SelectAcFcajon option:selected").text();
+
+        //para laminado
+        var tipoLaminado   = $("#SelectLaminadoFcajon option:selected").text();
+        var idtipoLaminado = $("#SelectLaminadoFcajon option:selected").data('id');
+
+        //para hoststamping
+        var tipoGrabadoHS   = $("#SelectHSFcajon option:selected").text();
+        var idtipoHS        = $("#SelectHSFcajon option:selected").data('id');
+        var ColorHS         = $("#SelectColorHSFcajon option:selected").text();
+        var idcolorHS       = $("#SelectHSFcajon option:selected").data('id');
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_fcajon').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_fcajon').value);
+
+        //para grabados
+        var tipoGrabadoG  = $("#SelectGrabFcajon option:selected").text();
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab_fcajon').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab_fcajon').value);
+        var ubicacionGrab = $("#SelectUbiGrabFcajon option:selected").text();
+
+        //para pegados especiales
+        var tipoEspeciales   = $("#SelectEspecialesFcajon option:selected").text();
+
+        //para barnizuv
+        var tipoBarnizUV   = $("#SelectBarnizUVFcajon option:selected").text();
+        var idtipoBarnizUV = $("#SelectHSFcajon option:selected").data('id');
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVFcajon').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVFcajon').value);
+
+        //para suaje
+        var tipoSuaje   = $("#SelectSuajeFcajon option:selected").text();
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje_fcajon').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje_fcajon').value);
+
+
+        //para laser
+        var tipoLaser   = $("#SelectLaserFcajon option:selected").text();
+        var idtipoLaser = $("#SelectHSFcajon option:selected").data('id');
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+
+        if (opAcb == 'Laminado') {
+
+            var nuloo = document.getElementById('SelectLaminadoFcajon').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterror2').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror2').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoLaminado +'</span></td><td style="display: none">'+ tipoLaminado +'</td><td class="listacabadosfcajon img_delete"></td></tr>';
+
+
+                aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaminado});
+
+                $('#acabados_fcajon').modal('hide');
+
+                jQuery214('#listacabadosfcajon').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'HotStamping') {
+
+            var nulo1 = document.getElementById('SelectHSFcajon').value;
+            var nulo2 = document.getElementById('SelectColorHSFcajon').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror2').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror2').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS +'</td><td style="display: none;">'+ AnchoHS +'</td><td class="listacabadosfcajon img_delete"></td></tr>';
+
+                aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+
+                $('#acabados_fcajon').modal('hide');
+
+                jQuery214('#listacabadosfcajon').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Grabado') {
+
+            var nulo1 = document.getElementById('SelectGrabFcajon').value;
+            var nulo2 = document.getElementById('SelectUbiGrabFcajon').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror2').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror2').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoG +', Medidas: '+ LargoGrab +'x'+ AnchoGrab +', Ubicacion: '+ ubicacionGrab +'</span></td><td style="display: none;">'+ tipoGrabadoG +'</td><td style="display: none;">'+ LargoGrab +'</td><td style="display: none;">'+ AnchoGrab +'</td><td style="display: none;">'+ ubicacionGrab +'</td><td class="listacabadosfcajon img_delete"></td></tr>';
+
+
+                aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoG, "Largo": LargoGrab, "Ancho": AnchoGrab, "ubicacion": ubicacionGrab});
+
+
+                $('#acabados_fcajon').modal('hide');
+
+                jQuery214('#listacabadosfcajon').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Suaje') {
+
+            var nulo1 = document.getElementById('SelectSuajeFcajon').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoSuaje +', Medidas: '+ LargoSuaje +'x'+ AnchoSuaje +'</span></td><td class="tipoSuaje" style="display: none;">'+ tipoSuaje +'</td><td class="LargoSuaje" style="display: none;">'+ LargoSuaje +'</td><td class="AnchoSuaje" style="display: none;">'+ AnchoSuaje +'</td><td class="listacabadosfcajon img_delete"></td></tr>';
+
+
+                aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoSuaje, "LargoSuaje": LargoSuaje, "AnchoSuaje": AnchoSuaje});
+
+                $('#acabados_fcajon').modal('hide');
+
+                jQuery214('#listacabadosfcajon').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Barniz UV')  {
+
+            var nulo1 = document.getElementById('SelectBarnizUVFcajon').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                if (tipoBarnizUV === 'undefined' || tipoBarnizUV === 'null') {
+
+                    tipoBarnizUV = '';
+                }
+
+                if(tipoBarnizUV == "Registro Mate" || tipoBarnizUV == "Registro Brillante") {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + ', Medidas: ' + LargoBarnizUV + 'x' + AnchoBarnizUV + '</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + LargoBarnizUV + '<input id="LargoBarnizUVEmp" name="LargoBarnizUVEmp" type="hidden" value="' + LargoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + AnchoBarnizUV + '<input id="AnchoBarnizUVEmp" name="AnchoBarnizUVEmp" type="hidden" value="' + AnchoBarnizUV + '"></td><td class="listacabadosfcajon img_delete"></td></tr>';
+
+                    aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": LargoBarnizUV, "Ancho": AnchoBarnizUV});
+                } else {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + '</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="listacabadosfcajon img_delete"></td></tr>';
+
+                    aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": null, "Ancho": null});
+                }
+
+                $('#acabados_fcajon').modal('hide');
+
+                jQuery214('#listacabadosfcajon').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Corte Laser')  {
+
+            var nulo1 = document.getElementById('SelectLaserFcajon').value;
+
+            if (nulo1 == 'selected')  {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosfcajon img_delete"></td></tr>';
+
+                aAcbFCaj.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
+
+                $('#acabados_fcajon').modal('hide');
+
+                jQuery214('#listacabadosfcajon').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+        desactivarBtn();
+    });
+
+
+    $(document).on('click', '#btnAcabadosfcartera', function(event) {
+
+        var IDopAcb  = $("#SelectAcFcartera option:selected").data('id');
+        var opAcb    = $("#SelectAcFcartera option:selected").text();
+
+        //para laminado
+        var tipoLaminado   = $("#SelectLaminadoFcartera option:selected").text();
+        var idtipoLaminado = $("#SelectLaminadoFcartera option:selected").data('id');
+
+        //para hoststamping
+        var tipoGrabadoHS   = $("#SelectHSFcartera option:selected").text();
+        var idtipoHS        = $("#SelectHSFcartera option:selected").data('id');
+        var ColorHS         = $("#SelectColorHSFcartera option:selected").text();
+        var idcolorHS       = $("#SelectHSFcartera option:selected").data('id');
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_fcartera').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_fcartera').value);
+
+        //para grabados
+        var tipoGrabadoG  = $("#SelectGrabFcartera option:selected").text();
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab_fcartera').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab_fcartera').value);
+        var ubicacionGrab = $("#SelectUbiGrabFcartera option:selected").text();
+
+        //para pegados especiales
+        var tipoEspeciales   = $("#SelectEspecialesFcartera option:selected").text();
+
+        //para barnizuv
+        var tipoBarnizUV   = $("#SelectBarnizUVFcartera option:selected").text();
+        var idtipoBarnizUV = $("#SelectHSFcartera option:selected").data('id');
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVFcartera').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVFcartera').value);
+
+        //para suaje
+        var tipoSuaje   = $("#SelectSuajeFcartera option:selected").text();
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje_fcartera').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje_fcartera').value);
+
+        //para laser
+        var tipoLaser   = $("#SelectLaserFcartera option:selected").text();
+        var idtipoLaser = $("#SelectHSFcartera option:selected").data('id');
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        if (opAcb == 'Laminado') {
+
+            var nuloo = document.getElementById('SelectLaminadoFcartera').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterror3').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror3').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoLaminado +'</span></td><td style="display: none">'+ tipoLaminado +'</td><td class="listacabadosfcartera img_delete"></td></tr>';
+
+
+                aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaminado});
+
+
+                $('#acabados_fcartera').modal('hide');
+
+                jQuery214('#listacabadosfcartera').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'HotStamping') {
+
+            var nulo1 = document.getElementById('SelectHSFcartera').value;
+            var nulo2 = document.getElementById('SelectColorHSFcartera').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror3').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror3').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS +'</td><td style="display: none;">'+ AnchoHS +'</td><td class="listacabadosfcartera img_delete"></td></tr>';
+
+                aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+
+
+                $('#acabados_fcartera').modal('hide');
+
+                jQuery214('#listacabadosfcartera').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Grabado') {
+
+            var nulo1 = document.getElementById('SelectGrabFcartera').value;
+            var nulo2 = document.getElementById('SelectUbiGrabFcartera').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror3').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror3').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoG +', Medidas: '+ LargoGrab +'x'+ AnchoGrab +', Ubicacion: '+ ubicacionGrab +'</span></td><td style="display: none;">'+ tipoGrabadoG +'</td><td style="display: none;">'+ LargoGrab +'</td><td style="display: none;">'+ AnchoGrab +'</td><td style="display: none;">'+ ubicacionGrab +'</td><td class="listacabadosfcartera img_delete"></td></tr>';
+
+
+                aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoG, "Largo": LargoGrab, "Ancho": AnchoGrab, "ubicacion": ubicacionGrab});
+
+                $('#acabados_fcartera').modal('hide');
+
+                jQuery214('#listacabadosfcartera').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Suaje') {
+
+            var nulo1 = document.getElementById('SelectSuajeFcartera').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoSuaje +', Medidas: '+ LargoSuaje +'x'+ AnchoSuaje +'</span></td><td class="tipoSuaje" style="display: none;">'+ tipoSuaje +'</td><td class="LargoSuaje" style="display: none;">'+ LargoSuaje +'</td><td class="AnchoSuaje" style="display: none;">'+ AnchoSuaje +'</td><td class="listacabadosfcartera img_delete"></td></tr>';
+
+
+                aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoSuaje, "LargoSuaje": LargoSuaje, "AnchoSuaje": AnchoSuaje});
+
+                $('#acabados_fcartera').modal('hide');
+
+                jQuery214('#listacabadosfcartera').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Barniz UV')  {
+
+            var nulo1 = document.getElementById('SelectBarnizUVFcartera').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+
+                if (tipoBarnizUV === 'undefined' || tipoBarnizUV === 'null') {
+
+                    tipoBarnizUV = '';
+                }
+
+
+                if(tipoBarnizUV == "Registro Mate" || tipoBarnizUV == "Registro Brillante") {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + ', Medidas: ' + LargoBarnizUV + 'x' + AnchoBarnizUV + '</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + LargoBarnizUV + '<input id="LargoBarnizUVEmp" name="LargoBarnizUVEmp" type="hidden" value="' + LargoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + AnchoBarnizUV + '<input id="AnchoBarnizUVEmp" name="AnchoBarnizUVEmp" type="hidden" value="' + AnchoBarnizUV + '"></td><td class="listacabadosfcartera img_delete"></td></tr>';
+
+                    aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": LargoBarnizUV, "Ancho": AnchoBarnizUV});
+                } else {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + '</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="listacabadosfcartera img_delete"></td></tr>';
+
+                    aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": null, "Ancho": null});
+                }
+
+                $('#acabados_fcartera').modal('hide');
+
+                jQuery214('#listacabadosfcartera').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Corte Laser')  {
+
+            var nulo1 = document.getElementById('SelectLaserFcartera').value;
+
+            if (nulo1 == 'selected')  {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosfcartera img_delete"></td></tr>';
+
+                aAcbFCar.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
+
+                $('#acabados_fcartera').modal('hide');
+
+                jQuery214('#listacabadosfcartera').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+        desactivarBtn();
+    });
+
+
+    $(document).on('click', '#btnAcabadosguarda', function(event) {
+
+        var IDopAcb  = $("#SelectAcGuarda option:selected").data('id');
+        var opAcb    = $("#SelectAcGuarda option:selected").text();
+
+        //para laminado
+        var tipoLaminado   = $("#SelectLaminadoGuarda option:selected").text();
+        var idtipoLaminado = $("#SelectLaminadoGuarda option:selected").data('id');
+
+        //para hoststamping
+        var tipoGrabadoHS   = $("#SelectHSGuarda option:selected").text();
+        var idtipoHS        = $("#SelectHSGuarda option:selected").data('id');
+        var ColorHS         = $("#SelectColorHSGuarda option:selected").text();
+        var idcolorHS       = $("#SelectHSGuarda option:selected").data('id');
+        var LargoHS     = parseFloat(document.getElementById('LargoHS_guarda').value);
+        var AnchoHS     = parseFloat(document.getElementById('AnchoHS_guarda').value);
+
+        //para grabados
+        var tipoGrabadoG  = $("#SelectGrabGuarda option:selected").text();
+        var LargoGrab     = parseFloat(document.getElementById('LargoGrab_guarda').value);
+        var AnchoGrab     = parseFloat(document.getElementById('AnchoGrab_guarda').value);
+        var ubicacionGrab = $("#SelectUbiGrabGuarda option:selected").text();
+
+        //para pegados especiales
+        var tipoEspeciales   = $("#SelectEspecialesGuarda option:selected").text();
+
+        //para barnizuv
+        var tipoBarnizUV   = $("#SelectBarnizUVGuarda option:selected").text();
+        var idtipoBarnizUV = $("#SelectHSGuarda option:selected").data('id');
+        var LargoBarnizUV  = parseFloat(document.getElementById('LargoBarUVGuarda').value);
+        var AnchoBarnizUV  = parseFloat(document.getElementById('AnchoBarUVGuarda').value);
+
+        //para suaje
+        var tipoSuaje   = $("#SelectSuajeGuarda option:selected").text();
+        var LargoSuaje  = parseFloat(document.getElementById('LargoSuaje_guarda').value);
+        var AnchoSuaje  = parseFloat(document.getElementById('AnchoSuaje_guarda').value);
+
+        //para laser
+        var tipoLaser   = $("#SelectLaserGuarda option:selected").text();
+        var idtipoLaser = $("#SelectHSGuarda option:selected").data('id');
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        if (opAcb == 'Laminado') {
+
+            var nuloo = document.getElementById('SelectLaminadoGuarda').value;
+
+            if (nuloo == 'selected') {
+
+                document.getElementById('alerterror4').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror4').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoLaminado +'</span></td><td style="display: none">'+ tipoLaminado +'</td><td class="listacabadosguarda img_delete"></td></tr>';
+
+
+                aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaminado});
+
+                $('#acabados_guarda').modal('hide');
+
+                jQuery214('#listacabadosguarda').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'HotStamping') {
+
+            var nulo1 = document.getElementById('SelectHSGuarda').value;
+            var nulo2 = document.getElementById('SelectColorHSGuarda').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror4').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror4').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoHS +', Color: '+ ColorHS +', Medidas: '+ LargoHS +'x'+ AnchoHS +'</span></td><td style="display: none;" >'+ tipoGrabadoHS +'</td><td style="display: none;" >' + ColorHS + '</td><td style="display: none;">'+ LargoHS +'</td><td style="display: none;">'+ AnchoHS +'</td><td class="listacabadosguarda img_delete"></td></tr>';
+
+                aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+
+                $('#acabados_guarda').modal('hide');
+
+                jQuery214('#listacabadosguarda').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Grabado') {
+
+            var nulo1 = document.getElementById('SelectGrabGuarda').value;
+            var nulo2 = document.getElementById('SelectUbiGrabGuarda').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' ) {
+
+                document.getElementById('alerterror4').innerHTML = alertDiv;
+
+            } else {
+
+                document.getElementById('alerterror4').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoGrabadoG +', Medidas: '+ LargoGrab +'x'+ AnchoGrab +', Ubicacion: '+ ubicacionGrab +'</span></td><td style="display: none;">'+ tipoGrabadoG +'</td><td style="display: none;">'+ LargoGrab +'</td><td style="display: none;">'+ AnchoGrab +'</td><td style="display: none;">'+ ubicacionGrab +'</td><td class="listacabadosguarda img_delete"></td></tr>';
+
+
+                aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoGrabadoG, "Largo": LargoGrab, "Ancho": AnchoGrab, "ubicacion": ubicacionGrab});
+
+                $('#acabados_guarda').modal('hide');
+
+                jQuery214('#listacabadosguarda').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb == 'Suaje') {
+
+            var nulo1 = document.getElementById('SelectSuajeGuarda').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb  = '<tr><td style="text-align: left;" class="textAcb">' + opAcb +'</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ tipoSuaje +', Medidas: '+ LargoSuaje +'x'+ AnchoSuaje +'</span></td><td class="tipoSuaje" style="display: none;">'+ tipoSuaje +'</td><td class="LargoSuaje" style="display: none;">'+ LargoSuaje +'</td><td class="AnchoSuaje" style="display: none;">'+ AnchoSuaje +'</td><td class="listacabadosguarda img_delete"></td></tr>';
+
+
+                aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoSuaje, "LargoSuaje": LargoSuaje, "AnchoSuaje": AnchoSuaje});
+
+                $('#acabados_guarda').modal('hide');
+
+                jQuery214('#listacabadosguarda').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Barniz UV')  {
+
+            var nulo1 = document.getElementById('SelectBarnizUVGuarda').value;
+
+            if (nulo1 == 'selected') {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                if (tipoBarnizUV === 'undefined' || tipoBarnizUV === 'null') {
+
+                    tipoBarnizUV = '';
+                }
+
+
+                if(tipoBarnizUV == "Registro Mate" || tipoBarnizUV == "Registro Brillante") {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + ', Medidas: ' + LargoBarnizUV + 'x' + AnchoBarnizUV + '</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + LargoBarnizUV + '<input id="LargoBarnizUVEmp" name="LargoBarnizUVEmp" type="hidden" value="' + LargoBarnizUV + '"></td><td class="tipoBarnizUV" style="display: none">' + AnchoBarnizUV + '<input id="AnchoBarnizUVEmp" name="AnchoBarnizUVEmp" type="hidden" value="' + AnchoBarnizUV + '"></td><td class="listacabadosguarda img_delete"></td></tr>';
+
+                    aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": LargoBarnizUV, "Ancho": AnchoBarnizUV});
+                } else {
+
+                    var acb  = '<tr id="AcBarnizUVEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' +  tipoBarnizUV + '</span></td><td class="tipoBarnizUV" style="display: none">' + tipoBarnizUV + '<input id="tipoBarnizUV" name="tipoBarnizUV" type="hidden" value="' + idtipoBarnizUV + '"></td><td class="listacabadosguarda img_delete"></td></tr>';
+
+                    aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoBarnizUV, "Largo": null, "Ancho": null});
+                }
+
+                $('#acabados_guarda').modal('hide');
+
+                jQuery214('#listacabadosguarda').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+
+
+        if (opAcb === 'Corte Laser')  {
+
+            var nulo1 = document.getElementById('SelectLaserGuarda').value;
+
+            if (nulo1 == 'selected')  {
+
+                document.getElementById('alerterror').innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+            } else {
+
+                document.getElementById('alerterror').innerHTML = "";
+
+                var acb = '<tr id="AcLaserEmp"><td style="text-align: left;" class="textAcb">' + opAcb +'<input id="IDopAcbEmp" name="IDopAcbEmp" type="hidden" value="' + IDopAcb + '"></td><td class="CellWithComment">...<span class="CellComment">Tipo: ' + tipoLaser + '</span></td><td class="tipoLaser" style="display: none;">' + tipoLaser + '<input id="tipoLaser" name="tipoLaser" type="hidden" value="' + idtipoLaser + '"></td><td class="listacabadosguarda img_delete"></td></tr>';
+
+                aAcbG.push({"Tipo_acabado": opAcb, "tipoGrabado": tipoLaser});
+
+                $('#acabados_guarda').modal('hide');
+
+                jQuery214('#listacabadosguarda').append(acb);
+
+                vacioModalAcabados();
+            }
+        }
+        desactivarBtn();
+    });
+
+    jQuery214(document).on("click", ".listacabadosemp", function () {
+
+        $(this).closest('tr').remove();
+
+        row_listacabados = 0;
+        row_listacabados = $('#listacabadosemp > tr').length;
+
+        aAcb = [];
+
+        var oTable = document.getElementById('acbTable');
+
+        var rowLength = oTable.rows.length;
+
+
+        var tipo_acabado = "";
+
+        $("#acbTable tr").each(function(row, tr) {
+
+            var tipo_acabado  = "";
+            var tipoGrabadoHS = "";
+            var ColorHS       = "";
+            var LargoHS_str   = "";
+            var AnchoHS_str   = "";
+            var LargoHS       = 0;
+            var AnchoHS       = 0;
+
+            var tipoGrabado = "";
+            var Largo_str   = "";
+            var Ancho_str   = "";
+            var ubicacion   = "";
+            var Largo       = 0;
+            var Ancho       = 0;
+
+
+            tipo_acabado = $(tr).find('td:eq(0)').text();
+
+            if (tipo_acabado == "HotStamping") {
+
+                tipoGrabadoHS = $(tr).find('td:eq(2)').text();
+                ColorHS       = $(tr).find('td:eq(4)').text();
+                LargoHS_str   = $(tr).find('td:eq(5)').text();
+                AnchoHS_str   = $(tr).find('td:eq(6)').text();
+
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
+
+
+                aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+            }
+
+
+            if (tipo_acabado == "Grabado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+                ubicacion   = $(tr).find('td:eq(5)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
+            }
+
+
+            if (tipo_acabado == "Laminado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+
+
+            if (tipo_acabado == "Suaje") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
+            }
+
+
+            if (tipo_acabado == "Barniz UV") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
+
+                if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante") {
+
+                    aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho});
+
+                } else {
+
+                    aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": null, "Ancho": null});
+                }
+
+            }
+
+
+            if (tipo_acabado == "Corte Laser") {
+
+                row_listimpresiones = $('#listacabadosemp > tr').length;
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcb.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+
+        });
+        desactivarBtn();
+    });
+
+
+    jQuery214(document).on("click", ".listacabadosfcajon", function () {
+
+        $(this).closest('tr').remove();
+
+        row_listacabados = 0;
+        row_listacabados = $('#listacabadosfcajon > tr').length;
+
+        aAcbFCaj = [];
+
+        var oTable = document.getElementById('acbTableFcajon');
+
+        var rowLength = oTable.rows.length;
+
+        var tipo_acabado = "";
+
+        $("#acbTableFcajon tr").each(function(row, tr) {
+
+            var tipo_acabado  = "";
+            var tipoGrabadoHS = "";
+            var ColorHS       = "";
+            var LargoHS_str   = "";
+            var AnchoHS_str   = "";
+            var LargoHS       = 0;
+            var AnchoHS       = 0;
+
+            var tipoGrabado = "";
+            var Largo_str   = "";
+            var Ancho_str   = "";
+            var ubicacion   = "";
+            var Largo       = 0;
+            var Ancho       = 0;
+
+
+            tipo_acabado = $(tr).find('td:eq(0)').text();
+
+            if (tipo_acabado == "Laminado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+
+
+            if (tipo_acabado == "HotStamping") {
+
+                tipoGrabadoHS = $(tr).find('td:eq(2)').text();
+                ColorHS       = $(tr).find('td:eq(3)').text();
+                LargoHS_str   = $(tr).find('td:eq(4)').text();
+                AnchoHS_str   = $(tr).find('td:eq(5)').text();
+
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
+
+
+                aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+            }
+
+
+            if (tipo_acabado == "Grabado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+                ubicacion   = $(tr).find('td:eq(5)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
+            }
+
+
+            if (tipo_acabado == "Suaje") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
+            }
+
+
+            if (tipo_acabado == "Barniz UV") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
+
+                if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante") {
+
+                    aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho});
+
+                } else {
+
+                    aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": null, "Ancho": null});
+                }
+                console.log(aAcbFCaj);
+            }
+
+
+            if (tipo_acabado == "Corte Laser") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcbFCaj.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+        });
+        desactivarBtn();
+    });
+
+    jQuery214(document).on("click", ".listacabadosfcartera", function () {
+
+        $(this).closest('tr').remove();
+
+        row_listacabados = 0;
+        row_listacabados = $('#listacabadosfcartera > tr').length;
+
+        aAcbFCar = [];
+
+        var oTable = document.getElementById('acbTableFcartera');
+
+        var rowLength = oTable.rows.length;
+
+        var tipo_acabado = "";
+
+        $("#acbTableFcartera tr").each(function(row, tr) {
+
+            var tipo_acabado  = "";
+            var tipoGrabadoHS = "";
+            var ColorHS       = "";
+            var LargoHS_str   = "";
+            var AnchoHS_str   = "";
+            var LargoHS       = 0;
+            var AnchoHS       = 0;
+
+            var tipoGrabado = "";
+            var Largo_str   = "";
+            var Ancho_str   = "";
+            var ubicacion   = "";
+            var Largo       = 0;
+            var Ancho       = 0;
+
+
+            tipo_acabado = $(tr).find('td:eq(0)').text();
+
+
+            if (tipo_acabado == "Laminado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+
+
+            if (tipo_acabado == "HotStamping") {
+
+                tipoGrabadoHS = $(tr).find('td:eq(2)').text();
+                ColorHS       = $(tr).find('td:eq(3)').text();
+                LargoHS_str   = $(tr).find('td:eq(4)').text();
+                AnchoHS_str   = $(tr).find('td:eq(5)').text();
+
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
+
+
+                aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+            }
+
+
+            if (tipo_acabado == "Grabado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+                ubicacion   = $(tr).find('td:eq(5)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
+            }
+
+
+            if (tipo_acabado == "Suaje") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
+            }
+
+
+            if (tipo_acabado == "Barniz UV") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
+
+                if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante"){
+
+                    aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho});
+
+                } else {
+
+                    aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": null, "Ancho": null});
+                }
+                console.log(aAcbFCar);
+            }
+
+
+            if (tipo_acabado == "Corte Laser") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcbFCar.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+        });
+        desactivarBtn();
+    });
+
+    jQuery214(document).on("click", ".listacabadosguarda", function () {
+
+        $(this).closest('tr').remove();
+
+        row_listacabados = 0;
+        row_listacabados = $('#listacabadosguarda > tr').length;
+
+        aAcbG = [];
+
+        var oTable = document.getElementById('acbTableGuarda');
+
+        var rowLength = oTable.rows.length;
+
+        var tipo_acabado = "";
+
+        $("#acbTableGuarda tr").each(function(row, tr) {
+
+            var tipo_acabado  = "";
+            var tipoGrabadoHS = "";
+            var ColorHS       = "";
+            var LargoHS_str   = "";
+            var AnchoHS_str   = "";
+            var LargoHS       = 0;
+            var AnchoHS       = 0;
+
+            var tipoGrabado = "";
+            var Largo_str   = "";
+            var Ancho_str   = "";
+            var ubicacion   = "";
+            var Largo       = 0;
+            var Ancho       = 0;
+
+
+            tipo_acabado = $(tr).find('td:eq(0)').text();
+
+            if (tipo_acabado == "Laminado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+
+
+            if (tipo_acabado == "HotStamping") {
+
+                tipoGrabadoHS = $(tr).find('td:eq(2)').text();
+                ColorHS       = $(tr).find('td:eq(3)').text();
+                LargoHS_str   = $(tr).find('td:eq(4)').text();
+                AnchoHS_str   = $(tr).find('td:eq(5)').text();
+
+                LargoHS = parseFloat(LargoHS_str);
+                AnchoHS = parseFloat(AnchoHS_str);
+
+
+                aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabadoHS, "ColorHS": ColorHS, "LargoHS": LargoHS, "AnchoHS": AnchoHS});
+            }
+
+
+            if (tipo_acabado == "Grabado") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+                ubicacion   = $(tr).find('td:eq(5)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho, "ubicacion": ubicacion});
+            }
+
+
+            if (tipo_acabado == "Suaje") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo_str   = $(tr).find('td:eq(3)').text();
+                Ancho_str   = $(tr).find('td:eq(4)').text();
+
+                Largo = parseFloat(Largo_str);
+                Ancho = parseFloat(Ancho_str);
+
+                aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "LargoSuaje": Largo, "AnchoSuaje": Ancho});
+            }
+
+
+            if (tipo_acabado == "Barniz UV") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+                Largo       = parseFloat($(tr).find('td:eq(3)').text());
+                Ancho       = parseFloat($(tr).find('td:eq(4)').text());
+
+                if(tipoGrabado == "Registro Mate" || tipoGrabado == "Registro Brillante") {
+
+                    aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": Largo, "Ancho": Ancho});
+
+                } else {
+
+                    aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado, "Largo": null, "Ancho": null});
+                }
+                console.log(aAcbG);
+            }
+
+
+            if (tipo_acabado == "Corte Laser") {
+
+                tipoGrabado = $(tr).find('td:eq(2)').text();
+
+                aAcbG.push({"Tipo_acabado": tipo_acabado, "tipoGrabado": tipoGrabado});
+            }
+        });
+        desactivarBtn();
+    });
+</script>
+
+
+<!-- cierres -->
+<script>
+
+    jQuery214(document).on("click", ".listcierres", function () {
+
+        $(this).closest('tr').remove();
+
+        row_listacierres = 0;
+
+        row_listacierres = $('#listcierres > tr').length;
+
+        aCierres = [];
+
+        var oTable = document.getElementById('cieTable');
+
+        var rowLength = oTable.rows.length;
+
+        var tipo_cierre = "";
+
+        $("#cieTable tr").each(function(row, tr) {
+
+            var tipo_cierre = "";
+            var numpares    = 1;
+
+            var numpares_str = "";
+            var Largo_str    = "";
+            var Ancho_str    = "";
+            var tipo         = "";
+
+            var Largo = 0;
+            var Ancho = 0;
+
+            tipo_cierre = $(tr).find('td:eq(0)').text();
+
+
+            if (tipo_cierre == "Iman") {
+
+                numpares_str = $(tr).find('td:eq(2)').text();
+                numpares     = parseInt(numpares_str, 10);
+
+                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
+
+            }
+
+
+            // falta corregir el modal de Liston
+            if (tipo_cierre == "Liston") {
+
+                tipo_cierre = $(tr).find('td:eq(0)').text();
+
+                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
+            }
+
+
+            if (tipo_cierre == "Marialuisa") {
+
+                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
+            }
+
+
+            if (tipo_cierre == "Suaje calado") {
+
+                Largo_str   = $(tr).find('td:eq(2)').text();
+                Ancho_str   = $(tr).find('td:eq(3)').text();
+                tipo        = $(tr).find('td:eq(4)').text();
+
+                Largo = parseInt(Largo_str, 10);
+                Ancho = parseInt(Ancho_str, 10);
+
+                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": Largo, "ancho": Ancho, "tipo": tipo, "color": null});
+            }
+
+
+            if (tipo_cierre == "Velcro") {
+
+                numpares_str = $(tr).find('td:eq(2)').text();
+                numpares     = parseInt(numpares_str, 10);
+
+                aCierres.push({"Tipo_cierre": tipo_cierre, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
+            }
+        });
+        desactivarBtn();
+    });
+</script>
+
+
+<!-- banco -->
+<script>
+
+    jQuery214(document).on("click", ".listbancoemp", function () {
+
+        $(this).closest('tr').remove();
+
+        row_listabancos = 0;
+        row_listabancos = $('#listbancoemp > tr').length;
+
+        aBancos = [];
+
+        var oTable = document.getElementById('banTable');
+
+        var rowLength = oTable.rows.length;
+
+        var tipo_banco = "";
+
+        $("#listbancoemp tr").each(function(row, tr) {
+
+            var largo       = 0;
+            var ancho       = 0;
+            var profundidad = 0;
+            var suaje       = "";
+            var Largo_str   = "";
+            var Ancho_str   = "";
+            var profundidad_str   = "";
+
+
+            tipo_banco      = $(tr).find('td:eq(2)').text();
+            Largo_str       = $(tr).find('td:eq(3)').text();
+            Ancho_str       = $(tr).find('td:eq(4)').text();
+            profundidad_str = $(tr).find('td:eq(5)').text();
+
+            tipo_banco  = tipo_banco.trim();
+            largo       = parseInt(Largo_str, 10);
+            ancho       = parseInt(Ancho_str, 10);
+            profundidad = parseInt(profundidad_str, 10);
+
+
+            if (tipo_banco == "Carton") {
+
+                suaje = $(tr).find('td:eq(6)').text();
+                suaje = suaje.trim();
+
+                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
+            }
+
+
+            if (tipo_banco == "Eva") {
+
+                suaje = $(tr).find('td:eq(6)').text();
+                suaje = suaje.trim();
+
+                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
+            }
+
+
+            if (tipo_banco == "Espuma") {
+
+                suaje = $(tr).find('td:eq(6)').text();
+                suaje = suaje.trim();
+
+                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
+            }
+
+
+            if (tipo_banco == "Empalme Banco") {
+
+                suaje = $(tr).find('td:eq(6)').text();
+                suaje = suaje.trim();
+
+                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": suaje});
+            }
+
+
+            if (tipo_banco == "Cartulina Suajada") {
+
+                aBancos.push({"Tipo_banco": tipo_banco, "largo": largo, "ancho": ancho, "Profundidad": profundidad, "Suaje": null});
+            }
+        });
+        desactivarBtn();
+    });
+</script>
+
+
+<!-- accesorios -->
+<script>
+
+    jQuery214(document).on("click", ".listaccesorios", function () {
+
+        $(this).closest('tr').remove();
+
+        row_listabancos = 0;
+
+        row_listabancos = $('#listaccesorios > tr').length;
+
+        aAccesorios = [];
+
+        var oTable = document.getElementById('accesoriosTable');
+
+        var rowLength = oTable.rows.length;
+
+        $("#listaccesorios tr").each(function(row, tr) {
+
+            var nombreAccesorio = $(tr).find('td:eq(0)').text();
+
+            //se salta el 1 porque en el td 1 esta el span como comentario
+            var largo   = $(tr).find('td:eq(2)').text();
+            var ancho   = $(tr).find('td:eq(3)').text();
+            var color   = $(tr).find('td:eq(4)').text();
+            var herraje = $(tr).find('td:eq(5)').text();
+            var precio  = $(tr).find('td:eq(6)').text();
+
+            nombreAccesorio = nombreAccesorio.trim();
+
+            switch(nombreAccesorio) {
+
+                case "Herraje":
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
+
+                    break;
+                case "Ojillos":
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
+
+                    break;
+                case "Resorte":
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+                    break;
+                case "Lengueta de Liston":
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+
+                    break;
+            }
+        });
+        desactivarBtn();
+    });
+</script>
+
+<script>
+
+    //Activa los div de los select acabados en parte guarda------
+    document.getElementById('SelectBanEmp').onchange = function(event) {
+
+        var opcionbanco = document.getElementById('SelectBanEmp').value;
+
+
+        if (opcionbanco === 'Carton Suajado' || opcionbanco === 'Cartulina Suajada') {
+
+            $('#llevasuajemodBanco').hide('normal');
+        }
+
+
+        if (opcionbanco === 'Carton' || opcionbanco === 'Eva' || opcionbanco === 'Espuma' || opcionbanco === 'Empalme Banco') {
+
+            $('#llevasuajemodBanco').show('slow');
+        }
+    }
+
+
+    $(document).on('click', '#btnBancoEmp', function(event) {
+
+        var IDopBan = $("#SelectBanEmp option:selected").data('id');
+        var opBan   = $("#SelectBanEmp option:selected").text();
+
+        var LargoMBanco       = document.getElementById('LargoBanco').value;
+        var AnchoMBanco       = document.getElementById('AnchoBanco').value;
+        var ProfundidadMBanco = document.getElementById('ProfundidadBanco').value;
+        var LLevaSuajeM       = $("#SelectSuajeBanco option:selected").text();
+
+        var nuloo = document.getElementById('SelectBanEmp').value;
+
+        var alertDiv = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        if (nuloo === 'selected') {
+
+            document.getElementById('alerterror5').innerHTML = alertDiv;
+
+        } else if (opBan === 'Carton' || opBan === 'Eva' || opBan === 'Espuma' || opBan === 'Empalme Banco') {
+
+            document.getElementById('alerterror5').innerHTML = "";
+
+            var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +', Suaje: '+ LLevaSuajeM +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td style="display: none">'+ LLevaSuajeM +'</td><td class="listbancoemp img_delete"></td></tr>';
+
+            aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": LLevaSuajeM});
+
+            $('#bancoemp').modal('hide');
+
+            jQuery214('#listbancoemp').append(ban);
+
+            vacioModalBancos();
+        } else if (opBan === 'Cartulina Suajada') {
+
+            document.getElementById('alerterror5').innerHTML = "";
+
+            var ban  = '<tr><td style="text-align: left;">Banco</td><td class="CellWithComment">...<span class="CellComment">Tipo: '+ opBan +', Largo: '+ LargoMBanco +', Ancho: '+ AnchoMBanco +', Profundidad: '+ ProfundidadMBanco +'</span></td><td style="display: none">'+ opBan +'</td><td style="display: none">'+ LargoMBanco +'</td><td style="display: none">'+ AnchoMBanco +'</td><td style="display: none">'+ ProfundidadMBanco +'</td><td class="listbancoemp img_delete"></td></tr>';
+
+            aBancos.push({"Tipo_banco": opBan, "largo": LargoMBanco, "ancho": AnchoMBanco, "Profundidad": ProfundidadMBanco, "Suaje": null});
+
+            $('#bancoemp').modal('hide');
+
+            jQuery214('#listbancoemp').append(ban);
+
+            vacioModalBancos();
+        }
+        desactivarBtn();
+    });
+
+
+    //Activa los div de los select cierres------
+    document.getElementById('SelectCieEmp').onchange = function(event) {
+
+        var opcioncierre = document.getElementById('SelectCieEmp').value;
+
+        $('#opCieParaPares').hide('slow');
+        $('#opCieListon').hide('slow');
+        $('#opCieMarialuisa').hide('slow');
+        $('#opCieSuajeCalado').hide('slow');
+
+
+        if (opcioncierre == 'Iman') {
+
+            $('#opCieParaPares').show('normal');
+        }
+
+
+        if (opcioncierre == 'Liston') {
+
+            $('#opCieListon').show('normal');
+        }
+
+
+        if (opcioncierre == 'Marialuisa') {
+
+            $('#opCieMarialuisa').show('normal');
+        }
+
+
+        if (opcioncierre == 'Suaje calado') {
+
+            $('#opCieSuajeCalado').show('normal');
+        }
+
+
+        if (opcioncierre == 'Velcro') {
+
+            $('#opCieParaPares').show('normal');
+        }
+    }
+
+
+    // ------------------------- check cierres ---------------------------
+
+    jQuery214(document).on("click", "#btnCierres", function () {
+
+        var IDopCie  = $("#SelectCieEmp option:selected").data('id');
+        var opCie    = $("#SelectCieEmp option:selected").text();
+
+        var numpares = document.getElementById('paresCierre').value;
+
+        // para liston
+        var LarListon    = document.getElementById('LargoListon').value;
+        var AnchListon   = document.getElementById('AnchoListon').value;
+        var tipoListon   = $("#SelectListonEmp option:selected").text();
+        var colorListon  = $("#SelectColorListon option:selected").text();
+
+        // para Suaje calado
+        var LarSuajCal   = document.getElementById('LargoSCalado').value;
+        var AnchSuajCal  = document.getElementById('AnchoSCalado').value;
+        var tipoSuajCal  = $("#SelectSCalado option:selected").text();
+
+        var alertmesserror = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+
+        if (opCie == 'Iman' || opCie == 'Velcro') {
+
+            document.getElementById('alerterror6').innerHTML = "";
+
+            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Numero de Pares: '+ numpares +'</span></td><td style="display: none">'+ numpares +'</td><td class="listcierres img_delete"></td></tr>';
+
+
+            aCierres.push({"Tipo_cierre": opCie, "numpares": numpares, "largo": null, "ancho": null, "tipo": null, "color": null});
+
+            $('#cierres').modal('hide');
+
+            jQuery214('#listcierres').append(cie);
+
+
+            //vacioModalCierres();
+        }
+
+
+        if (opCie == 'Marialuisa') {
+
+            document.getElementById('alerterror6').innerHTML = "";
+
+            var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Se agrego un cierre Marialuisa</span></td><td class="listcierres img_delete"></td></tr>';
+
+            aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": null, "ancho": null, "tipo": null, "color": null});
+
+            $('#cierres').modal('hide');
+
+            jQuery214('#listcierres').append(cie);
+
+            //vacioModalCierres();
+        }
+
+
+        if (opCie == 'Liston') {
+
+            var nulo1 = document.getElementById('SelectCieEmp').value;
+            var nulo2 = document.getElementById('SelectListonEmp').value;
+            var nulo3 = document.getElementById('SelectColorListon').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected' || nulo3 == 'selected' ) {
+
+                document.getElementById('alerterror6').innerHTML = alertmesserror;
+
+            } else {
+
+                document.getElementById('alerterror6').innerHTML = "";
+
+                var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarListon +', Ancho: '+ AnchListon +', Tipo: '+ tipoListon +', Color: '+ colorListon +' </span></td><td style="display: none">'+ LarListon +'</td><td style="display: none">'+ AnchListon +'</td><td style="display: none">'+ tipoListon +'</td><td style="display: none">'+ colorListon +'</td><td class="listcierres img_delete"></td></tr>';
+
+
+                aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarListon, "ancho": AnchListon, "tipo": tipoListon, "color": colorListon});
+
+                $('#cierres').modal('hide');
+
+                jQuery214('#listcierres').append(cie);
+
+                //vacioModalCierres();
+            }
+        }
+
+
+        if (opCie == 'Suaje calado') {
+
+            var nulo1 = document.getElementById('SelectCieEmp').value;
+            var nulo2 = document.getElementById('SelectSCalado').value;
+
+            if (nulo1 == 'selected' || nulo2 == 'selected') {
+
+                document.getElementById('alerterror6').innerHTML = alertmesserror;
+
+            } else {
+
+                document.getElementById('alerterror6').innerHTML = "";
+
+                var cie = '<tr><td style="text-align: left;">' + opCie +'</td><td class="CellWithComment">...<span class="CellComment">Largo: '+ LarSuajCal +', Ancho: '+ AnchSuajCal +', Tipo: '+ tipoSuajCal +'</span></td><td style="display: none">'+ LarSuajCal +'</td><td style="display: none">'+ AnchSuajCal +'</td><td style="display: none">'+ tipoSuajCal +'</td><td class="listcierres img_delete"></td></tr>';
+
+
+                aCierres.push({"Tipo_cierre": opCie, "numpares": 1, "largo": LarSuajCal, "ancho": AnchSuajCal, "tipo": tipoSuajCal, "color": null});
+
+                $('#cierres').modal('hide');
+
+                jQuery214('#listcierres').append(cie);
+
+                //vacioModalCierres();
+            }
+        }
+        desactivarBtn();
+    });
+
+
+    jQuery214(document).on("click", "#btnabrebancoemp", function () {
+
+        $('#footerBancoEmp').show();
+        $('#footerBancoFcajon').hide();
+        $('#footerBancoFcartera').hide();
+        $('#footerBancoGuarda').hide();
+    });
+
+
+    jQuery214(document).on("click", "#btnabrebancofcajon", function () {
+
+        $('#footerBancoFcajon').show();
+        $('#footerBancoEmp').hide();
+        $('#footerBancoFcartera').hide();
+        $('#footerBancoGuarda').hide();
+    });
+
+
+    jQuery214(document).on("click", "#btnabrebancofcartera", function () {
+
+        $('#footerBancoFcartera').show();
+        $('#footerBancoEmp').hide();
+        $('#footerBancoFcajon').hide();
+        $('#footerBancoGuarda').hide();
+    });
+
+
+    jQuery214(document).on("click", "#btnabrebancoguarda", function () {
+
+        $('#footerBancoGuarda').show();
+        $('#footerBancoEmp').hide();
+        $('#footerBancoFcajon').hide();
+        $('#footerBancoFcartera').hide();
+    });
+
+
+    $(document).on("click", "#btnAccesorios", function () {
+
+        var idAccesorio     = $("#SelectAccesorio option:selected").data('id');
+        var precio          = $("#SelectAccesorio option:selected").data('price');
+        var nombreAccesorio = $("#SelectAccesorio option:selected").text();
+        var herraje         = $("#SelectHerraje option:selected").text();
+        var largo           = $('#LargoAcc').val();
+        var ancho           = $('#AnchoAcc').val();
+        var color           = $("#opColores option:selected").text();
+
+        var accesorio       = "";
+
+        var alertmesserror  = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>Problemas!</strong> No seleccionaste todos los elementos.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        switch(nombreAccesorio) {
+
+            case "Herraje":
+
+                if( $("#SelectHerraje option:selected").val() != "selected") {
+
+                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td class="CellWithComment">...<span class="CellComment">Herraje: ' + herraje + '</span></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": herraje, "Precio": precio});
+
+                    $('#listaccesorios').append(accesorio);
+
+                    $('#accesorios').modal('hide');
+
+                    vacioModalAccesorios();
+                } else {
+
+                    document.getElementById('alerterror7').innerHTML = alertmesserror;
+                }
+
+                break;
+            case "Ojillos":
+
+                accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio + '</td><td style=""></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none"></td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+
+                aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": null, "Ancho": null, "Color": null, "Herraje": null, "Precio": precio});
+
+                $('#listaccesorios').append(accesorio);
+
+                $('#accesorios').modal('hide');
+
+                vacioModalAccesorios();
+
+                break;
+            case "Resorte":
+
+                if( $("#SelectColor option:selected").val() != "selected") {
+
+                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">' + precio + '</td><td class="listaccesorios img_delete"></td></tr>';
+
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+
+                    $('#listaccesorios').append(accesorio);
+
+                    $('#accesorios').modal('hide');
+
+                    vacioModalAccesorios();
+                } else {
+
+                    document.getElementById('alerterror7').innerHTML = alertmesserror;
+                }
+
+                break;
+            case "Lengueta de Liston":
+
+                if( $("#SelectColor option:selected").val() != "selected") {
+
+                    accesorio = '<tr><td style="text-align: left;">' + nombreAccesorio +'</td><td class="CellWithComment">...<span class="CellComment">Largo: ' + largo + ' Ancho: ' + ancho + ' Color: ' + color + '</span></td><td style="display:none">'+ largo +'</td><td style="display:none">'+ancho+'</td><td style="display:none">'+ color +'</td><td style="display:none"></td><td style="display:none">'+herraje+'</td><td style="display:none">'+precio+'</td><td class="listaccesorios img_delete"></td></tr>';
+
+                    aAccesorios.push({"Tipo_accesorio": nombreAccesorio, "Largo": largo, "Ancho": ancho, "Color": color, "Herraje": null, "Precio": precio});
+
+                    $('#listaccesorios').append(accesorio);
+
+                    $('#accesorios').modal('hide');
+
+                    vacioModalAccesorios();
+                } else {
+
+                    document.getElementById('alerterror7').innerHTML = alertmesserror;
+                }
+
+                break;
+        }
+        desactivarBtn();
+    });
+
+
+    document.getElementById('SelectAccesorio').onchange = function(event) {
+
+        var opcion = document.getElementById('SelectAccesorio').value;
+
+        $('#opColores').hide('slow');
+        $('#opMedidas').hide('slow');
+        $('#opHerraje').hide('slow');
+        $('#opOjillo').hide('slow');
+
+
+        if (opcion == 'Herraje') {
+
+            $('#opHerraje').show('normal');
+        }
+
+
+        if (opcion == 'Ojillos') {
+
+            $('#opOjillo').show('normal');
+        }
+
+
+        if (opcion == 'Resorte') {
+
+            $('#opMedidas').show('normal');
+            $('#opColores').show('normal');
+        }
+
+
+        if (opcion == 'Lengueta de Liston') {
+
+            $('#opMedidas').show('normal');
+            $('#opColores').show('normal');
+        }
+    }
+
+    $("#btnCancelAccesorios").click( function () {
+
+        vacioModalAccesorios();
+    });
+
+    $(document).on('click', '#btnResumen', function(event) {
+
+        vistaResumen("show");
+    });
+
+    $(document).on('click', '#btnQuitarResumen', function(event) {
+
+        vistaResumen("hide");
+    });
+
+    $("#imgEC").mouseover( function(){
+
         $("#imgEC").find("img").prop("src", "<?=URL?>public/img/almeja-EC.gif");
     });
 =======
@@ -3349,54 +9532,40 @@
 >>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
 
     $("#imgEC").mouseout( function(){
-=======
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")
 
-    var option = "";
-    var papeles = <?php echo json_encode($papers);?>;
-
-    papeles.forEach( function(papel){
-
-        option += '<option value="' + papel.id_papel + '" data-nombre="' + papel.nombre + '">' + papel.nombre + '</option>';
+        $("#imgEC").find("img").prop("src", "<?=URL?>public/img/banco.png");
     });
 
-    var baseImg = "<?=BASE_URL?>public/img/";
+    $("#imgFCaj").mouseover( function(){
 
-    var seccion = [
-        { titulo: 'Empalme Cajón', img: baseImg+'banco.png', option: 'optEC', siglas: 'EC', aAcb: [], aImp: [], 'siglasP': 'Empalme' },
-        { titulo: 'Forro Cajón', img: baseImg+'banco2.png', option: 'optFCaj', siglas: 'FCaj', aAcb: [], aImp: [], 'siglasP': 'FCaj' },
-        { titulo: 'Forro Cartera', img: baseImg+'banco.png', option: 'optFCar', siglas: 'FCar', aAcb: [], aImp: [], 'siglasP': 'FCar' },
-        { titulo: 'Guarda', img: baseImg+'banco2.png', option: 'optG', siglas: 'G', aAcb: [], aImp: [], 'siglasP': 'Guarda' },
-        /*{ titulo: 'Prueba', img: baseImg+'regalo.png', option: 'optP', siglas: 'P', aAcb: [], aImp: [], 'siglasP': 'pt' },*/
-    ];
-
-    let caja = new Almeja( {secciones: seccion, papeles: option, url: "<?=URL?>"} );
-
-    var contenidoIzquierdo = $("#divIzquierdo-slave").contents();
-    $("#divIzquierdo").empty();
-    $("#divIzquierdo").append(contenidoIzquierdo);
-    $("#divDerecho").empty();
-
-    //eligira a donde se enviara la información
-    caja.changeData("cotizador/saveCaja");
-
-    //construye las secciones respecto a las divisiones que se ha declarado en la variable seccion
-    caja.constructSec();
-
-    //se asigna en que modelo esta para el select
-    $("#box-model").val("1");
-
-    //olvida el historial
-    history.forward();
-
-    //Boton Guardar
-    $("#btnGrabarC").click( function() {
-
-        // sus argumentos son: grabar, modificar. busque la funcion para entender como funciona
-        caja.saveCotizacion("SI",'NO');
+        $("#imgFCaj").find("img").prop("src", "<?=URL?>public/img/almeja-FCaj.gif");
     });
 
-<<<<<<< HEAD
+    $("#imgFCaj").mouseout( function(){
+
+        $("#imgFCaj").find("img").prop("src", "<?=URL?>public/img/banco2.png");
+    });
+
+    $("#imgFCar").mouseover( function(){
+
+        $("#imgFCar").find("img").prop("src", "<?=URL?>public/img/almeja-G.gif");
+    });
+
+    $("#imgFCar").mouseout( function(){
+
+        $("#imgFCar").find("img").prop("src", "<?=URL?>public/img/banco.png");
+    });
+
+    $("#imgG").mouseover( function(){
+
+        $("#imgG").find("img").prop("src", "<?=URL?>public/img/almeja-FCar.gif");
+    });
+
+    $("#imgG").mouseout( function(){
+
+        $("#imgG").find("img").prop("src", "<?=URL?>public/img/banco2.png");
+    });
+
 <<<<<<< HEAD
     //history.forward();
 
@@ -3417,12 +9586,9 @@
 
         $("#imgEC").find("img").prop("src", "<?=URL?>public/img/banco.png");
     });
-=======
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")
 
     $("#imgFCaj").mouseover( function(){
 
-<<<<<<< HEAD
 <<<<<<< HEAD
     $(document).on('click', '.active-result', function (e) {
         
@@ -3468,6 +9634,3 @@
     });
 </script>
 >>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
-=======
-</script>
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")

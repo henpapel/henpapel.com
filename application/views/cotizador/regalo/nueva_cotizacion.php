@@ -65,7 +65,7 @@
         <br>
     </div>
 
-    <!-- formulario de la caja regalo -->
+    <!-- formulario de la caja circular -->
     <div id="divContentI" class="form-content medidas">
         <div class="scroll-plantilla" style="min-width: 120px; width: 92%;">
 
@@ -189,10 +189,6 @@
         </div>
     </div>
 <<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of e968c60 (Revert "avances 5 de marzo 2021")
     <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
 =======
 
