@@ -188,12 +188,7 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
     <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
-=======
-
-    <div class="div-buttons mt-1 p-1 mb-5" style="height: 20%;">
->>>>>>> parent of 29fd04d (Revert "Avances almeja hasta la fecha")
         
         <button type="button" id="btnabrecierres" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#cierres" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Cierre</button>
 
