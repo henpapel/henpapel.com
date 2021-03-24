@@ -1406,6 +1406,13 @@
 	</div>
 	<br>
 	<div align="center" class="suaje" style="border: 3px solid;">
+		<table class="table te">
+			<tr>
+				<th style="text-align: center;" colspan="2" align="center">
+					SUAJE
+				</th>
+			</tr>
+		</table>
 		<table class="table te" style="table-layout: fixed;">
 			
 			<tr>
@@ -1421,7 +1428,7 @@
 				</th>
 
 				<th align="center">
-					Costo
+					Costo x cm
 				</th>
 			</tr>
 			</tr>
@@ -1429,32 +1436,32 @@
 				<td align="right">Perimetral</td>
 				
 				<td align="center">
-					<?= $procesosSuaje['Perimetral']['costo_unitario']?>
-				</td>
-				<td align="center">
-					<?= $procesosSuaje['Figura']['costo_unitario']?>MXN
+					<?= $procesosSuaje['Perimetral']['perimetro_minimo']?>
 				</td>
 				<td align="center">
 					<?= $procesosSuaje['Tiro']['costo_unitario']?>MXN
 				</td>
 				<td align="center">
-					<label> <?= $procesosSuaje['Tiro Figura']['costo_unitario']?> MXN</label>
+					<?= $procesosSuaje['Arreglo']['costo_unitario']?>MXN
+				</td>
+				<td align="center">
+					<label> <?= $procesosSuaje['Perimetral']['costo_unitario']?> MXN</label>
 				</td>
 			</tr>
 			<tr>
 				<td align="right">Figura</td>
 				
 				<td align="center">
-					<?= $procesosSuaje['Arreglo']['costo_unitario']?>
+					<?= $procesosSuaje['Figura']['perimetro_minimo']?>
+				</td>
+				<td align="center">
+					<?= $procesosSuaje['Tiro Figura']['costo_unitario']?>MXN
 				</td>
 				<td align="center">
 					<?= $procesosSuaje['Arreglo Figura']['costo_unitario']?>MXN
 				</td>
 				<td align="center">
-					<?= $procesosSuaje['Perimetral']['perimetro_minimo']?>MXN
-				</td>
-				<td align="center">
-					<label> <?= $procesosSuaje['Figura']['perimetro_minimo']?> MXN</label>
+					<label> <?= $procesosSuaje['Figura']['costo_unitario']?> MXN</label>
 				</td>
 			</tr>
 		</table>

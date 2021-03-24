@@ -1,10 +1,3 @@
-<?php
-$area = $_SESSION['user']['area'];
-$ventas = ($area == 'ventas') ? 'ventas' : '';
-$produccion = ($area == 'produccion') ? 'produccion' : 'no-produccion';
-$superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
-?>
-
 <nav id="navbar">
     <div id="logo">
 
@@ -30,7 +23,7 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
 
         if ($m_usuario != "Eduardo") { ?>
 
-            <li class="first-level secTop <?= $produccion ?> <?= $ventas ?> <?= $superadmin ?>"><a href="#" style="display: none;"></a>
+            <li class="first-level"><a href="#" style="display: none;"></a>
 
                 <label for="drop-9" class="toggle">Catálogo +</label>
                 <a href="#">Catálogo</a>
@@ -41,27 +34,48 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
 
                         <a href="<?= URL; ?>cotizador/clientes">Clientes</a>
                     </li>
-                    <li class="sec-level <?= $produccion ?> <?= $superadmin ?>">
+                    <li class="sec-level">
 
-                        <a href="<?= URL; ?>crud/">Papeles</a>
-                    </li>
-                    <li class="sec-level <?= $produccion ?> <?= $superadmin ?>">
-                        <a href="<?= BASE_URL; ?>modificaprocesos/cambioprocesos">Procesos</a>
-                    </li>
-                    <li class="sec-level <?= $superadmin ?>">
-
-                        <a href="<?= URL; ?>ventas/productos">Productos</a>
-                    </li>
-                    <li class="sec-level <?= $superadmin ?>">
-
-                        <a href="<?= URL; ?>ventas/invitaciones">Catálogo invitaciones</a>
+                        <a href="<?= URL; ?>crud/index.php">Papeles</a>
                     </li>
                 </ul>
             </li>
-            <?php } ?>
+            <?php }
+
+        $development = ($_SESSION['user']['nombre_usuario'] == 'developer') ? '' : 'style="display:none;"';
+
+        if ($_SESSION['area'] == 'ventas') {
+
+            if (isset($_SESSION['tienda'])) {
+
+                if ($_SESSION['tienda'] == 1) { ?>
+
+                    <li class="first-level">
+
+                        <label for="drop-1" class="toggle">Mostrador +</label>
+                        <a href="#">Mostrador</a>
+                        <input type="checkbox" id="drop-1" />
+
+                        <ul id="sec-ul">
+                            <li class="sec-level">
+
+                                <a href="<?= BASE_URL; ?>ventas/">Punto de Venta</a>
+                            </li>
+                            <li class="sec-level" style="display: none;">
+
+                                <a href="<?= BASE_URL; ?>uploads/newProduct.php">Agregar Productos</a>
+                            </li>
+                            <li class="sec-level">
+
+                                <a href="<?= BASE_URL; ?>ventas/movimientos.php">Movimientos</a>
+                            </li>
+                        </ul>
+                    </li>
+            <?php }
+            } ?>
 
             <!-- Cotizaciones OK -->
-            <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
+            <li class="first-level">
 
                 <label for="drop-2" class="toggle">Cotizaciones +</label>
                 <a href="#">Cotizaciones</a>
@@ -87,116 +101,101 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                 </ul>
             </li>
 
-            <!-- //Cambios -->
-            <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
+            <!-- Something 3 parts -->
+            <!-- <li class="first-level">
+                    <label for="drop-3" class="toggle">Something +</label>
+                    <a href="#">Something</a>
+                    
+                    <input type="checkbox" id="drop-3"/>
+                    <ul id="sec-ul">
+                        <li class="sec-level">
+                            <a href="#">Something 2</a>
+                            <ul id="sec-ul">
+                                <li class="sec-level">
+                                    <a href="#">Something 3</a>
+                                </li>
+                                <li class="sec-level">
+                                    <a href="#">Something 3 - 1</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li> -->
 
-                <!-- //First Tier Drop Down -->
-                <label for="drop-5" class="toggle">Cambios +</label>
+            <!-- Listas -->
+            <li class="first-level">
 
-                <a href="#">Cambios
+                <label for="drop-3" class="toggle">Listas +</label>
+                <a href="#">Listas</a>
 
-                    <?php
-                    if (isset($_SESSION['cambios_pendientes']) && $_SESSION['cambios_pendientes'] > 0 && $_SESSION['user']['cambios_admin'] == 'true') { ?>
-
-                        <div class="small-notif"><?= $_SESSION['cambios_pendientes'] ?></div>
-                    <?php
-                    }
-                    ?>
-                </a>
-
-                <input type="checkbox" id="drop-5" />
+                <input type="checkbox" id="drop-3" />
 
                 <ul id="sec-ul">
 
                     <li class="sec-level">
 
-                        <a href="<?= BASE_URL; ?>ventas/cambios_pendientes">Pendientes</a>
+                        <a href="<?= URL; ?>ventas/informacion">Informacion</a>
                     </li>
+                    <li class="sec-level">
 
-                    <li class="sec-level ">
+                        <a href="<?= URL; ?>ventas/productos">Productos</a>
+                    </li>
+                    <li class="sec-level">
 
-                        <a class="" href="<?= BASE_URL; ?>ventas/cambios_completados">Realizados</a>
+                        <a href="<?= URL; ?>ventas/invitaciones">Invitaciones</a>
                     </li>
                     <li class="sec-level">
 
                         <a href="<?= URL; ?>ventas/archivos_cargados">Archivos</a>
                     </li>
-                </ul>
-            </li>
+                    <li class="sec-level" <?= $development ?>>
 
-<!--
-        $development = ($_SESSION['user']['nombre_usuario'] == 'developer') ? '' : 'style="display:none;"';
+                        <a href="<?= URL; ?>remaquila/maquila">Registros Maquila</a>
+                    </li>
+                    <li class="sec-level" <?= $liverpool ?>>
 
-        if ($_SESSION['area'] == 'ventas') {
+                        <a href="<?= URL; ?>recibos/altas">Boletas</a>
+                    </li>
+                    <li class="sec-level" <?= $development ?>>
 
-            if (isset($_SESSION['tienda'])) {
+                        <a href="<?= URL; ?>recibos/facturadas">Facturas</a>
+                    </li>
 
-                if ($_SESSION['tienda'] == 1) { ?>
+                    <li class="sec-level" <?= $development ?>>
 
-                    <li class="first-level secTop">
+                        <a href="<?= URL; ?>cotizador/cotizaciones">Cotizaciones</a>
+                    </li>
+                    <!--
+                    <li>
 
-                        <label for="drop-1" class="toggle">Mostrador +</label>
-                        <a href="#">Mostrador</a>
-                        <input type="checkbox" id="drop-1" />
+                        Second Tier Drop Down        
+                        <label for="drop-3" class="toggle">Tutorials +</label>
+                        <a href="#">Tutorials</a>         
+                        <input type="checkbox" id="drop-3"/>
 
-                        <ul id="sec-ul">
-                            <li class="sec-level">
-
-                                <a href="<?= BASE_URL; ?>ventas/">Punto de Venta</a>
-                            </li>
-                            <li class="sec-level" style="display: none;">
-
-                                <a href="<?= BASE_URL; ?>uploads/newProduct.php">Agregar Productos</a>
-                            </li>
-                            <li class="sec-level">
-
-                                <a href="<?= BASE_URL; ?>ventas/movimientos.php">Movimientos</a>
-                            </li>
+                        <ul>
+                            <li><a href="#">HTML/CSS</a></li>
+                            <li><a href="#">jQuery</a></li>
+                            <li><a href="#">Other</a></li>
                         </ul>
-                    </li>
-            <p }
-            }?>
-
-            //Cotizaciones OK
-            <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
-
-                <label for="drop-2" class="toggle">Cotizaciones +</label>
-                <a href="#">Cotizaciones</a>
-
-                <input type="checkbox" id="drop-2" />
-
-                <ul id="sec-ul">
-
-                    <li class="sec-level">
-
-                        <a href="<?= URL; ?>cotizador/getCotizaciones">Cajas</a>
-                    </li>
-                    <li class="sec-level">
-
-                        <a href="<?= URL; ?>cotizador/invitaciones">Invitaciones</a>
-                    </li>
-
-                    //para entregar
-                    <li class="sec-level">
-
-                        <a href="<?= URL; ?>cotizador/getCotizacion">Formato Cotizaciones</a>
-                    </li>
+                    </li>  
+                    -->
                 </ul>
             </li>
 
-            //Cambios
-            <li class="first-level secTop <?= $ventas ?>  <?= $superadmin ?>">
+            <!-- Cambios -->
+            <li class="first-level">
 
-                //First Tier Drop Down
+                <!-- First Tier Drop Down -->
                 <label for="drop-5" class="toggle">Cambios +</label>
 
                 <a href="#">Cambios
 
-                    <?p
+                    <?php
                     if (isset($_SESSION['cambios_pendientes']) && $_SESSION['cambios_pendientes'] > 0 && $_SESSION['user']['cambios_admin'] == 'true') { ?>
 
                         <div class="small-notif"><?= $_SESSION['cambios_pendientes'] ?></div>
-                    <?p
+                    <?php
                     }
                     ?>
                 </a>
@@ -216,18 +215,17 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                     </li>
                     <li class="sec-level">
 
-                        <a href="<?= URL; ?>ventas/archivos_cargados">Archivos</a>
+                        <a href="<?= BASE_URL; ?>ventas/solicitud_facturas">Solicitud de Facturas</a>
                     </li>
                 </ul>
             </li>
-        <?p  } elseif ($_SESSION['area'] == 'cajas') { ?>
+        <?php  } elseif ($_SESSION['area'] == 'cajas') { ?>
 
             <li class="first-level">
 
                 <a href="<?= BASE_URL; ?>cajas/guardados">Calculos guardados</a>
             </li>
-        <?p } ?>
--->
+        <?php } ?>
 
         <?php if ($_SESSION['user']['cajas_calc'] == 'true') { ?>
 
@@ -254,11 +252,34 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
             </li>
         <?php } ?>
 
-        <!-- Producción -->
-        <li class="first-level secTop <?= $produccion ?>  <?= $superadmin ?>">
+        <!-- Cotizaciones -->
+        <li class="first-level" style="display: none;">
 
-            <label for="drop-10" class="toggle">Producción </label>
-            <a href="#">Producción</a>
+            <label for="drop-9" class="toggle">Cotizaciones +</label>
+            <a href="#">Cotizaciones</a>
+
+            <input type="checkbox" id="drop-9" />
+
+            <ul id="sec-ul">
+
+                <li class="sec-level">
+
+                    <a href="<?= URL; ?>cotizador/invitaciones">Invitaciones</a>
+                </li>
+                <li class="sec-level">
+
+                    <a href="<?= URL; ?>cotizador/cajas">Cajas</a>
+                </li>
+
+
+            </ul>
+        </li>
+
+        <!-- Velada -->
+        <li class="first-level">
+
+            <label for="drop-10" class="toggle">velada </label>
+            <a href="#">Velada</a>
 
             <input type="checkbox" id="drop-10" />
 
@@ -275,10 +296,6 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                 <li class="sec-level">
 
                     <a href="<?= URL; ?>velada/reporte ">Detalles</a>
-                </li>
-                <li class="sec-level" <?= $development ?>>
-
-                    <a href="<?= URL; ?>remaquila/maquila">Registros Maquila</a>
                 </li>
             </ul>
         </li>
@@ -320,8 +337,13 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
         <?php
         if ($_SESSION['user']['nombre_usuario'] == 'developer' or $_SESSION['user']['nombre_usuario'] == 'developer-prueba' or $_SESSION['user']['nombre_usuario'] == 'developer2') { ?>
 
+            <!-- Procesos -->
+            <li class="first-level">
+                <a href="<?= BASE_URL; ?>modificaprocesos/cambioprocesos">Procesos</a>
+            </li>
+
             <!-- Cajas -->
-            <li class="first-level secTop <?= $produccion ?> <?= $superadmin?>">
+            <li class="first-level">
 
                 <label for="drop-11" class="toggle">Cajas +</label>
                 <a href="#">Cajas</a>
@@ -338,14 +360,6 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
 
                         <a class="" href="<?= BASE_URL; ?>cajas/guardados">Calculos guardados</a>
                     </li>
-                    <li class="sec-level">
-
-                        <a href="<?=URL?>/pedidos">Pedidos</a>
-                    </li>
-                    <li class="sec-level">
-
-                        <a href="#">Compras</a>
-                    </li>
                 </ul>
             </li>
         <?php } ?>
@@ -354,13 +368,16 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
     <a href="<?= URL; ?>logout/" class="exitpc">Salir</a>
 </nav>
 
-<script>
-    $('.secTop').css('display', 'none');
-
-    $('.no-produccion').css('display', 'none');
-    $('.no-superadmin').css('display', 'none');
-
-    $('.produccion').css('display', '');
-    $('.ventas').css('display', '');
-    $('.superadmin').css('display', '');
+<!-- ClickDesk Live Chat Service for websites -->
+<!--
+<script type='text/javascript'>
+var _glc =_glc || []; _glc.push('all_ag9zfmNsaWNrZGVza2NoYXRyEgsSBXVzZXJzGICA0L-IgJALDA');
+var glcpath = (('https:' == document.location.protocol) ? 'https://my.clickdesk.com/clickdesk-ui/browser/' : 
+'http://my.clickdesk.com/clickdesk-ui/browser/');
+var glcp = (('https:' == document.location.protocol) ? 'https://' : 'http://');
+var glcspt = document.createElement('script'); glcspt.type = 'text/javascript'; 
+glcspt.async = true; glcspt.src = glcpath + 'livechat-new.js';
+var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(glcspt, s);
 </script>
+-->
+<!-- End of ClickDesk -->

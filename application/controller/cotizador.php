@@ -133,7 +133,20 @@ class Cotizador extends Controller {
     }
 
 
-    // Convierte las cotizaciones (presupuesto) a ODTs 
+    public function getODTs() {
+
+        $ventas_model  = $this->loadModel('VentasModel');
+
+        $odts = $ventas_model->getODTs();
+
+        require_once 'application/views/templates/head.php';
+        require_once 'application/views/templates/top_menu.php';
+        require_once 'application/views/pedidos/listaPedidos.php';
+        require_once 'application/views/templates/footer.php';
+    }
+
+
+    // Convierte las cotizaciones (presupuesto) a ODTs
     public function convPresupToODT() {
 
         if (!isset($_SESSION)) {
@@ -178,12 +191,21 @@ class Cotizador extends Controller {
 
         if ($status == "A" or $status == "M" or $status == "P") {
 
-            $ventas_model->convPresupToODT($id_odt, $id_odt_orig);
+            $ok = $ventas_model->convPresupToODT($id_odt, $id_odt_orig);
+
+            $cotizaciones = $ventas_model->getCotizaciones();
+
+            if (!$ok) {
+
+                $aJson['error'] = $aJson['error'] . " Error al convertir el presupuesto a ODT;";
+            }
         }
 
 
         require_once 'application/views/templates/head.php';
         require_once 'application/views/templates/top_menu.php';
+
+        //header(URL.'cotizador/listaCotizaciones.php');
 
         require_once 'application/views/cotizador/listaCotizaciones.php';
 
@@ -241,17 +263,13 @@ class Cotizador extends Controller {
 
         require_once 'application/views/templates/head.php';
         require_once 'application/views/templates/top_menu.php';
-        require_once 'application/views/cotizador/cajas.php';
-
-        // plantilla
-        echo "<script>$('#form_modelo_0').hide();</script>";
-
+        require_once 'application/views/templates/cotizador/plantilla.php';
+        echo "<script>$('#divDerecho').empty()</script>";
+        echo "<script>$('#divIzquierdo').empty()</script>";
+        echo "<script>$('#divDerecho').hide()</script>";
         require_once 'application/views/cotizador/almeja/nueva_cotizacion.php';
-
-        echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-
-        require_once 'application/views/templates/footer.php';
-    }
+        echo "<script>$('#divDerecho').show('slow')</script>";
+        require_once 'application/views/templates/footer.php';    }
 
 
     // inicia actualizacion de almeja (cambia el estado y graba los nuevos calculos)
@@ -1020,14 +1038,12 @@ class Cotizador extends Controller {
 
         require_once 'application/views/templates/head.php';
         require_once 'application/views/templates/top_menu.php';
-        require_once 'application/views/cotizador/cajas.php';
-
-        echo "<script>$('#form_modelo_0').hide();</script>";
-
+        require_once 'application/views/templates/cotizador/plantilla.php';
+        echo "<script>$('#divDerecho').empty()</script>";
+        echo "<script>$('#divIzquierdo').empty()</script>";
+        echo "<script>$('#divDerecho').hide()</script>";
         require_once 'application/views/cotizador/almeja/modificacion.php';
-
-        echo "<script>$('#form_modelo_1_derecho').show('slow');</script>";
-
+        echo "<script>$('#divDerecho').show('slow')</script>";
         require_once 'application/views/templates/footer.php';
     }
 
@@ -1058,8 +1074,8 @@ class Cotizador extends Controller {
 
         if (isset($_GET['num_odt'])) {
 
-            $num_odt = $_GET['num_odt'];
-            $num_odt = self::strip_slashes_recursive($num_odt);
+            $id_odt = $_GET['num_odt'];
+            $id_odt = intval($id_odt);
         } else {
 
             return false;
@@ -1093,9 +1109,9 @@ class Cotizador extends Controller {
         $Herrajes          = $options_model->getHerraje();
 
 
-        $row = $ventas_model->getOdtById($num_odt);
+        $row = $ventas_model->getOdtById($id_odt);
 
-        $id_odt            = intval($row['id_odt']);
+        $num_odt           = self::strip_slashes_recursive($row['num_odt']);
         $status            = trim($row['status']);
         $id_usuario        = intval($row['id_usuario']);
         $id_cliente        = intval($row['id_cliente']);
@@ -1748,6 +1764,12 @@ class Cotizador extends Controller {
         }
     }
 
+    public function imprODT(){
+
+         require_once 'application/views/templates/head.php';
+        require_once 'application/views/pedidos/pedido.php';
+    }
+
 
 
     // calculo del modelo caja almeja
@@ -1782,14 +1804,18 @@ class Cotizador extends Controller {
         $mensaje   = "ERROR";
 
         $odt = "";
+        if (isset($_POST['odt']) and !empty($_POST['odt'])) {
 
-        $odt = strip_tags(trim($_POST['odt']));
-        $odt = strtoupper($odt);
-        $odt = self::strip_slashes_recursive($odt);
+            $odt = strip_tags(trim($_POST['odt']));
+            $odt = strtoupper($odt);
+            $odt = self::strip_slashes_recursive($odt);
+
+            $_POST['odt'] = $odt;
+        }
 
 
-        $modificar = $_POST['modificar'];
-        if(isset($_POST['modificar']) and $_POST['modificar'] = "SI") {
+        $modificar = "NO";
+        if(isset($_POST['modificar']) and !empty($_POST['modificar']) and $_POST['modificar'] = "SI") {
 
             $modificar == "SI";
 
@@ -1800,13 +1826,8 @@ class Cotizador extends Controller {
 
                 self::msgError("Ya hay una ODT con el mismo nombre");
             }
-        } else {
-
-            $modificar = "NO";
         }
 
-
-        $_POST['odt'] = $odt;
 
         $id_usuario = $_SESSION['user']['id_usuario'];
         $id_usuario = intval($id_usuario);
@@ -1814,49 +1835,73 @@ class Cotizador extends Controller {
 
         $nomb_usuario_db = $ventas_model->getNombUsuario($id_usuario);
 
+        $id_tienda   = 0;
+        $nomb_tienda = "";
+
         foreach ($nomb_usuario_db as $row) {
 
             $nomb_usuario = $row['nombre_usuario'];
-            $nomb_usuario = trim($nomb_usuario);
+            $nomb_usuario = self::strip_slashes_recursive($nomb_usuario);
+
+            $id_tienda = $row['id_tienda'];
+            $id_tienda = intval($id_tienda);
         }
 
 
-        $id_tienda = $_SESSION['user']['id_tienda'];
-        $id_tienda = intval($id_tienda);
+        if (is_array($nomb_usuario_db)) {
 
-        $tienda_db = $ventas_model->getNombTienda($id_tienda);
-
-        foreach ($tienda_db as $row) {
-
-            $nomb_tienda = $row['nombre_tienda'];
-            $nomb_tienda = trim($nomb_tienda);
+            unset($nomb_usuario_db);
         }
+
+
+        if ($id_tienda > 0) {
+
+            $tienda_db = $ventas_model->getNombTienda($id_tienda);
+
+            foreach ($tienda_db as $row) {
+
+                $nomb_tienda = $row['nombre_tienda'];
+                $nomb_tienda = self::strip_slashes_recursive($nomb_tienda);
+            }
+
+            if (is_array($tienda_db)) {
+
+                unset($tienda_db);
+            }
+        }
+
 
         $cantidad    = 0;
         $tiraje      = 0;
         $costo_total = 0;
         $costo_corte = 0;
 
-        $cantidad = $_POST["qty"];
-        $cantidad = intval($cantidad);
-        $tiraje   = intval($cantidad);
+        if (isset($_POST['qty']) and !empty($_POST['qty'])) {
 
-        $id_cliente = $_POST['id_cliente'];
-
-        $cliente_db = $ventas_model->getClientById($id_cliente);
-
-        foreach ($cliente_db as $row) {
-
-            $nombre_cliente = $row['nombre'];
+            $cantidad = $_POST['qty'];
+            $cantidad = intval($cantidad);
+            $tiraje   = intval($cantidad);
         }
 
-        $nombre_cliente = self::strip_slashes_recursive($nombre_cliente);
-        $nombre_cliente = utf8_encode($nombre_cliente);
+
+        $id_cliente     = 0;
+        $nombre_cliente = "";
+
+        if (isset($_POST['nombre_cliente']) and !empty($_POST['nombre_cliente'])) {
+
+            $nombre_cliente = $_POST['nombre_cliente'];
+            $nombre_cliente = self::strip_slashes_recursive($nombre_cliente);
+        }
+
+        $row = $ventas_model->getClientByName($nombre_cliente);
+
+        $id_cliente = $row['id_cliente'];
+        $id_cliente = intval($id_cliente);
+
 
         //$id_modelo = $_POST['modelo'];
         $id_modelo = 1;
-
-        $modelo = intval($_POST['modelo']);
+        $modelo    = intval($_POST['modelo']);
 
 
         $base           = 0;
@@ -1865,12 +1910,18 @@ class Cotizador extends Controller {
         $grosor_cajon   = 0;
         $grosor_cartera = 0;
 
+        if (isset($_POST['base']) and !empty($_POST['base'])) {
 
-        $base = $_POST['base'];
-        $base = floatval($base);
+            $base = $_POST['base'];
+            $base = floatval($base);
+        }
 
-        $alto = $_POST['alto'];
-        $alto = floatval($alto);
+
+        if (isset($_POST['alto']) and !empty($_POST['alto'])) {
+
+            $alto = $_POST['alto'];
+            $alto = floatval($alto);
+        }
 
         if (!self::checaAnchoLargo($alto, $base)) {
 
@@ -1881,44 +1932,113 @@ class Cotizador extends Controller {
             $alto = $largo_temp;
         }
 
-        $profundidad    = $_POST['profundidad'];
-        $profundidad    = floatval($profundidad);
 
-        $grosor_cajon   = $_POST['grosor-cajon'];
-        $grosor_cajon   = floatval($grosor_cajon);
+        if (isset($_POST['profundidad']) and !empty($_POST['profundidad'])) {
 
-        $grosor_cartera = $_POST['grosor-cartera'];
-        $grosor_cartera = floatval($grosor_cartera);
+            $profundidad = $_POST['profundidad'];
+            $profundidad = floatval($profundidad);
+        }
 
-        $cajon          = $grosor_cajon;
-        $cartera        = $grosor_cartera;
 
-        $offset         = $_POST['offset'];
-        $offset         = floatval($offset);
+        $cajon = 0.0;
+        if (isset($_POST['grosor-cajon']) and !empty($_POST['grosor-cajon'])) {
 
-        $digital        = $_POST['digital'];
-        $digital        = floatval($digital);
+            $grosor_cajon = $_POST['grosor-cajon'];
+            $grosor_cajon = floatval($grosor_cajon);
 
-        $serigrafia     = $_POST['serigrafia'];
-        $serigrafia     = floatval($serigrafia);
+            $cajon = $grosor_cajon;
+        }
 
-        $hs             = $_POST['hs'];
-        $hs             = floatval($hs);
 
-        $laminado       = $_POST['laminado'];
-        $laminado       = floatval($laminado);
+        $cartera = 0.0;
+        if (isset($_POST['grosor-cartera']) and !empty($_POST['grosor-cartera'])) {
 
-        $barnizadic     = $_POST['barnizadic'];
-        $barnizadic     = floatval($barnizadic);
+            $grosor_cartera = $_POST['grosor-cartera'];
+            $grosor_cartera = floatval($grosor_cartera);
 
-        $barniz         = $_POST['barniz'];
-        $barniz         = floatval($barniz);
+            $cartera = $grosor_cartera;
+        }
 
-        $suaje          = $_POST['suaje'];
-        $suaje          = floatval($suaje);
 
-        $forrado        = $_POST['forrado'];
-        $forrado        = floatval($forrado);
+        $offset = 0.0;
+        if (isset($_POST['offset']) and !empty($_POST['offset'])) {
+
+            $offset = $_POST['offset'];
+            $offset = floatval($offset);
+        }
+
+
+        $digital = 0.0;
+        if (isset($_POST['digital']) and !empty($_POST['digital'])) {
+
+            $digital = $_POST['digital'];
+            $digital = floatval($digital);
+        }
+
+
+        $serigrafia = 0.0;
+        if (isset($_POST['serigrafia']) and !empty($_POST['serigrafia'])) {
+
+            $serigrafia = $_POST['serigrafia'];
+            $serigrafia = floatval($serigrafia);
+        }
+
+
+        $hs = 0.0;
+        if (isset($_POST['hs']) and !empty($_POST['hs'])) {
+
+            $hs = $_POST['hs'];
+            $hs = floatval($hs);
+        }
+
+
+        $laminado = 0.0;
+        if (isset($_POST['laminado']) and !empty($_POST['laminado'])) {
+
+            $laminado = $_POST['laminado'];
+            $laminado = floatval($laminado);
+        }
+
+
+        $barnizadic = 0.0;
+        if (isset($_POST['barnizadic']) and !empty($_POST['barnizadic'])) {
+
+            $barnizadic = $_POST['barnizadic'];
+            $barnizadic = floatval($barnizadic);
+        }
+
+
+        $barniz = 0.0;
+        if (isset($_POST['barniz']) and !empty($_POST['barniz'])) {
+
+            $barniz = $_POST['barniz'];
+            $barniz = floatval($barniz);
+        }
+
+
+        $suaje = 0.0;
+        if (isset($_POST['suaje']) and !empty($_POST['suaje'])) {
+
+            $suaje = $_POST['suaje'];
+            $suaje = floatval($suaje);
+        }
+
+
+        $forrado = 0.0;
+        if (isset($_POST['forrado']) and !empty($_POST['forrado'])) {
+
+            $forrado = $_POST['forrado'];
+            $forrado = floatval($forrado);
+        }
+
+
+        $descuento_pctje = 0.0;
+
+        if (isset($_POST['descuento_pctje']) and !empty($_POST['descuento_pctje'])) {
+
+            $descuento_pctje = $_POST['descuento_pctje'];
+            $descuento_pctje = floatval($descuento_pctje);
+        }
 
 
     // aJson
@@ -1926,7 +2046,7 @@ class Cotizador extends Controller {
         $aJson['tiempo_transcurrido']      = 0.00;
         $aJson['mensaje']                  = "Correcto";
         $aJson['error']                    = "";
-        $aJson['nomb_odt']                 = self::strip_slashes_recursive($_POST['odt']);
+        $aJson['nomb_odt']                 = $odt;
         $aJson['Fecha']                    = date("Y-m-d");
         $aJson['modelo']                   = $id_modelo;
         $aJson['id_cliente']               = $id_cliente;
@@ -1948,7 +2068,7 @@ class Cotizador extends Controller {
         $aJson['indirecto']                = 0;
         $aJson['ventas']                   = 0;
         $aJson['descuento']                = 0;
-        $aJson['descuento_pctje']          = floatval($_POST['descuento_pctje']);
+        $aJson['descuento_pctje']          = $descuento_pctje;
         $aJson['ISR']                      = 0;
         $aJson['empaque']                  = 0;
         $aJson['mensajeria']               = 0;
@@ -1987,14 +2107,15 @@ class Cotizador extends Controller {
         //$aJson['costo_corte_tot_carton']   = [];
 
 
+
     // Calculadora
         $aJson['Calculadora'] = self::almejaCalc($odt, $base, $alto, $profundidad, $grosor_cajon, $grosor_cartera);
 
-
-        $id_papel_empalme       = intval($_POST['papel_interior_cajon']);
-        $id_papel_forro_cajon   = intval($_POST['papel_exterior_cajon']);
-        $id_papel_forro_cartera = intval($_POST['papel_exterior_cartera']);
-        $id_papel_guarda        = intval($_POST['papel_interior_cartera']);
+        // variables POST cambiadas
+        $id_papel_empalme       = intval($_POST['optEC']);
+        $id_papel_forro_cajon   = intval($_POST['optFCaj']);
+        $id_papel_forro_cartera = intval($_POST['optFCar']);
+        $id_papel_guarda        = intval($_POST['optG']);
 
 
 /******************** Inicia calculo de papeles *******************/
@@ -2019,7 +2140,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_Empalme']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Empalme;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en Empalme;");
         }
 
 
@@ -2059,7 +2180,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_FCaj']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro del cajon;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en Forro del cajon;");
         }
 
 
@@ -2081,7 +2202,7 @@ class Cotizador extends Controller {
         $secc_ancho = $B1;
         $secc_largo = $Y1;
 
-        $aJson['Papel_FCar'] = self::calculaPapel("FCar", $id_papel_forro_cartera, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+        $aJson['Papel_FCar'] = self::calculaPapelCartera("FCar", $id_papel_forro_cartera, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
 
         $papel_tot_costo = round(floatval($aJson['Papel_FCar']['costo_unit_papel']), 2);
 
@@ -2099,7 +2220,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_FCar']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en Forro de la cartera;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en Forro de la cartera;");
         }
 
 
@@ -2138,7 +2259,7 @@ class Cotizador extends Controller {
 
         if (intval($aJson['Papel_Guarda']['calculadora']['corte']['cortesT']) <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al pliego en la Guarda;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al pliego en la Guarda;");
         }
 
 
@@ -2177,7 +2298,7 @@ class Cotizador extends Controller {
 
         if ($corte_cajon <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton del cajon;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al carton del cajon;");
         }
 
         $aJson['Cortes']['carton_cajon'] = $corte_cajon;
@@ -2212,7 +2333,7 @@ class Cotizador extends Controller {
 
         if ($corte_cajon_cartera <= 0) {
 
-            self::mError($aJson, $mensaje, "Las medidas del corte son mayores al carton de la cartera;");
+            self::mError($aJson, $mensaje, "Las medidas del corte (" . $secc_largo . " x " . $secc_ancho . ") son mayores al carton de la cartera;");
         }
 
         $cost_tot_carton = round(floatval($aJson['CartonCar']['costo_unit_papel']), 2);
@@ -2256,12 +2377,17 @@ class Cotizador extends Controller {
         $aJson['costo_subtotal'] += round(floatval($aJson['costo_corte_tot_papel'] + $aJson['corte_tot_pliegos_carton']), 2);
 
 
+        $id_papel_empalme       = intval($_POST['optEC']);
+        $id_papel_forro_cajon   = intval($_POST['optFCaj']);
+        $id_papel_forro_cartera = intval($_POST['optFCar']);
+        $id_papel_guarda        = intval($_POST['optG']);
 
+        /*
         $id_papel_empalme       = intval($_POST['papel_interior_cajon']);
         $id_papel_forro_cajon   = intval($_POST['papel_exterior_cajon']);
         $id_papel_forro_cartera = intval($_POST['papel_exterior_cartera']);
         $id_papel_guarda        = intval($_POST['papel_interior_cartera']);
-
+        */
 
     // ************ Corte Refine **********************
 
@@ -2424,7 +2550,7 @@ class Cotizador extends Controller {
 
         $aEncuadernacion_Fcaj = [];
 
-        $id_papel_exterior_cajon = intval($_POST['papel_exterior_cajon']);
+        $id_papel_exterior_cajon = intval($_POST['optFCaj']);
 
         $enc_cortes = intval($aJson['Papel_Empalme']['corte']);
 
@@ -2543,11 +2669,13 @@ class Cotizador extends Controller {
 
 
         // Empalme
-        $Tipo_proceso_tmp2 = json_decode($_POST['aImp'], true);
+        $Tipo_proceso_tmp2 = json_decode($_POST['aImpEC'], true);
         $Tipo_proceso_tmp  = array_values($Tipo_proceso_tmp2);
 
 
         $aPapelEmp = $aJson['Papel_Empalme'];
+
+        $id_papel_empalme = intval($aPapelEmp['id_papel']);
 
         $cortes_por_pliego = intval($aPapelEmp['corte']);
 
@@ -2621,8 +2749,6 @@ class Cotizador extends Controller {
 
                         if ($nombre_tipo_offset == "Seleccion") {
 
-                            $id_papel_empalme = $aPapelEmp['id_papel'];
-
                             $offset_tiro = self::calculoOffset("Tiro", $id_papel_empalme, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_emp_corte_ancho, $papel_emp_corte_largo, $ventas_model);
                         }
 
@@ -2641,10 +2767,25 @@ class Cotizador extends Controller {
 
                         $aOffEmp[$i] = $offset_tiro;
 
-                        $aJson['Imp_Emp'] += round(floatval($offset_tiro_tmp), 2);
-                        $subtotal              += round(floatval($offset_tiro_tmp), 2);
-
                         $aOffEmp[$i]["mermas"] = $aMerma;
+
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_empalme, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_Emp'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (Offset) para empalme no está permitido;";
+                        } else {
+
+                            $aJson['Imp_Emp'] += round(floatval($offset_tiro_tmp), 2);
+                            $subtotal         += round(floatval($offset_tiro_tmp), 2);
+                        }
                     } else {        // si es maquila
 
                         $offset_tiro = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_emp_corte_ancho, $papel_emp_corte_largo, $ventas_model);
@@ -2653,13 +2794,29 @@ class Cotizador extends Controller {
 
                         if ( $offset_tiro_tmp <= 0 ) {
 
-                            self::mError($aJson, $mensaje, $error . "Offset Maquila(Empalme);");
+                            self::mError($aJson, $mensaje, $error . "Offset Maquila (Empalme);");
                         }
 
                         $aOff_maq_Emp[$i] = $offset_tiro;
 
-                        $aJson['Imp_Emp_maq'] += $offset_tiro_tmp;
-                        $subtotal             += $offset_tiro_tmp;
+                        $aOff_maq_Emp[$i]["mermas"] = $aMerma;
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_empalme, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_Emp_maq'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (Offset maquila) para empalme no está permitido;";
+                        } else {
+
+                            $aJson['Imp_Emp_maq'] += $offset_tiro_tmp;
+                            $subtotal             += $offset_tiro_tmp;
+                        }
 
                         $is_maquila = 1;
                     }
@@ -2690,7 +2847,7 @@ class Cotizador extends Controller {
 
                         if ($aDigEmp[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas en Empalme;");
+                            self::mError($aJson, $mensaje, $error . "Digital Empalme. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         }
 
                         if ($aDigEmp[$i]['costo_tot_proceso'] <= 0) {
@@ -2698,11 +2855,26 @@ class Cotizador extends Controller {
                             self::mError($aJson, $mensaje, $error . "Digital. No existe costo en Digital Empalme;");
                         }
 
-                        $aJson['Imp_Emp'] += round(floatval($aDigEmp[$i]['costo_tot_proceso']), 2);
-                        $subtotal             += round(floatval($aDigEmp[$i]['costo_tot_proceso']), 2);
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_empalme, "digital", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_Emp'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (Digital) para empalme no está permitido;";
+                        } else {
+
+                            $aJson['Imp_Emp'] += round(floatval($aDigEmp[$i]['costo_tot_proceso']), 2);
+                            $subtotal         += round(floatval($aDigEmp[$i]['costo_tot_proceso']), 2);
+                        }
                     } else {
 
-                        self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas en Digital Empalme;");
+                        self::mError($aJson, $mensaje, $error . "Digital Empalme. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -2736,8 +2908,23 @@ class Cotizador extends Controller {
 
                     $aSerEmp[$i]['mermas'] = self:: calculoMermaOffset($tiraje, $num_tintas, $cortes_pliego, $costo_unit_papel, $ventas_model);
 
-                    $aJson['Imp_Emp'] += round(floatval($aSerEmp[$i]['costo_tot_proceso']), 2);
-                    $subtotal             += round(floatval($aSerEmp[$i]['costo_tot_proceso']), 2);
+
+                    // checa validez del papel seleccionado
+                    $l_papel_ok = 0;
+
+                    $l_papel_ok = self::checkPapel($id_papel_empalme, "serigrafia", $ventas_model);
+
+                    if (!$l_papel_ok) {
+
+                        $aJson['Imp_Emp'] += 0.0;
+
+                        $aJson['mensaje'] = "error";
+                        $aJson['error']   = $aJson['error'] . " El papel seleccionado (Serigrafia) para empalme no está permitido;";
+                    } else {
+
+                        $aJson['Imp_Emp'] += round(floatval($aSerEmp[$i]['costo_tot_proceso']), 2);
+                        $subtotal         += round(floatval($aSerEmp[$i]['costo_tot_proceso']), 2);
+                    }
                 }
             }
         }
@@ -2812,7 +2999,10 @@ class Cotizador extends Controller {
         $Tipo_proceso_tmp2 = json_decode($_POST['aImpFCaj'], true);
         $Tipo_proceso_tmp  = array_values($Tipo_proceso_tmp2);
 
-        $a_tmp             = $aJson['Papel_FCaj'];
+        $a_tmp         = $aJson['Papel_FCaj'];
+
+        $id_papel_Fcaj = intval($_POST['optFCaj']);
+
         $a_tmp_calculadora = $a_tmp['calculadora'];
 
         $papel_corte_ancho = $a_tmp_calculadora['corte_ancho'];
@@ -2887,8 +3077,6 @@ class Cotizador extends Controller {
 
                     $aMerma = self::calculoMermaOffset($tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_papel, $ventas_model);
 
-                    $id_papel_Fcaj = intval($_POST['papel_exterior_cajon']);
-
                     if (!$es_maquila) {
 
                         if ($nombre_tipo_offset == "Seleccion") {
@@ -2910,8 +3098,24 @@ class Cotizador extends Controller {
 
                         $aOffFCaj[$i]["mermas"] = $aMerma;
 
-                        $aJson['Imp_FCaj'] += round(floatval($offset_tiro['costo_tot_proceso']), 2);
-                        $subtotal          += round(floatval($offset_tiro['costo_tot_proceso']), 2);
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_Fcaj, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_FCaj'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (offset) para forro del cajon no está permitido;";
+                        } else {
+
+                            $aJson['Imp_FCaj'] += round(floatval($offset_tiro['costo_tot_proceso']), 2);
+                            $subtotal          += round(floatval($offset_tiro['costo_tot_proceso']), 2);
+                        }
+
 
                         if (is_array($aMerma)) {
 
@@ -2930,8 +3134,25 @@ class Cotizador extends Controller {
 
                         $aOff_maq_FCaj[$i] = $offset_tiro;
 
-                        $aJson['Imp_FCaj_maq'] += round(floatval($offset_tiro_tmp), 2);
-                        $subtotal              += round(floatval($offset_tiro_tmp), 2);
+                        $aOff_maq_FCaj[$i]["mermas"] = $aMerma;
+
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_Fcaj, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_FCaj_maq'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (offset maquila) para forro del cajon no está permitido;";
+                        } else {
+
+                            $aJson['Imp_FCaj_maq'] += round(floatval($offset_tiro_tmp), 2);
+                            $subtotal              += round(floatval($offset_tiro_tmp), 2);
+                        }
 
                         $is_maquila = 1;
                     }
@@ -2962,17 +3183,32 @@ class Cotizador extends Controller {
 
                         if ($aDigFCaj[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Digital Forro del cajon;");
+                            self::mError($aJson, $mensaje, "Digital Forro del Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         } elseif ($aDigFCaj[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error . "Digital Forro del cajon;");
                         }
 
-                        $aJson['Imp_FCaj'] += round(floatval($aDigFCaj[$i]['costo_tot_proceso']), 2);
-                        $subtotal          += round(floatval($aDigFCaj[$i]['costo_tot_proceso']), 2);
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_Fcaj, "digital", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_FCaj'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (digital) para forro del cajon no está permitido;";
+                        } else {
+
+                            $aJson['Imp_FCaj'] += round(floatval($aDigFCaj[$i]['costo_tot_proceso']), 2);
+                            $subtotal          += round(floatval($aDigFCaj[$i]['costo_tot_proceso']), 2);
+                        }
                     } else {
 
-                        self::mError($aJson, $mensaje, $error . "Digital. No cabe con las medidas proporcionadas (Forro del cajon);");
+                        self::mError($aJson, $mensaje, $error . "Digital Forro del Cajon. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -3008,8 +3244,22 @@ class Cotizador extends Controller {
                     $aSerFCaj[$i]["mermas"] = $Merma_Ser_tmp;
 
 
-                    $aJson['Imp_FCaj'] += round(floatval($aSerFCaj[$i]['costo_tot_proceso']), 2);
-                    $subtotal          += round(floatval($aSerFCaj[$i]['costo_tot_proceso']), 2);
+                    // checa validez del papel seleccionado
+                    $l_papel_ok = 0;
+
+                    $l_papel_ok = self::checkPapel($id_papel_Fcaj, "serigrafia", $ventas_model);
+
+                    if (!$l_papel_ok) {
+
+                        $aJson['Imp_FCaj'] += 0.0;
+
+                        $aJson['mensaje'] = "error";
+                        $aJson['error']   = $aJson['error'] . " El papel seleccionado (serigrafia) para forro del cajon no está permitido;";
+                    } else {
+
+                        $aJson['Imp_FCaj'] += round(floatval($aSerFCaj[$i]['costo_tot_proceso']), 2);
+                        $subtotal          += round(floatval($aSerFCaj[$i]['costo_tot_proceso']), 2);
+                    }
 
                     if (is_array($Merma_Ser_tmp)) {
 
@@ -3096,6 +3346,8 @@ class Cotizador extends Controller {
         $papel_corte_ancho = $aJson['Papel_FCar']['calculadora']['corte_ancho'];
         $papel_corte_largo = $aJson['Papel_FCar']['calculadora']['corte_largo'];
 
+        $id_papel_FCar = intval($aJson['Papel_FCar']['id_papel']);
+
 
         $aJsonFcar     = [];
         $aOffFCar      = [];
@@ -3147,8 +3399,6 @@ class Cotizador extends Controller {
 
                 if ($Nombre_proceso == "Offset") {
 
-                    $id_papel_FCar = intval($aJson['Papel_FCar']['id_papel']);
-
                     $nombre_tipo_offset = $Tipo_proceso_tmp[$i]['tipo_offset'];
                     $nombre_tipo_offset = utf8_encode(self::strip_slashes_recursive($nombre_tipo_offset));
 
@@ -3185,14 +3435,30 @@ class Cotizador extends Controller {
                         $aOffFCar[$i]["mermas"] = $aMerma;
 
 
-                        $aJson['Imp_FCar'] += round(floatval($offset_tiro_tmp), 2);
-                        $subtotal          += round(floatval($offset_tiro_tmp), 2);
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_FCar, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_FCar'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (offset) para forro cartera no está permitido;";
+                        } else {
+
+                            $aJson['Imp_FCar'] += round(floatval($offset_tiro_tmp), 2);
+                            $subtotal          += round(floatval($offset_tiro_tmp), 2);
+                        }
 
                         if (is_array($aMerma)) {
 
                             unset($aMerma);
                         }
                     } else {        // si es maquila
+
+                        $tipo_offset = "";
 
                         $offset_tiro = self::calculo_offset_merma($tipo_offset, $nombre_tipo_offset, $tiraje, $num_tintas, $cortes_por_pliego, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
 
@@ -3205,8 +3471,25 @@ class Cotizador extends Controller {
 
                         $aOff_maq_FCar[$i] = $offset_tiro;
 
-                        $aJson['Imp_FCar_maq'] += round(floatval($offset_tiro_tmp), 2);
-                        $subtotal              += round(floatval($offset_tiro_tmp), 2);
+                        $aOff_maq_FCar[$i]["mermas"] = $aMerma;
+
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_FCar, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_FCar_maq'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (offset maquila) para forro cartera no está permitido;";
+                        } else {
+
+                            $aJson['Imp_FCar_maq'] += round(floatval($offset_tiro_tmp), 2);
+                            $subtotal              += round(floatval($offset_tiro_tmp), 2);
+                        }
 
                         $is_maquila = 1;
                     }
@@ -3249,17 +3532,32 @@ class Cotizador extends Controller {
 
                         if ($aDigFCar[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas (Forro Cartera);");
+                            self::mError($aJson, $mensaje, "Digital Forro Cartera. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         } elseif ($aDigFCar[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Digital. No existe costo en Forro de la Cartera;");
                         }
 
-                        $aJson['Imp_FCar'] += round(floatval($aDigFCar[$i]['costo_tot_proceso']), 2);
-                        $subtotal          += round(floatval($aDigFCar[$i]['costo_tot_proceso']), 2);
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_FCar, "digital", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_FCar'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (digita) para forro cartera no está permitido;";
+                        } else {
+
+                            $aJson['Imp_FCar'] += round(floatval($aDigFCar[$i]['costo_tot_proceso']), 2);
+                            $subtotal          += round(floatval($aDigFCar[$i]['costo_tot_proceso']), 2);
+                        }
                     } else {
 
-                        self::mError($aJson, $mensaje, $error .  "Digital. No cabe con las medidas proporcionadas en Forro de la Cartera;");
+                        self::mError($aJson, $mensaje, $error .  "Digital Forro Cartera. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -3287,8 +3585,23 @@ class Cotizador extends Controller {
 
                     $aSerFCar[$i]['mermas'] = self:: calculoMermaOffset($tiraje, $num_tintas, $cortes_por_pliego, $costo_unit_papel, $ventas_model);
 
-                    $aJson['Imp_FCar'] += round(floatval($aSerFCar[$i]['costo_tot_proceso']), 2);
-                    $subtotal          += round(floatval($aSerFCar[$i]['costo_tot_proceso']), 2);
+
+                    // checa validez del papel seleccionado
+                    $l_papel_ok = 0;
+
+                    $l_papel_ok = self::checkPapel($id_papel_FCar, "serigrafia", $ventas_model);
+
+                    if (!$l_papel_ok) {
+
+                        $aJson['Imp_FCar'] += 0.0;
+
+                        $aJson['mensaje'] = "error";
+                        $aJson['error']   = $aJson['error'] . " El papel seleccionado (serigrafia) para forro cartera no está permitido;";
+                    } else {
+
+                        $aJson['Imp_FCar'] += round(floatval($aSerFCar[$i]['costo_tot_proceso']), 2);
+                        $subtotal          += round(floatval($aSerFCar[$i]['costo_tot_proceso']), 2);
+                    }
                 }
             }
         }
@@ -3366,6 +3679,8 @@ class Cotizador extends Controller {
         $papel_corte_ancho = $aJson['Papel_Guarda']['calculadora']['corte_ancho'];
         $papel_corte_largo = $aJson['Papel_Guarda']['calculadora']['corte_largo'];
 
+        $id_papel_guarda = intval($aJson['Papel_Guarda']['id_papel']);
+
 
         $aOffG       = [];
         $aOff_maq_G  = [];
@@ -3416,8 +3731,6 @@ class Cotizador extends Controller {
                 $Tipo_impresion = $Tipo_proceso_tmp[$i]['Tipo_impresion'];
 
 
-                $id_papel_guarda = intval($aJson['Papel_Guarda']['id_papel']);
-
                 if ($Nombre_proceso == "Offset") {
 
                     $tipo_offset    = $Tipo_proceso_tmp[$i]['tipo_offset'];
@@ -3456,8 +3769,24 @@ class Cotizador extends Controller {
 
                         $aOffG[$i]["mermas"] = $aMerma;
 
-                        $aJson['Imp_Guarda'] += round(floatval($offset_tiro_tmp), 2);
-                        $subtotal            += round(floatval($offset_tiro_tmp), 2);
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_guarda, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_Guarda'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (offset) para guarda no está permitido;";
+                        } else {
+
+                            $aJson['Imp_Guarda'] += round(floatval($offset_tiro_tmp), 2);
+                            $subtotal            += round(floatval($offset_tiro_tmp), 2);
+                        }
+
 
                         if (is_array($aMerma)) {
 
@@ -3476,8 +3805,25 @@ class Cotizador extends Controller {
 
                         $aOff_maq_G[$i] = $offset_tiro;
 
-                        $aJson['Imp_Guarda_maq'] += round(floatval($offset_tiro_tmp), 2);
-                        $subtotal                += round(floatval($offset_tiro_tmp), 2);
+                        $aOff_maq_G[$i]["mermas"] = $aMerma;
+
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_guarda, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_Guarda_maq'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (offset maquila) para guarda no está permitido;";
+                        } else {
+
+                            $aJson['Imp_Guarda_maq'] += round(floatval($offset_tiro_tmp), 2);
+                            $subtotal                += round(floatval($offset_tiro_tmp), 2);
+                        }
 
                         $is_maquila = 1;
                     }
@@ -3508,17 +3854,32 @@ class Cotizador extends Controller {
 
                         if ($aDigG[$i]['cabe_digital'] === "NO") {
 
-                            self::mError($aJson, $mensaje, "Digital. No cabe con las medidas proporcionadas en Guarda;");
+                            self::mError($aJson, $mensaje, "Digital Guarda. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                         } elseif ($aDigG[$i]['costo_tot_proceso'] <= 0) {
 
                             self::mError($aJson, $mensaje, $error .  "Digital(Guarda);");
                         }
 
-                        $aJson['Imp_Guarda'] += round(floatval($aDigG[$i]['costo_tot_proceso']), 2);
-                        $subtotal            += round(floatval($aDigG[$i]['costo_tot_proceso']), 2);
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($id_papel_guarda, "digital", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $aJson['Imp_Guarda'] += 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (digital) para guarda no está permitido;";
+                        } else {
+
+                            $aJson['Imp_Guarda'] += round(floatval($aDigG[$i]['costo_tot_proceso']), 2);
+                            $subtotal            += round(floatval($aDigG[$i]['costo_tot_proceso']), 2);
+                        }
                     } else {
 
-                        self::mError($aJson, $mensaje, $error .  "Digital. No cabe con las medidas proporcionadas en Guarda;");
+                        self::mError($aJson, $mensaje, $error .  "Digital Guarda. Se necesita un papel con las mínimas medidas (" . $corte_largo_proceso . " x " . $corte_ancho_proceso . ")");
                     }
                 }
 
@@ -3545,8 +3906,23 @@ class Cotizador extends Controller {
 
                     $aSerG[$i]['mermas'] = self:: calculoMermaOffset($tiraje, $num_tintas, $cortes_pliego, $costo_unit_papel, $ventas_model);
 
-                    $aJson['Imp_Guarda'] += round(floatval($aSerG[$i]['costo_tot_proceso']), 2);
-                    $subtotal            += round(floatval($aSerG[$i]['costo_tot_proceso']), 2);
+
+                    // checa validez del papel seleccionado
+                    $l_papel_ok = 0;
+
+                    $l_papel_ok = self::checkPapel($id_papel_guarda, "serigrafia", $ventas_model);
+
+                    if (!$l_papel_ok) {
+
+                        $aJson['Imp_Guarda'] += 0.0;
+
+                        $aJson['mensaje'] = "error";
+                        $aJson['error']   = $aJson['error'] . " El papel seleccionado (serigrafia) para guarda no está permitido;";
+                    } else {
+
+                        $aJson['Imp_Guarda'] += round(floatval($aSerG[$i]['costo_tot_proceso']), 2);
+                        $subtotal            += round(floatval($aSerG[$i]['costo_tot_proceso']), 2);
+                    }
                 }
             }
         }
@@ -3621,7 +3997,7 @@ class Cotizador extends Controller {
 /************************ Inicia Empalme *******************************/
 
 
-    $aAcb = json_decode($_POST['aAcb'], true);
+    $aAcb = json_decode($_POST['aAcbEC'], true);
 
     $cuantos_aAcb = count($aAcb);
 
@@ -3629,7 +4005,9 @@ class Cotizador extends Controller {
     $papel_corte_largo = floatval($aJson['Papel_Empalme']['calculadora']['corte_largo']);
     $papel_costo_unit  = floatval($aJson['Papel_Empalme']['costo_unit_papel']);
 
-    $cortes = $aJson['Papel_Empalme']['corte'];
+    $cortes   = $aJson['Papel_Empalme']['corte'];
+
+    $id_papel = intval($aJson['Papel_Empalme']['id_papel']);
 
 
     $aAcbBUV   = [];
@@ -3661,6 +4039,12 @@ class Cotizador extends Controller {
             }
 
             $barniz_tmp = self::calculoBarniz($tipoGrabado, $tiraje, $AnchoBarniz, $LargoBarniz, $ventas_model);
+
+            if ($barniz_tmp['costo_tot_proceso'] <= 0) {
+
+                self::mError($aJson, $mensaje, $error .  "Barniz UV (Empalme);");
+            }
+
 
             $merma_Acab = $ventas_model->merma_acabados("Barniz UV");
 
@@ -3700,11 +4084,6 @@ class Cotizador extends Controller {
             $aMerma_BUV['merma_tot_pliegos']       = $tot_pliegos;
             $aMerma_BUV['costo_unit_merma']        = $papel_costo_unit;
             $aMerma_BUV['costo_tot_pliegos_merma'] = $costo_tot_pliegos_merma;
-
-            if ($barniz_tmp['costo_tot_proceso'] <= 0) {
-
-                self::mError($aJson, $mensaje, $error .  "Barniz UV (Empalme);");
-            }
 
             $aAcbBUV[$i] = $barniz_tmp;
 
@@ -3821,15 +4200,31 @@ class Cotizador extends Controller {
 
             $Laminado_tmp = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
-            if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
-                self::mError($aJson, $mensaje, $error .  "Laminado (Empalme);");
+            // checa validez del papel seleccionado
+            $l_papel_ok = 0;
+
+            $l_papel_ok = self::checkPapel($id_papel, "laminado", $ventas_model);
+
+            if (!$l_papel_ok) {
+
+                $Laminado_tmp['costo_tot_proceso'] = 0.0;
+
+                $aJson['mensaje'] = "error";
+                $aJson['error']   = $aJson['error'] . " El papel seleccionado (laminado) empalme no está permitido;";
+            } else {
+
+                if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
+
+                    self::mError($aJson, $mensaje, $error .  "Laminado (Empalme);");
+                }
+
+                $aAcbLam[$i] = $Laminado_tmp;
+
+                $aJson['Acb_Empalme'] += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
+                $subtotal             += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
             }
 
-            $aAcbLam[$i] = $Laminado_tmp;
-
-            $aJson['Acb_Empalme'] += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
-            $subtotal             += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
 
             if (count($Laminado_tmp) > 0) {
 
@@ -3978,6 +4373,8 @@ class Cotizador extends Controller {
 
     $aAcbFcajMaq   = [];
 
+
+    $id_papel = intval($aJson['Papel_FCaj']['id_papel']);
 
     for ($i = 0; $i < $cuantos_aAcbFCaj; $i++) {
 
@@ -4186,19 +4583,35 @@ class Cotizador extends Controller {
 
             $Laminado_tmp = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
-            if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
-                self::mError($aJson, $mensaje, $error .  "Laminado (Forro del Cajon);");
+            // checa validez del papel seleccionado
+            $l_papel_ok = 0;
+
+            $l_papel_ok = self::checkPapel($id_papel, "laminado", $ventas_model);
+
+            if (!$l_papel_ok) {
+
+                $Laminado_tmp['costo_tot_proceso'] = 0.0;
+
+                $aJson['mensaje'] = "error";
+                $aJson['error']   = $aJson['error'] . " El papel seleccionado (laminado) forro del cajon no está permitido;";
+            } else {
+
+                if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
+
+                    self::mError($aJson, $mensaje, $error .  "Laminado (Forro del Cajon);");
+                }
+
+                $aAcbFcajLam[$i] = $Laminado_tmp;
+
+                $laminado_tot_proceso_tmp = 0;
+                $laminado_tot_proceso_tmp = $Laminado_tmp['costo_tot_proceso'];
+                $laminado_tot_proceso_tmp = round(floatval($laminado_tot_proceso_tmp), 2);
+
+                $aJson['Acb_FCaj'] += round(floatval($laminado_tot_proceso_tmp), 2);
+                $subtotal          += round(floatval($laminado_tot_proceso_tmp), 2);
             }
 
-            $aAcbFcajLam[$i] = $Laminado_tmp;
-
-            $laminado_tot_proceso_tmp = 0;
-            $laminado_tot_proceso_tmp = $Laminado_tmp['costo_tot_proceso'];
-            $laminado_tot_proceso_tmp = round(floatval($laminado_tot_proceso_tmp), 2);
-
-            $aJson['Acb_FCaj'] += round(floatval($laminado_tot_proceso_tmp), 2);
-            $subtotal          += round(floatval($laminado_tot_proceso_tmp), 2);
 
             if (count($Laminado_tmp) > 0) {
 
@@ -4353,6 +4766,8 @@ class Cotizador extends Controller {
 
     $aAcbFcarMaq   = [];
 
+
+    $id_papel = intval($aJson['Papel_FCar']['id_papel']);
 
     for ($i = 0; $i < $cuantos_aAcbFCar; $i++) {
 
@@ -4531,15 +4946,31 @@ class Cotizador extends Controller {
 
             $Laminado_tmp = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
-            if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
-                self::mError($aJson, $mensaje, $error .  "Laminado (Forro de la Cartera);");
+            // checa validez del papel seleccionado
+            $l_papel_ok = 0;
+
+            $l_papel_ok = self::checkPapel($id_papel, "laminado", $ventas_model);
+
+            if (!$l_papel_ok) {
+
+                $Laminado_tmp['costo_tot_proceso'] = 0.0;
+
+                $aJson['mensaje'] = "error";
+                $aJson['error']   = $aJson['error'] . " El papel seleccionado (laminado) forro cartera no está permitido;";
+            } else {
+
+                if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
+
+                    self::mError($aJson, $mensaje, $error .  "Laminado (Forro de la Cartera);");
+                }
+
+                $aAcbFcarLam[$i] = $Laminado_tmp;
+
+                $aJson['Acb_FCar'] += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
+                $subtotal          += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
             }
 
-            $aAcbFcarLam[$i] = $Laminado_tmp;
-
-            $aJson['Acb_FCar'] += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
-            $subtotal          += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
 
             if (count($Laminado_tmp) > 0) {
 
@@ -4687,6 +5118,8 @@ class Cotizador extends Controller {
     $aAcbGSuaje = [];
 
     $aAcbGMaq   = [];
+
+    $id_papel = intval($aJson['Papel_Guarda']['id_papel']);
 
     for ($i = 0; $i < $cuantos_aAcbG; $i++) {
 
@@ -4865,15 +5298,31 @@ class Cotizador extends Controller {
 
             $Laminado_tmp = self::calculoLaminado($tipoGrabado, $tiraje, $AnchoLam, $LargoLam, $papel_costo_unit, $cortes, $ventas_model);
 
-            if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
 
-                self::mError($aJson, $mensaje, $error .  "Laminado (Guarda);");
+            // checa validez del papel seleccionado
+            $l_papel_ok = 0;
+
+            $l_papel_ok = self::checkPapel($id_papel, "laminado", $ventas_model);
+
+            if (!$l_papel_ok) {
+
+                $Laminado_tmp['costo_tot_proceso'] = 0.0;
+
+                $aJson['mensaje'] = "error";
+                $aJson['error']   = $aJson['error'] . " El papel seleccionado (laminado) guarda no está permitido;";
+            } else {
+
+                if ($Laminado_tmp['costo_tot_proceso'] <= 0) {
+
+                    self::mError($aJson, $mensaje, $error .  "Laminado (Guarda);");
+                }
+
+                $aAcbGLam[$i] = $Laminado_tmp;
+
+                $aJson['Acb_Guarda'] += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
+                $subtotal            += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
             }
 
-            $aAcbGLam[$i] = $Laminado_tmp;
-
-            $aJson['Acb_Guarda'] += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
-            $subtotal            += round(floatval($Laminado_tmp['costo_tot_proceso']), 2);
 
             if (count($Laminado_tmp) > 0) {
 
@@ -5114,222 +5563,851 @@ class Cotizador extends Controller {
 
 /************************* Inicia Bancos ********************************/
 
+/*
+    $id_papel = 1;
+    $largo    = 13;
+    $ancho    = 12;
+    $altura   = 5;
 
+    // calculo de banco superior triangular
+    $banco_carton_tri = self::calculaBancoTriangular($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model);
+
+
+    // calculo de banco inferior circular
+    $banco_carton_norm = self::calculaBancoNormal($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model);
+
+
+    self::prettyPrint($banco_carton_tri, "banco_carton_tri", 5148);
+    self::prettyPrint($banco_carton_norm, "banco_carton_norm", 5149);
+
+
+    die();
+*/
+
+
+
+    // costeo de materiales Bancos
     if (isset($_POST["aBancos"]) and !empty($_POST["aBancos"])) {
 
         $aBancos_tmp = json_decode($_POST['aBancos'], true);
-
         $aBancos_R   = array_values($aBancos_tmp);
 
         $cuantos_aBancos_tmp = count($aBancos_tmp);
 
 
-        $aBancos = [];
+        for($i = 0; $i < $cuantos_aBancos_tmp; $i++) {
+
+            $aBancos_temp = $aBancos_R[$i];
+
+            $index       = intval($aBancos_temp['index']);
+            $id          = intval($aBancos_temp['id']);
+            $Tipo_banco  = self::strip_slashes_recursive($aBancos_temp['Tipo_banco']);
+            $papel       = intval($aBancos_temp['papel']);
+            $largo       = floatval($aBancos_temp['largo']);
+            $ancho       = floatval($aBancos_temp['ancho']);
+            $profundidad = floatval($aBancos_temp['profundidad']);
+            $suaje       = self::strip_slashes_recursive($aBancos_temp['suaje']);
+            $posicion    = self::strip_slashes_recursive($aBancos_temp['posicion']);
+            $id_banco    = intval($aBancos_temp['id_banco']);
+            $seccion     = self::strip_slashes_recursive($aBancos_temp['seccion']);
 
 
-        $cierre_tiraje = intval($_POST['qty']);
+            $aBancos_gen = array();
 
-        for ($i = 0; $i < $cuantos_aBancos_tmp; $i++) {
+            $aBancos_gen['index']       = $index;
+            $aBancos_gen['id']          = $id;
+            $aBancos_gen['id_banco']    = $id_banco;
+            $aBancos_gen['Tipo_banco']  = $Tipo_banco;
+            $aBancos_gen['papel']       = $papel;
+            $aBancos_gen['largo']       = $largo;
+            $aBancos_gen['ancho']       = $ancho;
+            $aBancos_gen['profundidad'] = $profundidad;
+            $aBancos_gen['suaje']       = $suaje;
+            $aBancos_gen['posicion']    = $posicion;
+            $aBancos_gen['seccion']     = $seccion;
 
-            $Tipo_banco = "";
-            $Tipo_banco = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['Tipo_banco']));
-
-            $largo       = 0;
-            $ancho       = 0;
-            $profundidad = 0;
-            $suaje       = "";
-
-            $largo       = $aBancos_R[$i]['largo'];
-            $ancho       = $aBancos_R[$i]['ancho'];
-            $profundidad = $aBancos_R[$i]['Profundidad'];
-
-            $banco_tiraje = intval($_POST['qty']);
-
-            switch ($Tipo_banco) {
-                case 'Carton':
-
-                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['Suaje']));
+            print_r($_POST);
+            die();
 
 
-                    $costo_bancos_tmp = $ventas_model->costo_bancos("Carton");
+            $aJson['bancos'][$i] = $aBancos_gen;
 
 
-                    $costo_unit_banco = 0;
-
-                    foreach ($costo_bancos_tmp as $row) {
-
-                        $costo_unit_banco = $row['precio'];
-                        $costo_unit_banco = floatval($costo_unit_banco);
-                    }
-
-                    if ($costo_unit_banco <= 0) {
-
-                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos carton);");
-                    }
-
-                    if (is_array($costo_bancos_tmp)) {
-
-                        unset($costo_bancos_tmp);
-                    }
+            $aJson['bancos'][$i]['material'] = array();
 
 
-                    $costo_banco = floatval($banco_tiraje * $costo_unit_banco);
-                    $costo_banco = round($costo_banco, 2);
+            // materiales
+            if (isset($Tipo_banco) and !empty($Tipo_banco)) {
+
+                $precio_banco_db = $ventas_model->costo_bancos($Tipo_banco);
+
+                $costo_unit_banco = 0.0;
+                foreach ($precio_banco_db as $row) {
+
+                    $costo_unit_banco = $row['precio'];
+                    $costo_unit_banco = floatval($costo_unit_banco);
+                }
+
+                if (is_array($precio_banco_db)) {
+
+                    unset($precio_banco_db);
+                }
+
+                $costo_banco = 0.0;
+                $costo_banco = floatval($tiraje * $costo_unit_banco);
+                $costo_banco = round($costo_banco, 2);
 
 
-                    break;
-                case 'Eva':
+                if ($Tipo_banco == "Carton") {
 
-                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['Suaje']));
+                    $material = "carton";
 
+                    $row = $ventas_model->getPapelMaterial($material);
 
-                    $costo_bancos_tmp = $ventas_model->costo_bancos("Eva");
-
-
-                    $costo_unit_banco = 0;
-
-                    foreach ($costo_bancos_tmp as $row) {
-
-                        $costo_unit_banco = $row['precio'];
-                        $costo_unit_banco = floatval($costo_unit_banco);
-                    }
-
-                    if ($costo_unit_banco <= 0) {
-
-                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos eva);");
-                    }
-
-                    if (is_array($costo_bancos_tmp)) {
-
-                        unset($costo_bancos_tmp);
-                    }
+                    $id_material = intval($row['id_papel']);
 
 
-                    $costo_banco = floatval($banco_tiraje * $costo_unit_banco);
-                    $costo_banco = round($costo_banco, 2);
+                    $aJson['bancos'][$i]['material']['carton'] = self::calculaPapel("carton", $id_material, $ancho, $largo, $tiraje, $options_model, $ventas_model);
 
-                    break;
-                case 'Espuma':
-
-                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['Suaje']));
-
-                    $costo_bancos_tmp = $ventas_model->costo_bancos("Espuma");
+                    $tot_costo_banco = 0.0;
+                    $tot_costo_banco = floatval($aJson['bancos'][$i]['material']['carton']['tot_costo']);
 
 
-                    $costo_unit_banco = 0;
+                    $subtotal += $tot_costo_banco;
 
-                    foreach ($costo_bancos_tmp as $row) {
+                    if ($tot_costo_banco <= 0) {
 
-                        $costo_unit_banco = $row['precio'];
-                        $costo_unit_banco = floatval($costo_unit_banco);
-                    }
-
-                    if ($costo_unit_banco <= 0) {
-
-                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos espuma);");
+                        self::mError($aJson, $mensaje, "No existe costo (banco Carton);");
                     }
 
 
-                    if (is_array($costo_bancos_tmp)) {
+                    $aJson['bancos'][$i]['material']['carton'] = self::calculaPapel("papel", $papel, $ancho, $largo, $tiraje, $options_model, $ventas_model);
 
-                        unset($costo_bancos_tmp);
+                    $tot_costo_temp = 0.0;
+                    $tot_costo_temp = floatval($aJson['bancos'][$i]['material']['carton']['tot_costo']);
+
+                    $subtotal += round($tot_costo_temp, 2);
+
+
+                    $enc_cortes_fcaj = intval($aJson['bancos'][$i]['material']['carton']['corte']);
+
+                    $id_papel = intval($aJson['bancos'][$i]['material']['carton']['id_papel']);
+
+                    $aJson['bancos'][$i]['carton']['forrado'] = self::calculoEncuadernacion_FCaj($tiraje, $id_papel, $enc_cortes_fcaj, $ventas_model);
+
+                    // calculoForradoCajon($tiraje, $enc_cortes_fcaj, $id_papel_exterior_cajon, $ventas_model);
+
+
+                    $tot_costo_banco = 0.0;
+                    $tot_costo_banco = floatval($aJson['bancos'][$i]['carton']['forrado']['costo_tot_proceso']);
+
+                    $subtotal += round($tot_costo_banco, 2);
+
+                    if ($tot_costo_banco <= 0) {
+
+                        self::mError($aJson, $mensaje, "No existe costo (banco papel forro);");
                     }
 
 
-                    $costo_banco = floatval($banco_tiraje * $costo_unit_banco);
-                    $costo_banco = round($costo_banco, 2);
+                    $aJson['bancos'][$i]['carton']['ranurado_hor'] = self::calculoRanurado($tiraje, $ventas_model);
 
-                    break;
-                case 'Empalme Banco':
+                    $tot_costo_banco = 0.0;
+                    $tot_costo_banco = floatval($aJson['bancos'][$i]['carton']['ranurado_hor']['costo_tot_proceso']);
 
-                    $suaje = utf8_encode(self::strip_slashes_recursive($aBancos_R[$i]['Suaje']));
+                    $subtotal += round($tot_costo_banco, 2);
 
-                    $costo_bancos_tmp = $ventas_model->costo_bancos("Empalme Banco");
+                    if ($tot_costo_banco <= 0) {
 
-
-                    $costo_unit_banco = 0;
-
-                    foreach ($costo_bancos_tmp as $row) {
-
-                        $costo_unit_banco = $row['precio'];
-                        $costo_unit_banco = floatval($costo_unit_banco);
+                        self::mError($aJson, $mensaje, "No existe costo (banco ranurado horizontal);");
                     }
 
-                    if ($costo_unit_banco <= 0) {
+                    if ($largo > $ancho) {
 
-                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos empalme);");
+                        $aJson['bancos'][$i]['carton']['ranurado_ver'] = $aJson['bancos'][$i]['carton']['ranurado_hor'];
+
+                        $subtotal += round($tot_costo_banco, 2);
+
+                        if ($tot_costo_banco <= 0) {
+
+                            self::mError($aJson, $mensaje, "No existe costo (banco ranurado vertical);");
+                        }
                     }
 
+                    $aJson['bancos'][$i]['carton']['armado_caja'] = self::calculoArmadoCajaFinal($tiraje, "Armado Final Caja", $ventas_model);
 
-                    if (is_array($costo_bancos_tmp)) {
+                    $tot_costo_banco = 0.0;
+                    $tot_costo_banco = floatval($aJson['bancos'][$i]['carton']['armado_caja']['costo_tot_proceso']);
 
-                        unset($costo_bancos_tmp);
-                    }
+                    $subtotal += round($tot_costo_banco, 2);
 
+                    if ($tot_costo_banco <= 0) {
 
-                    $costo_banco = floatval($banco_tiraje * $costo_unit_banco);
-                    $costo_banco = round($costo_banco, 2);
-
-                    break;
-                case 'Cartulina Suajada':
-
-                    $suaje = "SI";
-
-                    $costo_bancos_tmp = $ventas_model->costo_bancos("Cartulina Suajada");
-
-
-                    $costo_unit_banco = 0;
-
-                    foreach ($costo_bancos_tmp as $row) {
-
-                        $costo_unit_banco = $row['precio'];
-                        $costo_unit_banco = floatval($costo_unit_banco);
-                    }
-
-                    if ($costo_unit_banco <= 0) {
-
-                        self::mError($aJson, $mensaje, "No existe costo unitario (bancos cartulina suajada);");
+                        self::mError($aJson, $mensaje, "No existe costo (banco Armado Caja);");
                     }
 
 
-                    if (is_array($costo_bancos_tmp)) {
+                    if ($suaje == "Si") {
 
-                        unset($costo_bancos_tmp);
+                        $aJson['bancos'][$i]['carton']['suajebanco'] = self::calculoSuaje("Perimetral", $tiraje, $largo, $ancho, $costo_unit_banco, $cortes=null, $ventas_model, true);
+
+                        $costo_banco = 0.0;
+                        $costo_banco = floatval($aJson['bancos'][$i]['carton']['suajebanco']['costo_tot_proceso']);
+
+
+                        $subtotal += round($costo_banco, 2);
+
+
+                        if ($costo_banco <= 0) {
+
+                            self::mError($aJson, $mensaje, "No existe costo (banco carton suaje);");
+                        }
+                    }
+                }
+
+
+                /*
+                if ($Tipo_banco == "Cartulina Suajada") {
+
+                    $material = "Cartulina";
+
+                    $row = $ventas_model->getPapelMaterial($material);
+
+                    $id_material = intval($row['id_papel']);
+
+                    $aJson['bancos']['cartulina_suajada'] = self::calculaPapel("cartulina", $id_material, $ancho, $largo, $tiraje, $options_model, $ventas_model);
+
+
+                    $tot_costo_banco = 0.0;
+                    $tot_costo_banco = floatval($aJson['bancos']['cartulina_suajada']['tot_costo']);
+
+                    $subtotal += round(floatval($tot_costo_banco), 2);
+
+                    if ($tot_costo_banco <= 0) {
+
+                        self::mError($aJson, $mensaje, "No existe costo (banco papel Cartulina Suajada);");
+                    }
+
+                    $aJson['bancos']['bancos']['cartulina_suajada']['tot_costo']       += $costo_banco;
+                    $aJson['bancos']['cartulina_suajada']['costo_unit_banco'] = $costo_unit_banco;
+                    $aJson['bancos']['cartulina_suajada']['costo_banco']      = $costo_banco;
+
+
+                    $subtotal += round(floatval($costo_banco), 2);
+
+                    if ($costo_banco <= 0) {
+
+                        self::mError($aJson, $mensaje, "No existe costo unitario (banco Cartulina Suajada);");
                     }
 
 
-                    $costo_banco = floatval($banco_tiraje * $costo_unit_banco);
-                    $costo_banco = round($costo_banco, 2);
+                    if ($suaje == "Si") {
 
-                    break;
+                        $aJson['bancos']['cartulina_suajada']['suajebanco'] = self::calculoSuaje("Perimetral", $tiraje, $largo, $ancho, $costo_unit_banco, $cortes=null, $ventas_model, true);
+
+                        $costo_banco = 0.0;
+                        $costo_banco = floatval($aJson['bancos']['cartulina_suajada']['suajebanco']['costo_tot_proceso']);
+
+
+                        $subtotal += round(floatval($costo_banco), 2);
+
+
+                        if ($costo_banco <= 0) {
+
+                            self::mError($aJson, $mensaje, "No existe costo (banco cartulina suajada);");
+                        }
+                    }
+                }
+
+
+                if ($Tipo_banco == "Empalme Banco") {
+
+                    $aJson['bancos']['empalme_banco']['costo_unit_banco'] = $costo_unit_banco;
+                    $aJson['bancos']['empalme_banco']['costo_banco']      = $costo_banco;
+
+                    $subtotal += $costo_banco;
+
+
+                    if ($costo_banco <= 0) {
+
+                        self::mError($aJson, $mensaje, "No existe costo unitario (Empalme Banco);");
+                    }
+
+
+                    if ($suaje == "Si") {
+
+                        $aJson['bancos']['empalme_banco']['suajebanco'] = self::calculoSuaje("Perimetral", $tiraje, $largo, $ancho, $costo_unit_banco, $cortes=null, $ventas_model, true);
+
+                        $costo_banco = 0.0;
+                        $costo_banco = floatval($aJson['bancos']['empalme_banco']['suajebanco']['costo_tot_proceso']);
+
+
+                        $subtotal += $costo_banco;
+
+
+                        if ($costo_banco <= 0) {
+
+                            self::mError($aJson, $mensaje, "No existe costo (banco empalme);");
+                        }
+                    }
+                }
+                */
+
+
+                if ($Tipo_banco == "Espuma") {
+
+                    $material = "espuma";
+
+                    $row = $ventas_model->getPapelMaterial($material);
+
+                    $id_material = intval($row['id_papel']);
+
+                    $aJson['bancos'][$i]['material']['espuma'] = self::calculaPapel("espuma", $id_material, $ancho, $largo, $tiraje, $options_model, $ventas_model);
+
+
+                    $tot_costo_banco = 0.0;
+                    $tot_costo_banco = floatval($aJson['bancos'][$i]['material']['espuma']['tot_costo']);
+
+                    $subtotal += round($tot_costo_banco, 2);
+
+                    if ($tot_costo_banco <= 0) {
+
+                        self::mError($aJson, $mensaje, "No existe costo (banco papel Espuma);");
+                    }
+
+
+                    if ($suaje == "Si") {
+
+                        $aJson['bancos'][$i]['material']['espuma']['suajebanco'] = self::calculoSuaje("Perimetral", $tiraje, $largo, $ancho, $costo_unit_banco, $cortes=null, $ventas_model, true);
+
+                        $costo_banco = 0.0;
+                        $costo_banco = floatval($aJson['bancos'][$i]['material']['espuma']['suajebanco']['costo_tot_proceso']);
+
+
+                        $subtotal += round($costo_banco, 2);
+
+
+                        if ($costo_banco <= 0) {
+
+                            self::mError($aJson, $mensaje, "No existe costo (banco espuma);");
+                        }
+                    }
+                }
+
+
+                if ($Tipo_banco == "Eva") {
+
+                    $material = "eva";
+
+                    $row = $ventas_model->getPapelMaterial($material);
+
+                    $id_material = intval($row['id_papel']);
+
+                    $aJson['bancos'][$i]['material']['eva'] = self::calculaPapel("Eva", $id_material, $ancho, $largo, $tiraje, $options_model, $ventas_model);
+
+                    $tot_costo_banco = 0.0;
+                    $tot_costo_banco = floatval($aJson['bancos'][$i]['material']['eva']['tot_costo']);
+
+                    $subtotal += $tot_costo_banco;
+
+                    if ($tot_costo_banco <= 0) {
+
+                        self::mError($aJson, $mensaje, "No existe costo banco eva;");
+                    }
+
+
+                    if ($suaje == "Si") {
+
+                        $aJson['bancos'][$i]['material']['eva']['suajebanco'] = self::calculoSuaje("Perimetral", $tiraje, $largo, $ancho, $costo_unit_banco, $cortes=null, $ventas_model, true);
+
+                        $costo_banco = 0.0;
+                        $costo_banco = floatval($aJson['bancos'][$i]['material']['eva']['suajebanco']['costo_tot_proceso']);
+
+
+                        $subtotal += round($costo_banco, 2);
+
+
+                        if ($costo_banco <= 0) {
+
+                            self::mError($aJson, $mensaje, "No existe costo (banco eva);");
+                        }
+                    }
+                }
+
+                $aJson['keys'] = $aJson['keys'] . "cot_bancos;";
             }
 
 
-            $aBancos[$i]['Tipo_banco']       = $Tipo_banco;
-            $aBancos[$i]['tiraje']           = $banco_tiraje;
-            $aBancos[$i]['largo']            = $largo;
-            $aBancos[$i]['ancho']            = $ancho;
-            $aBancos[$i]['profundidad']      = $profundidad;
-            $aBancos[$i]['Suaje']            = $suaje;
-            $aBancos[$i]['costo_unit_banco'] = $costo_unit_banco;
-            $aBancos[$i]['costo_bancos']     = $costo_banco;
+            // procesos de impresion
+            if (isset($aBancos_temp['impresion']) and !empty($aBancos_temp['impresion']) and count($aBancos_temp) > 0) {
 
-            $aJson['costo_bancos'] += $costo_banco;
-            $subtotal              += round(floatval($costo_banco), 2);
-        }
+                $aImpresion = array();
+
+                $aImpresion        = $aBancos_temp['impresion'];
+                $cuantos_impresion = count($aImpresion);
+
+                for ($j = 0; $j < $cuantos_impresion; $j++) {
+
+                    $Tipo_impresion = self::strip_slashes_recursive($aImpresion[$j]['Tipo_impresion']);
+
+                    if ($Tipo_impresion == "Offset") {
+
+                        $sec_bancos = self::getSeccionBancos($seccion);
+
+                        $tintas      = intval($aImpresion[$j]['tintas']);
+                        $tipo_offset = self::strip_slashes_recursive($aImpresion[$j]['tipo_offset']);
 
 
-        if (count($aBancos) > 0) {
+                        $medidasPapel = self::getPapelCarton($seccion, $papel, $options_model);
 
-            $aJson['Bancos'] = $aBancos;
-            $aJson['keys']   = $aJson['keys'] . "cot_bancos;";
+                        $nombre_papel     = self::strip_slashes_recursive($medidasPapel['nombre_papel']);
+                        $ancho_papel      = floatval($medidasPapel['ancho_papel']);
+                        $largo_papel      = floatval($medidasPapel['largo_papel']);
+                        $costo_unit_papel = floatval($medidasPapel['costo_unit_papel']);
 
-            if (is_array($aBancos)) {
 
-                unset($aBancos);
+                        $calculoPapel = self::calculaPapelBanco($seccion, $papel, $costo_unit_papel, $ancho_papel, $largo_papel, $ancho, $largo, $tiraje, $options_model, $ventas_model);
+
+
+                        $costo_banco = 0.0;
+                        $costo_banco = floatval($calculoPapel['tot_costo']);
+
+                        $subtotal += round($costo_banco, 2);
+
+
+                        $corte_pliego = intval($calculoPapel['corte']);
+
+                        $papelBanco = self::calculoOffsetBanco($tipo_offset, $papel, $tiraje, $tintas, $corte_pliego, $ancho, $largo, $papel_corte_ancho, $papel_corte_largo, $ventas_model);
+
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($papel, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $papelBanco['costo_tot_proceso'] = 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (offset) para banco no está permitido;";
+                        } else {
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($papelBanco['costo_tot_proceso']);
+
+
+                            $subtotal += round($costo_banco, 2);
+
+
+                            $aImpresion[$j]['Tipo_impresion'] = $Tipo_impresion;
+                            $aImpresion[$j]['tipo_offset']    = $tipo_offset;
+                            $aImpresion[$j]['tintas']         = $tintas;
+                            $aImpresion[$j]['seccion']        = $sec_bancos;
+                            $aImpresion[$j]['papelBanco']     = $papelBanco;
+                        }
+
+                        $seccion_key   = "cot_alm_banco_offset" . strtolower($sec_bancos) . ";";
+                        $aJson['keys'] = $aJson['keys'] . $seccion_key;
+                    }
+
+
+                    if ($Tipo_impresion == "Digital") {
+
+                        $sec_bancos = self::getSeccionBancos($seccion);
+
+                        $tipo_offset = self::strip_slashes_recursive($aImpresion[$j]['Tipo_impresion']);
+
+                        $corte_ancho_proceso = $ancho;
+                        $corte_largo_proceso = $largo;
+
+                        $tam0 = self::calcTamDigital($corte_ancho_proceso, $corte_largo_proceso);
+
+
+                        $tam          = "";
+                        $tam1         = 0;
+                        $nomb_tam_emp = "";
+
+                        if (count($tam0) > 0) {
+
+                            $tam          = $tam0[0];
+                            $tam1         = $tam0[1];
+                            $nomb_tam_emp = $tam0['tipo_digital'];
+                        }
+
+                        $secc_ancho = floatval($tam0['imp_ancho_dig']);
+                        $secc_largo = floatval($tam0['imp_largo_dig']);
+
+
+                        $id_papel = $papel;
+
+                        $calculaPapelBanco = self::calculaPapel($seccion, $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
+
+
+                        $costo_banco = 0.0;
+                        $costo_banco = floatval($calculaPapelBanco['tot_costo']);
+
+                        $subtotal += round($costo_banco, 2);
+
+
+                        $cortes_por_pliego = intval($calculaPapelBanco['corte']);
+
+
+                        $papelBanco = self::calculoDigital($tiraje, $nomb_tam_emp, $corte_ancho_proceso, $corte_largo_proceso, $cortes_por_pliego, $secc_ancho, $secc_largo, $ventas_model);
+
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($papel, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $papelBanco['costo_tot_proceso'] = 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (digital) para banco no está permitido;";
+                        } else {
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($papelBanco['costo_tot_proceso']);
+
+                            $subtotal += round($costo_banco, 2);
+
+
+                            $aImpresion[$j]['Tipo_impresion'] = $Tipo_impresion;
+                            $aImpresion[$j]['tipo_offset']    = $tipo_offset;
+                            $aImpresion[$j]['seccion']        = $sec_bancos;
+                            $aImpresion[$j]['papelBanco']     = $papelBanco;
+                        }
+
+                        $seccion_key   = "cot_alm_banco_dig" . strtolower($sec_bancos) . ";";
+                        $aJson['keys'] = $aJson['keys'] . $seccion_key;
+                    }
+
+
+                    if ($Tipo_impresion == "Serigrafia") {
+
+                        $sec_bancos = self::getSeccionBancos($seccion);
+
+                        $tintas      = intval($aImpresion[$j]['tintas']);
+                        $tipo_offset = self::strip_slashes_recursive($aImpresion[$j]['tipo_offset']);
+
+                        $papelBanco = self::calculoSerigrafia($tiraje, $tipo_offset, $tintas, $ancho, $largo, $ventas_model);
+
+                        // checa validez del papel seleccionado
+                        $l_papel_ok = 0;
+
+                        $l_papel_ok = self::checkPapel($papel, "offset", $ventas_model);
+
+                        if (!$l_papel_ok) {
+
+                            $papelBanco['costo_tot_proceso'] = 0.0;
+
+                            $aJson['mensaje'] = "error";
+                            $aJson['error']   = $aJson['error'] . " El papel seleccionado (serigrafia) para banco no está permitido;";
+                        } else {
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($papelBanco['costo_tot_proceso']);
+
+                            $subtotal += round($costo_banco, 2);
+
+                            $aImpresion[$j]['Tipo_impresion'] = $Tipo_impresion;
+                            $aImpresion[$j]['tipo_offset']    = $tipo_offset;
+                            $aImpresion[$j]['tintas']         = $tintas;
+                            $aImpresion[$j]['seccion']        = $sec_bancos;
+                            $aImpresion[$j]['papelBanco']     = $papelBanco;
+                        }
+
+
+                        $seccion_key   = "cot_alm_banco_ser" . strtolower($sec_bancos) . ";";
+                        $aJson['keys'] = $aJson['keys'] . $seccion_key;
+                    }
+                }
+
+                $aJson['bancos'][$i]['impresion'] = $aImpresion;
+
+                if (is_array($aImpresion)) {
+
+                    unset($aImpresion);
+                }
+            }
+
+
+            // procesos de acabados
+            if (isset($aBancos_temp['acabado']) and !empty($aBancos_temp['acabado']) and count($aBancos_temp) > 0) {
+
+                $aBancos_json = array();
+
+                $aAcabados = $aBancos_temp['acabado'];
+
+                $cuantos_acabado = count($aAcabados);
+
+                for ($j = 0; $j < $cuantos_acabado; $j++) {
+
+                    $Tipo_acabado = self::strip_slashes_recursive($aAcabados[$j]['Tipo_acabado']);
+                    $tipoGrabado  = self::strip_slashes_recursive($aAcabados[$j]['tipoGrabado']);
+                    $Largo        = $largo;
+                    $Ancho        = $ancho;
+
+                    $aBancos_json[$j]['Tipo_acabado'] = $Tipo_acabado;
+                    $aBancos_json[$j]['tipoGrabado']  = $tipoGrabado;
+                    //$aBancos_json[$i]['acabado'][$j]['Largo']        = $Largo;
+                    //$aBancos_json[$i]['acabado'][$j]['Ancho']        = $Ancho;
+
+                    switch ($Tipo_acabado) {
+                        case 'Barniz UV':
+
+                            $sec_bancos = self::getSeccionBancos($seccion);
+
+                            $Largo = $aAcabados[$j]['Largo'];
+                            $Ancho = $aAcabados[$j]['Ancho'];
+
+                            if ($tipoGrabado == "Registro Mate" or $tipoGrabado == "Registro Brillante") {
+
+                                $Largo = floatval($aAcabados[$j]['Largo']);
+                                $Ancho = floatval($aAcabados[$j]['Ancho']);
+                            }
+
+                            $aBancos_json[$j]['Largo'] = $Largo;
+                            $aBancos_json[$j]['Ancho'] = $Ancho;
+                            $aBancos_json[$j]['barnizuv'] = self::calculoBarniz($tipoGrabado, $tiraje, $Ancho, $Largo, $ventas_model);
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($aBancos_json[$j]['barnizuv']['costo_tot_proceso']);
+
+                            $subtotal += round($costo_banco, 2);
+
+                            $seccion_key   = "cot_alm_banco_barnizuv" . strtolower($sec_bancos) . ";";
+                            $aJson['keys'] = $aJson['keys'] . $seccion_key;
+
+                            break;
+
+                        case 'Corte Laser':
+
+                            $sec_bancos = self::getSeccionBancos($seccion);
+
+                            $aBancos_json[$j]['laser'] = self::calculoLaser($tipoGrabado, $tiraje, $ventas_model);
+
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($aBancos_json[$j]['laser']['costo_tot_proceso']);
+
+                            $subtotal += round($costo_banco, 2);
+
+
+                            $seccion_key   = "cot_alm_banco_laser" . strtolower($sec_bancos) . ";";
+                            $aJson['keys'] = $aJson['keys'] . $seccion_key;
+
+                            break;
+
+                        case 'Grabado':
+
+                            $sec_bancos = self::getSeccionBancos($seccion);
+
+                            $Largo     = $aAcabados[$j]['Largo'];
+                            $Ancho     = $aAcabados[$j]['Ancho'];
+                            $ubicacion = self::strip_slashes_recursive($aAcabados[$j]['ubicacion']);
+
+                            $aBancos_json[$j]['Largo'] = $Largo;
+                            $aBancos_json[$j]['Ancho'] = $Ancho;
+
+
+                            $aBancos_json[$j]['grabado'] = self::calculoGrabadoBanco($tipoGrabado, $tiraje, $Ancho, $Largo, $ubicacion, $ventas_model);
+
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($aBancos_json[$j]['grabado']['costo_tot_proceso']);
+
+                            $subtotal += round($costo_banco, 2);
+
+
+                            $seccion_key   = "cot_alm_banco_grab" . strtolower($sec_bancos) . ";";
+                            $aJson['keys'] = $aJson['keys'] . $seccion_key;
+
+                            break;
+
+                        case 'HotStamping':
+
+                            $sec_bancos = self::getSeccionBancos($seccion);
+
+                            $Largo = $aAcabados[$j]['LargoHS'];
+                            $Ancho = $aAcabados[$j]['AnchoHS'];
+                            $Color = $aAcabados[$j]['ColorHS'];
+
+                            $Color = self::strip_slashes_recursive($Color);
+
+                            $medidasPapel = self::getPapelCarton($seccion, $papel, $options_model);
+
+                            $nombre_papel     = self::strip_slashes_recursive($medidasPapel['nombre_papel']);
+                            $ancho_papel      = floatval($medidasPapel['ancho_papel']);
+                            $largo_papel      = floatval($medidasPapel['largo_papel']);
+                            $costo_unit_papel = floatval($medidasPapel['costo_unit_papel']);
+
+
+                            $papel_HS_temp = self::calculaPapelBanco($seccion, $papel, $costo_unit_papel, $ancho_papel, $largo_papel, $Ancho, $Largo, $tiraje, $options_model, $ventas_model);
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($papel_HS_temp['tot_costo']);
+
+                            $subtotal += round($costo_banco, 2);
+
+
+                            $papel_seccion = $papel_HS_temp['calculadora']['corte'];
+
+                            $aBancos_json[$j]['HotStamping'] = self::calculoHotStamping($tipoGrabado, $tiraje, $Ancho, $Largo, $Color, $papel_seccion, $costo_unit_papel, $ventas_model);
+
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($aBancos_json[$j]['HotStamping']['costo_tot_proceso']);
+
+                            $subtotal += round($costo_banco, 2);
+
+                            $seccion_key   = "cot_alm_banco_hs" . strtolower($sec_bancos) . ";";
+                            $aJson['keys'] = $aJson['keys'] . $seccion_key;
+
+                            break;
+
+                        case 'Laminado':
+
+                            $sec_bancos = self::getSeccionBancos($seccion);
+
+                            $medidasPapel = self::getPapelCarton($seccion, $papel, $options_model);
+
+                            $nombre_papel     = self::strip_slashes_recursive($medidasPapel['nombre_papel']);
+                            $ancho_papel      = floatval($medidasPapel['ancho_papel']);
+                            $largo_papel      = floatval($medidasPapel['largo_papel']);
+                            $costo_unit_papel = floatval($medidasPapel['costo_unit_papel']);
+
+
+                            $papel_lam_temp = self::calculaPapelBanco($seccion, $papel, $costo_unit_papel, $ancho_papel, $largo_papel, $Ancho, $Largo, $tiraje, $options_model, $ventas_model);
+
+
+                            // checa validez del papel seleccionado
+                            $l_papel_ok = 0;
+
+                            $l_papel_ok = self::checkPapel($papel, "offset", $ventas_model);
+
+                            if (!$l_papel_ok) {
+
+                                $aBancos_json[$j]['Laminado'] = 0.0;
+
+                                $aJson['mensaje'] = "error";
+                                $aJson['error']   = $aJson['error'] . " El papel seleccionado (laminado) para banco no está permitido;";
+                            } else {
+
+                                $costo_banco = 0.0;
+                                $costo_banco = floatval($papel_lam_temp['tot_costo']);
+
+                                $subtotal += round($costo_banco, 2);
+
+
+                                $cortes = $papel_lam_temp['calculadora']['corte'];
+
+
+                                $aBancos_json[$j]['Laminado'] = self::calculoLaminado($tipoGrabado, $tiraje, $Ancho, $Largo, $costo_unit_papel, $cortes, $ventas_model);
+
+                                $costo_banco = 0.0;
+                                $costo_banco = floatval($aBancos_json[$j]['Laminado']['costo_tot_proceso']);
+
+                                $subtotal += round($costo_banco, 2);
+                            }
+
+                            $seccion_key   = "cot_alm_banco_lam" . strtolower($sec_bancos) . ";";
+                            $aJson['keys'] = $aJson['keys'] . $seccion_key;
+
+                            break;
+
+                        case 'Suaje':
+
+                            $sec_bancos = self::getSeccionBancos($seccion);
+
+                            $medidasPapel = self::getPapelCarton($seccion, $papel, $options_model);
+
+                            $nombre_papel     = self::strip_slashes_recursive($medidasPapel['nombre_papel']);
+                            $ancho_papel      = floatval($medidasPapel['ancho_papel']);
+                            $largo_papel      = floatval($medidasPapel['largo_papel']);
+                            $costo_unit_papel = floatval($medidasPapel['costo_unit_papel']);
+
+                            $papel_suaje_temp = self::calculaPapelBanco($seccion, $papel, $costo_unit_papel, $ancho_papel, $largo_papel, $Ancho, $Largo, $tiraje, $options_model, $ventas_model);
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($papel_suaje_temp['tot_costo']);
+
+                            $subtotal += round($costo_banco, 2);
+
+
+                            $cortes = $papel_suaje_temp['calculadora']['corte'];
+
+                            $Largo = floatval($aAcabados[$j]['LargoSuaje']);
+                            $Ancho = floatval($aAcabados[$j]['AnchoSuaje']);
+
+
+                            $aBancos_json[$j]['Laminado'] = self::calculoSuaje($tipoGrabado, $tiraje, $Largo, $Ancho, $costo_unit_papel, $cortes, $ventas_model, $l_merma=true);
+
+                            $costo_banco = 0.0;
+                            $costo_banco = floatval($aBancos_json[$j]['Laminado']['costo_tot_proceso']);
+
+                            $subtotal += round($costo_banco, 2);
+
+                            $seccion_key   = "cot_alm_banco_suaje" . strtolower($sec_bancos) . ";";
+                            $aJson['keys'] = $aJson['keys'] . $seccion_key;
+
+                            break;
+                    }
+                }
+
+                $aJson['bancos'][$i]['acabado'] = $aBancos_json;
+
+                if (is_array($aBancos_json)) {
+
+                    unset($aBancos_json);
+                }
             }
         }
+
+
+        $keys_temp    = $aJson['keys'];
+        $keys_temp    = explode(";", $keys_temp);
+        $keys_temp1   = array_unique($keys_temp);
+        $keys_temp1_R = array_values($keys_temp1);
+
+        $aJson['keys'] = [];
+
+        $aJson['keys'] = self::ReorLimpArray($keys_temp1_R);
     }
+
+
+    $sKeys = "";
+
+    /*
+    $sep   = ";";
+    for($k = 0; $k < count($aJson['keys']); $k++) {
+
+        $sKeys = $sKeys . $aJson['keys'][$k] . $sep;
+    }
+    */
+
+    $sKeys = implode(";", $aJson['keys']);
+
+
+
+    //self::prettyPrint($aJson, "aJson", 6050);
+    //self::prettyPrint($aJson['mensaje'], "aJson(mensaje)", 6051);
+    //self::prettyPrint($aJson['error'], "aJson(error)", 6052);
+    //self::prettyPrint($aJson['bancos'], "aJson(bancos)", 6025);
+    //self::prettyPrint($aJson['keys'], "aJson(keys)", 6026);
+    //self::prettyPrint($keys_temp, "keys_temp", 6014);
+    //self::prettyPrint(gettype($keys_temp), "tipo(keys_temp)", 6015);
+    //self::prettyPrint($keys_temp1_R, "keys_temp1_R", 6029);
+    //self::prettyPrint(gettype($keys_temp1), "tipo(keys_temp1)", 6017);
+    //self::prettyPrint(count($keys_temp1_R)-1, "cuantos(keys_temp1_R)-1", 6018);
+    //self::prettyPrint($sKeys, "sKeys", 6032);
+    //self::prettyPrint($sKeys1, "sKeys1", 6032);
+    //self::prettyPrint($_POST, "post", 6033);
+
+
+    //die();
 
 
 /************************ Termina Bancos ********************************/
@@ -5612,18 +6690,17 @@ class Cotizador extends Controller {
 
 
     $subtotal                -= $descuento;
-    $aJson['costo_subtotal'] = round(floatval($subtotal), 2);
+    $aJson['costo_subtotal']  = round(floatval($subtotal), 2);
 
 
-/********************* Termina Accesorios *****************************/
 
-        $empaque    = 0;
-        $mensajeria = 0;
+    $empaque    = 0;
+    $mensajeria = 0;
 
-        $unid_por_tarima = 50;
+    $unid_por_tarima = 50;
 
 
-        // Empaque
+    // Empaque
         $db_tmp = $ventas_model->costos_empaque("Tarima");
 
         $tarima = 0;
@@ -5675,7 +6752,7 @@ class Cotizador extends Controller {
         $aJson['empaque'] = $empaque;
 
 
-        // mensajeria
+    // mensajeria
         $l_grabar_mensajeria = false;
 
         $costo_odt_total = 0;
@@ -5724,6 +6801,7 @@ class Cotizador extends Controller {
 
                     $costo_mensajeria1 = $row['importe'];
                     $costo_mensajeria  = floatval($costo_mensajeria1);
+                    $costo_mensajeria  = round($costo_mensajeria1, 2);
 
                     $subtotal += $costo_mensajeria;
 
@@ -5733,7 +6811,7 @@ class Cotizador extends Controller {
         }
 
 
-        $aJson['mensajeria'] = round(floatval($costo_mensajeria), 2);
+        $aJson['mensajeria'] = $costo_mensajeria;
 
 
     // utillidad
@@ -5775,6 +6853,7 @@ class Cotizador extends Controller {
 
         $aJson['iva'] = $iva;
 
+
     // comisiones
         $db_tmp = $ventas_model->costos_descuentos("Comisiones");
 
@@ -5793,6 +6872,7 @@ class Cotizador extends Controller {
         $comisiones = round($comisiones, 2);
 
         $aJson['comisiones'] = $comisiones;
+
 
 
     // indirecto
@@ -5815,6 +6895,7 @@ class Cotizador extends Controller {
         $aJson['indirecto'] = $indirecto;
 
 
+
     // ventas
         $db_tmp = $ventas_model->costos_descuentos("Venta");
 
@@ -5835,7 +6916,8 @@ class Cotizador extends Controller {
         $aJson['ventas'] = $venta;
 
 
-    // isr
+
+    // ISR
         $db_tmp = $ventas_model->costos_descuentos("ISR");
 
         $isr = 0;
@@ -5869,7 +6951,7 @@ class Cotizador extends Controller {
 
         $costo_odt_total = round($costo_odt_total, 2);
 
-        $aJson['costo_odt'] = round(floatval($costo_odt_total), 2);
+        $aJson['costo_odt'] = $costo_odt_total;
 
         if ($costo_odt_total <= 0) {
 
@@ -5880,8 +6962,6 @@ class Cotizador extends Controller {
 /******************************************/
 /******************************************/
 
-
-/******************************************/
 
         $endtime  = microtime(true);
         $timediff = $endtime - $starttime;
@@ -5895,6 +6975,7 @@ class Cotizador extends Controller {
         $respuesta = false;
 
 
+
         $str_error_len = strlen($aJson['error']);
 
         if (strlen($aJson['error']) > 0) {
@@ -5903,6 +6984,7 @@ class Cotizador extends Controller {
 
             $grabar = false;
         }
+
 
 
         $id_modelo = 1;        // Almeja = 1
@@ -5916,12 +6998,12 @@ class Cotizador extends Controller {
 
             if ($post) {
 
-                self::prettyPrint($_POST, "post", 6130);
+                self::prettyPrint($_POST, "post", 6865);
             }
 
             if ($debuger) {
 
-                self::prettyPrint($aJson, "aJson", 6135);
+                self::prettyPrint($aJson, "aJson", 6870);
             } else {
 
                 echo json_encode($aJson);
@@ -6265,6 +7347,7 @@ class Cotizador extends Controller {
 
         $sql_tabla_temp_db = $ventas_model->detalle_tabla_offset($id_odt, $nombre_tabla_tmp);
 
+
         $cuantos_db = count($sql_tabla_temp_db);
 
         for ($j = 0; $j < $cuantos_db; $j++) {
@@ -6274,6 +7357,7 @@ class Cotizador extends Controller {
             $aJson_tmp[$j]['tiraje']            = intval($sql_tabla_temp_db[$j]['tiraje']);
             $aJson_tmp[$j]['costo_unitario']    = floatval($sql_tabla_temp_db[$j]['costo_unitario']);
             $aJson_tmp[$j]['tiempo_requerido']  = floatval($sql_tabla_temp_db[$j]['tiempo_requerido']);
+            $aJson_tmp[$j]['merma_min']         = floatval($sql_tabla_temp_db[$j]['merma_min']);
             $aJson_tmp[$j]['costo_tot_proceso'] = floatval($sql_tabla_temp_db[$j]['costo_tot_proceso']);
         }
 

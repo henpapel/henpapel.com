@@ -1213,10 +1213,10 @@
 						</th>
 
 						<th align="center">
-							<h4 style="text-align: center;">Costo</h4>
+							<h4 style="text-align: center;">Costo x cm</h4>
 						</th>
 					</tr>
-					</tr>
+					
 					<tr>
 						<td align="right"><h4>Perimetral</h4></td>
 						<td align="center">
