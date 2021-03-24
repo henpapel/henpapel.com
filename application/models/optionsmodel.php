@@ -332,7 +332,7 @@ class OptionsModel {
     // obtiene los costos de la tabla bancos
     public function getCostoBancos() {
 
-        $sql = "SELECT * FROM bancos WHERE status = 'A' and es_banco = 1 order by nombre asc";
+        $sql = "SELECT * FROM bancos WHERE status = 'A' order by nombre asc";
 
         $query = $this->db->prepare($sql);
         $query->execute();
@@ -353,22 +353,6 @@ class OptionsModel {
         $id_temp = intval($id);
 
         $sql = "SELECT * FROM papeles where status = 'A' and id_papel = " . $id_temp . " and numcarton = '0' order by costo_unitario desc limit 1";
-
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-
-        return $row;
-
-    }
-
-
-    public function getCartonId($id) {
-
-        $id_temp = intval($id);
-
-        $sql = "SELECT * FROM papeles where status = 'A' and id_papel = " . $id_temp;
 
         $query = $this->db->prepare($sql);
         $query->execute();
@@ -2921,6 +2905,243 @@ class OptionsModel {
 
         return $result;
     }
+
+    public function getProcEncuadernacion(){
+
+        $sql = "SELECT * FROM proc_encuadernacion where status = 'A'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            if( isset($row['nombre_tiraje']) ){
+
+                $nombre = strval($row['nombre_tiraje']);
+                $result[$nombre][] = $row;
+            }else{
+
+                $result[] = $row;    
+            }
+        }
+
+        return $result;   
+    }
+
+    public function getProcRanurado(){
+
+        $sql = "SELECT * FROM proc_ranurado where status = 'A'";
+
+        $query = $this->db->prepare($sql);
+        $query->execute();
+
+        $result = array();
+
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            if( isset($row['nombre_tiraje']) ){
+
+                $nombre = strval($row['nombre_tiraje']);
+                $result[$nombre][] = $row;
+            }else{
+
+                $result[] = $row;    
+            }
+        }
+
+        return $result;   
+    }
+
+    public function updateProcEnc(){
+
+
+        $PIR11 = intval($_POST['txtRangEnc11']);
+        $PIR12 = intval($_POST['txtRangEnc12']);
+        $PIR21 = intval($_POST['txtRangEnc21']);
+        $PIR22 = intval($_POST['txtRangEnc22']);
+        $PIC1 = floatval($_POST['txtCosUniEnc1']);
+        $PIC2 = floatval($_POST['txtCosUniEnc2']);
+
+        $PIId1 = floatval($_POST['txtIdEnc1']);
+        $PIId2 = floatval($_POST['txtIdEnc2']);
+
+
+        $ECR11 = intval($_POST['txtRangEC11']);
+        $ECR12 = intval($_POST['txtRangEC12']);
+        $ECR21 = intval($_POST['txtRangEC21']);
+        $ECR22 = intval($_POST['txtRangEC22']);
+        $ECC1 = floatval($_POST['txtCosUniEC1']);
+        $ECC2 = floatval($_POST['txtCosUniEC2']);
+
+        $ECId1 = floatval($_POST['txtIdEC1']);
+        $ECId2 = floatval($_POST['txtIdEC2']);
+
+
+        $FCR11 = intval($_POST['txtRangFC11']);
+        $FCR12 = intval($_POST['txtRangFC12']);
+        $FCR21 = intval($_POST['txtRangFC21']);
+        $FCR22 = intval($_POST['txtRangFC22']);
+        $FCC1 = floatval($_POST['txtCosUniFC1']);
+        $FCC2 = floatval($_POST['txtCosUniFC2']);
+
+        $FCId1 = floatval($_POST['txtIdFC1']);
+        $FCId2 = floatval($_POST['txtIdFC2']);
+
+
+        $PBR11 = intval($_POST['txtRangPB11']);
+        $PBR12 = intval($_POST['txtRangPB12']);
+        $PBR21 = intval($_POST['txtRangPB21']);
+        $PBR22 = intval($_POST['txtRangPB22']);
+        $PBC1 = floatval($_POST['txtCosUniPB1']);
+        $PBC2 = floatval($_POST['txtCosUniPB2']);
+
+        $PBId1 = floatval($_POST['txtIdPB1']);
+        $PBId2 = floatval($_POST['txtIdPB2']);
+
+
+        $DECC = floatval($_POST['txtCosDEC']);
+        $DECId = floatval($_POST['txtIdDEC']);
+
+        $AFCC = floatval($_POST['txtCosAFC']);
+        $AFCId = floatval($_POST['txtIdAFC']);
+
+        $encajC = floatval($_POST['txtCosEn']);
+        $encajId = floatval($_POST['txtIdEn']);
+
+        $domiC = floatval($_POST['txtCosD']);
+        $domiId = floatval($_POST['txtIdDomi']);
+
+        try{
+
+            $this->db->beginTransaction();
+
+            $PI1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PIR11, tiraje_maximo=$PIR12, precio_unitario= $PIC1 WHERE id_encuadernacion =$PIId1";
+            $query1    = $this->db->prepare($PI1);
+            $inserted1 = $query1->execute();
+
+            $PI2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PIR21, tiraje_maximo=$PIR22, precio_unitario= $PIC2 WHERE id_encuadernacion =$PIId2";
+            $query2    = $this->db->prepare($PI2);
+            $inserted2 = $query2->execute();
+
+            $EC1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$ECR11, tiraje_maximo=$ECR12, precio_unitario= $ECC1 WHERE id_encuadernacion =$ECId1";
+            $query3    = $this->db->prepare($EC1);
+            $inserted3 = $query3->execute();
+
+            $EC2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$ECR21, tiraje_maximo=$ECR22, precio_unitario= $ECC2 WHERE id_encuadernacion =$ECId2";
+            $query4    = $this->db->prepare($EC2);
+            $inserted4 = $query4->execute();
+
+            $FC1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$FCR11, tiraje_maximo=$FCR12, precio_unitario= $FCC1 WHERE id_encuadernacion =$FCId1";
+            $query5    = $this->db->prepare($FC1);
+            $inserted5 = $query5->execute();
+
+            $FC2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$FCR21, tiraje_maximo=$FCR22, precio_unitario= $FCC2 WHERE id_encuadernacion =$FCId2";
+            $query6    = $this->db->prepare($FC2);
+            $inserted6 = $query6->execute();
+
+            $PB1 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PBR11, tiraje_maximo=$PBR12, precio_unitario= $PBC1 WHERE id_encuadernacion =$PBId1";
+            $query7    = $this->db->prepare($PB1);
+            $inserted7 = $query7->execute();
+
+            $PB2 = "UPDATE proc_encuadernacion SET tiraje_minimo=$PBR21, tiraje_maximo=$PBR22, precio_unitario= $PBC2 WHERE id_encuadernacion =$PBId2";
+            $query8    = $this->db->prepare($PB2);
+            $inserted8 = $query8->execute();
+
+
+            $DEC = "UPDATE proc_encuadernacion SET precio_unitario = $DECC WHERE id_encuadernacion=$DECId";
+            $query9    = $this->db->prepare($DEC);
+            $inserted9 = $query9->execute();
+
+            $AFC = "UPDATE proc_encuadernacion SET precio_unitario = $AFCC WHERE id_encuadernacion=$AFCId";
+            $query10    = $this->db->prepare($AFC);
+            $inserted10 = $query10->execute();
+
+            $encaj = "UPDATE proc_encuadernacion SET precio_unitario = $encajC WHERE id_encuadernacion=$encajId";
+            $query11    = $this->db->prepare($encaj);
+            $inserted11 = $query11->execute();
+
+            $domi = "UPDATE proc_encuadernacion SET precio_unitario = $domiC WHERE id_encuadernacion=$domiId";
+            $query12    = $this->db->prepare($domi);
+            $inserted12 = $query12->execute();
+
+
+            if( $inserted1 and $inserted2 and $inserted3 and $inserted4 and $inserted5 and $inserted6 and $inserted7 and $inserted8 and $inserted9 and $inserted10 and $inserted11 and $inserted12 ){
+
+                $this->db->commit();
+                return true;
+            }
+        }catch( Exception $ex ){
+
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
+    public function updateProcRan(){
+
+
+        $r11 = intval($_POST['txtRan11']);
+        $r12 = intval($_POST['txtRan12']);
+        $r21 = intval($_POST['txtRan21']);
+        $r22 = intval($_POST['txtRan22']);
+        $r31 = intval($_POST['txtRan31']);
+        $r32 = intval($_POST['txtRan32']);
+        $r41 = intval($_POST['txtRan41']);
+        $r42 = intval($_POST['txtRan42']);
+
+        $id1 = intval($_POST['txtId1']);
+        $id2 = intval($_POST['txtId2']);
+        $id3 = intval($_POST['txtId3']);
+        $id4 = intval($_POST['txtId4']);
+
+
+        $c1 = floatval($_POST['txtCos1']);
+        $c2 = floatval($_POST['txtCos2']);
+        $c3 = floatval($_POST['txtCos3']);
+        $c4 = floatval($_POST['txtCos4']);
+        
+        $idArr = intval($_POST['txtIdArr']);
+        $cArr = floatval($_POST['txtCosArr']);
+
+        try{
+
+            $this->db->beginTransaction();
+
+            $pr1 = "UPDATE proc_ranurado SET tiraje_minimo=$r11, tiraje_maximo=$r12, precio_unitario= $c1 WHERE id_ranurado = $id1";
+            $query1    = $this->db->prepare($pr1);
+            $inserted1 = $query1->execute();
+
+            $pr2 = "UPDATE proc_ranurado SET tiraje_minimo=$r21, tiraje_maximo=$r22, precio_unitario= $c2 WHERE id_ranurado = $id2";
+            $query2    = $this->db->prepare($pr2);
+            $inserted2 = $query2->execute();
+
+            $pr3 = "UPDATE proc_ranurado SET tiraje_minimo=$r31, tiraje_maximo=$r32, precio_unitario= $c3 WHERE id_ranurado = $id3";
+            $query3    = $this->db->prepare($pr3);
+            $inserted3 = $query3->execute();
+
+            $pr4 = "UPDATE proc_ranurado SET tiraje_minimo=$r41, tiraje_maximo=$r42, precio_unitario= $c4 WHERE id_ranurado = $id4";
+            $query4    = $this->db->prepare($pr4);
+            $inserted4 = $query4->execute();
+
+            $arreglo = "UPDATE proc_ranurado SET precio_unitario = $cArr WHERE id_ranurado = $idArr";
+            $query5    = $this->db->prepare($arreglo);
+            $inserted5 = $query5->execute();
+
+
+            if( $inserted1 and $inserted2 and $inserted3 and $inserted4 and $inserted5 ){
+
+                $this->db->commit();
+                return true;
+            }
+        }catch( Exception $ex ){
+
+            $this->db->rollBack();
+            return false;
+        }
+    }
+
 
 }
 

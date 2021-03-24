@@ -1361,7 +1361,6 @@ class Regalo extends Cajas{
 	}
 
 	//Se utiliza en modificacion caja regalo. Muestra toda la cotizacion guardada
-	//pendiente - checar: 07/marzo/2021 - no esta apendizando todo. comparar con la funcion de almeja
 	printCotizacion(AGlobal){
 
 		var idCarton = parseInt(AGlobal['costo_grosor_carton']['id_cajon']);
@@ -1372,7 +1371,20 @@ class Regalo extends Cajas{
 	    $("#grosor_tapa option[data-id=" + idTapa +"]").attr("selected", true);
 
 		this.odtAnt = AGlobal['id_odt'];
-	    
+	    var trMensajeria = '<tr><td><b>Costo Mensajería</b></td><td></td><td></td><td></td></tr>';
+	    var trEmpaque = '<tr><td><b>Costo Empaque</b></td><td></td><td></td><td></td></tr>';
+	    var trEncuadernacion = '<tr><td><b>Encuadernación</b></td><td></td><td></td><td></td></tr>';
+
+	    //imprime titulos para resumen
+	    this._secciones.forEach( function(sec){
+
+	    	var tr = '<tr><td><b>' + sec['titulo'] + '</b></td><td></td><td></td><td></td></tr>';
+	    	$('#resumen'+sec['siglas']).append(tr);
+	    });
+
+	    $('#resumenMensajeria').append(trMensajeria);
+	    $('#resumenEmpaque').append(trEmpaque);
+	    $('#resumenEncuadernacion').append(trEncuadernacion);
 
 	    this._descuento = AGlobal['descuento_pctje'];
 	    this._cliente = this.getIdClient();
@@ -1389,21 +1401,6 @@ class Regalo extends Cajas{
 	    	`;
         });
         this.appendResumen(tableresumen);
-
-		var trMensajeria = '<tr><td><b>Costo Mensajería</b></td><td></td><td></td><td></td></tr>';
-	    var trEmpaque = '<tr><td><b>Costo Empaque</b></td><td></td><td></td><td></td></tr>';
-	    var trEncuadernacion = '<tr><td><b>Encuadernación</b></td><td></td><td></td><td></td></tr>';
-
-	    //imprime titulos para resumen
-	    this._secciones.forEach( function(sec){
-
-	    	var tr = '<tr><td><b>' + sec['titulo'] + '</b></td><td></td><td></td><td></td></tr>';
-	    	$('#resumen'+sec['siglas']).append(tr);
-	    });
-
-	    $('#resumenMensajeria').append(trMensajeria);
-	    $('#resumenEmpaque').append(trEmpaque);
-	    $('#resumenEncuadernacion').append(trEncuadernacion);
 
 	    this._secciones.forEach( function(sec){
 

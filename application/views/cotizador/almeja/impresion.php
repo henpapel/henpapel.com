@@ -208,48 +208,29 @@
 	</footer>
 </body>
 <script type="text/javascript">
-	
-	let aJson = [];
-</script>
-
-<?php if( isset($aJson) ) { ?>
-	<script type="text/javascript">
-		aJson = JSON.parse(`<?php echo json_encode($aJson);?>`);
-		console.log(aJson)
-	</script>
-<?php } ?>
-
-<script type="text/javascript">
 	/*window.print();
 	window.addEventListener("afterprint", function(){
     	
     	this.close();
 	}, false);*/
-	
-	
 	try{
-		let controlador = localStorage.getItem('controlador');
+		var aJson = [];
+		aJson = JSON.parse(localStorage.getItem('js_respuesta'));
 		
-		if( controlador == 'no' ) aJson = JSON.parse(localStorage.getItem('js_respuesta'));
-	}catch(e){
-
-		console.log("No se logro obtener el array \n\n" + e);
-	}
-
-
+		console.log(aJson);
 		$("#detCaja").empty();
 
 		var cUnitario = parseFloat(aJson['costo_odt'] / aJson['tiraje'] ).toFixed(2);
 
 		$("#lblCUnitario").html("$"+cUnitario);
 
-		$("#lblCotizacion").html(`Cotizacion: <label class='f-negrita'>${aJson.num_odt}</label>`);
+		$("#lblCotizacion").html(`Cotizacion: <label class='f-negrita'>${aJson.nomb_odt}</label>`);
 
 		$("#lblCTotal").html(`$${aJson.costo_odt}`);
 		
 		$("#lblTiraje").html(`${aJson.tiraje}`);
 
-		$("#lblTienda").html(`Empresa: ${aJson.nomb_tienda}`);
+		$("#lblTienda").html(`Empresa: ${aJson.id_tienda}`);
 
 		$("#lblCliente").html(`${aJson.Nombre_cliente}`);
 
@@ -354,10 +335,7 @@
 
 		function appndPapel( arrPapel, texto ){
 
-			let nombre = arrPapel.nombre_papel;
-			if( nombre == undefined ) nombre = arrPapel.nombre
-
-			var tr = `<p class="f-negrita">Papel ${texto} forrado en: ${nombre}</p>;`
+			var tr = `<p class="f-negrita">Papel ${texto} forrado en: ${arrPapel.nombre_papel}</p>;`
 			$("#detCaja").append(tr);
 		}
 
@@ -372,7 +350,6 @@
 					case "offset":
 
 						var tipo   = arrImpresion[i]['tipo_offset'];
-						if( tipo == undefined ) tipo = arrImpresion[i]['Tipo']
 						var tintas = arrImpresion[i]['num_tintas'];
 
 						var tr = '<p style="margin-bottom: 5px; margin-left: 10px;">Impresion ' + impresion+" Tipo: " + tipo + ", Tintas: " + tintas + '</p>';
@@ -456,5 +433,8 @@
 				$("#detCaja").append(tr);
 			}
 		}
+	}catch(e){
 
+		console.log("No se logro obtener el array \n\n" + e);
+	}
 </script>

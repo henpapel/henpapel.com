@@ -216,6 +216,38 @@ class Controller {
     }
 
 
+    public function getODTs() {
+
+        if (!isset($_SESSION)) {
+
+            session_start();
+        }
+
+
+        $login         = $this->loadController('login');
+        $login_model   = $this->loadModel('LoginModel');
+        $options_model = $this->loadModel('OptionsModel');
+        $ventas_model  = $this->loadModel('VentasModel');
+
+        if($login->isLoged()) {
+
+            $odts     = $ventas_model->getODTs();
+            $clientes = $ventas_model->getClients();
+
+
+            require_once 'application/views/templates/head.php';
+            require_once 'application/views/templates/top_menu.php';
+            require_once 'application/views/cotizador/listaOdts.php';
+            require_once 'application/views/templates/footer.php';
+        } else {
+
+            echo '<script language="javascript">';
+            echo 'window.location.href="' . URL . 'login/"';
+            echo '</script>';
+        }
+    }
+
+
     public function getCotizaciones() {
 
         if (!isset($_SESSION)) {
@@ -311,22 +343,6 @@ class Controller {
     }
 
 
-    // valida seleccion del papel para las diferentes secciones
-    public function checkPapel($id_papel, $proceso, $ventas_model) {
-
-        $proceso = trim($proceso);
-
-        $l_papel = 0;
-
-        $row = $ventas_model->getPapelId($id_papel);
-
-        $l_papel = $row[$proceso];
-        $l_papel = intval($l_papel);
-
-        return $l_papel;
-    }
-
-
     public function rectArea($largo, $ancho) {
 
         $largo = floatval($largo);
@@ -386,54 +402,6 @@ class Controller {
 
             echo '<pre>(' . $num_linea . ") " . $texto . ": " . print_r($aArray, $return = TRUE) . '</pre>';
         }
-    }
-
-
-    public function getSeccionBancos($seccion) {
-
-        $seccion = self::strip_slashes_recursive($seccion);
-
-        switch ($seccion) {
-            case 'Empalme Cajón':
-
-                $secc_banco = "Emp";
-
-                break;
-
-            case 'Guarda':
-
-                $secc_banco = "Guarda";
-
-                break;
-        }
-
-        return $secc_banco;
-    }
-
-
-    // limpia el array de indexes vacios
-    public function ReorLimpArray($aArray) {
-
-        $aArray_temp = [];
-
-        $cuantos_keys = count($aArray);
-
-        for ($k = 0; $k < $cuantos_keys; $k++) {
-
-            $temp1_R_temp = "";
-            $len_temp1_R  = 0;
-
-            $temp1_R_temp = $aArray[$k];
-
-            $len_temp1_R = strlen($temp1_R_temp);
-
-            if ($len_temp1_R > 0) {
-
-                $aArray_temp[$k] = $aArray[$k];
-            }
-        }
-
-        return $aArray_temp;
     }
 
 
@@ -633,11 +601,6 @@ class Controller {
                 $l_carton = true;
 
                 break;
-            case 'carton':
-
-                $row = $options_model->getCartonId($id_papel);
-
-                break;
             default:
 
                 $row = $options_model->getPapelId($id_papel);
@@ -835,169 +798,6 @@ class Controller {
         }
 
         $aPapel_secc['nombre_papel']     = $papel_secc['nombre_papel'];
-        $aPapel_secc['ancho_papel']      = round(floatval($papel_secc['ancho_papel']), 2);
-        $aPapel_secc['largo_papel']      = round(floatval($papel_secc['largo_papel']), 2);
-        $aPapel_secc['costo_unit_papel'] = round(floatval($papel_secc['costo_unit_papel']), 4);
-        $aPapel_secc['corte']            = $corte_secc;
-        $aPapel_secc['tot_pliegos']      = $tot_pliegos;
-        $aPapel_secc['tot_costo']        = $tot_costo;
-
-
-        if ($papel_secc['costo_unit_papel'] <= 0) {
-
-            $aPapel_secc['tot_costo'] = 0;
-        }
-
-        $a_Calculadora_secc = array();
-
-        $a_Calculadora_secc['corte_ancho'] = min($secc_ancho, $secc_largo);
-        $a_Calculadora_secc['corte_largo'] = max($secc_ancho, $secc_largo);
-
-        if ($corte > $corte_H) {
-
-            $cortes['orientacion']       = "vertical";
-            $a_Calculadora_secc['corte'] = $cortes;
-        } else {
-
-            $cortes_H['orientacion']     = "horizontal";
-            $a_Calculadora_secc['corte'] = $cortes_H;
-        }
-
-
-        $aPapel_secc['calculadora'] = $a_Calculadora_secc;
-
-        unset($a_Calculadora_secc);
-
-        return $aPapel_secc;
-    }
-
-
-    // calculo del papel incluyendo cortes
-    protected function calculaPapelBanco($seccion, $id_papel, $costo_unit_papel, $p_ancho, $p_largo, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model) {
-
-
-        $papel_secc = self::getPapelCarton($seccion, $id_papel, $options_model);
-
-        $c_ancho = $secc_ancho;
-        $c_largo = $secc_largo;
-
-        $b  = max($p_ancho, $p_largo);
-        $h  = min($p_ancho, $p_largo);
-        $cb = $c_ancho;
-        $ch = $c_largo;
-
-        $cortes = self::Acomoda($b, $h, $c_ancho, $c_largo, "V", "V");
-
-        $totalCortes = $cortes['cortesT'];
-
-        $cortes_H = self::Acomoda($b, $h, $c_ancho, $c_largo, "H", "V");
-
-        $totalCortes_H = $cortes_H['cortesT'];
-
-
-        $corte   = $cortes['cortesT'];
-        $corte_H = $cortes_H['cortesT'];
-
-        if($corte = $corte_H) {
-
-            $corte_secc = $corte;
-        } else {
-
-            $corte_secc = max($corte, $corte_H);
-        }
-
-        $tot_pliegos = self::Deltax($tiraje, $corte_secc);
-
-        $tot_costo = round(floatval($tot_pliegos * $costo_unit_papel), 2);
-
-
-        $aPapel_secc = [];
-
-        $aPapel_secc['tiraje']   = $tiraje;
-        $aPapel_secc['id_papel'] = $papel_secc['id_papel'];
-
-        if ($papel_secc['carton'] === true) {
-
-            $aPapel_secc['num_carton'] = $id_papel;
-        }
-
-        $aPapel_secc['nombre_papel']     = $papel_secc['nombre_papel'];
-        $aPapel_secc['ancho_papel']      = round(floatval($papel_secc['ancho_papel']), 2);
-        $aPapel_secc['largo_papel']      = round(floatval($papel_secc['largo_papel']), 2);
-        $aPapel_secc['costo_unit_papel'] = round(floatval($papel_secc['costo_unit_papel']), 4);
-        $aPapel_secc['corte']            = $corte_secc;
-        $aPapel_secc['tot_pliegos']      = $tot_pliegos;
-        $aPapel_secc['tot_costo']        = $tot_costo;
-
-
-        if ($papel_secc['costo_unit_papel'] <= 0) {
-
-            $aPapel_secc['tot_costo'] = 0;
-        }
-
-        $a_Calculadora_secc = array();
-
-        $a_Calculadora_secc['corte_ancho'] = min($secc_ancho, $secc_largo);
-        $a_Calculadora_secc['corte_largo'] = max($secc_ancho, $secc_largo);
-
-        if ($corte > $corte_H) {
-
-            $cortes['orientacion']       = "vertical";
-            $a_Calculadora_secc['corte'] = $cortes;
-        } else {
-
-            $cortes_H['orientacion']     = "horizontal";
-            $a_Calculadora_secc['corte'] = $cortes_H;
-        }
-
-
-        $aPapel_secc['calculadora'] = $a_Calculadora_secc;
-
-        unset($a_Calculadora_secc);
-
-        return $aPapel_secc;
-    }
-
-
-    // calculo del papel incluyendo cortes
-    protected function calculaPapelCartera($seccion, $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model) {
-
-
-        $papel_secc = self::getPapelCarton($seccion, $id_papel, $options_model);
-
-        $costo_unit_papel = round(floatval($papel_secc['costo_unit_papel']), 4);
-
-        $p_ancho = round(floatval($papel_secc['ancho_papel']), 2);
-        $p_largo = round(floatval($papel_secc['largo_papel']), 2);
-        $c_ancho = $secc_ancho;
-        $c_largo = $secc_largo;
-
-        $b  = max($p_ancho, $p_largo);
-        $h  = min($p_ancho, $p_largo);
-        $cb = $c_ancho;
-        $ch = $c_largo;
-
-        $cortes = self::Acomoda($b, $h, $c_ancho, $c_largo, "H", "H");
-
-        $corte      = $cortes['cortesT'];
-        $corte_secc = $corte;
-
-        $tot_pliegos = self::Deltax($tiraje, $corte_secc);
-
-        $tot_costo = round(floatval($tot_pliegos * $costo_unit_papel), 2);
-
-
-        $aPapel_secc = [];
-
-        $aPapel_secc['tiraje']   = $tiraje;
-        $aPapel_secc['id_papel'] = $papel_secc['id_papel'];
-
-        if ($papel_secc['carton'] === true) {
-
-            $aPapel_secc['num_carton'] = $id_papel;
-        }
-
-        $aPapel_secc['nombre_papel']     = $papel_secc['nombre_papel'];
         $aPapel_secc['ancho_papel']      = round($papel_secc['ancho_papel'], 2);
         $aPapel_secc['largo_papel']      = round($papel_secc['largo_papel'], 2);
         $aPapel_secc['costo_unit_papel'] = round($papel_secc['costo_unit_papel'], 4);
@@ -1016,10 +816,15 @@ class Controller {
         $a_Calculadora_secc['corte_ancho'] = min($secc_ancho, $secc_largo);
         $a_Calculadora_secc['corte_largo'] = max($secc_ancho, $secc_largo);
 
-        $cortes_H['corte_pliego'] = "horizontal";
+        if ($corte > $corte_H) {
 
-        $cortes['orientacion'] = "horizontal";
-        $a_Calculadora_secc['corte'] = $cortes;
+            $cortes['orientacion']       = "vertical";
+            $a_Calculadora_secc['corte'] = $cortes;
+        } else {
+
+            $cortes_H['orientacion']     = "horizontal";
+            $a_Calculadora_secc['corte'] = $cortes_H;
+        }
 
 
         $aPapel_secc['calculadora'] = $a_Calculadora_secc;
@@ -1027,120 +832,6 @@ class Controller {
         unset($a_Calculadora_secc);
 
         return $aPapel_secc;
-    }
-
-
-    protected function calculaBancoTriangular($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model) {
-
-        $id_papel = intval($id_papel);
-
-        $row = $ventas_model->getPapelId($id_papel);
-
-        $papel_nombre     = trim($row['nombre']);
-        $papel_color      = trim($row['color']);
-        $secc_ancho       = $row['ancho'];
-        $secc_largo       = $row['largo'];
-        $papel_costo_unit = floatval($row['costo_unitario']);
-
-        $base = floatval($largo / 2);
-
-        $secc_largo = $largo + round(floatval((sqrt(($base ** 2) + ($altura ** 2))) * 2), 2) + 1;
-        $secc_ancho = $ancho;
-
-        $area = round(floatval($secc_largo * $ancho), 2);
-
-
-        $ranurado_hor_db = self::calculoRanurado($tiraje, $ventas_model);
-
-
-        $calculo_papel = self::calculaPapel("BancoSup", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
-
-        $tot_costo_papel = round(floatval($calculo_papel['tot_costo']), 2);
-
-        $tot_costo = round(floatval($tot_costo_papel + $ranurado_hor_db['costo_tot_proceso']), 2);
-
-
-        $ranurado_ver_db = 0;
-
-        if ($largo > $ancho) {
-
-            $ranurado_ver_db = self::calculoRanurado($tiraje, $ventas_model);
-
-            $tot_costo = round(floatval($tot_costo + $ranurado_ver_db['costo_tot_proceso']), 2);
-        }
-
-        $aBanco = array();
-
-        $aBanco['id_papel']             = $id_papel;
-        $aBanco['tiraje']               = $tiraje;
-        $aBanco['papel']                = $calculo_papel;
-        $aBanco['largo']                = $largo;
-        $aBanco['ancho']                = $ancho;
-        $aBanco['altura']               = $altura;
-        $aBanco['largo_area']           = $secc_largo;
-        $aBanco['ancho_area']           = $ancho;
-        $aBanco['area']                 = $area;
-        $aBanco['arreglo_ranurado_hor'] = $ranurado_hor_db;
-        $aBanco['arreglo_ranurado_ver'] = $ranurado_ver_db;
-        $aBanco['tot_costo']            = $tot_costo;
-
-
-        return $aBanco;
-    }
-
-
-    protected function calculaBancoNormal($tiraje, $id_papel, $largo, $ancho, $altura, $options_model, $ventas_model) {
-
-        $secc_ancho = $ancho;
-        $secc_largo = $largo;
-        $area       = round(floatval($secc_largo * $secc_ancho), 2);
-
-        $id_papel = intval($id_papel);
-
-        $row = $ventas_model->getPapelId($id_papel);
-
-        $papel_nombre     = trim($row['nombre']);
-        $papel_color      = trim($row['color']);
-        $ancho            = $row['ancho'];
-        $largo            = $row['largo'];
-        $papel_costo_unit = floatval($row['costo_unitario']);
-
-
-        $calculo_papel = self::calculaPapel("BancoInf", $id_papel, $secc_ancho, $secc_largo, $tiraje, $options_model, $ventas_model);
-
-        $tot_costo_papel = round(floatval($calculo_papel['tot_costo']), 2);
-
-
-        $ranurado_hor_db = self::calculoRanurado($tiraje, $ventas_model);
-
-        $tot_costo = round(floatval($tot_costo_papel + $ranurado_hor_db['costo_tot_proceso']), 2);
-
-
-        $ranurado_ver_db = 0;
-
-        if ($largo > $ancho) {
-
-            $ranurado_ver_db = $ranurado_hor_db;
-
-            $tot_costo = round(floatval($tot_costo + $ranurado_ver_db['costo_tot_proceso']), 2);
-        }
-
-
-        $aBanco = array();
-
-        $aBanco['id_papel']             = $id_papel;
-        $aBanco['tiraje']               = $tiraje;
-        $aBanco['papel']                = $calculo_papel;
-        $aBanco['largo']                = $secc_largo;
-        $aBanco['ancho']                = $secc_ancho;
-        $aBanco['altura']               = $altura;
-        $aBanco['area']                 = $area;
-        $aBanco['arreglo_ranurado_hor'] = $ranurado_hor_db['costo_tot_proceso'];
-        $aBanco['arreglo_ranurado_ver'] = $ranurado_ver_db['costo_tot_proceso'];
-        $aBanco['tot_costo']            = $tot_costo;
-
-
-        return $aBanco;
     }
 
 
@@ -1514,302 +1205,6 @@ class Controller {
 
 
         if ($nombre_tipo_offset === "Pantone") {
-
-            $l_ok = true;
-
-            $db_tmp = $ventas_model->costo_offset("Laminas Pantone");
-
-            $pantone_costo_unitario_laminas = 0;
-
-            foreach ($db_tmp as $row) {
-
-                $pantone_costo_unitario_laminas = $row['costo_unitario'];
-                $pantone_costo_unitario_laminas = round(floatval($pantone_costo_unitario_laminas), 2);
-            }
-
-
-            if (is_array($db_tmp)) {
-
-                unset($db_tmp);
-            }
-
-
-            if ($pantone_costo_unitario_laminas <= 0) {
-
-                $l_ok = false;
-            }
-
-
-            $aCosto_Offset['costo_unitario_laminas'] = $pantone_costo_unitario_laminas;
-
-            $costo_tot_laminas = round(floatval($pantone_costo_unitario_laminas * $num_tintas), 2);
-
-            $aCosto_Offset['costo_tot_laminas'] = $costo_tot_laminas;
-
-
-
-            // Arreglo de Pantone
-            $db_tmp = $ventas_model->costo_offset("Arreglo de Pantone");
-
-            $arreglo_pantone_costo_unitario = 0;
-
-            foreach ($db_tmp as $row) {
-
-                $arreglo_pantone_costo_unitario = $row['costo_unitario'];
-
-                $arreglo_pantone_costo_unitario = round(floatval($arreglo_pantone_costo_unitario), 2);
-            }
-
-
-            if (is_array($db_tmp)) {
-
-                unset($db_tmp);
-            }
-
-
-            if ($arreglo_pantone_costo_unitario <= 0) {
-
-                $l_ok = false;
-            }
-
-            $costo_tot_arreglo_pantone = round(floatval($arreglo_pantone_costo_unitario * $num_tintas), 2);
-
-            $aCosto_Offset["costo_unitario_arreglo"] = $arreglo_pantone_costo_unitario;
-
-            $aCosto_Offset["costo_tot_arreglo"] = $costo_tot_arreglo_pantone;
-
-            $costo_offset_arreglo_pantone = $costo_tot_arreglo_pantone;
-
-
-            // tiro
-            $db_tmp = $ventas_model->costo_offset("Tiro Pantone");
-
-            $tiro_pantone_costo_unitario = 0;
-
-            foreach ($db_tmp as $row) {
-
-                $tiro_pantone_costo_unitario = $row['costo_unitario'];
-                $tiro_pantone_costo_unitario = round(floatval($tiro_pantone_costo_unitario), 2);
-
-                $por_millar = $row['por_millar'];
-                $por_millar = round(floatval($por_millar), 2);
-            }
-
-
-            if (is_array($db_tmp)) {
-
-                unset($db_tmp);
-            }
-
-            if ($tiro_pantone_costo_unitario <= 0) {
-
-                $l_ok = false;
-            }
-
-
-            $alfa = self::Deltax($tiraje, $por_millar);
-
-            $costo_tiro_offset = round(floatval($tiro_pantone_costo_unitario * $alfa), 2);
-
-            $aCosto_Offset['costo_unitario_tiro'] = $tiro_pantone_costo_unitario;
-            $aCosto_Offset['costo_tiro']          = $costo_tiro_offset;
-
-            $costo_proceso = round(floatval($costo_corte + $costo_tot_laminas + $costo_tot_arreglo_pantone + $costo_tiro_offset), 2);
-
-            $aCosto_Offset['costo_tot_proceso'] = $costo_proceso;
-
-            if (!$l_ok) {
-
-                $aCosto_Offset['costo_tot_proceso'] = 0;
-            }
-        }
-
-        return $aCosto_Offset;
-    }
-
-
-    protected function calculoOffsetBanco($tipo_offset, $id_papel, $tiraje, $num_tintas, $corte_pliego, $ancho, $largo, $papel_corte_ancho, $papel_corte_largo, $ventas_model) {
-
-        $aCosto_Offset = [];
-
-        $aCosto_Offset['maquila'] = "NO";
-
-        $l_ok = true;
-
-
-        // corte
-        $db_tmp = $ventas_model->costo_proceso("proc_offset", "Corte");
-
-        $corte_costo_unitario = 0;
-
-        foreach ($db_tmp as $row) {
-
-            $corte_costo_unitario = $row['costo_unitario'];
-            $corte_costo_unitario = round(floatval($corte_costo_unitario), 2);
-
-            $corte_por_millar = $row['por_millar'];
-            $corte_por_millar = round(floatval($corte_por_millar), 2);
-        }
-
-
-        if (is_array($db_tmp)) {
-
-            unset($db_tmp);
-        }
-
-
-        if ($corte_costo_unitario <= 0) {
-
-            $l_ok = false;
-        }
-
-        $delta_costo = self:: Deltax($tiraje, $corte_pliego);
-        $delta_corte = self:: Deltax($tiraje, $corte_por_millar);
-
-        $costo_corte = round(floatval($corte_costo_unitario * $delta_corte), 2);
-
-        $aCosto_Offset["id_papel"]             = $id_papel;
-        $aCosto_Offset["tipo_offset"]          = $tipo_offset;
-        $aCosto_Offset["cantidad"]             = $tiraje;
-        $aCosto_Offset["ancho"]                = $ancho;
-        $aCosto_Offset["largo"]                = $largo;
-        $aCosto_Offset["num_tintas"]           = $num_tintas;
-        $aCosto_Offset["papel_corte_ancho"]    = $papel_corte_ancho;
-        $aCosto_Offset["papel_corte_largo"]    = $papel_corte_largo;
-        $aCosto_Offset["corte_pliego"]         = $corte_pliego;
-        $aCosto_Offset["total_pliegos"]        = $delta_costo;
-        $aCosto_Offset["corte_costo_unitario"] = $corte_costo_unitario;
-        $aCosto_Offset["corte_por_millar"]     = $corte_por_millar;
-        $aCosto_Offset["costo_corte"]          = $costo_corte;
-
-
-        if ($tipo_offset == "Seleccion") {
-
-
-            // Laminas
-            $db_tmp = $ventas_model->costo_proceso("proc_offset", "Laminas");
-
-            $costo_unitario_laminas = 0;
-
-            foreach ($db_tmp as $row) {
-
-                $costo_unitario_laminas = $row['costo_unitario'];
-                $costo_unitario_laminas = round(floatval($costo_unitario_laminas), 2);
-            }
-
-            if ($costo_unitario_laminas <= 0) {
-
-                $l_ok = false;
-            }
-
-
-            if (is_array($db_tmp)) {
-
-                unset($db_tmp);
-            }
-
-
-            $costo_laminas_offset = round(floatval($costo_unitario_laminas * $num_tintas), 2);
-
-            $aCosto_Offset["costo_unitario_laminas"] = $costo_unitario_laminas;
-
-            $aCosto_Offset["costo_tot_laminas"] = $costo_laminas_offset;
-
-
-            // Arreglo
-            $db_tmp = $ventas_model->costo_proceso("proc_offset", "Arreglo");
-
-
-            $arreglo_costo_unitario = 0;
-
-            foreach ($db_tmp as $row) {
-
-                $arreglo_tiraje_min = $row['tiraje_minimo'];
-                $arreglo_tiraje_min = intval($arreglo_tiraje_min);
-
-                $arreglo_tiraje_max = $row['tiraje_maximo'];
-                $arreglo_tiraje_max = intval($arreglo_tiraje_max);
-
-                if ($tiraje >= $arreglo_tiraje_min and $tiraje <= $arreglo_tiraje_max) {
-
-                    $arreglo_costo_unitario = $row['costo_unitario'];
-                    $arreglo_costo_unitario = round(floatval($arreglo_costo_unitario), 2);
-
-                    break;
-                }
-            }
-
-
-            if (is_array($db_tmp)) {
-
-                unset($db_tmp);
-            }
-
-            if ($arreglo_costo_unitario <= 0) {
-
-                $l_ok = false;
-            }
-
-
-            $costo_arreglo_offset = round(floatval($arreglo_costo_unitario * $num_tintas), 2);
-
-
-            $aCosto_Offset["costo_unitario_arreglo"] = $arreglo_costo_unitario;
-            $aCosto_Offset["costo_tot_arreglo"]      = $costo_arreglo_offset;
-
-
-            $db_tmp = $ventas_model->costo_proceso("proc_offset", "Tiro");
-
-            $costo_unitario = 0;
-
-            foreach ($db_tmp as $row) {
-
-                $costo_unitario = $row['costo_unitario'];
-                $costo_unitario = round(floatval($costo_unitario), 2);
-
-                $por_millar = $row['por_millar'];
-                $por_millar = intval($por_millar);
-
-                if ($tipo_offset == "Tiro") {
-
-                    $num_color = $row['num_color'];
-                    $num_color = intval($num_color);
-                }
-            }
-
-            if ($costo_unitario <= 0) {
-
-                $l_ok = false;
-            }
-
-
-            $alfa = self:: Deltax($tiraje, $por_millar);
-
-            // tiro
-            if ($tipo_offset == "Tiro") {
-
-                $num_tintas_alfa = intval($num_tintas / $num_color);
-
-                $costo_tiro_offset = round(floatval($costo_unitario * $alfa * $num_tintas_alfa), 2);
-            } else {
-
-                $costo_tiro_offset = round(floatval($costo_unitario * $alfa), 2);
-            }
-
-            $costo_proceso = round(floatval($costo_corte + $costo_laminas_offset + $costo_arreglo_offset + $costo_tiro_offset), 2);
-
-            $aCosto_Offset['costo_unitario_tiro'] = $costo_unitario;
-            $aCosto_Offset['costo_tiro']          = $costo_tiro_offset;
-            $aCosto_Offset['costo_tot_proceso']   = $costo_proceso;
-
-            if (!$l_ok) {
-
-                $aCosto_Offset['costo_tot_proceso'] = 0;
-            }
-        }
-
-
-        if ($tipo_offset === "Pantone") {
 
             $l_ok = true;
 
@@ -2804,12 +2199,6 @@ class Controller {
             $merma_tot = round(floatval($costo_unitario_laser * $merma_min), 2);
         }
 
-        $aMerma_laser_tmp = [];
-
-        $aMerma_laser_tmp['merma_min']      = $merma_min;
-        $aMerma_laser_tmp['merma_tot']      = $merma_min;
-        $aMerma_laser_tmp['costo_unitario'] = $costo_unitario_laser;
-
         if (is_array($costo_laser_temp)) {
 
             unset($costo_laser_temp);
@@ -2827,7 +2216,8 @@ class Controller {
         $laser_tmp['costo_unitario']    = $costo_unitario_laser;
         $laser_tmp['tiempo_requerido']  = $tiempo_requerido;
         $laser_tmp['costo_tot_proceso'] = $costo_laser;
-        $laser_tmp['mermas']            = $aMerma_laser_tmp;
+        $laser_tmp['merma_min']         = $merma_min;
+        $laser_tmp['merma_tot']         = $merma_tot;
 
 
         return $laser_tmp;
@@ -3139,317 +2529,6 @@ class Controller {
             unset($aMerma_tmp);
         }
 
-
-        return $aGrab_tmp;
-    }
-
-
-    protected function calculoGrabadoBanco($tipoGrabado, $tiraje, $AnchoGrab, $LargoGrab, $ubicacionGrab, $ventas_model) {
-
-        $l_ok = true;
-
-        $aGrab_tmp = [];
-
-        $LargoGrab = floatval($LargoGrab);
-        $AnchoGrab = floatval($AnchoGrab);
-
-        $placa_LargoGrab = $LargoGrab;
-        $placa_AnchoGrab = $AnchoGrab;
-        $placa_area      = round(floatval($placa_LargoGrab * $placa_AnchoGrab), 4);
-
-        $aGrab_tmp['tiraje'] = $tiraje;
-
-        switch ($tipoGrabado) {
-
-            case 'G1 Estampado':
-
-                // placa
-                $costo_placa_tmp = $ventas_model->costo_grabado("G1 Placa");
-
-                $placa_costo_unitario = 0;
-
-                foreach ($costo_placa_tmp as $row) {
-
-                    $placa_costo_unitario = $row['precio_unitario'];
-                    $placa_costo_unitario = round(floatval($placa_costo_unitario), 2);
-
-                    $placa_tamano_minimo  = floatval($row['tamano_minimo_placa']);
-                }
-
-                if (is_array($costo_placa_tmp)) {
-
-                    unset($costo_placa_tmp);
-                }
-
-                if ($placa_area < $placa_tamano_minimo) {
-
-                    $placa_area = $placa_tamano_minimo;
-                }
-
-                $placa_costo = floatval($placa_area * $placa_costo_unitario);
-                $placa_costo = round($placa_costo, 2);
-
-                $aGrab_tmp['tipoGrabado']          = $tipoGrabado;
-                $aGrab_tmp['Largo']                = $placa_LargoGrab;
-                $aGrab_tmp['Ancho']                = $placa_AnchoGrab;
-                $aGrab_tmp['ubicacion']            = $ubicacionGrab;
-                $aGrab_tmp['placa_area']           = $placa_area;
-                $aGrab_tmp['placa_costo_unitario'] = $placa_costo_unitario;
-                $aGrab_tmp['placa_costo']          = $placa_costo;
-
-                if ($placa_costo_unitario <= 0) {
-
-                    $l_ok = false;
-                }
-
-                // arreglo
-                $costo_arreglo_tmp = $ventas_model->costo_grabado("G1 Arreglo");
-
-
-                $arreglo_costo_unitario = 0;
-
-                foreach ($costo_arreglo_tmp as $row) {
-
-                    $arreglo_costo_unitario = round(floatval($row['precio_unitario']), 2);
-                }
-
-
-                if (is_array($costo_arreglo_tmp)) {
-
-                    unset($costo_arreglo_tmp);
-                }
-
-
-                if ($arreglo_costo_unitario <= 0) {
-
-                    $l_ok = false;
-                }
-
-                $aGrab_tmp['arreglo_costo_unitario'] = $arreglo_costo_unitario;
-                $aGrab_tmp['arreglo_costo']          = $arreglo_costo_unitario;
-
-
-                // tiro
-                $estampado_tmp = $ventas_model->costo_grabado("G1 Estampado");
-
-                $estampado_costo_unitario = 0;
-
-                foreach ($estampado_tmp as $row) {
-
-                    $tiraje_minimo = intval($row['tiraje_minimo']);
-                    $tiraje_maximo = intval($row['tiraje_maximo']);
-
-                    if ($tiraje >= $tiraje_minimo and $tiraje <= $tiraje_maximo) {
-
-                        $estampado_costo_unitario = $row['precio_unitario'];
-                        $estampado_costo_unitario = round(floatval($row['precio_unitario']), 2);
-
-                        break;
-                    }
-                }
-
-                if (is_array($estampado_tmp)) {
-
-                    unset($estampado_tmp);
-                }
-
-
-                if ($estampado_costo_unitario <= 0) {
-
-                    $l_ok = false;
-                }
-
-
-                $estampado_costo_tiro = floatval($tiraje * $estampado_costo_unitario);
-                $estampado_costo_tiro = round($estampado_costo_tiro, 2);
-
-                $g1_estampado_costo_proceso = round(floatval($placa_costo + $arreglo_costo_unitario + $estampado_costo_tiro), 2);
-
-                $aGrab_tmp['costo_unitario']    = $estampado_costo_unitario;
-                $aGrab_tmp['costo_tiro']        = $estampado_costo_tiro;
-                $aGrab_tmp['costo_tot_proceso'] = $g1_estampado_costo_proceso;
-
-                if (!$l_ok) {
-
-                    $aGrab_tmp['costo_tot_proceso'] = 0;
-                }
-
-                //$aMermaEmp['acbGrab_G1_Estampado'] = intval($_POST['grabadotot']);
-
-                break;
-            case 'G2 Estampado':
-
-                // placa
-                $costo_placa_tmp = $ventas_model->costo_grabado("G2 Placa");
-
-                $placa_costo_unitario = 0;
-
-                foreach ($costo_placa_tmp as $row) {
-
-                    $placa_costo_unitario = $row['precio_unitario'];
-                    $placa_costo_unitario = round(floatval($row['precio_unitario']), 2);
-
-                    $placa_tamano_minimo  = floatval($row['tamano_minimo_placa']);
-                }
-
-                if (is_array($costo_placa_tmp)) {
-
-                    unset($costo_placa_tmp);
-                }
-
-                if ($placa_costo_unitario <= 0) {
-
-                    $l_ok = false;
-                }
-
-                if ($placa_area < $placa_tamano_minimo) {
-
-                    $placa_area = $placa_tamano_minimo;
-                }
-
-                $placa_costo = round(floatval($placa_area * $placa_costo_unitario), 2);
-                $placa_costo = round($placa_costo, 2);
-
-                $aGrab_tmp['tipoGrabado']          = $tipoGrabado;
-                $aGrab_tmp['Largo']                = $placa_LargoGrab;
-                $aGrab_tmp['Ancho']                = $placa_AnchoGrab;
-                $aGrab_tmp['ubicacion']            = $ubicacionGrab;
-                $aGrab_tmp['placa_area']           = $placa_area;
-                $aGrab_tmp['placa_costo_unitario'] = $placa_costo_unitario;
-                $aGrab_tmp['placa_costo']          = $placa_costo;
-
-
-                // arreglo
-                $costo_arreglo_tmp = $ventas_model->costo_grabado("G2 Arreglo");
-
-
-                $arreglo_costo_unitario = 0;
-
-                foreach ($costo_arreglo_tmp as $row) {
-
-                    $arreglo_costo_unitario = floatval($row['precio_unitario']);
-                    $arreglo_costo_unitario = round($arreglo_costo_unitario, 2);
-                }
-
-
-                if (is_array($costo_arreglo_tmp)) {
-
-                    unset($costo_arreglo_tmp);
-                }
-
-
-                if ($arreglo_costo_unitario <= 0) {
-
-                    $l_ok = false;
-                }
-
-
-                $arreglo_costo = $arreglo_costo_unitario;
-
-                $aGrab_tmp['arreglo_costo_unitario'] = $arreglo_costo_unitario;
-                $aGrab_tmp['arreglo_costo']          = $arreglo_costo;
-
-
-                // tiro
-                $estampado_tmp = $ventas_model->costo_grabado("G2 Estampado");
-
-                $estampado_costo_unitario = 0;
-
-                foreach ($estampado_tmp as $row) {
-
-                    $tiraje_minimo = intval($row['tiraje_minimo']);
-                    $tiraje_maximo = intval($row['tiraje_maximo']);
-
-                    if ($tiraje >= $tiraje_minimo and $tiraje <= $tiraje_maximo) {
-
-                        $estampado_costo_unitario = round(floatval($row['precio_unitario']), 2);
-
-                        $estampado_costo_unitario = round(floatval($row['precio_unitario']), 2);
-
-                        break;
-                    }
-                }
-
-                if (is_array($estampado_tmp)) {
-
-                    unset($estampado_tmp);
-                }
-
-
-                if ($estampado_costo_unitario <= 0) {
-
-                    $l_ok = false;
-                }
-
-
-                $estampado_costo_tiro       = floatval($tiraje * $estampado_costo_unitario);
-                $estampado_costo_tiro       = round($estampado_costo_tiro, 2);
-
-                $g2_estampado_costo_proceso = round(floatval($placa_costo + $arreglo_costo + $estampado_costo_tiro), 2);
-
-
-                $aGrab_tmp['costo_unitario']    = $estampado_costo_unitario;
-                $aGrab_tmp['costo_tiro']        = $estampado_costo_tiro;
-                $aGrab_tmp['costo_tot_proceso'] = $g2_estampado_costo_proceso;
-
-                if (!$l_ok) {
-
-                    $aGrab_tmp['costo_tot_proceso'] = 0;
-                }
-
-                //$aMermaEmp['acbGrab_G2_Estampado'] = intval($_POST['grabadotot']);
-
-                break;
-        }
-
-
-        $merma_HS = $ventas_model->merma_acabados("Grabado");
-
-        foreach ($merma_HS as $row) {
-
-            $cantidad_minima = intval($row['cantidad_minima']);
-            $cantidad        = intval($row['cantidad']);
-            $por_cada_x      = intval($row['por_cada_x']);
-            $adicional       = intval($row['adicional']);
-        }
-
-
-        if (is_array($merma_HS)) {
-
-            unset($merma_HS);
-        }
-
-
-    /*
-        // calcula la merma de acabados
-        $merma_HS_tmp = self::calculoMermaAcabados($cantidad_minima, $cantidad, $por_cada_x, $adicional);
-
-        $merma_HS_tot_pliegos = intval($merma_HS_tmp[2]);
-        $merma_HS_cortes      = $cortes;
-
-
-        $tot_pliegos_HS = self::Deltax($merma_HS_tot_pliegos, $merma_HS_cortes);
-
-        $costo_tot_pliegos_merma = round(floatval($papel_costo_unit * $tot_pliegos_HS), 2);
-
-        $aMerma_tmp = [];
-
-        $aMerma_tmp['merma_min']               = $merma_HS_tmp[0];
-        $aMerma_tmp['merma_adic']              = $merma_HS_tmp[1];
-        $aMerma_tmp['merma_tot']               = $merma_HS_tmp[2];
-        $aMerma_tmp['cortes_por_pliego']       = $merma_HS_cortes;
-        $aMerma_tmp['merma_tot_pliegos']       = $tot_pliegos_HS;
-        $aMerma_tmp['costo_unit_merma']        = $papel_costo_unit;
-        $aMerma_tmp['costo_tot_pliegos_merma'] = $costo_tot_pliegos_merma;
-
-
-        $aGrab_tmp['mermas'] = $aMerma_tmp;
-
-        if (is_array($aMerma_tmp)) {
-
-            unset($aMerma_tmp);
-        }
-    */
 
         return $aGrab_tmp;
     }
@@ -4107,12 +3186,6 @@ class Controller {
             $costo_laminado = $costo_minimo;
         }
 
-        $arreglo_lam = 0;
-
-        $arreglo_lam = $ventas_model->getArregloLaminado();
-        $arreglo_lam = floatval($arreglo_lam['costo_unitario']);
-
-        $costo_laminado = floatval($costo_laminado + $arreglo_lam);
 
         $Lam_tmp = [];
 
@@ -4121,7 +3194,6 @@ class Controller {
         $Lam_tmp['Largo']             = floatval($LargoLam);
         $Lam_tmp['Ancho']             = floatval($AnchoLam);
         $Lam_tmp['area']              = $area_laminado;
-        $Lam_tmp['arreglo']           = $arreglo_lam;
         $Lam_tmp['costo_unitario']    = $laminado_costo_unitario;
         $Lam_tmp['costo_tot_proceso'] = $costo_laminado;
 
@@ -5448,15 +4520,15 @@ class Controller {
 
         for ($j = 0; $j < $cuantos_db; $j++) {
 
-            $aJson_tmp[$j]['id_odt']           = intval($sql_tabla_temp_db[$j]['id_odt']);
-            $aJson_tmp[$j]['Tipo_banco']       = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo'])));
-            $aJson_tmp[$j]['tiraje']           = intval($sql_tabla_temp_db[$j]['tiraje']);
-            $aJson_tmp[$j]['largo']            = intval($sql_tabla_temp_db[$j]['largo']);
-            $aJson_tmp[$j]['ancho']            = intval($sql_tabla_temp_db[$j]['ancho']);
-            $aJson_tmp[$j]['profundidad']      = intval($sql_tabla_temp_db[$j]['profundidad']);
-            $aJson_tmp[$j]['Suaje']            = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['suaje'])));
+            $aJson_tmp[$j]['id_odt'] = intval($sql_tabla_temp_db[$j]['id_odt']);
+            $aJson_tmp[$j]['Tipo_banco'] = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['tipo'])));
+            $aJson_tmp[$j]['tiraje'] = intval($sql_tabla_temp_db[$j]['tiraje']);
+            $aJson_tmp[$j]['largo']  = intval($sql_tabla_temp_db[$j]['largo']);
+            $aJson_tmp[$j]['ancho']  = intval($sql_tabla_temp_db[$j]['ancho']);
+            $aJson_tmp[$j]['profundidad'] = intval($sql_tabla_temp_db[$j]['profundidad']);
+            $aJson_tmp[$j]['Suaje'] = utf8_encode(trim(strval($sql_tabla_temp_db[$j]['suaje'])));
             $aJson_tmp[$j]['costo_unit_banco'] = round(floatval($sql_tabla_temp_db[$j]['costo_unit']), 2);
-            $aJson_tmp[$j]['costo_bancos']     = round(floatval($sql_tabla_temp_db[$j]['costo_tot_banco']), 2);
+            $aJson_tmp[$j]['costo_bancos'] = round(floatval($sql_tabla_temp_db[$j]['costo_tot_banco']), 2);
         }
 
         return $aJson_tmp;

@@ -103,11 +103,6 @@ class Cajas {
 		this._nvaAcb = nvaAcb; 
 	}
 
-    set nvaExtra( nvaExtra ){
-
-        this._nvaExtra = nvaExtra;
-    }
-
 	getIdClient() {
 
 	    var url     = location.href;
@@ -128,7 +123,6 @@ class Cajas {
             $('#resumen'+ sec['siglas']).empty();
         })
         $('#resumenCartones').empty();
-        $('#table_mermas_tr').empty();
         $('#resumenOtros').empty();
         $("#resumenHead").empty();
         $("#resumenMensajeria").empty();
@@ -199,66 +193,31 @@ class Cajas {
 
         var nva = this._nvaImp;
 
-        let banco = nva.slice(0,3)
-        
-        if( banco == 'ban' ){
+        this._secciones.find( function(sec){
 
-            this._bancos.find( function(banco){
-                let len = nva.slice(3)
-                
-                if( banco['id'] == len ){
-                        
-                    this.saveBtnImpresiones(banco['impresion'],"BanImp"+len);
-                    this.desactivarBtn();
-                    return true;
-                }
-            }.bind(this));
-        }else{
+            if( sec['siglas'].indexOf(nva) == 0 ){
 
-            this._secciones.find( function(sec){
-
-                if( sec['siglas'].indexOf(nva) == 0 ){
-
-                    this.saveBtnImpresiones(sec['aImp'],"listImp"+sec['siglas']);
-                    this.desactivarBtn();
-                    return true;
-                }
-            }.bind(this));
-        }
+                this.saveBtnImpresiones(sec['aImp'],"listImp"+sec['siglas']);
+                this.desactivarBtn();
+                return true;
+            }
+        }.bind(this));
     }
 
 	saveAcabado(){
 
 		var nva = this._nvaAcb;
-        let banco = nva.slice(0,3)
-        
-        if( banco == 'ban' ){
 
-            this._bancos.find( function(banco){
-                let len = nva.slice(3)
-                
-                if( banco['id'] == len ){
-                        
-                    this.saveBtnAcabados(banco['acabado'],"BanAcb"+len);
-                    this.desactivarBtn();
-                    return true;
-                }
-            }.bind(this));
-        }else{
+		this._secciones.find( function(sec){
 
-            this._secciones.find( function(sec){
-
-                if( sec['siglas'].indexOf(nva) == 0 ){
-                        
-                    this.saveBtnAcabados(sec['aAcb'],"listAcb"+sec['siglas']);
-                    this.desactivarBtn();
-                    return true;
-                }
-            }.bind(this));
-        }
+	    	if( sec['siglas'].indexOf(nva) == 0 ){
+	    			
+	    		this.saveBtnAcabados(sec['aAcb'],"listAcb"+sec['siglas']);
+                this.desactivarBtn();
+	    		return true;
+	    	}
+	    }.bind(this));
 	}
-
-
 
 	saveBtnImpresiones(arrpapeles, tabla) {
 
@@ -362,7 +321,7 @@ class Cajas {
 
                     var tr  = '<tr><td style="text-align: left;" class="textAcbEmp">' + opAcb +'</td><td class="CellWithComment">' + this.imgInfo + '<span class="CellComment">Tipo: '+ tipo +'</span></td><td class="' + tabla + ' img_delete delete"></td></tr>';
 
-                    arrPapeles.push({"Tipo_acabado": opAcb, "tipoGrabado": tipo});
+                    arrPapeles.push({"Tipo_acabado": opAcb, "tipo": tipo});
 
                     $('#acabados').modal('hide');
 
@@ -552,50 +511,17 @@ class Cajas {
 	delBtnSec(tabla,index){
 
         this.desactivarBtn();
-        var impAcb     = tabla.slice('4','7');
-        var seccion    = tabla.slice('7');
-        let banco      = tabla.slice(0,3)
-        let extraBanco = tabla.slice(0,4)
-        
-        if( banco == 'Ban' ){
+		var impAcb = tabla.slice('4','7');
+		var seccion = tabla.slice('7','9');
 
-            impAcb = tabla.slice(3,6)
-            seccion = tabla.slice(6)
+		this._secciones.find( function(sec){
 
-            this._bancos.find( function(banco){
-                
-                if( banco['id'] == seccion ) {
-                    if ( impAcb == 'Acb' ) impAcb = 'acabado'
-                    if ( impAcb == 'Imp' ) impAcb = 'impresion'
-                    banco[impAcb].splice(index,1);
-                    return true;
-                }
-            });
-        }
-        if( extraBanco == 'EBan' ){
-
-            let id = tabla.slice(4)
-
-            this._bancos.find( function(banco){
-                
-                if( banco['id'] == id ) {
-                    banco['extras'].splice(index,1);
-                    return true;
-                }
-            });
-        }
-        if( impAcb == 'Imp' || impAcb == 'Acb' ){
-
-            this._secciones.find( function(sec){
-
-                if( sec['siglas'].indexOf(seccion) == 0 ) {
-                    
-                    sec['a'+impAcb].splice(index,1);
-                    return true;
-                }
-            });
-        }
-		console.log(this._bancos)
+	    	if( sec['siglas'].indexOf(seccion) == 0 ) {
+	    		
+	    		sec['a'+impAcb].splice(index,1);
+	    		return true;
+	    	}
+	    });
 	}
 
     delBtnAcc(index){
@@ -681,7 +607,6 @@ class Cajas {
         $("#btnImprimir").prop("disabled",false);
         $("#btnActG").prop("disabled",false);
         $("#btnCalculadora").prop("disabled",false);
-        
     }
 
 
@@ -690,7 +615,6 @@ class Cajas {
         $("#btnImprimir").prop("disabled",true);
         $("#btnActG").prop("disabled",true);
         $("#btnCalculadora").prop("disabled",true);
-        $("#btnPODT").prop("disabled",true);
     }
 
     changeData(url){
@@ -851,7 +775,7 @@ class Cajas {
                 </div>
 
                 
-                <div id="tResumentodocaja" style="overflow: auto; height:80%;">
+                <div style="overflow: auto; height:80%;">
 
                     <table class="table tableresumenn" id="ResumenCostos" style="width:100%;height:100%">
 
@@ -879,7 +803,6 @@ class Cajas {
                 
                 <div class="d-flex justify-content-start" style="height: 50px; width:100%; align-items: center">
                     <img class="m-1" src="`+ this._url +`public/img/henpp.png" style="width: 11%;"><small>Todos los derechos reservados. Historias En Papel 2019.</small>
-                    <button class="btn btn-primary" onclick="caja.imprimirDIV('tResumentodocaja');">Imprimir</button>
                 </div>
             </div>
         `;
@@ -1040,414 +963,6 @@ class Cajas {
                 }
                 $('#listbancoemp').append(tr);
             }
-        }
-    }
-
-    appendBtnBanco(optBanco){
-
-        let seccion = '';
-        let imagen = '#';
-        let titulo = '';
-        let idOpt = '';
-        this._bancos = [];
-        this.idBanco = 1;
-        this._optBanco = optBanco;
-
-        var divSeccion = `
-            <div onclick="caja.addSecBanco()" class="divContenido btn btn-outline-success" style="font-size: 20px; display: table">
-
-                <label style="cursor:pointer; display: table-cell;vertical-align: middle;">
-                    <i class="bi bi-plus-square"></i> Banco
-                </label>
-            </div>
-        `;
-
-        $("#divDerecho").append(divSeccion);
-        
-    }
-
-    //hace falta asignar el valor de ambos lados, seccion solo aplica para empalme y guarda, y hacer funcionar extras ): hay chamba
-    addSecBanco(){
-
-        let seccion = '';
-        let imagen = '#';
-        this._bancos.push(
-            {
-                index: '',
-                id: this.idBanco,
-                Tipo_banco: '',
-                impresion: [],
-                acabado:[],
-                extras:[],
-                papel: '',
-                largo:'',
-                ancho:'',
-                profundidad:'',
-                posicion:'',
-                suaje:'',
-                ambos_lados: '',
-                seccion: '',
-            }
-        );
-
-        let index = (this._bancos.length - 1)
-        this._bancos[index]['index'] = index;
-        
-        let id = this.idBanco
-        let titulo = 'Banco';
-        let idOpt = 'optBan'+ id;
-        let idOptMat = 'optMatBan'+ id;
-        let optionSeccion = ''
-        this._secciones.forEach(function( sec ){
-
-            optionSeccion += `<option value="${sec['titulo']}">${sec['titulo']}</option>`
-        });
-
-        let divBanco = `
-            <div id="divBanco${id}" class="divgral banco">
-                <div id="img ${seccion}" class="secciones divContenido">
-                    <!--<img src="${imagen}"  style="width: 40%;">-->
-                    <br>
-                    <label class="lblTituloSec">${titulo}</label>
-                </div>
-                <br>
-                <div class="m-2">
-                    <select id="${idOptMat}" onchange="caja.showRBPaper('${id}')" class="form-control mb-2 form-control-sm">
-                        <option selected value="selected" disabled>Elige un material</option>
-                        ${this._optBanco}
-                    </select>
-                    <div class="row m-0 p-0">
-                        <div class="col m-0 p-0">
-                            <input placeholder="Largo" min="1" type="number" class="form-control form-control-sm m-1" id="txtLargo${id}">
-                        </div>
-                        <div class="col m-0 p-0">
-                            <input placeholder="Ancho" min="1" type="number" class="form-control form-control-sm m-1" id="txtAncho${id}">
-                        </div>
-                        <div class="col m-0 p-0">
-                            <input placeholder="Prof." min="1" type="number" class="form-control form-control-sm m-1" id="txtProf${id}">
-                        </div>
-                    </div>
-                    
-                    
-                    <select id="optPosicion${id}" class="form-control mb-2 form-control-sm">
-                        <option selected value="selected" disabled>Posición</option>
-                        <option value="Superior">Superior</option>
-                        <option value="Derecho">Lado derecho</option>
-                        <option value="Centro">Centro</option>
-                        <option value="Izquierdo">Lado izquierdo</option>
-                        <option value="Inferior">Inferior</option>
-                    </select>
-                    <select id="optSeccion${id}" class="form-control mb-2 form-control-sm">
-                        <option selected value="selected" disabled>Sección</option>
-                        ${optionSeccion}
-                    </select>
-
-                    <!--<div class="">
-                        
-                        <label for="optSuaje${id}">¿Lleva suaje?</label>
-                        <select id="optSuaje${id}" class="form-control mb-2 form-control-sm">
-                            <option value="No" selected>No</option>
-                            <option value="Si">Si</option>
-                        </select>    
-                    </div>-->
-
-                    <div class="custom-control custom-switch">
-                    
-                        <input type="checkbox" id="optSuaje${id}" class="custom-control-input">
-                        <label class="custom-control-label" for="optSuaje${id}">¿Lleva suaje?</label>
-                    </div>
-
-                    
-
-                    <!--<div class="">
-                        
-                        <label for="optPapel${id}">¿Lleva papel?</label>
-                        <select id="optPapel${id}" onchange="caja.changeMaterial('${id}');" class="form-control mb-2 form-control-sm">
-                            <option value="No" selected>No</option>
-                            <option value="Si">Si</option>
-                        </select>    
-                    </div>-->
-                    <div class="custom-control custom-switch" id="divPapel${id}" style="display:none">
-                    
-                        <input type="checkbox" id="optPapel${id}" onchange="caja.changeMaterial('${id}');" class="custom-control-input">
-                        <label class="custom-control-label" for="optPapel${id}">¿Lleva papel?</label>
-                    </div>
-                    <select class="chosen forros" name="${idOpt}" id="${idOpt}" tabindex="9" required>
-                        <option selected disabled>Elegir tipo de papel</option> ${this._papeles}
-                    </select>
-                    <div id="divChkBanco${id}" class="custom-control custom-checkbox" style="display:none">
-                        
-                        <input type="checkbox" class="custom-control-input" id="chkALados${id}">
-                        <label class="custom-control-label" for="chkALados${id}">Ambos lados</label>
-                    </div>  
-                    
-                </div>
-                <div id="divImp${id}" style="display:none">
-                    
-
-                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#Impresiones" onclick="caja.nvaImp='ban${id}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Impresiones
-                    </button>
-                    <div class="container divimpresiones">
-                        <table class="table">
-                            <tbody id="BanImp${id}">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="divAcb${id}" style="display:none">
-                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#acabados" onclick="caja.nvaAcb='ban${id}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Acabados
-                    </button>
-                    <div class="container divacabados">
-                        <table class="table">
-                            <tbody id="BanAcb${id}">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="divEBanco${id}" style="display:none">
-                    
-
-                    <button type="button" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#modalExtraBanco" onclick="caja.nvaExtra='ext${id}'"><img border="0" src="${this._url}public/img/add.png" style="width: 15px;"> Extras
-                    </button>
-                    <div class="container divimpresiones">
-                        <table class="table">
-                            <tbody id="EBan${id}">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <button type="button" class="btnDelBanco btn btn-danger btn-block btn-sm" onclick="caja.setBanco('${id}')" data-toggle="modal" data-target="#modalDelBanco"><i class="bi bi-x-circle-fill"></i></button>
-            </div>
-        `;
-
-        $("#divDerecho").append(divBanco);
-        $('.chosen').chosen();
-        $(`#${idOpt}_chosen`).css('display','none');
-        this.idBanco++;
-        console.log(this._bancos)
-    }
-
-    showRBPaper(id){
-
-        let material = $(`#optMatBan${id} option:selected`).text();
-        
-        if( material == 'Carton' || material == 'Eva' ){
-
-            $(`#divPapel${id}`).show('fast');
-        }else{
-
-            $(`#divPapel${id}`).hide('fast');
-        }
-    }
-
-    changeMaterial(id){
-        
-        let material = $(`#optPapel${id}`).prop('checked');
-        
-        if( material){
-
-            $(`#optBan${id}_chosen`).show('fast');
-            
-            $(`#divChkBanco${id}`).show('fast');
-            $(`#divImp${id}`).show('fast');
-            $(`#divAcb${id}`).show('fast');
-            $(`#divEBanco${id}`).show('fast');
-            
-        }else{
-
-            $(`#optBan${id}_chosen`).hide('fast');
-            $(`#divChkBanco${id}`).hide('fast');
-            $(`#divImp${id}`).hide('fast');
-            $(`#divAcb${id}`).hide('fast');
-            $(`#divEBanco${id}`).hide('fast');
-            //vacio por pedido de pablito.
-
-            this._bancos.find(function(banco){
-
-                if( banco['id'] == id ){
-
-                    banco['acabado'] = [];
-                    banco['impresion'] = [];
-                    banco['extras'] = [];
-                    $('#BanImp'+id).empty();
-                    $('#BanAcb'+id).empty();
-                    $('#EBan'+id).empty();
-                    $('#chkALados'+id).prop('checked',false);
-                    $(`#optBan${id}_chosen span`).html("Elegir tipo de papel");
-                    $("#optBan"+id).val(null);
-                    return true;
-                }
-            });
-        }
-    }
-
-    saveExtra(){
-
-        let nva       = this._nvaExtra;
-        let id        = nva.slice(3)
-        let tipoExtra = $('#optEBanco').val()
-        let grosorExtra = $('#txtGrosorEB').val()
-
-        let error = 
-        `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Atencion!</strong> No seleccionaste un tipo.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        `
-        if( tipoExtra == '' || tipoExtra == null || tipoExtra == 0 ){
-
-            $('#errorEBancos').empty();
-            $('#errorEBancos').append(error);
-            return false;
-        }
-        this._bancos.find( function(banco){
-            
-            
-            if( banco['id'] == id ){
-                    
-                banco['extras'].push({
-
-                    tipo: tipoExtra,
-                    grosor: grosorExtra
-                });
-
-                let trExtra  = 
-                `
-                <tr>
-                    <td class="textImp">${tipoExtra}</td>
-                    <td class="CellWithComment">${this.imgInfo}
-                        <span class="CellComment">Se agrego un extra tipo ${tipoExtra} Grosor: ${grosorExtra}</span>
-                    </td>
-                    <td class="img_delete delete">
-                    </td>
-                </tr>
-                `;
-                $(`#EBan${id}`).append(trExtra)
-
-                $('#optEBanco').val(0)
-                this.desactivarBtn();
-                return true;
-            }
-        }.bind(this))
-        $('#modalExtraBanco').modal('hide');
-        $('#divGEB').hide()
-        $('#txtGrosorEB').val('1.00')
-    }
-
-    delSecBanco(){
-
-        let id = this.lenBanco1;
-        
-        this._bancos.find(function(banco){
-
-            if( banco['id'] == id ){
-                
-                this._bancos.splice(banco['index'],1)
-
-                return true;
-            }
-        }.bind(this))
-
-        $("#divBanco"+id).remove();
-        $('#modalDelBanco').modal('hide');
-
-        let i = 0;
-        this._bancos.forEach(function(banco){
-            
-            banco['index'] = i++
-        });
-        console.log(this._bancos)
-    }
-
-    setBanco(id){
-
-        this.lenBanco1 = id;
-        $('#lblBanco').html(`Esta a punto de eliminar el banco. <br>¿Desea continuar?`);
-    }
-
-    imprimirDIV(contenido) {
-        var ficha = document.getElementById(contenido);
-        var ventanaImpresion = window.open(' ', 'popUp');
-        ventanaImpresion.document.write(ficha.innerHTML);
-        ventanaImpresion.document.close();
-        ventanaImpresion.print();
-        ventanaImpresion.close();
-    }
-
-    formateo (valor){
-        try{
-
-            valor = parseFloat(valor).toFixed(2)
-
-            //valor = new Intl.NumberFormat("es-MX").format(valor);
-            
-            if ( valor.indexOf('.') == -1 ) {
-
-                valor = valor + '.00'
-            }
-
-            if( valor.indexOf('.') !== -1 ) {
-
-                let valorT = valor.split('.')
-                valorT = valorT[1]
-                
-                if( valorT.length < 2 ){
-
-                    valor = valor + '0'
-                }
-            }
-
-            let setComas = valor =>{
-
-                let valorTemp = valor.split('.')
-                
-
-                let aux = (valorTemp[0].length - 1);
-                let valorL = ''
-                //si el numero es mayor a 999 entonces entra al if en caso omiso se retorna el valor.
-                if( valorTemp[0].length > 3 ){
-                    //se invierte el digito ingresado
-                    for( let i = (valorTemp[0].length - 1); i >= 0; i-- ){
-                        //entrara la primera vez
-                        if( i == aux ){
-                            //se asigna la coma
-                            valorL = valorL + ','
-                            //deciende de 3 en 3
-                            aux -= 3
-                        }
-                        //por ultimo concatena el valor del numero que sigue
-                        valorL = valorL + valorTemp[0][i]
-                    }
-
-                    let cadena = ''
-                    let x = valorL.length
-                    //se voltea el valor que se obtuvo
-                    while (x >= 0) {
-                        
-                        cadena = cadena + valorL.charAt(x);
-                        x--;
-                    }
-                    //elimina coma extra
-                    cadena = cadena.slice(0,( cadena.length -1 ))
-                    valorL = cadena + '.' + valorTemp[1]
-                }else{
-
-                    return valor
-                }
-                return valorL
-            }
-            valor = setComas(valor)
-        }catch(e){
-
-            console.log('no se pudo formatear el valor. \n' + e)
-        }finally{
-
-            return valor
         }
     }
 }

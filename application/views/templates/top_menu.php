@@ -43,7 +43,7 @@ $superadmin = ($area == 'superadmin') ? 'superadmin' : 'no-superadmin';
                     </li>
                     <li class="sec-level <?= $produccion ?> <?= $superadmin ?>">
 
-                        <a href="<?= URL; ?>crud/">Papeles</a>
+                        <a href="<?= URL; ?>crud/index.php">Papeles</a>
                     </li>
                     <li class="sec-level <?= $produccion ?> <?= $superadmin ?>">
                         <a href="<?= BASE_URL; ?>modificaprocesos/cambioprocesos">Procesos</a>

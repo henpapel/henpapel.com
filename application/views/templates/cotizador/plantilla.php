@@ -103,7 +103,7 @@
     .div-izquierdo{
 
         width: 20%;
-        height: 92%;
+        height: 96%;
         display: block;
         position: absolute;
         padding: 0px;
@@ -168,7 +168,7 @@
         </div>
     </form>
 
-    <div id="divFooter" class="mx-1" style="position:fixed; right:0%; top:86%;">
+    <div id="divFooter" class="mx-1" style="position:fixed; right:0%; top:85%;">
         <div id="groupButton1">
 
             <button id="btnCalcularC" class="btn btn-primary btn-sm" style="font-size: 10px;"><i class="bi bi-calculator-fill" style="color: #000"></i> CALCULAR</button>
@@ -185,8 +185,6 @@
 
             <button type="button" id="btnSalir" data-toggle="modal" data-target="#modalSalida" class="btn btn-danger btn-sm" style="font-size: 10px;"><i class="bi bi-door-open"></i> SALIR</button>
 
-            <button type="button" disabled="" id="btnPODT" class="btn btn-info btn-sm" style="font-size: 12px;"><i class="bi bi-printer"></i> Previsualizar ODT</button>
-
             <br>
 
             <div class="div-total mt-2 rounded" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -201,38 +199,38 @@
                 <table class="table">
                     <tr>
                         <td>Subtotal: </td>
-                        <td align="right" id="tdSubtotalCaja" class="grand-total">$0.00</td>
+                        <td id="tdSubtotalCaja" class="grand-total">$0.00</td>
                     </tr>
                     <tr>
                         <td>Utilidad: </td>
-                        <td align="right" id="UtilidadDrop">$0.00</td>
+                        <td id="UtilidadDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>IVA:</td>
-                        <td align="right" id="IVADrop">$0.00</td>
+                        <td id="IVADrop">$0.00</td>
                     </tr>
 
                     <tr>
                         <td>ISR: </td>
-                        <td align="right" id="ISRDrop">$0.00</td>
+                        <td id="ISRDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>Comisiones: </td>
-                        <td align="right" id="ComisionesDrop">$0.00</td>
+                        <td id="ComisionesDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>% Indirecto: </td>
-                        <td align="right" id="IndirectoDrop">$0.00</td>
+                        <td id="IndirectoDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>Ventas: </td>
-                        <td align="right" id="VentasDrop">$0.00</td>
+                        <td id="VentasDrop">$0.00</td>
                     </tr>
                     <tr>
                         <td>
                             <button type="button" id="descuentoModal" data-toggle="modal" data-target="#descuentos" style="border: none; background: white;">Descuento: (0%) </button>
                         </td>
-                        <td align="right" id="DescuentoDrop">$0.00</td>
+                        <td id="DescuentoDrop">$0.00</td>
                     </tr>
                 </table>
             </div>
@@ -244,8 +242,8 @@
 <div class="modal fade" id="modalSalida" tabindex="-1" aria-labelledby="lblSalidaModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title" id="lblSalidaModal"><i class="bi bi-exclamation-triangle"></i> Advertencia</h5>
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white" id="lblSalidaModal"><i class="bi bi-exclamation-triangle"></i> Advertencia</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -255,28 +253,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <a type="button" href="<?=URL?>cotizador/getCotizaciones" class="btn btn-warning">Salir</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Eliminar Banco -->
-<div class="modal fade" id="modalDelBanco" tabindex="-1" aria-labelledby="lblSalidaModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title" id="lblSalidaModal"><i class="bi bi-exclamation-triangle"></i> Advertencia</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div id="lblBanco" class="modal-body">
-                Esta a punto de eliminar el banco: <br>¿Desea continuar?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" onclick="caja.delSecBanco()" class="btn btn-warning">Continuar</button>
+                <a type="button" href="<?=URL?>cotizador/getCotizaciones" class="btn btn-danger">Salir</a>
             </div>
         </div>
     </div>
@@ -289,7 +266,7 @@
     $(document).ready( () =>{
 
         $("#resumentodocaja").css("transform","translateY(" + heightDisplay + "px)");
-        $("#resumentodocaja").css("display","none");
+        $("#resumentodocaja").css("display","block");
     });
 
     /*$("#btnHamburguer").click(function() {
@@ -384,9 +361,4 @@
         }
     };
 
-    $('#btnPODT').click(function(){
-
-        var ventana = window.open("<?=URL?>cotizador/imprODT", "Impresion", "width=600, height=600");
-        return true;
-    });
 </script>

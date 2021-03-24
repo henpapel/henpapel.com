@@ -14,38 +14,6 @@ class VentasModel extends Controller {
     }
 
 
-    public function getPapelId($id) {
-
-        $id = intval($id);
-
-        $sql = "SELECT * FROM papeles WHERE status = 'A' and id_papel = $id";
-
-        $query = $this->db->prepare($sql);
-
-        $query->execute();
-
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-
-        return $row;
-    }
-
-
-    public function getPapelMaterial($material) {
-
-        $sql = "SELECT * FROM papeles WHERE status = 'A' and material like '%" . $material . "%' order by costo_unitario desc limit 1";
-
-        $query = $this->db->prepare($sql);
-
-        $query->execute();
-
-        $result = array();
-
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-
-        return $row;
-    }
-
-
     public function getCartonIdPapel($id) {
 
         $id_temp = intval($id);
@@ -796,19 +764,6 @@ class VentasModel extends Controller {
         }
 
         return $result;
-    }
-
-
-    public function getArregloLaminado() {
-
-        $sql = "SELECT * from proc_laminado where status = 'A' and nombre = 'Arreglo' limit 1";
-
-        $query = $this->db->prepare($sql);
-        $query->execute();
-
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-
-        return $row;
     }
 
 
@@ -4778,14 +4733,7 @@ class VentasModel extends Controller {
 
     public function convPresupToODT($id_odt, $id_odt_orig) {
 
-        $id_odt      = intval($id_odt);
-        $id_odt_orig = intval($id_odt_orig);
-
-        $fecha = TODAY;
-
-        $d_fecha = date("Y-m-d", strtotime($fecha));
-
-        $time  = date("H:i:s", time());
+        $id_odt = intval($id_odt);
 
         $inserted_upd_odt1 = true;
         $inserted_upd_odt2 = true;
@@ -4803,31 +4751,28 @@ class VentasModel extends Controller {
             if (!$inserted_upd_odt1) {
 
                 $inserted_upd_odt1 = false;
+            } else {
+
+                $sql_upd_odt2 = "UPDATE cot_odt SET status = 'T' WHERE id_odt = " . $id_odt;
+
+                $query_upd_odt = $this->db->prepare($sql_upd_odt2);
+
+                $inserted_upd_odt2 = $query_upd_odt->execute();
+
+                if (!$inserted_upd_odt2) {
+
+                    $inserted_upd_odt2 = false;
+                }
             }
-
-
-            $sql_upd_odt2 = "UPDATE cot_odt SET status = 'T', fecha_odt = '" . $d_fecha . "', hora_odt = '" . $time . "' WHERE id_odt = " . $id_odt;
-
-            $query_upd_odt = $this->db->prepare($sql_upd_odt2);
-
-            $inserted_upd_odt2 = $query_upd_odt->execute();
-
-            if (!$inserted_upd_odt2) {
-
-                $inserted_upd_odt2 = false;
-            }
-
 
             if ($inserted_upd_odt1 and $inserted_upd_odt2) {
 
                 $this->db->commit();
 
                 return true;
-            } else {
-
-                $this->db->rollBack();
             }
         } catch (PDOException $exception) {
+        //} catch (Exception $e) {
 
             $this->db->rollBack();
 
@@ -4847,7 +4792,7 @@ class VentasModel extends Controller {
                 $mensaje_db = $exception->getMessage();
             }
 
-            $aJson['error'] = $mensaje_db . "; Error al convertir a ODT";
+            $aJson['error'] = $mensaje_db . "; Error al grabar(ODT) en la BD";
 
             return $aJson;
         }
@@ -5033,34 +4978,7 @@ class VentasModel extends Controller {
         }
 
         return $result;
-    }
 
-
-    public function getPresup() {
-
-        //$sql = "SELECT * FROM cot_odt WHERE status = 'A' order by fecha_odt desc";
-        $sql = "SELECT cot_odt.id_odt, cot_odt.num_odt, cot_odt.id_modelo, cot_odt.tiraje, cot_odt.fecha_odt
-                , cot_odt.hora_odt, modelos_cajas.nombre as nombre_caja
-                , clientes.nombre as nombre_cliente
-                , cot_tipo_costo.nombre as tipo_costo
-                FROM cot_odt
-                join cot_tipo_costo on cot_odt.tipo_costo = cot_tipo_costo.id
-                join modelos_cajas on cot_odt.id_modelo = modelos_cajas.id_modelo
-                join clientes on cot_odt.id_cliente = clientes.id_cliente
-                WHERE (cot_odt.status = 'Z') order by cot_odt.fecha_odt desc, cot_odt.hora_odt desc";
-
-        $query = $this->db->prepare($sql);
-
-        $query->execute();
-
-        $result = array();
-
-        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-
-            $result[] = $row;
-        }
-
-        return $result;
     }
 
 

@@ -68,10 +68,10 @@
                         <th><strong>Cantidad</strong></th>
                         <th><strong>Fecha de cotizacion</strong></th>
 
-                        <th colspan="4"><strong>Acciones</strong></th>
+                        <th style="width: 110px;" colspan="4"><strong>Acciones</strong></th>
                     </tr>
                 </thead>
-                <tbody id="inv-body" class=" mx-1">
+                <tbody id="inv-body">
 
                     <?php $i = 0; ?>
                     <?php foreach ($cotizaciones as $row) {
@@ -86,24 +86,23 @@
                             <td><?= $row['fecha_odt']; ?></td>
                             <td>
 
-                                <button style="font-size: 25px;" data-toggle="modal" data-target="#modalODT" onclick="setODT('<?=$row['num_odt']?>','<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')" class="table-button green2 mx-1"><i class="bi bi-clipboard-check"></i></button>
+                                <button data-toggle="modal" data-target="#modalODT" onclick="setODT('<?=$row['num_odt']?>','<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')" class="table-button green2">Crear ODT</button>
                             </td>
                             <!--<td>
 
                                 <a href="#" onclick="printCalc('<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')" class="table-button green2">Calculadora</a>
                             </td>-->
-                            <td class="mx-1">
+                            <td>
 
-                                <button style="font-size: 25px;" class="table-button blue3 nueva mx-1" onclick="impr('<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')"><i class="bi bi-printer"></i></button>
+                                <button class="table-button blue3 nueva" onclick="impr('<?=$row['id_odt']?>','<?=$row['nombre_caja']?>')">Imprimir</button>
                             </td>
-                            <td class="mx-1">
+                            <td>
 
-                                <a style="font-size: 25px;" id="<?= $row['id_odt']; ?>" href="#" data-id="<?= $row['num_odt']; ?>" data-caja="<?= $row['nombre_caja'] ?>" onclick="vistaAct('<?= $row['id_odt']; ?>');" class="table-button orange2"><i class="bi bi-pencil"></i></a>
+                                <a id="<?= $row['id_odt']; ?>" href="#" data-id="<?= $row['num_odt']; ?>" data-caja="<?= $row['nombre_caja'] ?>" onclick="vistaAct('<?= $row['id_odt']; ?>');" class="table-button orange2">Modificar</a>
                             </td>
-                            <td class="mx-1">
-                                <a href="#" style="font-size: 25px;" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="table-button text-danger"><i class="bi bi-trash"></i></a>
+                            <td>
+                                <a href="#" onclick="setId('<?= $row['id_odt'] ?>')" data-toggle="modal" data-target="#modalEliminar" class="table-button red2">Eliminar</a>
                             </td>
-                            
                             <!--<td>
 
                                 <a href="<?= URL; ?>cotizador/printCalc/?id=<?= $row['id_odt']; ?>" target="_blank" class="btn btn-sm btn-success"><i class="bi bi-calculator"></i> Calculadora</a>
@@ -446,7 +445,6 @@
 
     function impr(id,model){
 
-        localStorage.setItem('controlador','si');
         switch(model){
 
             case 'Almeja':
