@@ -65,7 +65,7 @@
         <br>
     </div>
 
-    <!-- formulario de la caja circular -->
+    <!-- formulario de la caja regalo -->
     <div id="divContentI" class="form-content medidas">
         <div class="scroll-plantilla" style="min-width: 120px; width: 92%;">
 
@@ -188,7 +188,8 @@
             </div>
         </div>
     </div>
-    <div class="div-buttons" style="height: 20%; margin-top: 4%; padding: 5px;">
+
+    <div class="div-buttons mt-1 p-1 mb-5" style="height: 20%;">
         
         <button type="button" id="btnabrecierres" class="btn btn-block btn-outline-primary chkSize btn-sm text-left" data-toggle="modal" data-target="#cierres" ><img border="0" src="<?=URL ;?>public/img/add.png" style="width: 15px;"> Cierre</button>
 
@@ -264,6 +265,15 @@
 
     //construye las secciones respecto a las divisiones que se ha declarado en la variable seccion
     caja.constructSec();
+
+    var bancos = <?php echo json_encode($bancos);?>;
+    option = ''
+    bancos.forEach( function(banco){
+
+        option += '<option value="' + banco.nombre + '">' + banco.nombre + '</option>';
+    });
+
+    caja.appendBtnBanco(option);
 
     //se asigna en que modelo esta para el select
     $("#box-model").val("4");

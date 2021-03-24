@@ -30,6 +30,60 @@
     </div>
 </div>
 
+<!-- ******* Modal Guardar Todo ******** -->
+<div class="modal fade" id="modalExtraBanco" tabindex="-1" role="dialog" aria-labelledby="modalExtraBanco" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header azulWhi">
+
+                <h5 class="modal-title">Extras</h5>
+                <!--
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                -->
+            </div>
+
+            <div class="modal-body">
+
+                <div id="errorEBancos">
+
+                </div>
+                <select id="optEBanco" class="form-control mb-2 form-control-sm">
+                    <option value="0" selected>Elige el tipo de extra</option>
+                    <option value="Eva">Eva</option>
+                    <option value="Espuma">Espuma</option>
+                </select>
+
+                <div id="divGEB" class="form-group row" style="display: none;">
+                    <label for="txtGrosorEB" class="col-sm-7 col-form-label">Grosor:</label>
+                    <div class="col-sm-3">
+                        <input type="number" id="txtGrosorEB" class="form-control" value="1.00" step="0.5" min="1.00">
+                    </div>
+                </div>
+                    
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-guardar-blues" id="btnSaveEBanco" onclick="caja.saveExtra()">agregar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    
+    $(document).on('change', '#optEBanco', function(){
+
+        $('#divGEB').show('fast')
+    })
+</script>
+
 <!-- ******* Todos los modales Banco ******** -->
     <!-- Banco Empalme -->
     <div class="modal fade" id="bancoemp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -352,7 +406,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary azulWhi" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="cleanModError();">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -453,7 +507,7 @@
                 </div>
 
                 <!-- Tabla de Registros -->
-                <div class="modal-body">
+                <div id="procesosModalContent" class="modal-body">
 
                     <div class="accordion" id="accordionExample">
 
@@ -809,7 +863,7 @@
                 </div>
 
                 <div class="modal-footer">
-
+                    <button type="button" class="btn btn-primary" onclick="caja.imprimirDIV('procesosModalContent');">Imprimir</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -1244,6 +1298,7 @@
         $('#groupButton1').hide();
         $('#resumentodocaja').css("position","absolute");
         $('#resumentodocaja').show();*/
+        $('#resumentodocaja').show();
         $("#resumentodocaja").css("transform","translateY(0px)");
         $("#divContentI").css("z-index","0");
     }); 
@@ -1257,9 +1312,12 @@
         $('#resumentodocaja').hide();
         $('#groupButton1').show();*/
         $("#resumentodocaja").css("transform","translateY(" + heightDisplay + "px)");
-        let showDivZ = () => $("#divContentI").css("z-index","9");
-
+        let showDivZ = () => {
+            $("#divContentI").css("z-index","9");
+            $('#resumentodocaja').hide();
+        }
         setTimeout(showDivZ, 500);
+
     });
 
     //boton eliminar. Es el que hace la magia ;)
